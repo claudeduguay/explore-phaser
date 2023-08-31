@@ -19,7 +19,10 @@ export default function Explore({ w = 1100, h = 800 }: IExploreProps) {
     }
     const game = new Phaser.Game(config)
     console.log("Game:", game)
-    return () => game.destroy(true)
+    return () => {
+      console.log("Game cleanup")
+      game.destroy(true)
+    }
   }, [w, h, id])
   const style: CSSProperties = {
     width: w,

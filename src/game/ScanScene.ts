@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 
 export default class ScanScene extends Phaser.Scene {
+
   preload() {
     this.load.image('raster', 'assets/raster-bw-64.png');
   }
