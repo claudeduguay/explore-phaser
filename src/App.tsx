@@ -1,26 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+// import logo from './logo.svg';
+import "bootstrap"
+import './App.css'
+import Explore from './game/Explore'
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="p-0 m-0">
+      <center>
+        <h1>Explore Phaser 3 in React</h1>
+        <Explore w={1100} h={800} />
+        <p>The Explore component encapsulates the <b><code>Phaser.Game</code></b> initialization.</p>
+      </center>
     </div>
-  );
+  )
 }
-
-export default App;
