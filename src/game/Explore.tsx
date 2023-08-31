@@ -1,5 +1,6 @@
 import { CSSProperties, useEffect, useId } from "react"
-import ScanScene from "./ScanScene"
+// import ScanScene from "./ScanScene"
+import DungeonGen from "./DungeonGen"
 import Phaser from 'phaser'
 
 export interface IExploreProps {
@@ -15,7 +16,7 @@ export default function Explore({ w = 1100, h = 800 }: IExploreProps) {
       parent: id,
       width: w,
       height: h,
-      scene: ScanScene
+      scene: DungeonGen
     }
     const game = new Phaser.Game(config)
     console.log("Game:", game)

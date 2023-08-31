@@ -1,9 +1,7 @@
 import Phaser from 'phaser'
-// Claude: Based on https://github.com/mikewesthad/dungeon
-class Dungeon {
-  constructor(public args: any) {
-  }
-}
+import Dungeon from "@mikewesthad/dungeon"
+
+// Code for: https://phaser.io/examples/v3/view/tilemap/dungeon-generator
 
 //  Toggle this to disable the room hiding / layer scale, so you can see the extent of the map easily!
 const debug = false;
