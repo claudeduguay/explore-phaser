@@ -11,29 +11,28 @@ export default class ScanScene extends Phaser.Scene {
 
     group.createMultiple({ key: 'raster', repeat: 8 });
 
-    let ci = 0;
     const colors = [0xef658c, 0xff9a52, 0xffdf00, 0x31ef8c, 0x21dfff, 0x31aade, 0x5275de, 0x9c55ad, 0xbd208c];
+    let colorIndex = 0;
 
-    const _this = this;
+    const self = this;
 
     group.children.iterate((child: any) => {
 
       child.x = 100;
       child.y = 400;
-      child.depth = 9 - ci;
+      child.depth = colors.length - colorIndex;
+      child.tint = colors[colorIndex];
 
-      child.tint = colors[ci];
+      colorIndex++;
 
-      ci++;
-
-      _this.tweens.add({
+      self.tweens.add({
         targets: child,
         x: 1000,
         yoyo: true,
         repeat: -1,
         ease: 'Sine.easeInOut',
         duration: 1500,
-        delay: 100 * ci
+        delay: 100 * colorIndex
       })
 
       return true
