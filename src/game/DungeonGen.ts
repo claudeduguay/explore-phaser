@@ -4,7 +4,7 @@ import Dungeon from "@mikewesthad/dungeon"
 // Code for: https://phaser.io/examples/v3/view/tilemap/dungeon-generator
 
 //  Toggle this to disable the room hiding / layer scale, so you can see the extent of the map easily!
-const debug = true
+const debug = false
 
 // Tile index mapping to make the code more readable
 const TILES = {
@@ -44,7 +44,79 @@ const TILES = {
   ]
 }
 
+const CONFIG = {
+  // 2,500 tile test
+  D50x50: {
+    width: 50,
+    height: 50,
+    rooms: {
+      width: { min: 7, max: 15, onlyOdd: true },
+      height: { min: 7, max: 15, onlyOdd: true }
+    }
+  },
+  //  40,000 tile test
+  D200x200: {
+    width: 200,
+    height: 200,
+    rooms: {
+      width: { min: 7, max: 20, onlyOdd: true },
+      height: { min: 7, max: 20, onlyOdd: true }
+    }
+  },
+  // 250,000 tile test!
+  D500x500: {
+    width: 500,
+    height: 500,
+    rooms: {
+      width: { min: 7, max: 20, onlyOdd: true },
+      height: { min: 7, max: 20, onlyOdd: true }
+    }
+  },
+  // 1,000,000 tile test! - Warning, takes a few seconds to generate the dungeon:)
+  D1000x1000: {
+    width: 1000,
+    height: 1000,
+    rooms: {
+      width: { min: 7, max: 20, onlyOdd: true },
+      height: { min: 7, max: 20, onlyOdd: true }
+    }
+  }
+}
+
+// Debug to console
+export function drawToConsole(dungeon: Dungeon) {
+  dungeon.drawToConsole({
+    empty: " ",
+    emptyColor: "rgb(0, 0, 0)",
+    wall: "#",
+    wallColor: "rgb(255, 0, 0)",
+    floor: "0",
+    floorColor: "rgb(210, 210, 210)",
+    door: "x",
+    doorColor: "rgb(0, 0, 255)",
+    fontSize: "8px"
+  })
+}
+
+// Debug to HTML
+export function drawToHtml(dungeon: Dungeon) {
+  const html = dungeon.drawToHtml({
+    empty: " ",
+    emptyAttributes: { class: "dungeon__empty" },
+    wall: "#",
+    wallAttributes: { class: "dungeon__wall", style: "color: #950fe2" },
+    floor: "x",
+    floorAttributes: { class: "dungeon__floor", style: "color: #d2e9ef" },
+    door: "*",
+    doorAttributes: { class: "dungeon__door", style: "font-weight: bold; color: #f900c3" },
+    containerAttributes: { class: "dungeon", style: "font-size: 15px" },
+    // fontSize: "4px"
+  })
+  document.body.appendChild(html)
+}
+
 export default class DungeonGen extends Phaser.Scene {
+
   activeRoom: any
   dungeon: any
   map: any
@@ -66,175 +138,35 @@ export default class DungeonGen extends Phaser.Scene {
     // Note: Dungeon is not a Phaser element - it's from "@mikewesthad/dungeon"
     // It generates a simple set of connected rectangular rooms that then we can turn into a tilemap
 
-    //  2,500 tile test
-    // dungeon = new Dungeon({
-    //     width: 50,
-    //     height: 50,
-    //     rooms: {
-    //         width: { min: 7, max: 15, onlyOdd: true },
-    //         height: { min: 7, max: 15, onlyOdd: true }
-    //     }
-    // })
+    this.dungeon = new Dungeon(CONFIG.D200x200)
 
-    //  40,000 tile test
-    this.dungeon = new Dungeon({
-      width: 200,
-      height: 200,
-      rooms: {
-        width: { min: 7, max: 20, onlyOdd: true },
-        height: { min: 7, max: 20, onlyOdd: true }
-      }
-    })
-
-    //  250,000 tile test!
-    // dungeon = new Dungeon({
-    //     width: 500,
-    //     height: 500,
-    //     rooms: {
-    //         width: { min: 7, max: 20, onlyOdd: true },
-    //         height: { min: 7, max: 20, onlyOdd: true }
-    //     }
-    // })
-
-    //  1,000,000 tile test! - Warning, takes a few seconds to generate the dungeon :)
-    // dungeon = new Dungeon({
-    //     width: 1000,
-    //     height: 1000,
-    //     rooms: {
-    //         width: { min: 7, max: 20, onlyOdd: true },
-    //         height: { min: 7, max: 20, onlyOdd: true }
-    //     }
-    // })
-
-    // this.dungeon.drawToConsole({
-    //   empty: " ",
-    //   emptyColor: "rgb(0, 0, 0)",
-    //   wall: "#",
-    //   wallColor: "rgb(255, 0, 0)",
-    //   floor: "0",
-    //   floorColor: "rgb(210, 210, 210)",
-    //   door: "x",
-    //   doorColor: "rgb(0, 0, 255)",
-    //   fontSize: "8px"
-    // })
-
-    // const html = this.dungeon.drawToHtml({
-    //   empty: " ",
-    //   emptyAttributes: { class: "dungeon__empty" },
-    //   wall: "#",
-    //   wallAttributes: { class: "dungeon__wall", style: "color: #950fe2" },
-    //   floor: "x",
-    //   floorAttributes: { class: "dungeon__floor", style: "color: #d2e9ef" },
-    //   door: "*",
-    //   doorAttributes: { class: "dungeon__door", style: "font-weight: bold; color: #f900c3" },
-    //   containerAttributes: { class: "dungeon", style: "font-size: 15px" },
-    //   fontSize: "4px"
-    // })
-    // document.body.appendChild(html)
+    // drawToConsole(this.dungeon)
+    // drawToHtml(this.dungeon)
 
     // Creating a blank tilemap with dimensions matching the dungeon
     this.map = this.make.tilemap({ tileWidth: 16, tileHeight: 16, width: this.dungeon.width, height: this.dungeon.height })
 
     // addTilesetImage: function (tilesetName, key, tileWidth, tileHeight, tileMargin, tileSpacing, gid)
 
-    var tileset = this.map.addTilesetImage('tiles', 'tiles', 16, 16, 1, 2)
-
+    const tileset = this.map.addTilesetImage('tiles', 'tiles', 16, 16, 1, 2)
     this.layer = this.map.createBlankLayer('Layer 1', tileset)
 
     if (!debug) {
-      this.layer.setScale(3)
+      this.displayScale = 2
+      this.layer.setScale(this.displayScale)
     }
 
     // Fill with black tiles
     this.layer.fill(20)
 
     // Use the array of rooms generated to place tiles in the map
-    const self: any = this
-    this.dungeon.rooms.forEach(function (room: any) {
-      var x = room.x
-      var y = room.y
-      var w = room.width
-      var h = room.height
-      var cx = Math.floor(x + w / 2)
-      var cy = Math.floor(y + h / 2)
-      var left = x
-      var right = x + (w - 1)
-      var top = y
-      var bottom = y + (h - 1)
-
-      // Fill the floor with mostly clean tiles, but occasionally place a dirty tile
-      // See "Weighted Randomize" example for more information on how to use weightedRandomize.
-      self.map.weightedRandomize(TILES.FLOOR, x, y, w, h)
-
-      // Place the room corners tiles
-      self.map.putTileAt(TILES.TOP_LEFT_WALL, left, top)
-      self.map.putTileAt(TILES.TOP_RIGHT_WALL, right, top)
-      self.map.putTileAt(TILES.BOTTOM_RIGHT_WALL, right, bottom)
-      self.map.putTileAt(TILES.BOTTOM_LEFT_WALL, left, bottom)
-
-      // Fill the walls with mostly clean tiles, but occasionally place a dirty tile
-      self.map.weightedRandomize(TILES.TOP_WALL, left + 1, top, w - 2, 1)
-      self.map.weightedRandomize(TILES.BOTTOM_WALL, left + 1, bottom, w - 2, 1)
-      self.map.weightedRandomize(TILES.LEFT_WALL, left, top + 1, 1, h - 2)
-      self.map.weightedRandomize(TILES.RIGHT_WALL, right, top + 1, 1, h - 2)
-
-      // Dungeons have rooms that are connected with doors. Each door has an x & y relative to the rooms location
-      var doors = room.getDoorLocations()
-
-      for (var i = 0; i < doors.length; i++) {
-        self.map.putTileAt(6, x + doors[i].x, y + doors[i].y)
-      }
-
-      // Place some random stuff in rooms occasionally
-      var rand = Math.random()
-      if (rand <= 0.25) {
-        self.layer.putTileAt(166, cx, cy) // Chest
-      }
-      else if (rand <= 0.3) {
-        self.layer.putTileAt(81, cx, cy) // Stairs
-      }
-      else if (rand <= 0.4) {
-        self.layer.putTileAt(167, cx, cy) // Trap door
-      }
-      else if (rand <= 0.6) {
-        if (room.height >= 9) {
-          // We have room for 4 towers
-          self.layer.putTilesAt([
-            [186],
-            [205]
-          ], cx - 1, cy + 1)
-
-          self.layer.putTilesAt([
-            [186],
-            [205]
-          ], cx + 1, cy + 1)
-
-          self.layer.putTilesAt([
-            [186],
-            [205]
-          ], cx - 1, cy - 2)
-
-          self.layer.putTilesAt([
-            [186],
-            [205]
-          ], cx + 1, cy - 2)
-        }
-        else {
-          self.layer.putTilesAt([
-            [186],
-            [205]
-          ], cx - 1, cy - 1)
-
-          self.layer.putTilesAt([
-            [186],
-            [205]
-          ], cx + 1, cy - 1)
-        }
-      }
+    this.dungeon.rooms.forEach((room: any) => {
+      this.makeRoom(room)
+      this.addRoomProps(room)
     }, this)
 
-    // Not exactly correct for the tileset since there are more possible floor tiles, but this will
-    // do for the example.
+    // Not exactly correct for the tileset since there are more possible floor tiles,
+    // but this will do for the example.
     this.layer.setCollisionByExclusion([6, 7, 8, 26])
 
     // Hide all the rooms
@@ -250,8 +182,7 @@ export default class DungeonGen extends Phaser.Scene {
         color: 0x006600,
         alpha: 1
       }
-    })
-      .fillRect(0, 0, this.map.tileWidth * this.layer.scaleX, this.map.tileHeight * this.layer.scaleY)
+    }).fillRect(0, 0, this.map.tileWidth * this.layer.scaleX, this.map.tileHeight * this.layer.scaleY)
 
     this.player.x = this.map.tileToWorldX(playerRoom.x + 1)
     this.player.y = this.map.tileToWorldY(playerRoom.y + 1)
@@ -267,6 +198,7 @@ export default class DungeonGen extends Phaser.Scene {
     this.cam.scrollX = this.player.x - this.cam.width * 0.5
     this.cam.scrollY = this.player.y - this.cam.height * 0.5
 
+    const self: any = this
     this.cursors = self.input.keyboard.createCursorKeys()
     self.input.on("wheel", (pointer: any, gameObject: any, deltaX: number, deltaY: number, deltaZ: number) => {
       let delta = Math.sign(deltaY)
@@ -279,7 +211,7 @@ export default class DungeonGen extends Phaser.Scene {
       console.log("Wheel:", delta, this.displayScale)
     })
 
-    var help = this.add.text(16, 16, 'Arrows keys to move', {
+    const help = this.add.text(16, 16, 'Arrows keys to move', {
       fontSize: '18px',
       padding: { x: 10, y: 5 },
       backgroundColor: '#ffffff',
@@ -302,7 +234,89 @@ export default class DungeonGen extends Phaser.Scene {
     // gui.add(this.layer, 'tilesTotal').listen()
   }
 
-  update(time: any, delta: any) {
+  makeRoom(room: any) {
+    const { x, y, width: w, height: h } = room
+    const left = x
+    const right = x + (w - 1)
+    const top = y
+    const bottom = y + (h - 1)
+
+    // Fill the floor with mostly clean tiles, but occasionally place a dirty tile
+    // See "Weighted Randomize" example for more information on how to use weightedRandomize.
+    this.map.weightedRandomize(TILES.FLOOR, x, y, w, h)
+
+    // Place the room corners tiles
+    this.map.putTileAt(TILES.TOP_LEFT_WALL, left, top)
+    this.map.putTileAt(TILES.TOP_RIGHT_WALL, right, top)
+    this.map.putTileAt(TILES.BOTTOM_RIGHT_WALL, right, bottom)
+    this.map.putTileAt(TILES.BOTTOM_LEFT_WALL, left, bottom)
+
+    // Fill the walls with mostly clean tiles, but occasionally place a dirty tile
+    this.map.weightedRandomize(TILES.TOP_WALL, left + 1, top, w - 2, 1)
+    this.map.weightedRandomize(TILES.BOTTOM_WALL, left + 1, bottom, w - 2, 1)
+    this.map.weightedRandomize(TILES.LEFT_WALL, left, top + 1, 1, h - 2)
+    this.map.weightedRandomize(TILES.RIGHT_WALL, right, top + 1, 1, h - 2)
+
+    // Dungeons have rooms that are connected with doors. Each door has an x & y relative to the rooms location
+    var doors = room.getDoorLocations()
+    for (var i = 0; i < doors.length; i++) {
+      this.map.putTileAt(6, x + doors[i].x, y + doors[i].y)
+    }
+  }
+
+  addRoomProps(room: any) {
+    const { x, y, width: w, height: h } = room
+    const cx = Math.floor(x + w / 2)
+    const cy = Math.floor(y + h / 2)
+    // Place some random stuff in rooms occasionally
+    var rand = Math.random()
+    if (rand <= 0.25) {
+      this.layer.putTileAt(166, cx, cy) // Chest
+    }
+    else if (rand <= 0.3) {
+      this.layer.putTileAt(81, cx, cy) // Stairs
+    }
+    else if (rand <= 0.4) {
+      this.layer.putTileAt(167, cx, cy) // Trap door
+    }
+    else if (rand <= 0.6) {
+      if (room.height >= 9) {
+        // We have room for 4 towers
+        this.layer.putTilesAt([
+          [186],
+          [205]
+        ], cx - 1, cy + 1)
+
+        this.layer.putTilesAt([
+          [186],
+          [205]
+        ], cx + 1, cy + 1)
+
+        this.layer.putTilesAt([
+          [186],
+          [205]
+        ], cx - 1, cy - 2)
+
+        this.layer.putTilesAt([
+          [186],
+          [205]
+        ], cx + 1, cy - 2)
+      }
+      else {
+        this.layer.putTilesAt([
+          [186],
+          [205]
+        ], cx - 1, cy - 1)
+
+        this.layer.putTilesAt([
+          [186],
+          [205]
+        ], cx + 1, cy - 1)
+      }
+    }
+  }
+
+  update(time: number, delta: number): void {
     this.updatePlayerMovement(time)
 
     var playerTileX = this.map.worldToTileX(this.player.x)
@@ -327,6 +341,7 @@ export default class DungeonGen extends Phaser.Scene {
     this.cam.scrollX = smoothFactor * this.cam.scrollX + (1 - smoothFactor) * (this.player.x - this.cam.width * 0.5)
     this.cam.scrollY = smoothFactor * this.cam.scrollY + (1 - smoothFactor) * (this.player.y - this.cam.height * 0.5)
   }
+
 
   // Helpers functions
   setRoomAlpha(room: any, alpha: any) {
@@ -381,6 +396,5 @@ export default class DungeonGen extends Phaser.Scene {
       }
     }
   }
-
 
 }
