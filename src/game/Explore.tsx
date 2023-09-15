@@ -1,6 +1,6 @@
 import { CSSProperties, useEffect, useId } from "react"
 // import ScanScene from "./ScanScene"
-import DungeonGen from "./DungeonGen"
+import DungeonGen from "./dungeon/DungeonGen"
 import Phaser from 'phaser'
 
 export interface IExploreProps {

@@ -8,6 +8,7 @@ const debug = false
 
 // Tile index mapping to make the code more readable
 const TILES = {
+  TOWER: [[186], [205]],
   TOP_LEFT_WALL: 3,
   TOP_RIGHT_WALL: 4,
   BOTTOM_RIGHT_WALL: 23,
@@ -41,12 +42,11 @@ const TILES = {
     { index: 7, weight: 1 },
     { index: 8, weight: 1 },
     { index: 26, weight: 1 },
-  ]
+  ],
 }
 
 const CONFIG = {
-  // 2,500 tile test
-  D50x50: {
+  D50x50: {  // 2,500 tile test
     width: 50,
     height: 50,
     rooms: {
@@ -54,8 +54,7 @@ const CONFIG = {
       height: { min: 7, max: 15, onlyOdd: true }
     }
   },
-  //  40,000 tile test
-  D200x200: {
+  D200x200: {  //  40,000 tile test
     width: 200,
     height: 200,
     rooms: {
@@ -63,8 +62,7 @@ const CONFIG = {
       height: { min: 7, max: 20, onlyOdd: true }
     }
   },
-  // 250,000 tile test!
-  D500x500: {
+  D500x500: {  // 250,000 tile test!
     width: 500,
     height: 500,
     rooms: {
@@ -72,8 +70,7 @@ const CONFIG = {
       height: { min: 7, max: 20, onlyOdd: true }
     }
   },
-  // 1,000,000 tile test! - Warning, takes a few seconds to generate the dungeon:)
-  D1000x1000: {
+  D1000x1000: {  // 1,000,000 tile test! - Warning, takes a few seconds to generate the dungeon:)
     width: 1000,
     height: 1000,
     rooms: {
@@ -117,14 +114,16 @@ export function drawToHtml(dungeon: Dungeon) {
 
 
 export interface IZoomKeys {
+  home: Phaser.Input.Keyboard.Key
   plus: Phaser.Input.Keyboard.Key
   minus: Phaser.Input.Keyboard.Key
   npPlus: Phaser.Input.Keyboard.Key
   npMinus: Phaser.Input.Keyboard.Key
 }
 
-export function createZoomKeys(keyboardPlugin: Phaser.Input.Keyboard.KeyboardPlugin): IZoomKeys | null {
+export function createZoomKeys(keyboardPlugin: Phaser.Input.Keyboard.KeyboardPlugin): IZoomKeys {
   return keyboardPlugin.addKeys({
+    "home": Phaser.Input.Keyboard.KeyCodes.HOME,
     "plus": Phaser.Input.Keyboard.KeyCodes.PLUS,
     "minus": Phaser.Input.Keyboard.KeyCodes.MINUS,
     "npPlus": Phaser.Input.Keyboard.KeyCodes.NUMPAD_ADD,
@@ -132,20 +131,24 @@ export function createZoomKeys(keyboardPlugin: Phaser.Input.Keyboard.KeyboardPlu
   }) as IZoomKeys
 }
 
+const HOME_SCALE = 3
+
 export default class DungeonGen extends Phaser.Scene {
 
   activeRoom!: Room
   dungeon!: Dungeon
   map!: Phaser.Tilemaps.Tilemap
-  player!: Phaser.GameObjects.Graphics
-  cursors!: Phaser.Types.Input.Keyboard.CursorKeys
-  zoom!: IZoomKeys
-  cam!: Phaser.Cameras.Scene2D.Camera
   layer!: Phaser.Tilemaps.TilemapLayer
+  cam!: Phaser.Cameras.Scene2D.Camera
+  player!: Phaser.GameObjects.Graphics
+  cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys
+  zoomKeys!: IZoomKeys
 
   lastMoveTime: number = 0
   displayScale: number = 1
 
+  // Assigns value only if not nullish
+  // (TS handles defered props via constructor assignments but we need to use create() for Phaser)
   safeAssignment<T>(prop: keyof DungeonGen, value: T) {
     if (value) {
       this[prop] = value as any
@@ -158,9 +161,21 @@ export default class DungeonGen extends Phaser.Scene {
     this.load.image('tiles', 'assets/buch-dungeon-tileset-extruded.png')
   }
 
+  setDisplayScale(scale: number) {
+    this.displayScale = scale
+    this.layer.setScale(scale)
+    if (this.player && this.map && this.layer) {
+      this.player.fillRect(0, 0, this.map.tileWidth * this.layer.scaleX, this.map.tileHeight * this.layer.scaleY)
+    }
+    if (this.cam && this.player && this.layer) {
+      this.cam.scrollX = this.player.x - (this.cam.width * 0.5)
+      this.cam.scrollY = this.player.y - (this.cam.height * 0.5)
+    }
+  }
+
   create() {
     // Note: Dungeon is not a Phaser element - it's from "@mikewesthad/dungeon"
-    // It generates a simple set of connected rectangular rooms that then we can turn into a tilemap
+    // Generates a simple set of connected rectangular rooms that then can be turned into a tilemap
 
     this.dungeon = new Dungeon(CONFIG.D200x200)
 
@@ -184,8 +199,7 @@ export default class DungeonGen extends Phaser.Scene {
     }
 
     if (!debug) {
-      this.displayScale = 2
-      this.layer?.setScale(this.displayScale)
+      this.setDisplayScale(HOME_SCALE)
     }
 
     // Use the array of rooms generated to place tiles in the map
@@ -229,11 +243,9 @@ export default class DungeonGen extends Phaser.Scene {
       this.cam.scrollY = this.player.y - this.cam.height * 0.5
     }
 
-    const cursors = this.input.keyboard?.createCursorKeys()
-    this.safeAssignment("cursors", cursors)
     if (this.input.keyboard) {
-      const zoom = createZoomKeys(this.input.keyboard)
-      this.safeAssignment("zoom", zoom)
+      this.safeAssignment("cursorKeys", this.input.keyboard.createCursorKeys())
+      this.safeAssignment("zoomKeys", createZoomKeys(this.input.keyboard))
     }
 
     this.input.on("wheel", (pointer: any, gameObject: any, deltaX: number, deltaY: number, deltaZ: number) => {
@@ -245,10 +257,6 @@ export default class DungeonGen extends Phaser.Scene {
       this.displayScale = Math.min(5, Math.max(0.5, this.displayScale))
       if (this.layer) {
         this.layer.setScale(this.displayScale)
-        // Not sure if we need to set these
-        // this.cam.setBounds(0, 0, this.layer.width * this.layer.scaleX, this.layer.height * this.layer.scaleY)
-        // this.cam.scrollX = this.player.x - this.cam.width * 0.5
-        // this.cam.scrollY = this.player.y - this.cam.height * 0.5
       }
       console.log("Wheel:", delta, this.displayScale)
     })
@@ -322,14 +330,14 @@ export default class DungeonGen extends Phaser.Scene {
       this.layer.putTileAt(167, cx, cy)
     } else if (rand <= 0.6) {  // Towers
       if (room.height >= 9) {   // We have room for 4 towers
-        this.layer.putTilesAt([[186], [205]], cx - 1, cy + 1)
-        this.layer.putTilesAt([[186], [205]], cx + 1, cy + 1)
-        this.layer.putTilesAt([[186], [205]], cx - 1, cy - 2)
-        this.layer.putTilesAt([[186], [205]], cx + 1, cy - 2)
+        this.layer.putTilesAt(TILES.TOWER, cx - 1, cy + 1)
+        this.layer.putTilesAt(TILES.TOWER, cx + 1, cy + 1)
+        this.layer.putTilesAt(TILES.TOWER, cx - 1, cy - 2)
+        this.layer.putTilesAt(TILES.TOWER, cx + 1, cy - 2)
       }
       else {  // We have room for 2 towers
-        this.layer.putTilesAt([[186], [205]], cx - 1, cy - 1)
-        this.layer.putTilesAt([[186], [205]], cx + 1, cy - 1)
+        this.layer.putTilesAt(TILES.TOWER, cx - 1, cy - 1)
+        this.layer.putTilesAt(TILES.TOWER, cx + 1, cy - 1)
       }
     }
   }
@@ -371,20 +379,25 @@ export default class DungeonGen extends Phaser.Scene {
 
     if (time > this.lastMoveTime + repeatMoveDelay) {
 
-      if (this.zoom.plus.isDown || this.zoom.npPlus.isDown) {
-        console.log("Keydown: +")
+      if (this.zoomKeys.home.isDown) {
+        this.setDisplayScale(HOME_SCALE)
       }
-      if (this.zoom.minus.isDown || this.zoom.npMinus.isDown) {
+      if (this.zoomKeys.plus.isDown || this.zoomKeys.npPlus.isDown) {
+        console.log("Keydown: +")
+        this.setDisplayScale(this.displayScale + 0.2)
+      }
+      if (this.zoomKeys.minus.isDown || this.zoomKeys.npMinus.isDown) {
         console.log("Keydown: -")
+        this.setDisplayScale(this.displayScale - 0.2)
       }
 
       // Handle North/South
-      if (this.cursors.down.isDown) {
+      if (this.cursorKeys.down.isDown) {
         if (this.isTileOpenAt(this.player.x, this.player.y + th)) {
           this.player.y += th
           this.lastMoveTime = time
         }
-      } else if (this.cursors.up.isDown) {
+      } else if (this.cursorKeys.up.isDown) {
         if (this.isTileOpenAt(this.player.x, this.player.y - th)) {
           this.player.y -= th
           this.lastMoveTime = time
@@ -392,12 +405,12 @@ export default class DungeonGen extends Phaser.Scene {
       }
 
       // Handle West/East
-      if (this.cursors.left.isDown) {
+      if (this.cursorKeys.left.isDown) {
         if (this.isTileOpenAt(this.player.x - tw, this.player.y)) {
           this.player.x -= tw
           this.lastMoveTime = time
         }
-      } else if (this.cursors.right.isDown) {
+      } else if (this.cursorKeys.right.isDown) {
         if (this.isTileOpenAt(this.player.x + tw, this.player.y)) {
           this.player.x += tw
           this.lastMoveTime = time
