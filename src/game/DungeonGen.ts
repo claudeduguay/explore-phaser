@@ -123,10 +123,7 @@ export interface IZoomKeys {
   npMinus: Phaser.Input.Keyboard.Key
 }
 
-export function createZoomKeys(keyboardPlugin: Phaser.Input.Keyboard.KeyboardPlugin | null): IZoomKeys | null {
-  if (!keyboardPlugin) {
-    return null
-  }
+export function createZoomKeys(keyboardPlugin: Phaser.Input.Keyboard.KeyboardPlugin): IZoomKeys | null {
   return keyboardPlugin.addKeys({
     "plus": Phaser.Input.Keyboard.KeyCodes.PLUS,
     "minus": Phaser.Input.Keyboard.KeyCodes.MINUS,
@@ -134,7 +131,6 @@ export function createZoomKeys(keyboardPlugin: Phaser.Input.Keyboard.KeyboardPlu
     "npMinus": Phaser.Input.Keyboard.KeyCodes.NUMPAD_SUBTRACT,
   }) as IZoomKeys
 }
-
 
 export default class DungeonGen extends Phaser.Scene {
 
@@ -149,6 +145,12 @@ export default class DungeonGen extends Phaser.Scene {
 
   lastMoveTime: number = 0
   displayScale: number = 1
+
+  safeAssignment<T>(prop: keyof DungeonGen, value: T) {
+    if (value) {
+      this[prop] = value as any
+    }
+  }
 
   preload() {
     // Credits! Michele "Buch" Bucelli (tilset artist) & Abram Connelly (tileset sponsor)
@@ -177,10 +179,8 @@ export default class DungeonGen extends Phaser.Scene {
     const tileset = this.map.addTilesetImage('tiles', 'tiles', 16, 16, 1, 2)
     if (tileset) {
       const layer = this.map.createBlankLayer('Layer 1', tileset)
-      if (layer) {
-        this.layer = layer
-        this.layer.fill(20)  // Fill with black tiles
-      }
+      this.safeAssignment("layer", layer)
+      this.layer.fill(20)  // Fill with black tiles
     }
 
     if (!debug) {
@@ -216,11 +216,9 @@ export default class DungeonGen extends Phaser.Scene {
           alpha: 1
         }
       }).fillRect(0, 0, this.map.tileWidth * this.layer?.scaleX, this.map.tileHeight * this.layer.scaleY)
-      if (player) {
-        player.x = this.map.tileToWorldX(playerRoom.x + 1) || 0
-        player.y = this.map.tileToWorldY(playerRoom.y + 1) || 0
-        this.player = player
-      }
+      player.x = this.map.tileToWorldX(playerRoom.x + 1) || 0
+      player.y = this.map.tileToWorldY(playerRoom.y + 1) || 0
+      this.safeAssignment("player", player)
     }
 
     // Scroll to the player
@@ -232,12 +230,10 @@ export default class DungeonGen extends Phaser.Scene {
     }
 
     const cursors = this.input.keyboard?.createCursorKeys()
-    if (cursors) {
-      this.cursors = cursors
-    }
-    const zoom = createZoomKeys(this.input.keyboard)
-    if (zoom) {
-      this.zoom = zoom
+    this.safeAssignment("cursors", cursors)
+    if (this.input.keyboard) {
+      const zoom = createZoomKeys(this.input.keyboard)
+      this.safeAssignment("zoom", zoom)
     }
 
     this.input.on("wheel", (pointer: any, gameObject: any, deltaX: number, deltaY: number, deltaZ: number) => {
@@ -375,14 +371,13 @@ export default class DungeonGen extends Phaser.Scene {
 
     if (time > this.lastMoveTime + repeatMoveDelay) {
 
-      if (this.zoom) {
-        if (this.zoom.plus.isDown || this.zoom.npPlus.isDown) {
-          console.log("Keydown: +")
-        }
-        if (this.zoom.minus.isDown || this.zoom.npMinus.isDown) {
-          console.log("Keydown: -")
-        }
+      if (this.zoom.plus.isDown || this.zoom.npPlus.isDown) {
+        console.log("Keydown: +")
       }
+      if (this.zoom.minus.isDown || this.zoom.npMinus.isDown) {
+        console.log("Keydown: -")
+      }
+
       // Handle North/South
       if (this.cursors.down.isDown) {
         if (this.isTileOpenAt(this.player.x, this.player.y + th)) {
