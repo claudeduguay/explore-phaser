@@ -225,7 +225,13 @@ export default class DungeonGen extends Phaser.Scene {
       }
       this.displayScale -= delta
       this.displayScale = Math.min(5, Math.max(0.5, this.displayScale))
-      this.layer?.setScale(this.displayScale)
+      if (this.layer) {
+        this.layer.setScale(this.displayScale)
+        // Not sure if we need to set these
+        // this.cam.setBounds(0, 0, this.layer.width * this.layer.scaleX, this.layer.height * this.layer.scaleY)
+        // this.cam.scrollX = this.player.x - this.cam.width * 0.5
+        // this.cam.scrollY = this.player.y - this.cam.height * 0.5
+      }
       console.log("Wheel:", delta, this.displayScale)
     })
 
