@@ -115,6 +115,27 @@ export function drawToHtml(dungeon: Dungeon) {
   document.body.appendChild(html)
 }
 
+
+export interface IZoomKeys {
+  plus: Phaser.Input.Keyboard.Key
+  minus: Phaser.Input.Keyboard.Key
+  npPlus: Phaser.Input.Keyboard.Key
+  npMinus: Phaser.Input.Keyboard.Key
+}
+
+export function createZoomKeys(keyboardPlugin: Phaser.Input.Keyboard.KeyboardPlugin | null): IZoomKeys | null {
+  if (!keyboardPlugin) {
+    return null
+  }
+  return keyboardPlugin.addKeys({
+    "plus": Phaser.Input.Keyboard.KeyCodes.PLUS,
+    "minus": Phaser.Input.Keyboard.KeyCodes.MINUS,
+    "npPlus": Phaser.Input.Keyboard.KeyCodes.NUMPAD_ADD,
+    "npMinus": Phaser.Input.Keyboard.KeyCodes.NUMPAD_SUBTRACT,
+  }) as IZoomKeys
+}
+
+
 export default class DungeonGen extends Phaser.Scene {
 
   activeRoom!: Room
@@ -122,6 +143,7 @@ export default class DungeonGen extends Phaser.Scene {
   map!: Phaser.Tilemaps.Tilemap
   player!: Phaser.GameObjects.Graphics
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys
+  zoom!: IZoomKeys
   cam!: Phaser.Cameras.Scene2D.Camera
   layer!: Phaser.Tilemaps.TilemapLayer
 
@@ -157,6 +179,7 @@ export default class DungeonGen extends Phaser.Scene {
       const layer = this.map.createBlankLayer('Layer 1', tileset)
       if (layer) {
         this.layer = layer
+        this.layer.fill(20)  // Fill with black tiles
       }
     }
 
@@ -164,10 +187,6 @@ export default class DungeonGen extends Phaser.Scene {
       this.displayScale = 2
       this.layer?.setScale(this.displayScale)
     }
-
-    // Fill with black tiles
-    this.layer?.fill(20)
-
 
     // Use the array of rooms generated to place tiles in the map
     this.dungeon.rooms.forEach((room: Room) => {
@@ -186,6 +205,9 @@ export default class DungeonGen extends Phaser.Scene {
 
     // Place the player in the first room
     const playerRoom = this.dungeon.rooms[0]
+    if (!debug) {  // Make the starting room visible
+      this.setRoomAlpha(playerRoom, 1)
+    }
 
     if (this.layer) {
       const player = this.add.graphics({
@@ -201,13 +223,8 @@ export default class DungeonGen extends Phaser.Scene {
       }
     }
 
-    if (!debug) {
-      this.setRoomAlpha(playerRoom, 1) // Make the starting room visible
-    }
-
     // Scroll to the player
     this.cam = this.cameras.main
-
     if (this.layer) {
       this.cam.setBounds(0, 0, this.layer.width * this.layer.scaleX, this.layer.height * this.layer.scaleY)
       this.cam.scrollX = this.player.x - this.cam.width * 0.5
@@ -218,6 +235,11 @@ export default class DungeonGen extends Phaser.Scene {
     if (cursors) {
       this.cursors = cursors
     }
+    const zoom = createZoomKeys(this.input.keyboard)
+    if (zoom) {
+      this.zoom = zoom
+    }
+
     this.input.on("wheel", (pointer: any, gameObject: any, deltaX: number, deltaY: number, deltaZ: number) => {
       let delta = Math.sign(deltaY)
       if (delta < 0) {
@@ -353,6 +375,14 @@ export default class DungeonGen extends Phaser.Scene {
 
     if (time > this.lastMoveTime + repeatMoveDelay) {
 
+      if (this.zoom) {
+        if (this.zoom.plus.isDown || this.zoom.npPlus.isDown) {
+          console.log("Keydown: +")
+        }
+        if (this.zoom.minus.isDown || this.zoom.npMinus.isDown) {
+          console.log("Keydown: -")
+        }
+      }
       // Handle North/South
       if (this.cursors.down.isDown) {
         if (this.isTileOpenAt(this.player.x, this.player.y + th)) {
