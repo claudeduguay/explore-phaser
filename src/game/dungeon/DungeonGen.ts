@@ -423,20 +423,13 @@ export default class DungeonGen extends Phaser.Scene {
     // nonNull = true, don't return null for empty tiles. This means null will be returned only for
     // tiles outside of the bounds of the map.
     var tile = this.map.getTileAtWorldXY(worldX, worldY, true)
-
-    if (tile && !tile.collides) {
-      return true
-    }
-    else {
-      return false
-    }
+    return tile && !tile.collides
   }
 
   // Helpers functions
-  setRoomAlpha(room: any, alpha: any) {
-    this.map.forEachTile(function (tile: any) {
-      tile.alpha = alpha
-    }, this, room.x, room.y, room.width, room.height)
+  setRoomAlpha(room: Room, alpha: number) {
+    this.map.forEachTile((tile: any) => tile.alpha = alpha,
+      this, room.x, room.y, room.width, room.height)
   }
 
 }
