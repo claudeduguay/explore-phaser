@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import Dungeon from "@mikewesthad/dungeon"
+import Dungeon, { Room } from "@mikewesthad/dungeon"
 
 // Code for: https://phaser.io/examples/v3/view/tilemap/dungeon-generator
 
@@ -144,10 +144,14 @@ export default class DungeonGen extends Phaser.Scene {
     // drawToHtml(this.dungeon)
 
     // Creating a blank tilemap with dimensions matching the dungeon
-    this.map = this.make.tilemap({ tileWidth: 16, tileHeight: 16, width: this.dungeon.width, height: this.dungeon.height })
+    this.map = this.make.tilemap({
+      tileWidth: 16,
+      tileHeight: 16,
+      width: this.dungeon.width,
+      height: this.dungeon.height
+    })
 
     // addTilesetImage: function (tilesetName, key, tileWidth, tileHeight, tileMargin, tileSpacing, gid)
-
     const tileset = this.map.addTilesetImage('tiles', 'tiles', 16, 16, 1, 2)
     this.layer = this.map.createBlankLayer('Layer 1', tileset)
 
@@ -160,7 +164,7 @@ export default class DungeonGen extends Phaser.Scene {
     this.layer.fill(20)
 
     // Use the array of rooms generated to place tiles in the map
-    this.dungeon.rooms.forEach((room: any) => {
+    this.dungeon.rooms.forEach((room: Room) => {
       this.makeRoom(room)
       this.addRoomProps(room)
     }, this)
@@ -198,9 +202,8 @@ export default class DungeonGen extends Phaser.Scene {
     this.cam.scrollX = this.player.x - this.cam.width * 0.5
     this.cam.scrollY = this.player.y - this.cam.height * 0.5
 
-    const self: any = this
-    this.cursors = self.input.keyboard.createCursorKeys()
-    self.input.on("wheel", (pointer: any, gameObject: any, deltaX: number, deltaY: number, deltaZ: number) => {
+    this.cursors = this.input.keyboard?.createCursorKeys()
+    this.input.on("wheel", (pointer: any, gameObject: any, deltaX: number, deltaY: number, deltaZ: number) => {
       let delta = Math.sign(deltaY)
       if (delta < 0) {
         delta *= 0.1
@@ -211,13 +214,12 @@ export default class DungeonGen extends Phaser.Scene {
       console.log("Wheel:", delta, this.displayScale)
     })
 
-    const help = this.add.text(16, 16, 'Arrows keys to move', {
+    const help = this.add.text(16, 16, 'Use arrows keys to move', {
       fontSize: '18px',
       padding: { x: 10, y: 5 },
       backgroundColor: '#ffffff',
       color: '#000000'
     })
-
     help.setScrollFactor(0)
 
     // var gui = new dat.GUI()
@@ -234,7 +236,7 @@ export default class DungeonGen extends Phaser.Scene {
     // gui.add(this.layer, 'tilesTotal').listen()
   }
 
-  makeRoom(room: any) {
+  makeRoom(room: Room) {
     const { x, y, width: w, height: h } = room
     const left = x
     const right = x + (w - 1)
@@ -264,7 +266,7 @@ export default class DungeonGen extends Phaser.Scene {
     }
   }
 
-  addRoomProps(room: any) {
+  addRoomProps(room: Room) {
     const { x, y, width: w, height: h } = room
     const cx = Math.floor(x + w / 2)
     const cy = Math.floor(y + h / 2)
@@ -343,26 +345,6 @@ export default class DungeonGen extends Phaser.Scene {
   }
 
 
-  // Helpers functions
-  setRoomAlpha(room: any, alpha: any) {
-    this.map.forEachTile(function (tile: any) {
-      tile.alpha = alpha
-    }, this, room.x, room.y, room.width, room.height)
-  }
-
-  isTileOpenAt(worldX: any, worldY: any) {
-    // nonNull = true, don't return null for empty tiles. This means null will be returned only for
-    // tiles outside of the bounds of the map.
-    var tile = this.map.getTileAtWorldXY(worldX, worldY, true)
-
-    if (tile && !tile.collides) {
-      return true
-    }
-    else {
-      return false
-    }
-  }
-
   updatePlayerMovement(time: any) {
     var tw = this.map.tileWidth * this.layer.scaleX
     var th = this.map.tileHeight * this.layer.scaleY
@@ -395,6 +377,26 @@ export default class DungeonGen extends Phaser.Scene {
         }
       }
     }
+  }
+
+  isTileOpenAt(worldX: any, worldY: any) {
+    // nonNull = true, don't return null for empty tiles. This means null will be returned only for
+    // tiles outside of the bounds of the map.
+    var tile = this.map.getTileAtWorldXY(worldX, worldY, true)
+
+    if (tile && !tile.collides) {
+      return true
+    }
+    else {
+      return false
+    }
+  }
+
+  // Helpers functions
+  setRoomAlpha(room: any, alpha: any) {
+    this.map.forEachTile(function (tile: any) {
+      tile.alpha = alpha
+    }, this, room.x, room.y, room.width, room.height)
   }
 
 }
