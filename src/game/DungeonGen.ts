@@ -117,16 +117,16 @@ export function drawToHtml(dungeon: Dungeon) {
 
 export default class DungeonGen extends Phaser.Scene {
 
-  activeRoom: any
-  dungeon: any
-  map: any
-  player: any
-  cursors: any
-  cam: any
-  layer: any
-  lastMoveTime = 0
+  activeRoom!: Room
+  dungeon!: Dungeon
+  map!: Phaser.Tilemaps.Tilemap
+  player!: Phaser.GameObjects.Graphics
+  cursors!: Phaser.Types.Input.Keyboard.CursorKeys
+  cam!: Phaser.Cameras.Scene2D.Camera
+  layer!: Phaser.Tilemaps.TilemapLayer
 
-  displayScale = 1
+  lastMoveTime: number = 0
+  displayScale: number = 1
 
   preload() {
     // Credits! Michele "Buch" Bucelli (tilset artist) & Abram Connelly (tileset sponsor)
@@ -153,15 +153,21 @@ export default class DungeonGen extends Phaser.Scene {
 
     // addTilesetImage: function (tilesetName, key, tileWidth, tileHeight, tileMargin, tileSpacing, gid)
     const tileset = this.map.addTilesetImage('tiles', 'tiles', 16, 16, 1, 2)
-    this.layer = this.map.createBlankLayer('Layer 1', tileset)
+    if (tileset) {
+      const layer = this.map.createBlankLayer('Layer 1', tileset)
+      if (layer) {
+        this.layer = layer
+      }
+    }
 
     if (!debug) {
       this.displayScale = 2
-      this.layer.setScale(this.displayScale)
+      this.layer?.setScale(this.displayScale)
     }
 
     // Fill with black tiles
-    this.layer.fill(20)
+    this.layer?.fill(20)
+
 
     // Use the array of rooms generated to place tiles in the map
     this.dungeon.rooms.forEach((room: Room) => {
@@ -171,25 +177,29 @@ export default class DungeonGen extends Phaser.Scene {
 
     // Not exactly correct for the tileset since there are more possible floor tiles,
     // but this will do for the example.
-    this.layer.setCollisionByExclusion([6, 7, 8, 26])
+    this.layer?.setCollisionByExclusion([6, 7, 8, 26])
 
     // Hide all the rooms
     if (!debug) {
-      this.layer.forEachTile(function (tile: any) { tile.alpha = 0 })
+      this.layer?.forEachTile(function (tile: any) { tile.alpha = 0 })
     }
 
     // Place the player in the first room
-    var playerRoom = this.dungeon.rooms[0]
+    const playerRoom = this.dungeon.rooms[0]
 
-    this.player = this.add.graphics({
-      fillStyle: {
-        color: 0x006600,
-        alpha: 1
+    if (this.layer) {
+      const player = this.add.graphics({
+        fillStyle: {
+          color: 0x006600,
+          alpha: 1
+        }
+      }).fillRect(0, 0, this.map.tileWidth * this.layer?.scaleX, this.map.tileHeight * this.layer.scaleY)
+      if (player) {
+        player.x = this.map.tileToWorldX(playerRoom.x + 1) || 0
+        player.y = this.map.tileToWorldY(playerRoom.y + 1) || 0
+        this.player = player
       }
-    }).fillRect(0, 0, this.map.tileWidth * this.layer.scaleX, this.map.tileHeight * this.layer.scaleY)
-
-    this.player.x = this.map.tileToWorldX(playerRoom.x + 1)
-    this.player.y = this.map.tileToWorldY(playerRoom.y + 1)
+    }
 
     if (!debug) {
       this.setRoomAlpha(playerRoom, 1) // Make the starting room visible
@@ -198,11 +208,16 @@ export default class DungeonGen extends Phaser.Scene {
     // Scroll to the player
     this.cam = this.cameras.main
 
-    this.cam.setBounds(0, 0, this.layer.width * this.layer.scaleX, this.layer.height * this.layer.scaleY)
-    this.cam.scrollX = this.player.x - this.cam.width * 0.5
-    this.cam.scrollY = this.player.y - this.cam.height * 0.5
+    if (this.layer) {
+      this.cam.setBounds(0, 0, this.layer.width * this.layer.scaleX, this.layer.height * this.layer.scaleY)
+      this.cam.scrollX = this.player.x - this.cam.width * 0.5
+      this.cam.scrollY = this.player.y - this.cam.height * 0.5
+    }
 
-    this.cursors = this.input.keyboard?.createCursorKeys()
+    const cursors = this.input.keyboard?.createCursorKeys()
+    if (cursors) {
+      this.cursors = cursors
+    }
     this.input.on("wheel", (pointer: any, gameObject: any, deltaX: number, deltaY: number, deltaZ: number) => {
       let delta = Math.sign(deltaY)
       if (delta < 0) {
@@ -210,7 +225,7 @@ export default class DungeonGen extends Phaser.Scene {
       }
       this.displayScale -= delta
       this.displayScale = Math.min(5, Math.max(0.5, this.displayScale))
-      this.layer.setScale(this.displayScale)
+      this.layer?.setScale(this.displayScale)
       console.log("Wheel:", delta, this.displayScale)
     })
 
@@ -260,60 +275,37 @@ export default class DungeonGen extends Phaser.Scene {
     this.map.weightedRandomize(TILES.RIGHT_WALL, right, top + 1, 1, h - 2)
 
     // Dungeons have rooms that are connected with doors. Each door has an x & y relative to the rooms location
-    var doors = room.getDoorLocations()
-    for (var i = 0; i < doors.length; i++) {
-      this.map.putTileAt(6, x + doors[i].x, y + doors[i].y)
+    const doors = room.getDoorLocations()
+    for (let door of doors) {
+      this.map.putTileAt(6, x + door.x, y + door.y)
     }
   }
 
   addRoomProps(room: Room) {
+    if (!this.layer) {
+      return
+    }
     const { x, y, width: w, height: h } = room
     const cx = Math.floor(x + w / 2)
     const cy = Math.floor(y + h / 2)
-    // Place some random stuff in rooms occasionally
-    var rand = Math.random()
-    if (rand <= 0.25) {
-      this.layer.putTileAt(166, cx, cy) // Chest
-    }
-    else if (rand <= 0.3) {
-      this.layer.putTileAt(81, cx, cy) // Stairs
-    }
-    else if (rand <= 0.4) {
-      this.layer.putTileAt(167, cx, cy) // Trap door
-    }
-    else if (rand <= 0.6) {
-      if (room.height >= 9) {
-        // We have room for 4 towers
-        this.layer.putTilesAt([
-          [186],
-          [205]
-        ], cx - 1, cy + 1)
-
-        this.layer.putTilesAt([
-          [186],
-          [205]
-        ], cx + 1, cy + 1)
-
-        this.layer.putTilesAt([
-          [186],
-          [205]
-        ], cx - 1, cy - 2)
-
-        this.layer.putTilesAt([
-          [186],
-          [205]
-        ], cx + 1, cy - 2)
+    // Place some random stuff in rooms, occasionally
+    const rand = Math.random()
+    if (rand <= 0.25) {  // Chest
+      this.layer.putTileAt(166, cx, cy)
+    } else if (rand <= 0.3) {   // Stairs
+      this.layer.putTileAt(81, cx, cy)
+    } else if (rand <= 0.4) {  // Trap door
+      this.layer.putTileAt(167, cx, cy)
+    } else if (rand <= 0.6) {  // Towers
+      if (room.height >= 9) {   // We have room for 4 towers
+        this.layer.putTilesAt([[186], [205]], cx - 1, cy + 1)
+        this.layer.putTilesAt([[186], [205]], cx + 1, cy + 1)
+        this.layer.putTilesAt([[186], [205]], cx - 1, cy - 2)
+        this.layer.putTilesAt([[186], [205]], cx + 1, cy - 2)
       }
-      else {
-        this.layer.putTilesAt([
-          [186],
-          [205]
-        ], cx - 1, cy - 1)
-
-        this.layer.putTilesAt([
-          [186],
-          [205]
-        ], cx + 1, cy - 1)
+      else {  // We have room for 2 towers
+        this.layer.putTilesAt([[186], [205]], cx - 1, cy - 1)
+        this.layer.putTilesAt([[186], [205]], cx + 1, cy - 1)
       }
     }
   }
@@ -321,11 +313,11 @@ export default class DungeonGen extends Phaser.Scene {
   update(time: number, delta: number): void {
     this.updatePlayerMovement(time)
 
-    var playerTileX = this.map.worldToTileX(this.player.x)
-    var playerTileY = this.map.worldToTileY(this.player.y)
+    const playerTileX = this.map.worldToTileX(this.player.x) || 0
+    const playerTileY = this.map.worldToTileY(this.player.y) || 0
 
     // Another helper method from the dungeon - dungeon XY (in tiles) -> room
-    var room = this.dungeon.getRoomAt(playerTileX, playerTileY)
+    const room = this.dungeon.getRoomAt(playerTileX, playerTileY)
 
     // If the player has entered a new room, make it visible and dim the last room
     if (room && this.activeRoom && this.activeRoom !== room) {
@@ -335,42 +327,46 @@ export default class DungeonGen extends Phaser.Scene {
       }
     }
 
-    this.activeRoom = room
+    if (room) {
+      this.activeRoom = room
+    }
 
     // Smooth follow the player
-    var smoothFactor = 0.9
-
+    const smoothFactor = 0.9
     this.cam.scrollX = smoothFactor * this.cam.scrollX + (1 - smoothFactor) * (this.player.x - this.cam.width * 0.5)
     this.cam.scrollY = smoothFactor * this.cam.scrollY + (1 - smoothFactor) * (this.player.y - this.cam.height * 0.5)
   }
 
-
   updatePlayerMovement(time: any) {
+    if (!this.layer) {
+      return
+    }
     var tw = this.map.tileWidth * this.layer.scaleX
     var th = this.map.tileHeight * this.layer.scaleY
     var repeatMoveDelay = 100
 
     if (time > this.lastMoveTime + repeatMoveDelay) {
+
+      // Handle North/South
       if (this.cursors.down.isDown) {
         if (this.isTileOpenAt(this.player.x, this.player.y + th)) {
           this.player.y += th
           this.lastMoveTime = time
         }
-      }
-      else if (this.cursors.up.isDown) {
+      } else if (this.cursors.up.isDown) {
         if (this.isTileOpenAt(this.player.x, this.player.y - th)) {
           this.player.y -= th
           this.lastMoveTime = time
         }
       }
 
+      // Handle West/East
       if (this.cursors.left.isDown) {
         if (this.isTileOpenAt(this.player.x - tw, this.player.y)) {
           this.player.x -= tw
           this.lastMoveTime = time
         }
-      }
-      else if (this.cursors.right.isDown) {
+      } else if (this.cursors.right.isDown) {
         if (this.isTileOpenAt(this.player.x + tw, this.player.y)) {
           this.player.x += tw
           this.lastMoveTime = time
