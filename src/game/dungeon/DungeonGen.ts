@@ -84,7 +84,7 @@ export default class DungeonGen extends Scene {
     const repeatDelay = 100
     if (time > this.lastInputTime + repeatDelay) {
       this.dungeonModel.updateZoom(this.keyMap, this.playerModel)
-      this.lastInputTime = this.playerModel.updateMove(this.keyMap, time, this.lastInputTime, this.dungeonModel)
+      this.lastInputTime = this.playerModel.updateMove(this.keyMap, time, this.lastInputTime)
     }
   }
 

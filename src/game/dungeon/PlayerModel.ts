@@ -9,7 +9,7 @@ export default class PlayerModel {
   cam!: Cameras.Scene2D.Camera
   activeRoom?: Room
 
-  constructor(scene: Scene, dungeonModel: DungeonModel, public debug: boolean) {
+  constructor(scene: Scene, public readonly dungeonModel: DungeonModel, public debug: boolean) {
     this.player = scene.add.graphics({
       fillStyle: {
         color: 0x006600,
@@ -33,34 +33,34 @@ export default class PlayerModel {
     this.activeRoom = playerRoom
   }
 
-  updateMove(keyMap: KeyMap, time: number, lastMoveTime: number, dungeonModel: DungeonModel) {
-    const { map, layer } = dungeonModel
+  updateMove(keyMap: KeyMap, time: number, lastMoveTime: number) {
+    const { map, layer } = this.dungeonModel
     const tw = map.tileWidth * layer.scaleX
     const th = map.tileHeight * layer.scaleY
     const { x, y } = this.player
 
     // Handle North/South
-    if (keyMap.isDown("down") && dungeonModel.isTileOpenAt(x, y + th)) {
+    if (keyMap.isDown("down") && this.dungeonModel.isTileOpenAt(x, y + th)) {
       this.player.y += th
-      this.updateActiveRoom(dungeonModel)
+      this.updateActiveRoom()
       this.smoothFollow()
       return time
-    } else if (keyMap.isDown("up") && dungeonModel.isTileOpenAt(x, y - th)) {
+    } else if (keyMap.isDown("up") && this.dungeonModel.isTileOpenAt(x, y - th)) {
       this.player.y -= th
-      this.updateActiveRoom(dungeonModel)
+      this.updateActiveRoom()
       this.smoothFollow()
       return time
     }
 
     // Handle West/East
-    if (keyMap.isDown("left") && dungeonModel.isTileOpenAt(x - tw, y)) {
+    if (keyMap.isDown("left") && this.dungeonModel.isTileOpenAt(x - tw, y)) {
       this.player.x -= tw
-      this.updateActiveRoom(dungeonModel)
+      this.updateActiveRoom()
       this.smoothFollow()
       return time
-    } else if (keyMap.isDown("right") && dungeonModel.isTileOpenAt(x + tw, y)) {
+    } else if (keyMap.isDown("right") && this.dungeonModel.isTileOpenAt(x + tw, y)) {
       this.player.x += tw
-      this.updateActiveRoom(dungeonModel)
+      this.updateActiveRoom()
       this.smoothFollow()
       return time
     }
@@ -77,21 +77,21 @@ export default class PlayerModel {
 
   }
 
-  updateActiveRoom(dungeonModel: DungeonModel) {
-    const { map } = dungeonModel
+  updateActiveRoom() {
+    const { map } = this.dungeonModel
     const { player, activeRoom } = this
 
     const playerTileX = map.worldToTileX(player.x) || 0
     const playerTileY = map.worldToTileY(player.y) || 0
 
     // Another helper method from the dungeon - dungeon XY (in tiles) -> room
-    const room = dungeonModel.dungeon.getRoomAt(playerTileX, playerTileY)
+    const room = this.dungeonModel.dungeon.getRoomAt(playerTileX, playerTileY)
 
     // If the player has entered a new room, make it visible and dim the last room
     if (room && activeRoom && activeRoom !== room) {
       if (!this.debug) {
-        dungeonModel.setRoomAlpha(room, 1)
-        dungeonModel.setRoomAlpha(activeRoom, 0.5)
+        this.dungeonModel.setRoomAlpha(room, 1)
+        this.dungeonModel.setRoomAlpha(activeRoom, 0.5)
       }
     }
 

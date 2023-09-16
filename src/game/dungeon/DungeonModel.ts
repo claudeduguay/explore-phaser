@@ -203,14 +203,29 @@ export default class DungeonModel {
 
   setDisplayScale(scale: number, playerModel: PlayerModel) {
     this.scale = scale
-    this.layer.setScale(scale)
+    const { map, layer } = this
+    layer.setScale(scale)
     if (playerModel) {
       const { cam, player } = playerModel
-      playerModel.player = player.fillRect(0, 0, this.map.tileWidth * scale, this.map.tileHeight * scale)
+      playerModel.player = player.fillRect(0, 0, map.tileWidth * scale, map.tileHeight * scale)
+      cam.setBounds(0, 0, layer.width * layer.scaleX, layer.height * layer.scaleY)
       cam.scrollX = player.x - (cam.width * 0.5)
       cam.scrollY = player.y - (cam.height * 0.5)
     }
   }
+
+  updateZoom(keyMap: KeyMap, playerModel: PlayerModel) {
+    if (keyMap.isDown("home")) {
+      this.setDisplayScale(HOME_SCALE, playerModel)
+    }
+    if (keyMap.isDown("plus")) {
+      this.setDisplayScale(this.scale + 0.2, playerModel)
+    }
+    if (keyMap.isDown("minus")) {
+      this.setDisplayScale(this.scale - 0.2, playerModel)
+    }
+  }
+
 
   // Debug to console
   drawToConsole() {
@@ -243,18 +258,5 @@ export default class DungeonModel {
     })
     document.body.appendChild(html)
   }
-
-  updateZoom(keyMap: KeyMap, playerModel: PlayerModel) {
-    if (keyMap.isDown("home")) {
-      this.setDisplayScale(HOME_SCALE, playerModel)
-    }
-    if (keyMap.isDown("plus")) {
-      this.setDisplayScale(this.scale + 0.2, playerModel)
-    }
-    if (keyMap.isDown("minus")) {
-      this.setDisplayScale(this.scale - 0.2, playerModel)
-    }
-  }
-
 
 }
