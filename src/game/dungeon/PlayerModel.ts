@@ -33,29 +33,31 @@ export default class PlayerModel {
     this.activeRoom = playerRoom
   }
 
+  isValidKeyDown(keyMap: KeyMap, key: string, x: number, y: number) {
+    return keyMap.isDown(key) && this.dungeonModel.isTileOpenAt(x, y)
+  }
+
   updateMove(keyMap: KeyMap, time: number, lastMoveTime: number) {
     const { map, layer } = this.dungeonModel
     const tw = map.tileWidth * layer.scaleX
     const th = map.tileHeight * layer.scaleY
     const { x, y } = this.player
-
-    // Handle North/South
-    if (keyMap.isDown("down") && this.dungeonModel.isTileOpenAt(x, y + th)) {
+    if (this.isValidKeyDown(keyMap, "down", x, y + th)) {
       this.player.y += th
       this.updateRoomAndFollow()
       return time
-    } else if (keyMap.isDown("up") && this.dungeonModel.isTileOpenAt(x, y - th)) {
+    }
+    if (this.isValidKeyDown(keyMap, "up", x, y - th)) {
       this.player.y -= th
       this.updateRoomAndFollow()
       return time
     }
-
-    // Handle West/East
-    if (keyMap.isDown("left") && this.dungeonModel.isTileOpenAt(x - tw, y)) {
+    if (this.isValidKeyDown(keyMap, "left", x - tw, y)) {
       this.player.x -= tw
       this.updateRoomAndFollow()
       return time
-    } else if (keyMap.isDown("right") && this.dungeonModel.isTileOpenAt(x + tw, y)) {
+    }
+    if (this.isValidKeyDown(keyMap, "right", x + tw, y)) {
       this.player.x += tw
       this.updateRoomAndFollow()
       return time
