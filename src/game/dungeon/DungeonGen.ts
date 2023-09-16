@@ -133,12 +133,16 @@ export function createZoomKeys(keyboardPlugin: Phaser.Input.Keyboard.KeyboardPlu
 
 const HOME_SCALE = 3
 
+export interface IDungeonState {
+  dungeon: Dungeon
+  map: Phaser.Tilemaps.Tilemap
+  layer: Phaser.Tilemaps.TilemapLayer
+}
+
 export default class DungeonGen extends Phaser.Scene {
 
   activeRoom!: Room
-  dungeon!: Dungeon
-  map!: Phaser.Tilemaps.Tilemap
-  layer!: Phaser.Tilemaps.TilemapLayer
+  dungeonState!: IDungeonState
   cam!: Phaser.Cameras.Scene2D.Camera
   player!: Phaser.GameObjects.Graphics
   cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys
@@ -162,83 +166,96 @@ export default class DungeonGen extends Phaser.Scene {
   }
 
   setDisplayScale(scale: number) {
-    this.displayScale = scale
-    this.layer.setScale(scale)
-    if (this.player && this.map && this.layer) {
-      this.player.fillRect(0, 0, this.map.tileWidth * this.layer.scaleX, this.map.tileHeight * this.layer.scaleY)
+    if (!this.dungeonState) {
+      return
     }
-    if (this.cam && this.player && this.layer) {
+    const { map, layer } = this.dungeonState
+    this.displayScale = scale
+    layer.setScale(scale)
+    if (this.player) {
+      this.player = this.player.fillRect(0, 0, map.tileWidth * this.displayScale, map.tileHeight * this.displayScale)
+    }
+    if (this.cam && this.player) {
       this.cam.scrollX = this.player.x - (this.cam.width * 0.5)
       this.cam.scrollY = this.player.y - (this.cam.height * 0.5)
     }
   }
 
-  create() {
+  makePlayer(playerRoom: Room) {
+    const player = this.add.graphics({
+      fillStyle: {
+        color: 0x006600,
+        alpha: 1
+      }
+    }).fillRect(0, 0, this.dungeonState.map.tileWidth * this.dungeonState.layer.scaleX, this.dungeonState.map.tileHeight * this.dungeonState.layer.scaleY)
+    player.x = this.dungeonState.map.tileToWorldX(playerRoom.x + 1) || 0
+    player.y = this.dungeonState.map.tileToWorldY(playerRoom.y + 1) || 0
+    this.safeAssignment("player", player)
+  }
+
+  makeDungeon() {
     // Note: Dungeon is not a Phaser element - it's from "@mikewesthad/dungeon"
     // Generates a simple set of connected rectangular rooms that then can be turned into a tilemap
 
-    this.dungeon = new Dungeon(CONFIG.D200x200)
+    const dungeon = new Dungeon(CONFIG.D200x200)
 
     // drawToConsole(this.dungeon)
     // drawToHtml(this.dungeon)
 
     // Creating a blank tilemap with dimensions matching the dungeon
-    this.map = this.make.tilemap({
+    const map = this.make.tilemap({
       tileWidth: 16,
       tileHeight: 16,
-      width: this.dungeon.width,
-      height: this.dungeon.height
+      width: dungeon.width,
+      height: dungeon.height
     })
 
     // addTilesetImage: function (tilesetName, key, tileWidth, tileHeight, tileMargin, tileSpacing, gid)
-    const tileset = this.map.addTilesetImage('tiles', 'tiles', 16, 16, 1, 2)
-    if (tileset) {
-      const layer = this.map.createBlankLayer('Layer 1', tileset)
-      this.safeAssignment("layer", layer)
-      this.layer.fill(20)  // Fill with black tiles
+    const tileset = map.addTilesetImage('tiles', 'tiles', 16, 16, 1, 2)
+    if (!tileset) {
+      throw new Error("Failed to create tileset")
     }
+    const layer = map.createBlankLayer('Layer 1', tileset)
+    if (!layer) {
+      throw new Error("Failed to create layer")
+    }
+    layer.fill(20)  // Fill with black tiles
+
+    // Use the array of rooms generated to place tiles in the map
+    dungeon.rooms.forEach((room: Room) => {
+      this.makeRoom(map, room)
+      this.addRoomProps(layer, room)
+    }, this)
+
+    // Not exactly correct for the tileset since there are more possible floor tiles,
+    // but this will do for the example.
+    layer.setCollisionByExclusion([6, 7, 8, 26])
+
+    // Hide all the rooms
+    if (!debug) {
+      layer.forEachTile(function (tile: any) { tile.alpha = 0 })
+    }
+    this.dungeonState = { dungeon, map, layer }
+  }
+
+  create() {
+    this.makeDungeon()
 
     if (!debug) {
       this.setDisplayScale(HOME_SCALE)
     }
 
-    // Use the array of rooms generated to place tiles in the map
-    this.dungeon.rooms.forEach((room: Room) => {
-      this.makeRoom(room)
-      this.addRoomProps(room)
-    }, this)
-
-    // Not exactly correct for the tileset since there are more possible floor tiles,
-    // but this will do for the example.
-    this.layer?.setCollisionByExclusion([6, 7, 8, 26])
-
-    // Hide all the rooms
-    if (!debug) {
-      this.layer?.forEachTile(function (tile: any) { tile.alpha = 0 })
-    }
-
     // Place the player in the first room
-    const playerRoom = this.dungeon.rooms[0]
+    const playerRoom = this.dungeonState.dungeon.rooms[0]
     if (!debug) {  // Make the starting room visible
       this.setRoomAlpha(playerRoom, 1)
     }
-
-    if (this.layer) {
-      const player = this.add.graphics({
-        fillStyle: {
-          color: 0x006600,
-          alpha: 1
-        }
-      }).fillRect(0, 0, this.map.tileWidth * this.layer?.scaleX, this.map.tileHeight * this.layer.scaleY)
-      player.x = this.map.tileToWorldX(playerRoom.x + 1) || 0
-      player.y = this.map.tileToWorldY(playerRoom.y + 1) || 0
-      this.safeAssignment("player", player)
-    }
+    this.makePlayer(playerRoom)
 
     // Scroll to the player
     this.cam = this.cameras.main
-    if (this.layer) {
-      this.cam.setBounds(0, 0, this.layer.width * this.layer.scaleX, this.layer.height * this.layer.scaleY)
+    if (this.dungeonState) {
+      this.cam.setBounds(0, 0, this.dungeonState.layer.width * this.dungeonState.layer.scaleX, this.dungeonState.layer.height * this.dungeonState.layer.scaleY)
       this.cam.scrollX = this.player.x - this.cam.width * 0.5
       this.cam.scrollY = this.player.y - this.cam.height * 0.5
     }
@@ -255,8 +272,8 @@ export default class DungeonGen extends Phaser.Scene {
       }
       this.displayScale -= delta
       this.displayScale = Math.min(5, Math.max(0.5, this.displayScale))
-      if (this.layer) {
-        this.layer.setScale(this.displayScale)
+      if (this.dungeonState) {
+        this.dungeonState.layer.setScale(this.displayScale)
       }
       console.log("Wheel:", delta, this.displayScale)
     })
@@ -283,7 +300,7 @@ export default class DungeonGen extends Phaser.Scene {
     // gui.add(this.layer, 'tilesTotal').listen()
   }
 
-  makeRoom(room: Room) {
+  makeRoom(map: Phaser.Tilemaps.Tilemap, room: Room) {
     const { x, y, width: w, height: h } = room
     const left = x
     const right = x + (w - 1)
@@ -292,64 +309,62 @@ export default class DungeonGen extends Phaser.Scene {
 
     // Fill the floor with mostly clean tiles, but occasionally place a dirty tile
     // See "Weighted Randomize" example for more information on how to use weightedRandomize.
-    this.map.weightedRandomize(TILES.FLOOR, x, y, w, h)
+    map.weightedRandomize(TILES.FLOOR, x, y, w, h)
 
     // Place the room corners tiles
-    this.map.putTileAt(TILES.TOP_LEFT_WALL, left, top)
-    this.map.putTileAt(TILES.TOP_RIGHT_WALL, right, top)
-    this.map.putTileAt(TILES.BOTTOM_RIGHT_WALL, right, bottom)
-    this.map.putTileAt(TILES.BOTTOM_LEFT_WALL, left, bottom)
+    map.putTileAt(TILES.TOP_LEFT_WALL, left, top)
+    map.putTileAt(TILES.TOP_RIGHT_WALL, right, top)
+    map.putTileAt(TILES.BOTTOM_RIGHT_WALL, right, bottom)
+    map.putTileAt(TILES.BOTTOM_LEFT_WALL, left, bottom)
 
     // Fill the walls with mostly clean tiles, but occasionally place a dirty tile
-    this.map.weightedRandomize(TILES.TOP_WALL, left + 1, top, w - 2, 1)
-    this.map.weightedRandomize(TILES.BOTTOM_WALL, left + 1, bottom, w - 2, 1)
-    this.map.weightedRandomize(TILES.LEFT_WALL, left, top + 1, 1, h - 2)
-    this.map.weightedRandomize(TILES.RIGHT_WALL, right, top + 1, 1, h - 2)
+    map.weightedRandomize(TILES.TOP_WALL, left + 1, top, w - 2, 1)
+    map.weightedRandomize(TILES.BOTTOM_WALL, left + 1, bottom, w - 2, 1)
+    map.weightedRandomize(TILES.LEFT_WALL, left, top + 1, 1, h - 2)
+    map.weightedRandomize(TILES.RIGHT_WALL, right, top + 1, 1, h - 2)
 
     // Dungeons have rooms that are connected with doors. Each door has an x & y relative to the rooms location
     const doors = room.getDoorLocations()
     for (let door of doors) {
-      this.map.putTileAt(6, x + door.x, y + door.y)
+      map.putTileAt(6, x + door.x, y + door.y)
     }
   }
 
-  addRoomProps(room: Room) {
-    if (!this.layer) {
-      return
-    }
+  addRoomProps(layer: Phaser.Tilemaps.TilemapLayer, room: Room) {
     const { x, y, width: w, height: h } = room
     const cx = Math.floor(x + w / 2)
     const cy = Math.floor(y + h / 2)
     // Place some random stuff in rooms, occasionally
     const rand = Math.random()
     if (rand <= 0.25) {  // Chest
-      this.layer.putTileAt(166, cx, cy)
+      layer.putTileAt(166, cx, cy)
     } else if (rand <= 0.3) {   // Stairs
-      this.layer.putTileAt(81, cx, cy)
+      layer.putTileAt(81, cx, cy)
     } else if (rand <= 0.4) {  // Trap door
-      this.layer.putTileAt(167, cx, cy)
+      layer.putTileAt(167, cx, cy)
     } else if (rand <= 0.6) {  // Towers
       if (room.height >= 9) {   // We have room for 4 towers
-        this.layer.putTilesAt(TILES.TOWER, cx - 1, cy + 1)
-        this.layer.putTilesAt(TILES.TOWER, cx + 1, cy + 1)
-        this.layer.putTilesAt(TILES.TOWER, cx - 1, cy - 2)
-        this.layer.putTilesAt(TILES.TOWER, cx + 1, cy - 2)
+        layer.putTilesAt(TILES.TOWER, cx - 1, cy + 1)
+        layer.putTilesAt(TILES.TOWER, cx + 1, cy + 1)
+        layer.putTilesAt(TILES.TOWER, cx - 1, cy - 2)
+        layer.putTilesAt(TILES.TOWER, cx + 1, cy - 2)
       }
       else {  // We have room for 2 towers
-        this.layer.putTilesAt(TILES.TOWER, cx - 1, cy - 1)
-        this.layer.putTilesAt(TILES.TOWER, cx + 1, cy - 1)
+        layer.putTilesAt(TILES.TOWER, cx - 1, cy - 1)
+        layer.putTilesAt(TILES.TOWER, cx + 1, cy - 1)
       }
     }
   }
 
   update(time: number, delta: number): void {
     this.updatePlayerMovement(time)
+    const map = this.dungeonState.map
 
-    const playerTileX = this.map.worldToTileX(this.player.x) || 0
-    const playerTileY = this.map.worldToTileY(this.player.y) || 0
+    const playerTileX = map.worldToTileX(this.player.x) || 0
+    const playerTileY = map.worldToTileY(this.player.y) || 0
 
     // Another helper method from the dungeon - dungeon XY (in tiles) -> room
-    const room = this.dungeon.getRoomAt(playerTileX, playerTileY)
+    const room = this.dungeonState.dungeon.getRoomAt(playerTileX, playerTileY)
 
     // If the player has entered a new room, make it visible and dim the last room
     if (room && this.activeRoom && this.activeRoom !== room) {
@@ -370,11 +385,9 @@ export default class DungeonGen extends Phaser.Scene {
   }
 
   updatePlayerMovement(time: any) {
-    if (!this.layer) {
-      return
-    }
-    var tw = this.map.tileWidth * this.layer.scaleX
-    var th = this.map.tileHeight * this.layer.scaleY
+    const { map, layer } = this.dungeonState
+    var tw = map.tileWidth * layer.scaleX
+    var th = map.tileHeight * layer.scaleY
     var repeatMoveDelay = 100
 
     if (time > this.lastMoveTime + repeatMoveDelay) {
@@ -422,13 +435,13 @@ export default class DungeonGen extends Phaser.Scene {
   isTileOpenAt(worldX: any, worldY: any) {
     // nonNull = true, don't return null for empty tiles. This means null will be returned only for
     // tiles outside of the bounds of the map.
-    var tile = this.map.getTileAtWorldXY(worldX, worldY, true)
+    var tile = this.dungeonState.map.getTileAtWorldXY(worldX, worldY, true)
     return tile && !tile.collides
   }
 
   // Helpers functions
   setRoomAlpha(room: Room, alpha: number) {
-    this.map.forEachTile((tile: any) => tile.alpha = alpha,
+    this.dungeonState.map.forEachTile((tile: any) => tile.alpha = alpha,
       this, room.x, room.y, room.width, room.height)
   }
 
