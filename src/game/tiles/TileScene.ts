@@ -41,7 +41,7 @@ export default class TilesManager extends Scene {
       }
     }
 
-    const help = this.add.text(10, 10, "Display individual tiles with index", {
+    const help = this.add.text(10, 10, "Displaying individual tiles with index", {
       fontSize: '18px',
       padding: { x: 5, y: 5 },
       backgroundColor: '#ffffff',

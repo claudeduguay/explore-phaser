@@ -19,9 +19,7 @@ export default function Explore({ w = 1100, h = 800, scene }: IExploreProps) {
       scene
     }
     const game = new Phaser.Game(config)
-    console.log("Game:", game)
     return () => {
-      console.log("Game cleanup")
       game.destroy(true)
     }
   }, [w, h, scene, id])
