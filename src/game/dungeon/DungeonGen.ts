@@ -1,5 +1,6 @@
-import { Scene, Input, Tilemaps, GameObjects, Cameras, Types } from 'phaser'
+import { Scene, Tilemaps, GameObjects, Cameras } from 'phaser'
 import Dungeon, { Room } from "@mikewesthad/dungeon"
+import KeyMap from './KeyMap'
 
 // Code for: https://phaser.io/examples/v3/view/tilemap/dungeon-generator
 
@@ -113,24 +114,6 @@ export function drawToHtml(dungeon: Dungeon) {
 }
 
 
-export interface IZoomKeys {
-  home: Input.Keyboard.Key
-  plus: Input.Keyboard.Key
-  minus: Input.Keyboard.Key
-  npPlus: Input.Keyboard.Key
-  npMinus: Input.Keyboard.Key
-}
-
-export function createZoomKeys(keyboardPlugin: Input.Keyboard.KeyboardPlugin): IZoomKeys {
-  return keyboardPlugin.addKeys({
-    "home": Input.Keyboard.KeyCodes.HOME,
-    "plus": Input.Keyboard.KeyCodes.PLUS,
-    "minus": Input.Keyboard.KeyCodes.MINUS,
-    "npPlus": Input.Keyboard.KeyCodes.NUMPAD_ADD,
-    "npMinus": Input.Keyboard.KeyCodes.NUMPAD_SUBTRACT,
-  }) as IZoomKeys
-}
-
 const HOME_SCALE = 3
 
 export interface IDungeonState {
@@ -146,12 +129,10 @@ export interface IPlayerState {
 
 export default class DungeonGen extends Scene {
 
+  keyMap!: KeyMap
   dungeonState!: IDungeonState
   playerState!: IPlayerState
   activeRoom!: Room
-
-  cursorKeys!: Types.Input.Keyboard.CursorKeys
-  zoomKeys!: IZoomKeys
 
   lastMoveTime: number = 0
   displayScale: number = 1
@@ -267,8 +248,7 @@ export default class DungeonGen extends Scene {
 
 
     if (this.input.keyboard) {
-      this.safeAssignment("cursorKeys", this.input.keyboard.createCursorKeys())
-      this.safeAssignment("zoomKeys", createZoomKeys(this.input.keyboard))
+      this.keyMap = new KeyMap(this.input.keyboard)
     }
 
     this.input.on("wheel", (pointer: any, gameObject: any, deltaX: number, deltaY: number, deltaZ: number) => {
@@ -400,30 +380,30 @@ export default class DungeonGen extends Scene {
 
     if (time > this.lastMoveTime + repeatMoveDelay) {
 
-      if (this.zoomKeys.home.isDown) {
+      if (this.keyMap.isDown("home")) {
         this.setDisplayScale(HOME_SCALE)
       }
-      if (this.zoomKeys.plus.isDown || this.zoomKeys.npPlus.isDown) {
+      if (this.keyMap.isDown("plus")) {
         this.setDisplayScale(this.displayScale + 0.2)
       }
-      if (this.zoomKeys.minus.isDown || this.zoomKeys.npMinus.isDown) {
+      if (this.keyMap.isDown("minus")) {
         this.setDisplayScale(this.displayScale - 0.2)
       }
 
       // Handle North/South
-      if (this.cursorKeys.down.isDown && this.isTileOpenAt(player.x, player.y + th)) {
+      if (this.keyMap.isDown("down") && this.isTileOpenAt(player.x, player.y + th)) {
         player.y += th
         this.lastMoveTime = time
-      } else if (this.cursorKeys.up.isDown && this.isTileOpenAt(player.x, player.y - th)) {
+      } else if (this.keyMap.isDown("up") && this.isTileOpenAt(player.x, player.y - th)) {
         player.y -= th
         this.lastMoveTime = time
       }
 
       // Handle West/East
-      if (this.cursorKeys.left.isDown && this.isTileOpenAt(player.x - tw, player.y)) {
+      if (this.keyMap.isDown("left") && this.isTileOpenAt(player.x - tw, player.y)) {
         player.x -= tw
         this.lastMoveTime = time
-      } else if (this.cursorKeys.right.isDown && this.isTileOpenAt(player.x + tw, player.y)) {
+      } else if (this.keyMap.isDown("right") && this.isTileOpenAt(player.x + tw, player.y)) {
         player.x += tw
         this.lastMoveTime = time
       }
