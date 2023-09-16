@@ -118,8 +118,8 @@ export default class DungeonModel {
 
     // Use the array of rooms generated to place tiles in the map
     this.dungeon.rooms.forEach((room: Room) => {
-      this.makeRoom(this.map, room)
-      this.addRoomProps(this.layer, room)
+      this.makeRoom(room)
+      this.addRoomProps(room)
     }, this)
 
     // Not exactly correct for the tileset since there are more possible floor tiles,
@@ -132,7 +132,7 @@ export default class DungeonModel {
     }
   }
 
-  makeRoom(map: Tilemaps.Tilemap, room: Room) {
+  makeRoom(room: Room) {
     const { x, y, width: w, height: h } = room
     const left = x
     const right = x + (w - 1)
@@ -141,49 +141,49 @@ export default class DungeonModel {
 
     // Fill the floor with mostly clean tiles, but occasionally place a dirty tile
     // See "Weighted Randomize" example for more information on how to use weightedRandomize.
-    map.weightedRandomize(TILES.FLOOR, x, y, w, h)
+    this.map.weightedRandomize(TILES.FLOOR, x, y, w, h)
 
     // Place the room corners tiles
-    map.putTileAt(TILES.TOP_LEFT_WALL, left, top)
-    map.putTileAt(TILES.TOP_RIGHT_WALL, right, top)
-    map.putTileAt(TILES.BOTTOM_RIGHT_WALL, right, bottom)
-    map.putTileAt(TILES.BOTTOM_LEFT_WALL, left, bottom)
+    this.map.putTileAt(TILES.TOP_LEFT_WALL, left, top)
+    this.map.putTileAt(TILES.TOP_RIGHT_WALL, right, top)
+    this.map.putTileAt(TILES.BOTTOM_RIGHT_WALL, right, bottom)
+    this.map.putTileAt(TILES.BOTTOM_LEFT_WALL, left, bottom)
 
     // Fill the walls with mostly clean tiles, but occasionally place a dirty tile
-    map.weightedRandomize(TILES.TOP_WALL, left + 1, top, w - 2, 1)
-    map.weightedRandomize(TILES.BOTTOM_WALL, left + 1, bottom, w - 2, 1)
-    map.weightedRandomize(TILES.LEFT_WALL, left, top + 1, 1, h - 2)
-    map.weightedRandomize(TILES.RIGHT_WALL, right, top + 1, 1, h - 2)
+    this.map.weightedRandomize(TILES.TOP_WALL, left + 1, top, w - 2, 1)
+    this.map.weightedRandomize(TILES.BOTTOM_WALL, left + 1, bottom, w - 2, 1)
+    this.map.weightedRandomize(TILES.LEFT_WALL, left, top + 1, 1, h - 2)
+    this.map.weightedRandomize(TILES.RIGHT_WALL, right, top + 1, 1, h - 2)
 
     // Dungeons have rooms that are connected with doors. Each door has an x & y relative to the rooms location
     const doors = room.getDoorLocations()
     for (let door of doors) {
-      map.putTileAt(6, x + door.x, y + door.y)
+      this.map.putTileAt(6, x + door.x, y + door.y)
     }
   }
 
-  addRoomProps(layer: Tilemaps.TilemapLayer, room: Room) {
+  addRoomProps(room: Room) {
     const { x, y, width: w, height: h } = room
     const cx = Math.floor(x + w / 2)
     const cy = Math.floor(y + h / 2)
     // Place some random stuff in rooms, occasionally
     const rand = Math.random()
     if (rand <= 0.25) {  // Chest
-      layer.putTileAt(166, cx, cy)
+      this.layer.putTileAt(166, cx, cy)
     } else if (rand <= 0.3) {   // Stairs
-      layer.putTileAt(81, cx, cy)
+      this.layer.putTileAt(81, cx, cy)
     } else if (rand <= 0.4) {  // Trap door
-      layer.putTileAt(167, cx, cy)
+      this.layer.putTileAt(167, cx, cy)
     } else if (rand <= 0.6) {  // Towers
       if (room.height >= 9) {   // We have room for 4 towers
-        layer.putTilesAt(TILES.TOWER, cx - 1, cy + 1)
-        layer.putTilesAt(TILES.TOWER, cx + 1, cy + 1)
-        layer.putTilesAt(TILES.TOWER, cx - 1, cy - 2)
-        layer.putTilesAt(TILES.TOWER, cx + 1, cy - 2)
+        this.layer.putTilesAt(TILES.TOWER, cx - 1, cy + 1)
+        this.layer.putTilesAt(TILES.TOWER, cx + 1, cy + 1)
+        this.layer.putTilesAt(TILES.TOWER, cx - 1, cy - 2)
+        this.layer.putTilesAt(TILES.TOWER, cx + 1, cy - 2)
       }
       else {  // We have room for 2 towers
-        layer.putTilesAt(TILES.TOWER, cx - 1, cy - 1)
-        layer.putTilesAt(TILES.TOWER, cx + 1, cy - 1)
+        this.layer.putTilesAt(TILES.TOWER, cx - 1, cy - 1)
+        this.layer.putTilesAt(TILES.TOWER, cx + 1, cy - 1)
       }
     }
   }

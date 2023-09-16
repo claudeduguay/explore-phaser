@@ -1,14 +1,14 @@
 import { CSSProperties, useEffect, useId } from "react"
 // import ScanScene from "./ScanScene"
-import DungeonGen from "./dungeon/DungeonGen"
-import Phaser from 'phaser'
+import Phaser, { Scene } from 'phaser'
 
 export interface IExploreProps {
   w?: number
   h?: number
+  scene: Scene
 }
 
-export default function Explore({ w = 1100, h = 800 }: IExploreProps) {
+export default function Explore({ w = 1100, h = 800, scene }: IExploreProps) {
   const id = useId()
   useEffect(() => {
     const config: any = {
@@ -16,7 +16,7 @@ export default function Explore({ w = 1100, h = 800 }: IExploreProps) {
       parent: id,
       width: w,
       height: h,
-      scene: DungeonGen
+      scene
     }
     const game = new Phaser.Game(config)
     console.log("Game:", game)
@@ -24,7 +24,7 @@ export default function Explore({ w = 1100, h = 800 }: IExploreProps) {
       console.log("Game cleanup")
       game.destroy(true)
     }
-  }, [w, h, id])
+  }, [w, h, scene, id])
   const style: CSSProperties = {
     width: w,
     height: h
