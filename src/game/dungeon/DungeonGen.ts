@@ -139,12 +139,17 @@ export interface IDungeonState {
   layer: Phaser.Tilemaps.TilemapLayer
 }
 
+export interface IPlayerState {
+  player: Phaser.GameObjects.Graphics
+  cam: Phaser.Cameras.Scene2D.Camera
+}
+
 export default class DungeonGen extends Phaser.Scene {
 
-  activeRoom!: Room
   dungeonState!: IDungeonState
-  cam!: Phaser.Cameras.Scene2D.Camera
-  player!: Phaser.GameObjects.Graphics
+  playerState!: IPlayerState
+  activeRoom!: Room
+
   cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys
   zoomKeys!: IZoomKeys
 
@@ -172,12 +177,11 @@ export default class DungeonGen extends Phaser.Scene {
     const { map, layer } = this.dungeonState
     this.displayScale = scale
     layer.setScale(scale)
-    if (this.player) {
-      this.player = this.player.fillRect(0, 0, map.tileWidth * this.displayScale, map.tileHeight * this.displayScale)
-    }
-    if (this.cam && this.player) {
-      this.cam.scrollX = this.player.x - (this.cam.width * 0.5)
-      this.cam.scrollY = this.player.y - (this.cam.height * 0.5)
+    if (this.playerState) {
+      const { player, cam } = this.playerState
+      this.playerState.player = player.fillRect(0, 0, map.tileWidth * this.displayScale, map.tileHeight * this.displayScale)
+      cam.scrollX = player.x - (cam.width * 0.5)
+      cam.scrollY = player.y - (cam.height * 0.5)
     }
   }
 
@@ -190,7 +194,16 @@ export default class DungeonGen extends Phaser.Scene {
     }).fillRect(0, 0, this.dungeonState.map.tileWidth * this.dungeonState.layer.scaleX, this.dungeonState.map.tileHeight * this.dungeonState.layer.scaleY)
     player.x = this.dungeonState.map.tileToWorldX(playerRoom.x + 1) || 0
     player.y = this.dungeonState.map.tileToWorldY(playerRoom.y + 1) || 0
-    this.safeAssignment("player", player)
+
+    // Scroll to the player
+    const cam = this.cameras.main
+    if (this.dungeonState) {
+      const { layer } = this.dungeonState
+      cam.setBounds(0, 0, layer.width * layer.scaleX, layer.height * layer.scaleY)
+      cam.scrollX = player.x - cam.width * 0.5
+      cam.scrollY = player.y - cam.height * 0.5
+    }
+    this.playerState = { player, cam }
   }
 
   makeDungeon() {
@@ -252,13 +265,6 @@ export default class DungeonGen extends Phaser.Scene {
     }
     this.makePlayer(playerRoom)
 
-    // Scroll to the player
-    this.cam = this.cameras.main
-    if (this.dungeonState) {
-      this.cam.setBounds(0, 0, this.dungeonState.layer.width * this.dungeonState.layer.scaleX, this.dungeonState.layer.height * this.dungeonState.layer.scaleY)
-      this.cam.scrollX = this.player.x - this.cam.width * 0.5
-      this.cam.scrollY = this.player.y - this.cam.height * 0.5
-    }
 
     if (this.input.keyboard) {
       this.safeAssignment("cursorKeys", this.input.keyboard.createCursorKeys())
@@ -358,10 +364,11 @@ export default class DungeonGen extends Phaser.Scene {
 
   update(time: number, delta: number): void {
     this.updatePlayerMovement(time)
-    const map = this.dungeonState.map
+    const { map } = this.dungeonState
+    const { player, cam } = this.playerState
 
-    const playerTileX = map.worldToTileX(this.player.x) || 0
-    const playerTileY = map.worldToTileY(this.player.y) || 0
+    const playerTileX = map.worldToTileX(player.x) || 0
+    const playerTileY = map.worldToTileY(player.y) || 0
 
     // Another helper method from the dungeon - dungeon XY (in tiles) -> room
     const room = this.dungeonState.dungeon.getRoomAt(playerTileX, playerTileY)
@@ -380,12 +387,13 @@ export default class DungeonGen extends Phaser.Scene {
 
     // Smooth follow the player
     const smoothFactor = 0.9
-    this.cam.scrollX = smoothFactor * this.cam.scrollX + (1 - smoothFactor) * (this.player.x - this.cam.width * 0.5)
-    this.cam.scrollY = smoothFactor * this.cam.scrollY + (1 - smoothFactor) * (this.player.y - this.cam.height * 0.5)
+    cam.scrollX = smoothFactor * cam.scrollX + (1 - smoothFactor) * (player.x - cam.width * 0.5)
+    cam.scrollY = smoothFactor * cam.scrollY + (1 - smoothFactor) * (player.y - cam.height * 0.5)
   }
 
   updatePlayerMovement(time: any) {
     const { map, layer } = this.dungeonState
+    const { player } = this.playerState
     var tw = map.tileWidth * layer.scaleX
     var th = map.tileHeight * layer.scaleY
     var repeatMoveDelay = 100
@@ -406,26 +414,26 @@ export default class DungeonGen extends Phaser.Scene {
 
       // Handle North/South
       if (this.cursorKeys.down.isDown) {
-        if (this.isTileOpenAt(this.player.x, this.player.y + th)) {
-          this.player.y += th
+        if (this.isTileOpenAt(player.x, player.y + th)) {
+          player.y += th
           this.lastMoveTime = time
         }
       } else if (this.cursorKeys.up.isDown) {
-        if (this.isTileOpenAt(this.player.x, this.player.y - th)) {
-          this.player.y -= th
+        if (this.isTileOpenAt(player.x, player.y - th)) {
+          player.y -= th
           this.lastMoveTime = time
         }
       }
 
       // Handle West/East
       if (this.cursorKeys.left.isDown) {
-        if (this.isTileOpenAt(this.player.x - tw, this.player.y)) {
-          this.player.x -= tw
+        if (this.isTileOpenAt(player.x - tw, player.y)) {
+          player.x -= tw
           this.lastMoveTime = time
         }
       } else if (this.cursorKeys.right.isDown) {
-        if (this.isTileOpenAt(this.player.x + tw, this.player.y)) {
-          this.player.x += tw
+        if (this.isTileOpenAt(player.x + tw, player.y)) {
+          player.x += tw
           this.lastMoveTime = time
         }
       }
