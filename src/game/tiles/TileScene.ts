@@ -52,6 +52,7 @@ export default class TilesManager extends Scene {
   }
 
   addLabel(x: number, y: number, label: string) {
+    // May want to explore: TextShadow (https://newdocs.phaser.io/docs/3.60.0/Phaser.Types.GameObjects.Text)
     const shadowOffset = 1
     this.add.text(x + shadowOffset, y + shadowOffset, label, {
       fontSize: '18px',
