@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import { Scene, Input, Tilemaps, GameObjects, Cameras, Types } from 'phaser'
 import Dungeon, { Room } from "@mikewesthad/dungeon"
 
 // Code for: https://phaser.io/examples/v3/view/tilemap/dungeon-generator
@@ -114,20 +114,20 @@ export function drawToHtml(dungeon: Dungeon) {
 
 
 export interface IZoomKeys {
-  home: Phaser.Input.Keyboard.Key
-  plus: Phaser.Input.Keyboard.Key
-  minus: Phaser.Input.Keyboard.Key
-  npPlus: Phaser.Input.Keyboard.Key
-  npMinus: Phaser.Input.Keyboard.Key
+  home: Input.Keyboard.Key
+  plus: Input.Keyboard.Key
+  minus: Input.Keyboard.Key
+  npPlus: Input.Keyboard.Key
+  npMinus: Input.Keyboard.Key
 }
 
-export function createZoomKeys(keyboardPlugin: Phaser.Input.Keyboard.KeyboardPlugin): IZoomKeys {
+export function createZoomKeys(keyboardPlugin: Input.Keyboard.KeyboardPlugin): IZoomKeys {
   return keyboardPlugin.addKeys({
-    "home": Phaser.Input.Keyboard.KeyCodes.HOME,
-    "plus": Phaser.Input.Keyboard.KeyCodes.PLUS,
-    "minus": Phaser.Input.Keyboard.KeyCodes.MINUS,
-    "npPlus": Phaser.Input.Keyboard.KeyCodes.NUMPAD_ADD,
-    "npMinus": Phaser.Input.Keyboard.KeyCodes.NUMPAD_SUBTRACT,
+    "home": Input.Keyboard.KeyCodes.HOME,
+    "plus": Input.Keyboard.KeyCodes.PLUS,
+    "minus": Input.Keyboard.KeyCodes.MINUS,
+    "npPlus": Input.Keyboard.KeyCodes.NUMPAD_ADD,
+    "npMinus": Input.Keyboard.KeyCodes.NUMPAD_SUBTRACT,
   }) as IZoomKeys
 }
 
@@ -135,22 +135,22 @@ const HOME_SCALE = 3
 
 export interface IDungeonState {
   dungeon: Dungeon
-  map: Phaser.Tilemaps.Tilemap
-  layer: Phaser.Tilemaps.TilemapLayer
+  map: Tilemaps.Tilemap
+  layer: Tilemaps.TilemapLayer
 }
 
 export interface IPlayerState {
-  player: Phaser.GameObjects.Graphics
-  cam: Phaser.Cameras.Scene2D.Camera
+  player: GameObjects.Graphics
+  cam: Cameras.Scene2D.Camera
 }
 
-export default class DungeonGen extends Phaser.Scene {
+export default class DungeonGen extends Scene {
 
   dungeonState!: IDungeonState
   playerState!: IPlayerState
   activeRoom!: Room
 
-  cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys
+  cursorKeys!: Types.Input.Keyboard.CursorKeys
   zoomKeys!: IZoomKeys
 
   lastMoveTime: number = 0
@@ -306,7 +306,7 @@ export default class DungeonGen extends Phaser.Scene {
     // gui.add(this.layer, 'tilesTotal').listen()
   }
 
-  makeRoom(map: Phaser.Tilemaps.Tilemap, room: Room) {
+  makeRoom(map: Tilemaps.Tilemap, room: Room) {
     const { x, y, width: w, height: h } = room
     const left = x
     const right = x + (w - 1)
@@ -336,7 +336,7 @@ export default class DungeonGen extends Phaser.Scene {
     }
   }
 
-  addRoomProps(layer: Phaser.Tilemaps.TilemapLayer, room: Room) {
+  addRoomProps(layer: Tilemaps.TilemapLayer, room: Room) {
     const { x, y, width: w, height: h } = room
     const cx = Math.floor(x + w / 2)
     const cy = Math.floor(y + h / 2)
@@ -363,7 +363,7 @@ export default class DungeonGen extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
-    this.updatePlayerMovement(time)
+    this.updateInput(time)
     const { map } = this.dungeonState
     const { player, cam } = this.playerState
 
@@ -391,7 +391,7 @@ export default class DungeonGen extends Phaser.Scene {
     cam.scrollY = smoothFactor * cam.scrollY + (1 - smoothFactor) * (player.y - cam.height * 0.5)
   }
 
-  updatePlayerMovement(time: any) {
+  updateInput(time: any) {
     const { map, layer } = this.dungeonState
     const { player } = this.playerState
     var tw = map.tileWidth * layer.scaleX
@@ -404,38 +404,28 @@ export default class DungeonGen extends Phaser.Scene {
         this.setDisplayScale(HOME_SCALE)
       }
       if (this.zoomKeys.plus.isDown || this.zoomKeys.npPlus.isDown) {
-        console.log("Keydown: +")
         this.setDisplayScale(this.displayScale + 0.2)
       }
       if (this.zoomKeys.minus.isDown || this.zoomKeys.npMinus.isDown) {
-        console.log("Keydown: -")
         this.setDisplayScale(this.displayScale - 0.2)
       }
 
       // Handle North/South
-      if (this.cursorKeys.down.isDown) {
-        if (this.isTileOpenAt(player.x, player.y + th)) {
-          player.y += th
-          this.lastMoveTime = time
-        }
-      } else if (this.cursorKeys.up.isDown) {
-        if (this.isTileOpenAt(player.x, player.y - th)) {
-          player.y -= th
-          this.lastMoveTime = time
-        }
+      if (this.cursorKeys.down.isDown && this.isTileOpenAt(player.x, player.y + th)) {
+        player.y += th
+        this.lastMoveTime = time
+      } else if (this.cursorKeys.up.isDown && this.isTileOpenAt(player.x, player.y - th)) {
+        player.y -= th
+        this.lastMoveTime = time
       }
 
       // Handle West/East
-      if (this.cursorKeys.left.isDown) {
-        if (this.isTileOpenAt(player.x - tw, player.y)) {
-          player.x -= tw
-          this.lastMoveTime = time
-        }
-      } else if (this.cursorKeys.right.isDown) {
-        if (this.isTileOpenAt(player.x + tw, player.y)) {
-          player.x += tw
-          this.lastMoveTime = time
-        }
+      if (this.cursorKeys.left.isDown && this.isTileOpenAt(player.x - tw, player.y)) {
+        player.x -= tw
+        this.lastMoveTime = time
+      } else if (this.cursorKeys.right.isDown && this.isTileOpenAt(player.x + tw, player.y)) {
+        player.x += tw
+        this.lastMoveTime = time
       }
     }
   }
