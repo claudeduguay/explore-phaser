@@ -8,8 +8,8 @@ const TILES = {
   TOWER: [[186], [205]],
   TOP_LEFT_WALL: 3,
   TOP_RIGHT_WALL: 4,
-  BOTTOM_RIGHT_WALL: 23,
   BOTTOM_LEFT_WALL: 22,
+  BOTTOM_RIGHT_WALL: 23,
   TOP_WALL: [
     { index: 39, weight: 4 },
     { index: 57, weight: 1 },

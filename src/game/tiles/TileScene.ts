@@ -29,13 +29,15 @@ export default class TilesManager extends Scene {
     if (!layer) {
       throw new Error("Failed to create layer")
     }
-    layer.setScale(3)
+    const scale = 3
+    layer.setScale(scale)
     layer.fill(20)  // Fill with black tiles
     // Place tiles to reflect the tile sheet positions
-    for (let y = 0; y < map.height; y++) {
-      for (let x = 0; x < map.width; x++) {
+    for (let y = 0; y < map.height - 1; y++) {
+      for (let x = 0; x < map.width - 1; x++) {
         const i = y * map.width + x
         layer.putTileAt(i, x + 1, y + 1)
+        this.addLabel((x + 1) * 16 * scale, (y + 1) * 16 * scale, `${i}`)
       }
     }
 
@@ -47,6 +49,21 @@ export default class TilesManager extends Scene {
     })
     help.setScrollFactor(0)
 
+  }
+
+  addLabel(x: number, y: number, label: string) {
+    this.add.text(x + 1, y + 1, label, {
+      fontSize: '18px',
+      padding: { x: 5, y: 5 },
+      backgroundColor: 'transparent',
+      color: '#000000'
+    })
+    this.add.text(x, y, label, {
+      fontSize: '18px',
+      padding: { x: 5, y: 5 },
+      backgroundColor: 'transparent',
+      color: '#FFFFFF'
+    })
   }
 
   update(time: number, delta: number): void {
