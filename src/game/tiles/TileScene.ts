@@ -52,7 +52,8 @@ export default class TilesManager extends Scene {
   }
 
   addLabel(x: number, y: number, label: string) {
-    this.add.text(x + 1, y + 1, label, {
+    const shadowOffset = 1
+    this.add.text(x + shadowOffset, y + shadowOffset, label, {
       fontSize: '18px',
       padding: { x: 5, y: 5 },
       backgroundColor: 'transparent',
