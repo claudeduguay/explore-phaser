@@ -42,39 +42,31 @@ export default class PlayerModel {
     // Handle North/South
     if (keyMap.isDown("down") && this.dungeonModel.isTileOpenAt(x, y + th)) {
       this.player.y += th
-      this.updateActiveRoom()
-      this.smoothFollow()
+      this.updateRoomAndFollow()
       return time
     } else if (keyMap.isDown("up") && this.dungeonModel.isTileOpenAt(x, y - th)) {
       this.player.y -= th
-      this.updateActiveRoom()
-      this.smoothFollow()
+      this.updateRoomAndFollow()
       return time
     }
 
     // Handle West/East
     if (keyMap.isDown("left") && this.dungeonModel.isTileOpenAt(x - tw, y)) {
       this.player.x -= tw
-      this.updateActiveRoom()
-      this.smoothFollow()
+      this.updateRoomAndFollow()
       return time
     } else if (keyMap.isDown("right") && this.dungeonModel.isTileOpenAt(x + tw, y)) {
       this.player.x += tw
-      this.updateActiveRoom()
-      this.smoothFollow()
+      this.updateRoomAndFollow()
       return time
     }
 
     return lastMoveTime
   }
 
-  smoothFollow() {
-    // Smooth follow the player
-    const smoothFactor = 0.9
-    const { player, cam } = this
-    cam.scrollX = smoothFactor * cam.scrollX + (1 - smoothFactor) * (player.x - cam.width * 0.5)
-    cam.scrollY = smoothFactor * cam.scrollY + (1 - smoothFactor) * (player.y - cam.height * 0.5)
-
+  updateRoomAndFollow() {
+    this.updateActiveRoom()
+    this.smoothFollow()
   }
 
   updateActiveRoom() {
@@ -98,6 +90,14 @@ export default class PlayerModel {
     if (room) {
       this.activeRoom = room
     }
+  }
+
+  smoothFollow() {
+    // Smooth follow the player
+    const smoothFactor = 0.9
+    const { player, cam } = this
+    cam.scrollX = smoothFactor * cam.scrollX + (1 - smoothFactor) * (player.x - cam.width * 0.5)
+    cam.scrollY = smoothFactor * cam.scrollY + (1 - smoothFactor) * (player.y - cam.height * 0.5)
   }
 
 }
