@@ -7,9 +7,10 @@ import DungeonGen from './game/dungeon/DungeonGen'
 import { Scene } from 'phaser'
 import ScanScene from './game/scan/ScanScene'
 import TileScene from './game/tiles/TileScene'
+import TDScene from './game/td/TDScene'
 
 export default function App() {
-  const [scene, setScene] = useState<Scene>(new TileScene())
+  const [scene, setScene] = useState<Scene>(new TDScene())
   const onSelect = (sceneName: string) => {
     switch (sceneName) {
       case "dungeon":
@@ -20,6 +21,9 @@ export default function App() {
         break
       case "tile":
         setScene(new TileScene())
+        break
+      case "td":
+        setScene(new TDScene())
         break
     }
   }
@@ -32,6 +36,7 @@ export default function App() {
           <button className="btn btn-primary" onClick={() => onSelect("dungeon")}>Dungeon Generator</button>
           <button className="btn btn-primary" onClick={() => onSelect("scan")}>Scan Scene</button>
           <button className="btn btn-primary" onClick={() => onSelect("tile")}>Tile Scene</button>
+          <button className="btn btn-primary" onClick={() => onSelect("td")}>Tower Defense</button>
         </nav>
         <p>The Explore component encapsulates the <b><code>Phaser.Game</code></b> initialization.</p>
       </center>

@@ -16,7 +16,10 @@ export default function Explore({ w = 1100, h = 800, scene }: IExploreProps) {
       parent: id,
       width: w,
       height: h,
-      scene
+      scene,
+      dom: {
+        createContainer: true
+      }
     }
     const game = new Phaser.Game(config)
     return () => {
