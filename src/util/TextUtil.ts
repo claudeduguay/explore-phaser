@@ -16,10 +16,4 @@ export function addLabel(scene: Scene, x: number, y: number, label: string) {
       fill: true
     }
   })
-  // scene.add.text(x, y, label, {
-  //   fontSize: '18px',
-  //   padding: { x: 5, y: 5 },
-  //   backgroundColor: 'transparent',
-  //   color: '#FFFFFF'
-  // })
 }

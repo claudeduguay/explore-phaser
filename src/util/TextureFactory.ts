@@ -1,19 +1,39 @@
 
-import { Scene, GameObjects } from "phaser"
+import { Scene } from "phaser"
 
-export function makeTowerBase(scene: Scene, key: string, w: number, h: number, segments: number = 4) {
-  const g = new GameObjects.Graphics(scene)
+export function makeTowerBase(scene: Scene, key: string, w: number, h: number) {
+  const g = scene.make.graphics({}, false)
+  g.fillStyle(0x666666, 1.0)
+  g.fillRoundedRect(0, 0, w, h, 20)
+  g.generateTexture(key, w, h)
+  g.destroy()
+  return g
+}
+
+export function makeTowerTurret(scene: Scene, key: string, w: number, h: number) {
+  const g = scene.make.graphics({}, false)
   g.fillStyle(0x00FF00, 1.0)
-  g.fillRoundedRect(0, 0, w, h, 5)
-  g.lineStyle(2, 0xFF00FF, 1.0)
-  g.strokeRoundedRect(0, 0, w, h, 5)
-  // g.beginPath()
-  // g.moveTo(m, m)
-  // g.lineTo(w - m, m)
-  // g.lineTo(w - m, h - m)
-  // g.lineTo(m, h - m)
-  // g.closePath()
-  // g.fillPath()
-  // g.strokePath()
-  g.generateTexture(key)
+  g.beginPath()
+  const c = w / 2
+  g.moveTo(c - c * 0.5, 0)
+  g.lineTo(c + c * 0.5, 0)
+  g.lineTo(w, h)
+  g.lineTo(0, h)
+  g.closePath()
+  g.fillPath()
+  g.strokePath()
+  g.generateTexture(key, w, h)
+  g.destroy()
+  return g
+}
+
+export function makeTowerGun(scene: Scene, key: string, w: number, h: number) {
+  const g = scene.make.graphics({}, false)
+  g.fillStyle(0x996666, 1.0)
+  g.lineStyle(1, 0xFFFFFF, 1.0)
+  g.fillRect(0, 0, w, h)
+  g.strokeRect(0, 0, w, h)
+  g.generateTexture(key, w, h)
+  g.destroy()
+  return g
 }
