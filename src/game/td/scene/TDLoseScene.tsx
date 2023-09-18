@@ -1,7 +1,7 @@
 
 import { Scene } from "phaser"
 import { addReactNode } from "../../../util/DOMUtil"
-import TDGame from "../TDGame"
+import TDGame from "./TDGameScene"
 
 export default class TDLoseScene extends Scene {
   constructor(public readonly parent: TDGame) {

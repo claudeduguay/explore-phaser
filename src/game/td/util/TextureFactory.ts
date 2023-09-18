@@ -1,6 +1,15 @@
 
 import { Scene } from "phaser"
 
+export function makeEllipse(scene: Scene, key: string, w: number, h: number) {
+  const g = scene.make.graphics({}, false)
+  g.fillStyle(0xFFA500, 1.0)
+  g.fillEllipse(w / 2, h / 2, w, h)
+  g.generateTexture(key, w, h)
+  g.destroy()
+  return g
+}
+
 export function makeTowerBase(scene: Scene, key: string, w: number, h: number) {
   const g = scene.make.graphics({}, false)
   g.fillStyle(0x666666, 1.0)

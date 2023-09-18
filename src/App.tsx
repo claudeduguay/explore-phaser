@@ -7,7 +7,7 @@ import DungeonGen from './game/dungeon/DungeonGen'
 import { Scene } from 'phaser'
 import ScanScene from './game/scan/ScanScene'
 import TileScene from './game/tiles/TileScene'
-import TDGame from './game/td/TDGame'
+import TDGame from './game/td/scene/TDGameScene'
 
 export default function App() {
   const [scene, setScene] = useState<Scene>(new TDGame())

@@ -1,10 +1,11 @@
 
 import { Scene } from "phaser"
-import { makeTowerBase, makeTowerGun, makeTowerTurret } from "../../../util/TextureFactory"
+import { makeEllipse, makeTowerBase, makeTowerGun, makeTowerTurret } from "../util/TextureFactory"
 import { addLabel } from "../../../util/TextUtil"
 import { addReactNode } from "../../../util/DOMUtil"
-import TDTower from "../TDTower" // To register the factory
-import TDGame from "../TDGame"
+import TDTower from "../tower/TDTower" // To register the factory
+import TDGame from "./TDGameScene"
+import BaseEnemy from "../enemy/BaseEnemy"
 
 export default class TDPlayScene extends Scene {
 
@@ -16,6 +17,7 @@ export default class TDPlayScene extends Scene {
     makeTowerBase(this, "tower_base", 64, 64)
     makeTowerTurret(this, "tower_turret", 48, 32)
     makeTowerGun(this, "tower_gun", 8, 32)
+    makeEllipse(this, "enemy", 32, 32)
     console.log("textures:", this.textures)
   }
 
@@ -29,13 +31,17 @@ export default class TDPlayScene extends Scene {
 
     addLabel(this, 10, 10, "This is a sample addLabel output.")
 
-    // this.addTower(new TDTower("tower_1", cx - 150, cy))
-    // this.addTower(new TDTower("tower_2", cx, cy))
-    // this.addTower(new TDTower("tower_3", cx + 150, cy))
-
-    this.addTower(cx - 150, cy)
-    this.addTower(cx, cy)
-    this.addTower(cx + 150, cy)
+    const enemy = new BaseEnemy(this, cx, cy)
+    const tower1 = new TDTower(this, cx - 150, cy)
+    const tower2 = new TDTower(this, cx, cy)
+    const tower3 = new TDTower(this, cx + 150, cy)
+    tower1.target = enemy
+    tower2.target = enemy
+    tower3.target = enemy
+    this.add.existing(enemy)
+    this.add.existing(tower1)
+    this.add.existing(tower2)
+    this.add.existing(tower3)
 
     addReactNode(this,
       <div className="btn-group">
@@ -44,11 +50,6 @@ export default class TDPlayScene extends Scene {
         <button className="btn btn-primary" onClick={onLose}>Test Lose</button>
       </div>,
       850, 10)
-  }
-
-  addTower(x: number, y: number) {
-    const tower = new TDTower(this, x, y)
-    this.add.existing(tower)
   }
 
   update(time: number, delta: number): void {

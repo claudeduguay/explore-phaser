@@ -1,11 +1,11 @@
 
 import { Scene } from "phaser"
-import TDHomeScene from "./scene/TDHomeScene"
-import TDScene from "./scene/TDPlayScene"
-import TDWinScene from "./scene/TDWinScene"
-import TDLoseScene from "./scene/TDLoseScene"
+import TDHomeScene from "./TDHomeScene"
+import TDScene from "./TDPlayScene"
+import TDWinScene from "./TDWinScene"
+import TDLoseScene from "./TDLoseScene"
 
-export default class TDGame extends Scene {
+export default class TDGameScene extends Scene {
 
   create() {
     this.scene.add("home", new TDHomeScene(this))

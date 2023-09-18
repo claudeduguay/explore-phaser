@@ -1,10 +1,15 @@
 
 import { Scene, GameObjects, Input } from "phaser"
 import TDTurret from "./TDTurret"
+import BaseEnemy from "../enemy/BaseEnemy"
+import BehaviorContainer from "../behavior/BehaviorContainer"
+import TargetBehavior from "../behavior/TargetBehavior"
 
-export default class TDTower extends GameObjects.Container {
+export default class TDTower extends BehaviorContainer {
+
   tower_base: GameObjects.Sprite
-  turret: GameObjects.Container | null
+  turret: GameObjects.Container
+  target?: BaseEnemy
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x) {
     super(scene)
@@ -18,23 +23,6 @@ export default class TDTower extends GameObjects.Container {
     this.turret = new TDTurret(scene)
     this.add(this.turret)
 
-    // scene.sys.updateList.add(this)
+    this.behavior.push(new TargetBehavior())
   }
-
-  // preUpdate(time: number, delta: number): void {
-  //   if (this.turret) {
-  //     this.turret.angle += 1
-  //   }
-  // }
 }
-
-// Not functional
-declare interface GameObjectFactory {
-  tower: (this: GameObjectFactory, x: number, y: number) => TDTower
-}
-
-GameObjects.GameObjectFactory.register("tower",
-  function (this: GameObjects.GameObjectFactory, x: number, y: number) {
-    return new TDTower(this.scene, x, y)
-  }
-)
