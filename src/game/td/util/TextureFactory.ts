@@ -13,7 +13,7 @@ export function makeEllipse(scene: Scene, key: string, w: number, h: number) {
 export function makeTowerBase(scene: Scene, key: string, w: number, h: number) {
   const g = scene.make.graphics({}, false)
   g.fillStyle(0x666666, 1.0)
-  g.fillRoundedRect(0, 0, w, h, 20)
+  g.fillRoundedRect(0, 0, w, h, 16)
   g.generateTexture(key, w, h)
   g.destroy()
   return g
@@ -22,6 +22,7 @@ export function makeTowerBase(scene: Scene, key: string, w: number, h: number) {
 export function makeTowerTurret(scene: Scene, key: string, w: number, h: number) {
   const g = scene.make.graphics({}, false)
   g.fillStyle(0x00FF00, 1.0)
+  g.lineStyle(2, 0x009900, 1.0)
   g.beginPath()
   const c = w / 2
   g.moveTo(c - c * 0.5, 0)

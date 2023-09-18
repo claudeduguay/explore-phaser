@@ -7,6 +7,6 @@ export default class BaseEnemy extends BehaviorContainer {
     super(scene)
     const enemy = this.scene.add.sprite(0, 0, "enemy")
     this.add(enemy)
-    this.behavior.push(new OrbitBehavior(x, y, 300))
+    this.behavior.push(new OrbitBehavior(x, y, 400, 250))
   }
 }
