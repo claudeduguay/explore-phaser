@@ -19,6 +19,20 @@ export default function Explore({ w = 1100, h = 800, scene }: IExploreProps) {
       scene,
       dom: {
         createContainer: true
+      },
+      physics: {
+        default: 'arcade',
+        arcade: {
+          gravity: { y: 0 }, // No gravity here :v so change it.
+          // TO YOU TO ACTUALLY SEE THE ZONE, UNCOMMENT THIS.
+          debug: true,
+          /*debugShowBody: true,
+          debugShowStaticBody: true,
+          debugShowVelocity: true,
+          debugVelocityColor: 0xffff00,
+          debugBodyColor: 0x0000ff,
+          debugStaticBodyColor: 0xffffff*/
+        }
       }
     }
     const game = new Phaser.Game(config)

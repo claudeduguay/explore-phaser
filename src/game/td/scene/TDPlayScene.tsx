@@ -32,16 +32,28 @@ export default class TDPlayScene extends Scene {
     addLabel(this, 10, 10, "This is a sample addLabel output.")
 
     const enemy = new BaseEnemy(this, cx, cy)
-    const tower1 = new TDTower(this, cx - 150, cy)
-    const tower2 = new TDTower(this, cx, cy)
-    const tower3 = new TDTower(this, cx + 150, cy)
-    tower1.target = enemy
-    tower2.target = enemy
-    tower3.target = enemy
     this.add.existing(enemy)
-    this.add.existing(tower1)
-    this.add.existing(tower2)
-    this.add.existing(tower3)
+
+    const enemies = this.physics.add.group({ key: "enemies" })
+    enemies.add(enemy)
+
+    const tower1 = new TDTower(this, cx - 150, cy)
+    tower1.name = "Tower 1"
+    const tower2 = new TDTower(this, cx, cy)
+    tower2.name = "Tower 2"
+    const tower3 = new TDTower(this, cx + 150, cy)
+    tower3.name = "Tower 3"
+    const towers = [tower1, tower2, tower3]
+    const towerZones = this.physics.add.group({ key: "towerZones" })
+
+    for (let tower of towers) {
+      tower.target = enemy
+      this.add.existing(tower)
+      towerZones.add(tower.zone)
+      this.physics.add.collider(tower.zone, enemies, tower.onCollision, undefined, tower)
+      this.physics.add.overlap(tower.zone, enemies, tower.onOverlap, undefined, tower)
+    }
+
 
     addReactNode(this,
       <div className="btn-group">
