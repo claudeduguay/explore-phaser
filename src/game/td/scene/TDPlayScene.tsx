@@ -21,10 +21,6 @@ export default class TDPlayScene extends Scene {
   }
 
   create() {
-    const onHome = () => this.parent.transitionTo("home", "game")
-    const onWin = () => this.parent.transitionTo("win", "game")
-    const onLose = () => this.parent.transitionTo("lose", "game")
-
     const cx = this.game.canvas.width / 2
     const cy = this.game.canvas.height / 2
 
@@ -47,7 +43,12 @@ export default class TDPlayScene extends Scene {
       towerGroup.add(tower)
     }
 
-    this.physics.add.overlap(towerGroup, enemyGroup, this.onOverlap, undefined)
+    this.physics.add.overlap(towerGroup, enemyGroup, this.onOverlap)
+
+
+    const onHome = () => this.parent.transitionTo("home", "game")
+    const onWin = () => this.parent.transitionTo("win", "game")
+    const onLose = () => this.parent.transitionTo("lose", "game")
 
     addReactNode(this,
       <div className="d-flex p-2" style={{ width: 1100, height: 54 }}>
