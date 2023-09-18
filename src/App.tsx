@@ -7,10 +7,10 @@ import DungeonGen from './game/dungeon/DungeonGen'
 import { Scene } from 'phaser'
 import ScanScene from './game/scan/ScanScene'
 import TileScene from './game/tiles/TileScene'
-import TDScene from './game/td/TDScene'
+import TDGame from './game/td/TDGame'
 
 export default function App() {
-  const [scene, setScene] = useState<Scene>(new TDScene())
+  const [scene, setScene] = useState<Scene>(new TDGame())
   const onSelect = (sceneName: string) => {
     switch (sceneName) {
       case "dungeon":
@@ -23,7 +23,7 @@ export default function App() {
         setScene(new TileScene())
         break
       case "td":
-        setScene(new TDScene())
+        setScene(new TDGame())
         break
     }
   }

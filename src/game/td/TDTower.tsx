@@ -5,7 +5,7 @@ export default class TDTower extends Scene {
   tower_base!: GameObjects.Sprite
   turret!: GameObjects.Container | null
 
-  constructor(key: string, public x: number = 0, public y: number = x) {
+  constructor(public key: string, public x: number = 0, public y: number = x) {
     super({ key })
   }
 

@@ -4,8 +4,14 @@ import { makeTowerBase, makeTowerGun, makeTowerTurret } from "../../util/Texture
 import { addLabel } from "../../util/TextUtil"
 import { addReactNode } from "../../util/DOMUtil"
 import TDTower from "./TDTower"
+import TDGame from "./TDGame"
+import TDHomeScene from "./TDHomeScene"
 
 export default class TDScene extends Scene {
+
+  constructor(public readonly parent: TDGame) {
+    super({ key: "play" })
+  }
 
   preload() {
     makeTowerBase(this, "tower_base", 64, 64)
@@ -15,18 +21,30 @@ export default class TDScene extends Scene {
   }
 
   create() {
+    const onHome = () => {
+      console.log("Transition to Home")
+      this.parent.scene.transition({
+        target: "home",
+        duration: 1000
+      })
+    }
+
     const cx = this.game.canvas.width / 2
     const cy = this.game.canvas.height / 2
 
     addLabel(this, 10, 10, "This is a sample addLabel output.")
 
-    this.scene.add("tower_1", new TDTower("tower_1", cx - 150, cy), true)
-    this.scene.add("tower_2", new TDTower("tower_2", cx, cy), true)
-    this.scene.add("tower_3", new TDTower("tower_3", cx + 150, cy), true)
+    this.addTower(new TDTower("tower_1", cx - 150, cy))
+    this.addTower(new TDTower("tower_2", cx, cy))
+    this.addTower(new TDTower("tower_3", cx + 150, cy))
 
     addReactNode(this,
-      <button className="btn btn-primary" onClick={() => console.log("Click")}>TestDOM</button>,
-      1000, 10)
+      <button className="btn btn-primary" onClick={onHome}>Home</button>,
+      1020, 10)
+  }
+
+  addTower(tower: TDTower) {
+    this.scene.add(tower.key, tower, true)
   }
 
   update(time: number, delta: number): void {
