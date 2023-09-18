@@ -1,7 +1,7 @@
 
-import { Scene, Scenes } from "phaser"
-import { addReactNode } from "../../util/DOMUtil"
-import TDGame from "./TDGame"
+import { Scene } from "phaser"
+import { addReactNode } from "../../../util/DOMUtil"
+import TDGame from "../TDGame"
 
 export default class TDHomeScene extends Scene {
   constructor(public readonly parent: TDGame) {
@@ -10,16 +10,9 @@ export default class TDHomeScene extends Scene {
 
   create() {
 
-    const onPlay = () => {
-      console.log("Transition to Game")
-      this.parent.scene.sleep("home")
-      this.parent.scene.transition({
-        target: "game",
-        duration: 1000
-      })
-    }
+    const onPlay = () => this.parent.transitionTo("play", "home")
 
-    const dom = addReactNode(this,
+    addReactNode(this,
       <div className="d-flex justify-content-center align-items-center" style={{ width: 1100, height: 800, background: "black" }}>
         <div className="p-2 text-white container">
           <div className="p-2">
@@ -41,12 +34,5 @@ export default class TDHomeScene extends Scene {
         </div>
       </div>,
       0, 0)
-
-    this.events.on(Scenes.Events.TRANSITION_WAKE, () => {
-      dom.style.visibility = "visible"
-    })
-    this.events.on(Scenes.Events.SLEEP, () => {
-      dom.style.visibility = "hidden"
-    })
   }
 }
