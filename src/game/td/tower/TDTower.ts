@@ -5,6 +5,7 @@ import BaseEnemy from "../enemy/BaseEnemy"
 import BehaviorContainer from "../behavior/BehaviorContainer"
 import TargetAimBehavior from "../behavior/TargetAimBehavior"
 import ClearTargetsBehavior from "../behavior/TargetsClearBehavior"
+import LaserBehavior from "../behavior/LazerBehavior"
 
 export default class TDTower extends BehaviorContainer {
 
@@ -27,17 +28,19 @@ export default class TDTower extends BehaviorContainer {
     this.turret = new TDTurret(scene)
     this.add(this.turret)
 
-    const circle = new Phaser.Geom.Circle(this.x, this.y, range)
-    this.showRange = scene.add.graphics({ fillStyle: { color: 0xff0000, alpha: 0.1 } }).fillCircleShape(circle)
+    this.showRange = scene.add.graphics({ fillStyle: { color: 0xff0000, alpha: 0.1 } })
+      .fillCircle(this.x, this.y, range)
     scene.add.existing(this.showRange)
     this.showRange.visible = false
 
-    this.showSelection = scene.add.graphics({ lineStyle: { color: 0xffffff, alpha: 1.0, width: 3 } }).strokeRoundedRect(this.x - 32, this.y - 32, 64, 64, 16)
+    this.showSelection = scene.add.graphics({ lineStyle: { color: 0xffffff, alpha: 1.0, width: 3 } })
+      .strokeRoundedRect(this.x - 32, this.y - 32, 64, 64, 16)
     scene.add.existing(this.showSelection)
     this.showSelection.visible = false
 
     this.setSize(range * 2, range * 2) // Sets bounding box
     this.behavior.push(new TargetAimBehavior())
+    this.behavior.push(new LaserBehavior())
     this.behavior.push(new ClearTargetsBehavior())
   }
 

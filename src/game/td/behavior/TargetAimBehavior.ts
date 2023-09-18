@@ -20,7 +20,8 @@ export default class TargetAimBehavior implements IBehavior<IHasTargets> {
   update(obj: IHasTargets, time: number, delta: number) {
 
     if (obj.targets.length > 0) {
-      obj.turret.rotation = PMath.Angle.BetweenPoints(obj.targets[0], obj) - Math.PI / 2
+      const target = obj.targets[0]
+      obj.turret.rotation = PMath.Angle.BetweenPoints(target, obj) - Math.PI / 2
     }
   }
 
