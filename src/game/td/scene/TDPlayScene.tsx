@@ -1,7 +1,6 @@
 
-import { Scene } from "phaser"
+import { Scene, Types, Math as PMath } from "phaser"
 import { makeEllipse, makeTowerBase, makeTowerGun, makeTowerTurret } from "../util/TextureFactory"
-import { addLabel } from "../../../util/TextUtil"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower" // To register the factory
 import TDGame from "./TDGameScene"
@@ -29,38 +28,76 @@ export default class TDPlayScene extends Scene {
     const cx = this.game.canvas.width / 2
     const cy = this.game.canvas.height / 2
 
-    addLabel(this, 10, 10, "This is a sample addLabel output.")
-
-    const enemies = this.physics.add.group({ key: "enemies" })
+    const enemyGroup = this.physics.add.group({ key: "enemyGroup" })
     for (let a = 0; a < 360; a += 90) {
-      console.log("Add enemy at:", a)
       const enemy = new BaseEnemy(this, cx, cy, a)
       this.add.existing(enemy)
-      enemies.add(enemy)
+      enemyGroup.add(enemy)
     }
-    const tower1 = new TDTower(this, cx - 150, cy)
-    tower1.name = "Tower 1"
-    const tower2 = new TDTower(this, cx, cy)
-    tower2.name = "Tower 2"
-    const tower3 = new TDTower(this, cx + 150, cy)
-    tower3.name = "Tower 3"
-    const towers = [tower1, tower2, tower3]
-    const towerZones = this.physics.add.group({ key: "towerZones" })
+
+    const towerGroup = this.physics.add.group({ key: "towerGroup" })
+    const towers = [
+      new TDTower(this, cx - 150, cy, "Tower 1"),
+      new TDTower(this, cx, cy, "Tower 2"),
+      new TDTower(this, cx + 150, cy, "Tower 3")
+    ]
 
     for (let tower of towers) {
       this.add.existing(tower)
-      towerZones.add(tower)
-      this.physics.add.overlap(tower, enemies, tower.onOverlap, undefined, tower)
+      towerGroup.add(tower)
     }
 
+    this.physics.add.overlap(towerGroup, enemyGroup, this.onOverlap, undefined)
 
     addReactNode(this,
-      <div className="btn-group">
-        <button className="btn btn-primary" onClick={onHome}>Home</button>
-        <button className="btn btn-primary" onClick={onWin}>Test Win</button>
-        <button className="btn btn-primary" onClick={onLose}>Test Lose</button>
-      </div>,
-      850, 10)
+      <div className="d-flex p-2" style={{ width: 1100, height: 54 }}>
+        <div className="flex-fill justify-content-start">
+          <div className="row">
+            <div className="col-auto">
+              <div className="input-group">
+                <span className="input-group-text fw-bold">Credits ($)</span>
+                <span className="btn btn-success">100</span>
+              </div>
+            </div>
+            <div className="col-auto">
+              <div className="input-group">
+                <span className="input-group-text fw-bold">Remaining Enemies</span>
+                <span className="btn btn-success">25</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="justify-content-end bg-primary">
+          <div className="btn-group">
+            <button className="btn btn-primary" onClick={onHome}>Home</button>
+            <button className="btn btn-primary" onClick={onWin}>Test Win</button>
+            <button className="btn btn-primary" onClick={onLose}>Test Lose</button>
+          </div>
+        </div>
+      </div >,
+      0, 0)
+
+    addReactNode(this,
+      <div className="d-flexjustify-content-center p-2" style={{ width: 1100, height: 54 }}>
+        <div className="btn-group">
+          <button className="btn btn-primary">Laser</button>
+          <button className="btn btn-primary">Bullet</button>
+          <button className="btn btn-primary">Missile</button>
+        </div>
+      </div >,
+      0, this.game.canvas.height - 54)
+  }
+
+  // Note: Addition order appears to depend on enemyGroup order
+  onOverlap(
+    towerObj: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
+    enemyObj: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
+    const tower = towerObj as TDTower
+    const enemy = enemyObj as BaseEnemy
+    const distance = PMath.Distance.BetweenPoints(enemy, tower)
+    if (distance <= tower.range) {
+      tower.targets.push(enemy as BaseEnemy)
+    }
   }
 
   update(time: number, delta: number): void {

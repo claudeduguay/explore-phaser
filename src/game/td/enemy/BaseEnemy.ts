@@ -11,6 +11,6 @@ export default class BaseEnemy extends BehaviorContainer {
 
     this.setSize(32, 32) // Sets bounding box
 
-    this.behavior.push(new OrbitBehavior(x, y, 250, 125, angle))
+    this.behavior.push(new OrbitBehavior(x, y, 300, 125, angle))
   }
 }
