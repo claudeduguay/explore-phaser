@@ -31,12 +31,13 @@ export default class TDPlayScene extends Scene {
 
     addLabel(this, 10, 10, "This is a sample addLabel output.")
 
-    const enemy = new BaseEnemy(this, cx, cy)
-    this.add.existing(enemy)
-
     const enemies = this.physics.add.group({ key: "enemies" })
-    enemies.add(enemy)
-
+    for (let a = 0; a < 360; a += 90) {
+      console.log("Add enemy at:", a)
+      const enemy = new BaseEnemy(this, cx, cy, a)
+      this.add.existing(enemy)
+      enemies.add(enemy)
+    }
     const tower1 = new TDTower(this, cx - 150, cy)
     tower1.name = "Tower 1"
     const tower2 = new TDTower(this, cx, cy)
@@ -47,10 +48,8 @@ export default class TDPlayScene extends Scene {
     const towerZones = this.physics.add.group({ key: "towerZones" })
 
     for (let tower of towers) {
-      // tower.targets = enemy
       this.add.existing(tower)
       towerZones.add(tower)
-      this.physics.add.collider(tower, enemies, tower.onCollision, undefined, tower)
       this.physics.add.overlap(tower, enemies, tower.onOverlap, undefined, tower)
     }
 

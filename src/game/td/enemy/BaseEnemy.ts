@@ -4,13 +4,13 @@ import OrbitBehavior from "../behavior/OrbitBehavior";
 
 export default class BaseEnemy extends BehaviorContainer {
 
-  constructor(scene: Scene, public x: number, public y: number) {
+  constructor(scene: Scene, public x: number, public y: number, angle: number = 0) {
     super(scene)
     const enemy = this.scene.add.sprite(0, 0, "enemy")
     this.add(enemy)
-    this.behavior.push(new OrbitBehavior(x, y, 250, 125))
 
     this.setSize(32, 32) // Sets bounding box
-    scene.physics.add.existing(this)
+
+    this.behavior.push(new OrbitBehavior(x, y, 250, 125, angle))
   }
 }

@@ -42,28 +42,15 @@ export default class TDTower extends BehaviorContainer {
   }
 
   onOverlap(
-    zone: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
+    tower: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
     enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
-    if (zone === this) {
-      if (enemy) {
-        const distance = PMath.Distance.BetweenPoints(enemy as BaseEnemy, this)
-        if (distance <= this.range) {
-          // console.log(`DISTANCE:`, distance)
-          console.log(`SET TARGET:`, enemy)
-          this.targets.push(enemy as BaseEnemy)
-        }
+    if (tower === this) {
+      const distance = PMath.Distance.BetweenPoints(enemy as BaseEnemy, this)
+      if (distance <= this.range) {
+        // NOTE: order appears to depend on enemies group order
+        this.targets.push(enemy as BaseEnemy)
       }
     }
   }
 
-  onCollision(
-    zone: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
-    enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
-    // if (zone === this.zone) {
-    //   console.log(`SPRITE COLLLISION:`, enemy)
-    //   if (enemy && !this.target) {
-    //     this.target = enemy as BaseEnemy
-    //   }
-    // }
-  }
 }
