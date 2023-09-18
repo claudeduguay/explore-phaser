@@ -1,4 +1,4 @@
-import { Scene, GameObjects } from "phaser";
+import { Scene } from "phaser";
 import BehaviorContainer from "../behavior/BehaviorContainer";
 import OrbitBehavior from "../behavior/OrbitBehavior";
 
@@ -8,9 +8,9 @@ export default class BaseEnemy extends BehaviorContainer {
     super(scene)
     const enemy = this.scene.add.sprite(0, 0, "enemy")
     this.add(enemy)
-    this.behavior.push(new OrbitBehavior(x, y, 250, 250))
+    this.behavior.push(new OrbitBehavior(x, y, 250, 125))
 
-    // const c = scene.add.ellipse(0, 0, 32, 32)
+    this.setSize(32, 32) // Sets bounding box
     scene.physics.add.existing(this)
   }
 }

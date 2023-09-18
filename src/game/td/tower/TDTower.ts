@@ -3,35 +3,24 @@ import { Scene, GameObjects, Input, Types, Math as PMath } from "phaser"
 import TDTurret from "./TDTurret"
 import BaseEnemy from "../enemy/BaseEnemy"
 import BehaviorContainer from "../behavior/BehaviorContainer"
-import TargetBehavior from "../behavior/TargetBehavior"
-import IBehavior from "../behavior/IBehavior"
-
-export class ClearTargetOnExit implements IBehavior<any> {
-  update(obj: any, time: number, delta: number) {
-    // console.log("Target:", obj.target)
-    if (obj.target && obj.target.body.touching.none) {
-      obj.target = undefined
-      obj.angle = 0
-      console.log("Clear target")
-    }
-  }
-}
+import TargetAimBehavior from "../behavior/TargetAimBehavior"
+import ClearTargetsBehavior from "../behavior/TargetsClearBehavior"
 
 export default class TDTower extends BehaviorContainer {
 
   name: string = "tower"
   tower_base: GameObjects.Sprite
   turret: GameObjects.Container
-  target?: BaseEnemy
-  // zone: GameObjects.Graphics
-  zone: GameObjects.Zone
+  targets: BaseEnemy[] = []
+  showRange: GameObjects.Graphics
+  showSelection: GameObjects.Graphics
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x, public range: number = 150) {
     super(scene)
     this.tower_base = this.scene.add.sprite(0, 0, "tower_base").setInteractive()
-      .on(Input.Events.POINTER_OVER, () => console.log("Mouse over"), this)
-      .on(Input.Events.POINTER_OUT, () => console.log("Mouse out"), this)
-      .on(Input.Events.POINTER_DOWN, () => console.log("Mouse down"), this)
+      .on(Input.Events.POINTER_OVER, () => this.showRange.visible = true, this)
+      .on(Input.Events.POINTER_OUT, () => this.showRange.visible = false, this)
+      .on(Input.Events.POINTER_DOWN, () => this.showSelection.visible = !this.showSelection.visible, this)
       .on(Input.Events.POINTER_UP, () => console.log("Mouse up"), this)
     this.add(this.tower_base)
 
@@ -39,25 +28,29 @@ export default class TDTower extends BehaviorContainer {
     this.add(this.turret)
 
     const circle = new Phaser.Geom.Circle(this.x, this.y, range)
-    const g = scene.add.graphics({ fillStyle: { color: 0xff0000, alpha: 0.1 } }).fillCircleShape(circle)
-    scene.add.existing(g)
-    this.zone = new GameObjects.Zone(scene, x, y, range * 2)
-    scene.physics.add.existing(this.zone)
-    // scene.physics.add.existing(this.zone)
-    this.behavior.push(new TargetBehavior())
-    this.behavior.push(new ClearTargetOnExit())
+    this.showRange = scene.add.graphics({ fillStyle: { color: 0xff0000, alpha: 0.1 } }).fillCircleShape(circle)
+    scene.add.existing(this.showRange)
+    this.showRange.visible = false
+
+    this.showSelection = scene.add.graphics({ lineStyle: { color: 0xffffff, alpha: 1.0, width: 3 } }).strokeRoundedRect(this.x - 32, this.y - 32, 64, 64, 16)
+    scene.add.existing(this.showSelection)
+    this.showSelection.visible = false
+
+    this.setSize(range * 2, range * 2) // Sets bounding box
+    this.behavior.push(new TargetAimBehavior())
+    this.behavior.push(new ClearTargetsBehavior())
   }
 
   onOverlap(
     zone: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
     enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
-    if (zone === this.zone) {
-      if (enemy && !this.target) {
+    if (zone === this) {
+      if (enemy) {
         const distance = PMath.Distance.BetweenPoints(enemy as BaseEnemy, this)
         if (distance <= this.range) {
-          console.log(`DISTANCE:`, distance)
+          // console.log(`DISTANCE:`, distance)
           console.log(`SET TARGET:`, enemy)
-          this.target = enemy as BaseEnemy
+          this.targets.push(enemy as BaseEnemy)
         }
       }
     }

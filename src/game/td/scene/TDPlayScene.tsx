@@ -47,11 +47,11 @@ export default class TDPlayScene extends Scene {
     const towerZones = this.physics.add.group({ key: "towerZones" })
 
     for (let tower of towers) {
-      tower.target = enemy
+      // tower.targets = enemy
       this.add.existing(tower)
-      towerZones.add(tower.zone)
-      this.physics.add.collider(tower.zone, enemies, tower.onCollision, undefined, tower)
-      this.physics.add.overlap(tower.zone, enemies, tower.onOverlap, undefined, tower)
+      towerZones.add(tower)
+      this.physics.add.collider(tower, enemies, tower.onCollision, undefined, tower)
+      this.physics.add.overlap(tower, enemies, tower.onOverlap, undefined, tower)
     }
 
 
