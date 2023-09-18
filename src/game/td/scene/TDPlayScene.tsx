@@ -65,6 +65,12 @@ export default class TDPlayScene extends Scene {
                 <span className="btn btn-success">25</span>
               </div>
             </div>
+            <div className="col-auto">
+              <div className="input-group">
+                <span className="input-group-text fw-bold">Placeholder</span>
+                <span className="btn btn-success">0</span>
+              </div>
+            </div>
           </div>
         </div>
         <div className="justify-content-end bg-primary">
