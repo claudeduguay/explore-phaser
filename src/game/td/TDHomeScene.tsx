@@ -4,7 +4,6 @@ import { addReactNode } from "../../util/DOMUtil"
 import TDGame from "./TDGame"
 
 export default class TDHomeScene extends Scene {
-  dom!: HTMLElement
   constructor(public readonly parent: TDGame) {
     super({ key: "home" })
   }
@@ -13,14 +12,14 @@ export default class TDHomeScene extends Scene {
 
     const onPlay = () => {
       console.log("Transition to Game")
+      this.parent.scene.sleep("home")
       this.parent.scene.transition({
         target: "game",
         duration: 1000
       })
-      this.dom.style.visibility = "hidden"
     }
 
-    this.dom = addReactNode(this,
+    const dom = addReactNode(this,
       <div className="d-flex justify-content-center align-items-center" style={{ width: 1100, height: 800, background: "black" }}>
         <div className="p-2 text-white container">
           <div className="p-2">
@@ -44,10 +43,10 @@ export default class TDHomeScene extends Scene {
       0, 0)
 
     this.events.on(Scenes.Events.TRANSITION_WAKE, () => {
-      this.dom.style.visibility = "visible"
+      dom.style.visibility = "visible"
     })
-    // this.events.on(Scenes.Events.TRANSITION_OUT, () => {
-    //   this.dom.style.visibility = "hidden"
-    // })
+    this.events.on(Scenes.Events.SLEEP, () => {
+      dom.style.visibility = "hidden"
+    })
   }
 }
