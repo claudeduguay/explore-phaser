@@ -32,7 +32,28 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.text-title {
+  color: darkgoldenrod;
+}
+
+.border-gold {
+  border: 2px solid transparent;
+  border-image: linear-gradient(-45deg, gold, brown, gold, brown, gold);
+  border-image-slice: 1;
+  border-style: solid;
+  border-width: 4;
+}
+
+.glow {
+  box-shadow: 0px 0px 8px white;
+}
+
+.bg-overlay {
+  background-color: rgba(64, 64, 64, 0.75)
 }

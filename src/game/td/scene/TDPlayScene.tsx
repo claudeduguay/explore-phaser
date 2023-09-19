@@ -3,12 +3,14 @@ import { Scene, Types, Math as PMath } from "phaser"
 import { makeEllipse, makeTowerBase, makeTowerGun, makeTowerTurret } from "../util/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower" // To register the factory
-import TDGame from "./TDGameScene"
+import TDGameScene from "./TDGameScene"
 import BaseEnemy from "../enemy/BaseEnemy"
+import GameHeader from "./react/GameHeader"
+import GameFooter from "./react/GameFooter"
 
 export default class TDPlayScene extends Scene {
 
-  constructor(public readonly parent: TDGame) {
+  constructor(public readonly gameScene: TDGameScene) {
     super({ key: "play" })
   }
 
@@ -45,54 +47,8 @@ export default class TDPlayScene extends Scene {
 
     this.physics.add.overlap(towerGroup, enemyGroup, this.onOverlap)
 
-
-    const onHome = () => this.parent.transitionTo("home", "game")
-    const onWin = () => this.parent.transitionTo("win", "game")
-    const onLose = () => this.parent.transitionTo("lose", "game")
-
-    addReactNode(this,
-      <div className="d-flex p-2" style={{ width: 1100, height: 54 }}>
-        <div className="flex-fill justify-content-start">
-          <div className="row">
-            <div className="col-auto">
-              <div className="input-group">
-                <span className="input-group-text fw-bold">Credits ($)</span>
-                <span className="btn btn-success">100</span>
-              </div>
-            </div>
-            <div className="col-auto">
-              <div className="input-group">
-                <span className="input-group-text fw-bold">Remaining Enemies</span>
-                <span className="btn btn-success">25</span>
-              </div>
-            </div>
-            <div className="col-auto">
-              <div className="input-group">
-                <span className="input-group-text fw-bold">Placeholder</span>
-                <span className="btn btn-success">0</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="justify-content-end bg-primary">
-          <div className="btn-group">
-            <button className="btn btn-primary" onClick={onHome}>Home</button>
-            <button className="btn btn-primary" onClick={onWin}>Test Win</button>
-            <button className="btn btn-primary" onClick={onLose}>Test Lose</button>
-          </div>
-        </div>
-      </div >,
-      0, 0)
-
-    addReactNode(this,
-      <div className="d-flexjustify-content-center p-2" style={{ width: 1100, height: 54 }}>
-        <div className="btn-group">
-          <button className="btn btn-primary">Laser</button>
-          <button className="btn btn-primary">Bullet</button>
-          <button className="btn btn-primary">Missile</button>
-        </div>
-      </div >,
-      0, this.game.canvas.height - 54)
+    addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
+    addReactNode(this, <GameFooter />, 0, this.game.canvas.height - 54)
   }
 
   // Note: Addition order appears to depend on enemyGroup order
