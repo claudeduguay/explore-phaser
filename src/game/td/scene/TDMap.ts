@@ -59,10 +59,10 @@ export default function generateMap(scene: Scene) {
     }
   }
 
-  const path = bidirectional(graph,
-    nodeKey(0, Math.floor(Math.random() * map.height)),
-    nodeKey(map.width - 1, Math.floor(Math.random() * map.height)))
-  console.log("Path:", path)
+  const from = nodeKey(0, Math.floor(Math.random() * map.height))
+  const to = nodeKey(map.width - 1, Math.floor(Math.random() * map.height))
+  const path = bidirectional(graph, from, to)
+  console.log(`From: ${from}, To: ${to}, Path:`, path)
 
   // console.log(`Min: ${Math.min(...accumulated)}, Max: ${Math.max(...accumulated)}`)
 }
