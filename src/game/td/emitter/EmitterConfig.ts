@@ -6,26 +6,27 @@ import { Types, Math as PMath } from "phaser"
 type EmitterConfig = Types.GameObjects.Particles.ParticleEmitterConfig
 
 export const cloudEmitter: EmitterConfig = {
-  alpha: 0.25,
+  alpha: { start: 0.2, end: 0 },
   color: [0x009900, 0x00FF00, 0x009900, 0x000000],
-  colorEase: PMath.Easing.Quadratic.Out.name,
-  lifespan: 1000,
+  colorEase: PMath.Easing.Linear.name,
+  lifespan: 3000,
   advance: 0,
   angle: { min: 0, max: 360 },
   rotate: { min: 0, max: 360 },
-  scale: { start: 0.5, end: 0.8, ease: 'sine.out' },
-  speed: 1,
+  scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
+  speed: 0.1,
   blendMode: 'NORMAL',
 }
 
 export const fireEmitter: EmitterConfig = {
-  color: [0xffffff, 0xfacc22, 0xf89800, 0xf83600],
+  alpha: { start: 0.75, end: 0.25 },
+  color: [0xfacc22, 0xf89800, 0xf83600, 0x000000],
   colorEase: PMath.Easing.Quadratic.Out.name,
   lifespan: 3000,
-  advance: 5000,
+  advance: 0,
   angle: { min: 5, max: -5 },  // 90 +/- 5
   rotate: { start: 0, end: 360 },
-  scale: { start: 0.01, end: 0.1, ease: 'sine.out' },
+  scale: { start: 0.005, end: 0.2, ease: 'sine.out' },
   speed: 100,
   blendMode: 'ADD',
 }
