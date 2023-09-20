@@ -52,8 +52,8 @@ export default class TDPlayScene extends Scene {
 
     this.physics.add.overlap(towerGroup, enemyGroup, this.onOverlap)
 
-    this.add.particles(100, 200, 'fire', fireEmitter)
-    this.add.particles(900, 200, 'smoke', cloudEmitter)
+    this.add.particles(100, 175, 'fire', fireEmitter)
+    this.add.particles(900, 175, 'smoke', cloudEmitter)
 
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
     addReactNode(this, <GameFooter />, 0, this.game.canvas.height - 54)
