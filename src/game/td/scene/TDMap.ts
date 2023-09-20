@@ -51,11 +51,11 @@ export default function generateMap(scene: Scene) {
       const current = nodeKey(x, y)
       const east = nodeKey(x + 1, y)
       const south = nodeKey(x, y + 1)
-      const nodeHeight = graph.getNodeAttribute(current, 'height')
-      const eastHeight = graph.getNodeAttribute(east, 'weight')
-      const southHeight = graph.getNodeAttribute(south, 'weight')
-      graph.addEdge(current, east, { weight: nodeHeight - eastHeight });
-      graph.addEdge(current, south, { weight: nodeHeight - southHeight });
+      const currentHeight = graph.getNodeAttribute(current, 'height')
+      const eastHeight = graph.getNodeAttribute(east, 'height')
+      const southHeight = graph.getNodeAttribute(south, 'height')
+      graph.addEdge(current, east, { weight: Math.abs(currentHeight - eastHeight) })
+      graph.addEdge(current, south, { weight: Math.abs(currentHeight - southHeight) })
     }
   }
 
