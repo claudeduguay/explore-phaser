@@ -75,7 +75,7 @@ export default function generateMap(scene: Scene) {
     for (let node of path) {
       const point = parseKey(node)
       console.log("Point:", node, point)
-      scene.add.sprite(32 + point.x * 64, 32 + point.y * 64, "enemy")
+      scene.add.sprite(32 + point.x * 64, 32 + point.y * 64, "path")
     }
   }
 

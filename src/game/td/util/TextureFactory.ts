@@ -14,9 +14,9 @@ export function makeHeightRects(scene: Scene, key: string, w: number, h: number,
   return g
 }
 
-export function makeEllipse(scene: Scene, key: string, w: number, h: number) {
+export function makeEllipse(scene: Scene, key: string, w: number, h: number, color: number = 0xFFA500) {
   const g = scene.make.graphics({}, false)
-  g.fillStyle(0xFFA500, 1.0)
+  g.fillStyle(color, 1.0)
   g.fillEllipse(w / 2, h / 2, w, h)
   g.generateTexture(key, w, h)
   g.destroy()
