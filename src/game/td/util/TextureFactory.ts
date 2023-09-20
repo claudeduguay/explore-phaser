@@ -1,5 +1,18 @@
 
-import { Scene } from "phaser"
+import { Scene, Display } from "phaser"
+
+export function makeHeightRects(scene: Scene, key: string, w: number, h: number, count: number = 16) {
+  const g = scene.make.graphics({}, false)
+  for (let i = 0; i < count; i++) {
+    const c = 255 * i / count
+    const color = Display.Color.GetColor(c, c, c)
+    g.fillStyle(color, 1.0)
+    g.fillRect(w * i, 0, w, h)
+  }
+  g.generateTexture(key, w * count, h)
+  g.destroy()
+  return g
+}
 
 export function makeEllipse(scene: Scene, key: string, w: number, h: number) {
   const g = scene.make.graphics({}, false)

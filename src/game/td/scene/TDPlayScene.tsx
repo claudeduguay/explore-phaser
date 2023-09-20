@@ -1,6 +1,6 @@
 
 import { Scene, Types, Math as PMath } from "phaser"
-import { makeEllipse, makeTowerBase, makeTowerGun, makeTowerTurret } from "../util/TextureFactory"
+import { makeEllipse, makeHeightRects, makeTowerBase, makeTowerGun, makeTowerTurret } from "../util/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower" // To register the factory
 import TDGameScene from "./TDGameScene"
@@ -8,6 +8,7 @@ import BaseEnemy from "../enemy/BaseEnemy"
 import GameHeader from "./react/GameHeader"
 import GameFooter from "./react/GameFooter"
 import { fireEmitter, cloudEmitter } from "../emitter/EmitterConfig"
+import generateMap from "./TDMap"
 
 export default class TDPlayScene extends Scene {
 
@@ -20,6 +21,7 @@ export default class TDPlayScene extends Scene {
     this.load.atlas('flares', 'assets/particles/flares.png', 'assets/particles/flares.json')
     this.load.image('fire', 'assets/particles/fire_01.png')
     this.load.image('smoke', 'assets/particles/smoke_01.png')
+    makeHeightRects(this, "height_cells", 64, 64, 10)
     makeTowerBase(this, "tower_base", 64, 64)
     makeTowerTurret(this, "tower_turret", 48, 32)
     makeTowerGun(this, "tower_gun", 7, 32)
@@ -28,6 +30,8 @@ export default class TDPlayScene extends Scene {
   }
 
   create() {
+    this.createMap()
+
     const cx = this.game.canvas.width / 2
     const cy = this.game.canvas.height / 2
 
@@ -59,6 +63,12 @@ export default class TDPlayScene extends Scene {
 
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
     addReactNode(this, <GameFooter />, 0, this.game.canvas.height - 54)
+  }
+
+  createMap() {
+    generateMap(this)
+    // const map = new TDMap(this)
+    // this.add.existing(map)
   }
 
   // Note: Addition order appears to depend on enemyGroup order
