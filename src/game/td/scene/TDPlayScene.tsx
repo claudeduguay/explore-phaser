@@ -7,6 +7,7 @@ import TDGameScene from "./TDGameScene"
 import BaseEnemy from "../enemy/BaseEnemy"
 import GameHeader from "./react/GameHeader"
 import GameFooter from "./react/GameFooter"
+import { fireEmitter, cloudEmitter } from "../emitter/EmitterConfig"
 
 export default class TDPlayScene extends Scene {
 
@@ -15,6 +16,10 @@ export default class TDPlayScene extends Scene {
   }
 
   preload() {
+
+    this.load.atlas('flares', 'assets/particles/flares.png', 'assets/particles/flares.json')
+    this.load.image('fire', 'assets/particles/fire_01.png')
+    this.load.image('smoke', 'assets/particles/smoke_01.png')
     makeTowerBase(this, "tower_base", 64, 64)
     makeTowerTurret(this, "tower_turret", 48, 32)
     makeTowerGun(this, "tower_gun", 7, 32)
@@ -46,6 +51,9 @@ export default class TDPlayScene extends Scene {
     }
 
     this.physics.add.overlap(towerGroup, enemyGroup, this.onOverlap)
+
+    this.add.particles(100, 200, 'fire', fireEmitter)
+    this.add.particles(900, 200, 'smoke', cloudEmitter)
 
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
     addReactNode(this, <GameFooter />, 0, this.game.canvas.height - 54)

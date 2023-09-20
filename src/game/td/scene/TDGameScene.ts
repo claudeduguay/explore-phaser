@@ -19,7 +19,7 @@ export default class TDGameScene extends Scene {
   }
 
   transitionTo(target: string, sleep?: string) {
-    console.log(`Transition to ${target}`)
+    // console.log(`Transition to ${target}`)
     if (sleep) {
       this.scene.sleep(sleep)
     }
