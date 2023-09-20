@@ -31,6 +31,13 @@ export default function generateMap(scene: Scene) {
   const graph = new Graph()
 
   const nodeKey = (x: Number, y: number) => `${x},${y}`
+  const parseKey = (text: string) => {
+    const split = text.split(",")
+    return {
+      x: parseInt(split[0]),
+      y: parseInt(split[1])
+    }
+  }
 
   // Construct nodes and map tiles
   for (let x = 0; x < map.width; x++) {
@@ -63,6 +70,14 @@ export default function generateMap(scene: Scene) {
   const to = nodeKey(map.width - 1, Math.floor(Math.random() * map.height))
   const path = bidirectional(graph, from, to)
   console.log(`From: ${from}, To: ${to}, Path:`, path)
+
+  if (path) {
+    for (let node of path) {
+      const point = parseKey(node)
+      console.log("Point:", node, point)
+      scene.add.sprite(32 + point.x * 64, 32 + point.y * 64, "enemy")
+    }
+  }
 
   // console.log(`Min: ${Math.min(...accumulated)}, Max: ${Math.max(...accumulated)}`)
 }
