@@ -2,7 +2,7 @@
 import { Scene, Types, Math as PMath } from "phaser"
 import { makeEllipse, makeHeightRects, makePathTiles, makeTowerBase, makeTowerGun, makeTowerTurret } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
-import TDTower from "../tower/TDTower" // To register the factory
+import TDTower from "../tower/TDTower"
 import TDGameScene from "./TDGameScene"
 import BaseEnemy from "../enemy/BaseEnemy"
 import GameHeader from "./react/GameHeader"
