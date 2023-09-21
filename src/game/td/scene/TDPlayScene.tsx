@@ -69,7 +69,7 @@ export default class TDPlayScene extends Scene {
 
   createMap() {
     generateMap(this)
-    // this.add.sprite(50, 650, "path_tiles").setOrigin(0, 0)
+    this.add.sprite(50, 650, "path_tiles").setOrigin(0, 0)
     // const map = new TDMap(this)
     // this.add.existing(map)
   }

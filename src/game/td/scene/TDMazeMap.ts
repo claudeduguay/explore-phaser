@@ -1,6 +1,7 @@
 import { Scene } from "phaser"
 import Maze from "../../../maze/Maze";
 import Point from "../../../util/Point";
+import Cell from "../../../maze/Cell";
 
 export function makeTileMap(scene: Scene, maze: Maze, origin: Point, cellSize: Point, rows: number, cols: number) {
 
@@ -31,28 +32,31 @@ export function makeTileMap(scene: Scene, maze: Maze, origin: Point, cellSize: P
   }
 }
 
-export default function generateMap(scene: Scene) {
-
-  const origin = new Point(10, 50)
-  const cellSize = new Point(64, 64)
-  const rows = 11
-  const cols = 17
-
+export function generateLevel(rows: number, cols: number) {
   const maze = new Maze(rows, cols)
   const right = new Point(cols - 1, Math.floor(Math.random() * (rows - 1)))
   maze.generate(maze.cell_atv(right))
-
-  // makeTileMap(scene, maze, origin, cellSize, rows, cols)
-
   const leaves = maze.get_leaves()
   const left_leaves = leaves.filter(cell => cell.pos.x === 0)
-  const right_leaves = leaves.filter(cell => cell.pos.x === cols)
-  const path = maze.get_path_to(left_leaves[0])
-  console.log("Leaves:", leaves.map(cell => cell.pos.toString()))
-  console.log("Left Leaves:", left_leaves.map(cell => cell.pos.toString()))
-  console.log("Right Leaves:", right_leaves.map(cell => cell.pos.toString()))
-  console.log("Path:", path.map(cell => cell.pos.toString()))
+  // const right_leaves = leaves.filter(cell => cell.pos.x === cols)
+  return { path: maze.get_path_to(left_leaves[0]), maze }
+}
 
+export default function generateMap(scene: Scene, showUndeyingMaze: boolean = true) {
+
+  const origin = new Point(10, 50)
+  const cellSize = new Point(64, 64)
+  const rows = 5 //11
+  const cols = 8 //17
+
+  const { path, maze } = generateLevel(rows, cols)
+  if (showUndeyingMaze) {
+    makeTileMap(scene, maze, origin, cellSize, rows, cols)
+  }
+  renderPath(scene, path, origin, cellSize)
+}
+
+function renderPath(scene: Scene, path: Cell[], origin: Point, cellSize: Point) {
   const centering = new Point(32, 32)
   const points = path.map(cell => cell.pos.times(cellSize).plus(origin).plus(centering))
   if (points.length) {
@@ -65,12 +69,13 @@ export default function generateMap(scene: Scene) {
         curve.lineTo(p.x, p.y)
       }
     }
-    const g = scene.add.graphics({ lineStyle: { color: 0x00FF00, alpha: 1.0, width: 32 } })
+    const radius = 32
+    const g = scene.add.graphics({ lineStyle: { color: 0x00FF00, alpha: 1.0, width: radius } })
     curve.draw(g)
     // Round corners overlay
     for (let i = 0; i < points.length; i++) {
       const p = points[i]
-      scene.add.ellipse(p.x, p.y, 32, 32, 0x00FF00)
+      scene.add.ellipse(p.x, p.y, radius, radius, 0x00FF00)
     }
   } else {
     console.error("Path is empty")

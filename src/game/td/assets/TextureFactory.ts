@@ -37,6 +37,9 @@ export function makePathTiles(scene: Scene, key: string, w: number, h: number, i
       if (hasBit(i, BITS_EAST)) {
         g.fillRect(left + inside.x, inside.x, size.w, inside.h)
       }
+      g.strokeStyle = "#00FF00"
+      g.rect(left, 0, w, h)
+      g.stroke()
     }
   }
   renderCanvas(scene, key, w * count, h, render)
