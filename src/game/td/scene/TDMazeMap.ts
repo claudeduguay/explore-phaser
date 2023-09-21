@@ -1,4 +1,4 @@
-import { Scene } from "phaser"
+import { Scene, GameObjects } from "phaser"
 import Maze from "../../../maze/Maze";
 import Point from "../../../util/Point";
 import Cell from "../../../maze/Cell";
@@ -77,7 +77,18 @@ function renderPath(scene: Scene, path: Cell[], origin: Point, cellSize: Point) 
       const p = points[i]
       scene.add.ellipse(p.x, p.y, radius, radius, 0x00FF00)
     }
+    const follower = scene.add.follower(curve, origin.x, origin.y, "path")
+    follower.startFollow({
+      positionOnPath: true,
+      duration: 10000,
+      from: 0.0,
+      to: 1.0,
+      yoyo: true,
+      repeat: -1,
+      rotateToPath: true
+    });
   } else {
     console.error("Path is empty")
   }
+
 }
