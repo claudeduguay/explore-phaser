@@ -1,4 +1,4 @@
-type Point = { x: number, y: number }
+import Point from "../util/Point"
 
 export default class Grid<T = any> {
 
@@ -50,11 +50,11 @@ export default class Grid<T = any> {
     return this.array === other.array
   }
 
-  index_of(value: T) {
+  index_of(value: T): Point | null {
     for (let y = 0; y < this.rows; y++) {
       for (let x = 0; x < this.cols; x++) {
         if (this.get_at(x, y) === value) {
-          return { x, y }
+          return new Point(x, y)
         }
       }
     }

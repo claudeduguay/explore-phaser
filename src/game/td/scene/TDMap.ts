@@ -2,6 +2,7 @@ import { Scene } from "phaser"
 import { SimplexNoise } from "ts-perlin-simplex"
 import Graph from "graphology"
 import { bidirectional } from 'graphology-shortest-path';
+import Maze from "../../../maze/Maze";
 
 export default function generateMap(scene: Scene) {
 
@@ -29,6 +30,16 @@ export default function generateMap(scene: Scene) {
   // this.add(layer)
 
   const graph = new Graph()
+
+  const maze = new Maze(map.width, map.height)
+  maze.generate()
+
+  for (let x = 0; x < map.width; x++) {
+    for (let y = 0; y < map.height; y++) {
+      const cell = maze.cell_at(x, y)
+      console.log("Cell:", cell.toString())
+    }
+  }
 
   const nodeKey = (x: Number, y: number) => `${x},${y}`
   const parseKey = (text: string) => {
@@ -74,7 +85,7 @@ export default function generateMap(scene: Scene) {
   if (path) {
     for (let node of path) {
       const point = parseKey(node)
-      console.log("Point:", node, point)
+      // console.log("Point:", node, point)
       scene.add.sprite(32 + point.x * 64, 32 + point.y * 64, "path")
     }
   }

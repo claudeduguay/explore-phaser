@@ -1,5 +1,38 @@
 
 import { Scene, Display } from "phaser"
+import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal"
+
+export function makePathTiles(scene: Scene, key: string, w: number, h: number, insetRatio = 0.25) {
+  const count = 0b1111
+  const g = scene.make.graphics({}, false)
+  const hasBit = (i: number, test: number): boolean => (i & test) !== 0
+  const inset = (v: number) => v * insetRatio
+  for (let i = 0; i < count; i++) {
+    g.fillStyle(0x000000, 1.0)
+    g.fillRect(w * i, 0, w, h)
+    g.fillStyle(0x333333, 1.0)
+    const left = w * i
+    const inside = { x: inset(w), y: inset(h), w: w - inset(w) * 2, h: h - inset(h) * 2 }
+    const size = { w: w - inset(w), h: h - inset(h) }
+    if (hasBit(i, BITS_NORTH)) {
+      g.fillRect(left + inside.x, 0, inside.w, size.h)
+    }
+    if (hasBit(i, BITS_SOUTH)) {
+      g.fillRect(left + inside.x, inside.y, inside.w, size.h)
+    }
+    if (hasBit(i, BITS_WEST)) {
+      g.fillRect(left, inside.y, size.w, inside.h)
+    }
+    if (hasBit(i, BITS_EAST)) {
+      g.fillRect(left + inside.x, inside.x, size.w, inside.h)
+    }
+    // g.lineStyle(1, 0x00ff00)
+    // g.strokeRect(w * i, 0, w, h)
+  }
+  g.generateTexture(key, w * count, h)
+  g.destroy()
+  return g
+}
 
 export function makeHeightRects(scene: Scene, key: string, w: number, h: number, count: number = 16) {
   const g = scene.make.graphics({}, false)

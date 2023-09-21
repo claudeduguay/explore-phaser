@@ -36,25 +36,39 @@ export default class Maze {
     return this.grid.get_col(x)
   }
 
+  get_leaves() {
+    return this.grid.array.filter(cell => cell.isLeaf())
+  }
+
   get_neighbours(cell: Cell): Array<Cell> {
     const neighbours: Cell[] = []
     if (cell.pos.y > 0) { // North
-      const neighbour = this.cell_atv(cell.pos.plus(Point.UP))
+      const neighbour = this.cell_atv(cell.pos.plus(Point.NORTH))
       neighbours.push(neighbour)
     }
     if (cell.pos.y < this.grid.rows - 1) { // South
-      const neighbour = this.cell_atv(cell.pos.plus(Point.DOWN))
+      const neighbour = this.cell_atv(cell.pos.plus(Point.SOUTH))
       neighbours.push(neighbour)
     }
     if (cell.pos.x > 0) { // West
-      const neighbour = this.cell_atv(cell.pos.plus(Point.LEFT))
+      const neighbour = this.cell_atv(cell.pos.plus(Point.WEST))
       neighbours.push(neighbour)
     }
     if (cell.pos.x < this.grid.cols - 1) { // East
-      const neighbour = this.cell_atv(cell.pos.plus(Point.RIGHT))
+      const neighbour = this.cell_atv(cell.pos.plus(Point.EAST))
       neighbours.push(neighbour)
     }
     return neighbours
+  }
+
+  get_path_to(cell: Cell) {
+    const path: Cell[] = []
+    let current = cell
+    while (current.parent) {
+      path.push(current)
+      current = current.parent
+    }
+    return path
   }
 
   random_cell(): Cell {
@@ -75,8 +89,9 @@ export default class Maze {
     for (let neighbor of neighbors) {
       if (!neighbor.visited) {
         cell.link(neighbor, true)
+        neighbor.parent = cell
+        this.walkFrom(neighbor, depth + 1)
       }
-      this.walkFrom(neighbor, depth + 1)
     }
     return cell
   }
