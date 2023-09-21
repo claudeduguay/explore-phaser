@@ -32,6 +32,10 @@ export default class Point {
     return new Point(this.x + p.x, this.y + p.y)
   }
 
+  times(p: Point) {
+    return new Point(this.x * p.x, this.y * p.y)
+  }
+
   toString() {
     return `{ x: ${this.x}, y: ${this.y} }`
   }

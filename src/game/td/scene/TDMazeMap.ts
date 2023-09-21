@@ -1,13 +1,14 @@
 import { Scene } from "phaser"
 import Maze from "../../../maze/Maze";
+import Point from "../../../util/Point";
 
-export default function generateMap(scene: Scene) {
+export function makeTileMap(scene: Scene, maze: Maze, origin: Point, cellSize: Point, rows: number, cols: number) {
 
   const map = scene.make.tilemap({
-    tileWidth: 64,
-    tileHeight: 64,
-    width: 18,
-    height: 13
+    tileWidth: cellSize.x,
+    tileHeight: cellSize.y,
+    width: cols,
+    height: rows
   })
 
   const tileset = map.addTilesetImage('path_tiles', 'path_tiles')
@@ -20,23 +21,58 @@ export default function generateMap(scene: Scene) {
     throw new Error("Failed to create layer")
   }
   layer.fill(20)  // Fill with black tiles
+  layer.setPosition(origin.x, origin.y)
 
-  const maze = new Maze(map.width, map.height)
-  maze.generate()
+  for (let x = 0; x < cols; x++) {
+    for (let y = 0; y < rows; y++) {
+      const cell = maze.cell_at(x, y)
+      map.putTileAt(cell.connectionsBits(), x, y)
+    }
+  }
+}
+
+export default function generateMap(scene: Scene) {
+
+  const origin = new Point(10, 50)
+  const cellSize = new Point(64, 64)
+  const rows = 11
+  const cols = 17
+
+  const maze = new Maze(rows, cols)
+  const right = new Point(cols - 1, Math.floor(Math.random() * (rows - 1)))
+  maze.generate(maze.cell_atv(right))
+
+  // makeTileMap(scene, maze, origin, cellSize, rows, cols)
+
   const leaves = maze.get_leaves()
   const left_leaves = leaves.filter(cell => cell.pos.x === 0)
-  const right_leaves = leaves.filter(cell => cell.pos.x === map.width)
+  const right_leaves = leaves.filter(cell => cell.pos.x === cols)
   const path = maze.get_path_to(left_leaves[0])
   console.log("Leaves:", leaves.map(cell => cell.pos.toString()))
   console.log("Left Leaves:", left_leaves.map(cell => cell.pos.toString()))
   console.log("Right Leaves:", right_leaves.map(cell => cell.pos.toString()))
   console.log("Path:", path.map(cell => cell.pos.toString()))
 
-  for (let x = 0; x < map.width; x++) {
-    for (let y = 0; y < map.height; y++) {
-      const cell = maze.cell_at(x, y)
-      map.putTileAt(cell.connectionsBits(), x, y)
+  const centering = new Point(32, 32)
+  const points = path.map(cell => cell.pos.times(cellSize).plus(origin).plus(centering))
+  if (points.length) {
+    const curve = new Phaser.Curves.Path()
+    for (let i = 0; i < points.length; i++) {
+      const p = points[i]
+      if (i === 0) {
+        curve.moveTo(p.x, p.y)
+      } else {
+        curve.lineTo(p.x, p.y)
+      }
     }
+    const g = scene.add.graphics({ lineStyle: { color: 0x00FF00, alpha: 1.0, width: 32 } })
+    curve.draw(g)
+    // Round corners overlay
+    for (let i = 0; i < points.length; i++) {
+      const p = points[i]
+      scene.add.ellipse(p.x, p.y, 32, 32, 0x00FF00)
+    }
+  } else {
+    console.error("Path is empty")
   }
-
 }

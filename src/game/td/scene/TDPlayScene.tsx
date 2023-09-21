@@ -1,6 +1,6 @@
 
 import { Scene, Types, Math as PMath } from "phaser"
-import { makeEllipse, makeHeightRects, makePathTiles, makeTowerBase, makeTowerGun, makeTowerTurret } from "../util/TextureFactory"
+import { makeEllipse, makeHeightRects, makePathTiles, makeTowerBase, makeTowerGun, makeTowerTurret } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower" // To register the factory
 import TDGameScene from "./TDGameScene"
@@ -27,7 +27,7 @@ export default class TDPlayScene extends Scene {
     makeTowerTurret(this, "tower_turret", 48, 32)
     makeTowerGun(this, "tower_gun", 7, 32)
     makeEllipse(this, "enemy", 32, 32)
-    makeEllipse(this, "path", 16, 16, 0x33FF33)
+    makeEllipse(this, "path", 16, 16, "#33FF33")
     console.log("textures:", this.textures)
   }
 

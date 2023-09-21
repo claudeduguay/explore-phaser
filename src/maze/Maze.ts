@@ -42,19 +42,19 @@ export default class Maze {
 
   get_neighbours(cell: Cell): Array<Cell> {
     const neighbours: Cell[] = []
-    if (cell.pos.y > 0) { // North
+    if (cell.pos.y > 0) {
       const neighbour = this.cell_atv(cell.pos.plus(Point.NORTH))
       neighbours.push(neighbour)
     }
-    if (cell.pos.y < this.grid.rows - 1) { // South
+    if (cell.pos.y < this.grid.rows - 1) {
       const neighbour = this.cell_atv(cell.pos.plus(Point.SOUTH))
       neighbours.push(neighbour)
     }
-    if (cell.pos.x > 0) { // West
+    if (cell.pos.x > 0) {
       const neighbour = this.cell_atv(cell.pos.plus(Point.WEST))
       neighbours.push(neighbour)
     }
-    if (cell.pos.x < this.grid.cols - 1) { // East
+    if (cell.pos.x < this.grid.cols - 1) {
       const neighbour = this.cell_atv(cell.pos.plus(Point.EAST))
       neighbours.push(neighbour)
     }
@@ -63,8 +63,8 @@ export default class Maze {
 
   get_path_to(cell: Cell) {
     const path: Cell[] = []
-    let current = cell
-    while (current.parent) {
+    let current: Cell | undefined = cell
+    while (current) {
       path.push(current)
       current = current.parent
     }
