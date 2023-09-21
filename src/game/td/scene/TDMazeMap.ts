@@ -8,8 +8,8 @@ export function makeTileMap(scene: Scene, maze: Maze, origin: Point, cellSize: P
   const map = scene.make.tilemap({
     tileWidth: cellSize.x,
     tileHeight: cellSize.y,
-    width: cols,
-    height: rows
+    width: cols * 2,
+    height: rows * 2
   })
 
   const tileset = map.addTilesetImage('path_tiles', 'path_tiles')
@@ -27,7 +27,7 @@ export function makeTileMap(scene: Scene, maze: Maze, origin: Point, cellSize: P
   for (let x = 0; x < cols; x++) {
     for (let y = 0; y < rows; y++) {
       const cell = maze.cell_at(x, y)
-      map.putTileAt(cell.connectionsBits(), x, y)
+      map.putTileAt(cell.connectionsBits(), x * 2, y * 2)
     }
   }
 }
@@ -42,12 +42,12 @@ export function generateLevel(rows: number, cols: number) {
   return { path: maze.get_path_to(left_leaves[0]), maze }
 }
 
-export default function generateMap(scene: Scene, showUndeyingMaze: boolean = true) {
+export default function generateMap(scene: Scene, showUndeyingMaze: boolean = false) {
 
   const origin = new Point(10, 50)
   const cellSize = new Point(64, 64)
-  const rows = 5 //11
-  const cols = 8 //17
+  const rows = 6 //11
+  const cols = 9 //17
 
   const { path, maze } = generateLevel(rows, cols)
   if (showUndeyingMaze) {
@@ -58,7 +58,7 @@ export default function generateMap(scene: Scene, showUndeyingMaze: boolean = tr
 
 function renderPath(scene: Scene, path: Cell[], origin: Point, cellSize: Point) {
   const centering = new Point(32, 32)
-  const points = path.map(cell => cell.pos.times(cellSize).plus(origin).plus(centering))
+  const points = path.map(cell => cell.pos.times(new Point(2, 2)).times(cellSize).plus(origin).plus(centering))
   if (points.length) {
     const curve = new Phaser.Curves.Path()
     for (let i = 0; i < points.length; i++) {
