@@ -1,7 +1,7 @@
 import Grid from "./Grid"
 import Cell from "./Cell"
-
-type Point = { x: number, y: number }
+import Point from "../util/Point"
+import { shuffle } from "../util/ArrayUtil"
 
 export default class Maze {
 
@@ -39,19 +39,19 @@ export default class Maze {
   get_neighbours(cell: Cell): Array<Cell> {
     const neighbours: Cell[] = []
     if (cell.pos.y > 0) { // North
-      const neighbour = this.cell_atv(Cell.addPoints(cell.pos, Cell.UP))
+      const neighbour = this.cell_atv(cell.pos.plus(Point.UP))
       neighbours.push(neighbour)
     }
     if (cell.pos.y < this.grid.rows - 1) { // South
-      const neighbour = this.cell_atv(Cell.addPoints(cell.pos, Cell.DOWN))
+      const neighbour = this.cell_atv(cell.pos.plus(Point.DOWN))
       neighbours.push(neighbour)
     }
     if (cell.pos.x > 0) { // West
-      const neighbour = this.cell_atv(Cell.addPoints(cell.pos, Cell.LEFT))
+      const neighbour = this.cell_atv(cell.pos.plus(Point.LEFT))
       neighbours.push(neighbour)
     }
     if (cell.pos.x < this.grid.cols - 1) { // East
-      const neighbour = this.cell_atv(Cell.addPoints(cell.pos, Cell.RIGHT))
+      const neighbour = this.cell_atv(cell.pos.plus(Point.RIGHT))
       neighbours.push(neighbour)
     }
     return neighbours
@@ -71,7 +71,7 @@ export default class Maze {
     cell.visited = true
     cell.depth = depth
     const neighbors = this.get_neighbours(cell)
-    // neighbors.shuffle()
+    shuffle(neighbors)
     for (let neighbor of neighbors) {
       if (!neighbor.visited) {
         cell.link(neighbor, true)
