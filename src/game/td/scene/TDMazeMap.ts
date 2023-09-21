@@ -43,7 +43,7 @@ export function generateLevel(rows: number, cols: number) {
 
 export default function generateMap(scene: Scene, showUndeyingMaze: boolean = false) {
 
-  const origin = new Point(10, 50)
+  const origin = new Point(6, 50)
   const cellSize = new Point(64, 64)
   const rows = 6
   const cols = 9
@@ -76,6 +76,9 @@ function renderPath(scene: Scene, path: Cell[], origin: Point, cellSize: Point) 
   const points = path.map(cell => cell.pos.times(new Point(2, 2)).times(cellSize).plus(origin).plus(centering))
   if (points.length) {
     const curve = new Curves.Path()
+    points.unshift(points[0].plus(new Point(-64, 0)))
+    const last = points.length - 1
+    points.push(points[last].plus(new Point(64, 0)))
     for (let i = 0; i < points.length; i++) {
       const p = points[i]
       if (i === 0) {
