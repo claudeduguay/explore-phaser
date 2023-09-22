@@ -47,11 +47,6 @@ export default class TDTower extends BehaviorContainer {
     this.showRange = scene.add.existing(new TDRange(scene, this.x, this.y, range))
     this.showRange.visible = false
 
-    // this.showSelection = scene.add.graphics({ lineStyle: { color: 0xffffff, alpha: 1.0, width: 3 } })
-    //   .strokeRoundedRect(this.x - 32, this.y - 32, 64, 64, 16)
-    // scene.add.existing(this.showSelection)
-    // this.showSelection.visible = false
-
     this.setSize(range * 2, range * 2) // Sets bounding box
     this.behavior.push(new TargetAimBehavior())
     this.behavior.push(new LaserBehavior())
