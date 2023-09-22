@@ -2,6 +2,7 @@ import { Types, Math as PMath } from "phaser"
 
 // Best docs: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/particles/
 // Easing functions: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
+// Particle Assets: R:\Kenney-Assets\particles\particlePack_1.1\PNG (Transparent)
 
 type EmitterConfig = Types.GameObjects.Particles.ParticleEmitterConfig
 
