@@ -72,26 +72,29 @@ export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group,
       makeTileMap(scene, maze.grid.array, origin, cellSize, rows, cols)
     }
   }
-  renderPath(scene, enemyGroup, path, origin, cellSize)
+  const curve = renderPath(scene, enemyGroup, path, origin, cellSize)
 
-  makeTimelinePreview(scene)
+  makeTimelinePreview(scene, enemyGroup, origin, curve, 0)
 }
 
-function addFollower(name: string, scene: Scene, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, offset: number = 0) {
+function addFollower(key: string, scene: Scene, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, offset: number = 0) {
   const length = path.getLength()
   console.log("Path length:", length)
-  const follower = new GameObjects.PathFollower(scene, path, origin.x, origin.y, "path-blue")
+  const follower = new GameObjects.PathFollower(scene, path, origin.x, origin.y, key)
   scene.add.existing(follower)
   follower.startFollow({
     positionOnPath: true,
-    duration: length * 7,
+    duration: length * 2,
     from: 0.0,
     to: 1.0,
-    yoyo: true,
-    repeat: -1,
+    yoyo: false,
+    // repeat: -1,
     rotateToPath: true,
     onStart: () => enemyGroup.add(follower),
-    onComplete: () => enemyGroup.remove(follower),
+    onComplete: () => {
+      follower.destroy()
+      enemyGroup.remove(follower)
+    },
     // onUpdate: (tween: any, target: any) => {
     //   const pos = path.getPoint(target.value)
     //   console.log(`Update "${name})":`, pos)
@@ -123,16 +126,17 @@ function renderPath(scene: Scene, enemyGroup: GameObjects.Group, path: Cell[], o
   //   const p = points[i]
   //   scene.add.ellipse(p.x, p.y, radius, radius, 0x00FF00)
   // }
-  addFollower("enemy-1", scene, enemyGroup, origin, curve)
-  addFollower("enemy-2", scene, enemyGroup, origin, curve, 0.01)
-  addFollower("enemy-3", scene, enemyGroup, origin, curve, 0.02)
+  // addFollower("enemy-1", scene, enemyGroup, origin, curve)
+  // addFollower("enemy-2", scene, enemyGroup, origin, curve, 0.01)
+  // addFollower("enemy-3", scene, enemyGroup, origin, curve, 0.02)
+  return curve
 
 }
 
-function makeTimelinePreview(scene: Scene) {
-  const radius = 44
-  const top = 725
-  const left = 350
+function makeTimelinePreview(scene: Scene, enemyGroup: GameObjects.Group, origin: Point, curve: Curves.Path, offset: number = 0) {
+  const radius = 39
+  const top = 27
+  const left = 295
   const path = new Curves.Path()
   path.moveTo(left, top)
   path.lineTo(left + 400, top)
@@ -145,10 +149,11 @@ function makeTimelinePreview(scene: Scene) {
 
   const timeline = scene.add.timeline({})
   const run = (key: string = "path-blue", isLast: boolean = false) => () => {
+    addFollower(key, scene, enemyGroup, origin, curve)
     const follower = new GameObjects.PathFollower(scene, path, 0, 0, key)
     follower.startFollow({
       positionOnPath: true,
-      duration: path.getLength() * 10,
+      duration: path.getLength() * 20,
       from: 0.0,
       to: 1.0,
       yoyo: false,

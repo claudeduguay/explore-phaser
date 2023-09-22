@@ -16,20 +16,14 @@ export default function GameHeader({ navigator }: IGameHeaderProps) {
       <div className="row">
         <div className="col-auto">
           <div className="input-group">
-            <span className="input-group-text fw-bold">Credits ($)</span>
+            <span className="input-group-text fw-bold">Health</span>
             <span className="btn btn-success">100</span>
           </div>
         </div>
         <div className="col-auto">
           <div className="input-group">
-            <span className="input-group-text fw-bold">Remaining Enemies</span>
+            <span className="input-group-text fw-bold">Credits</span>
             <span className="btn btn-success">25</span>
-          </div>
-        </div>
-        <div className="col-auto">
-          <div className="input-group">
-            <span className="input-group-text fw-bold">Placeholder</span>
-            <span className="btn btn-success">0</span>
           </div>
         </div>
       </div>
