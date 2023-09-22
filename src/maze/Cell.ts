@@ -5,16 +5,13 @@ export default class Cell {
 
   parent?: Cell
   pos!: Point
-  connections = new Map<Point, Cell | null>()
+  links = new Map<Point, Cell | null>()
   visited: boolean = false
   depth: number = 0
 
   constructor(x: number, y: number) {
     this.pos = new Point(x, y)
-    this.connections.set(Point.NORTH, null)
-    this.connections.set(Point.SOUTH, null)
-    this.connections.set(Point.WEST, null)
-    this.connections.set(Point.EAST, null)
+    this.clearLinks()
     this.visited = false
     this.depth = 0
   }
@@ -26,29 +23,41 @@ export default class Cell {
 
   connectionCount() {
     let count = 0
-    for (let dir of this.connections.keys()) {
-      if (this.connections.get(dir)) {
+    for (let dir of this.links.keys()) {
+      if (this.links.get(dir)) {
         count += 1
       }
     }
     return count
   }
 
+  clearLinks() {
+    this.links.set(Point.NORTH, null)
+    this.links.set(Point.SOUTH, null)
+    this.links.set(Point.WEST, null)
+    this.links.set(Point.EAST, null)
+  }
+
   link(cell: Cell, reflect: boolean = true) {
     if (reflect) {
       cell.link(this, false)
     }
-    for (let dir of this.connections.keys()) {
+    for (let dir of this.links.keys()) {
       if (cell.pos.equals(this.pos.plus(dir))) {
-        this.connections.set(dir, cell)
+        this.links.set(dir, cell)
       }
     }
   }
 
+  rechain(cell: Cell) {
+    this.clearLinks()
+    this.link(cell)
+  }
+
   connectionsBits() {
     let bits = 0
-    for (let dir of this.connections.keys()) {
-      const cell = this.connections.get(dir)
+    for (let dir of this.links.keys()) {
+      const cell = this.links.get(dir)
       if (cell) {
         bits += (BITS_MAP.get(dir) || 0)
       }
@@ -58,8 +67,8 @@ export default class Cell {
 
   formatConnections() {
     const found: string[] = []
-    for (let dir of this.connections.keys()) {
-      const connection = this.connections.get(dir)
+    for (let dir of this.links.keys()) {
+      const connection = this.links.get(dir)
       if (connection) {
         const name = dir.hasName()
         if (name) {

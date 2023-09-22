@@ -2,8 +2,9 @@ import { Scene, Curves, GameObjects } from "phaser"
 import Maze from "../../../maze/Maze";
 import Point from "../../../util/Point";
 import Cell from "../../../maze/Cell";
+import BITS_MAP, { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal";
 
-export function makeTileMap(scene: Scene, maze: Maze, origin: Point, cellSize: Point, rows: number, cols: number) {
+export function makeTileMap(scene: Scene, cells: Cell[], origin: Point, cellSize: Point, rows: number, cols: number) {
 
   const map = scene.make.tilemap({
     tileWidth: cellSize.x,
@@ -24,12 +25,21 @@ export function makeTileMap(scene: Scene, maze: Maze, origin: Point, cellSize: P
   layer.fill(20)  // Fill with black tiles
   layer.setPosition(origin.x, origin.y)
 
-  for (let x = 0; x < cols; x++) {
-    for (let y = 0; y < rows; y++) {
-      const cell = maze.cell_at(x, y)
-      map.putTileAt(cell.connectionsBits(), x * 2, y * 2)
+  cells.forEach(cell => {
+    map.putTileAt(cell.connectionsBits(), cell.pos.x * 2, cell.pos.y * 2)
+    if (cell.links.get(Point.SOUTH) !== null) {
+      map.putTileAt(BITS_NORTH + BITS_SOUTH, cell.pos.x * 2, cell.pos.y * 2 + 1)
     }
-  }
+    if (cell.links.get(Point.NORTH) !== null) {
+      map.putTileAt(BITS_NORTH + BITS_SOUTH, cell.pos.x * 2, cell.pos.y * 2 - 1)
+    }
+    if (cell.links.get(Point.EAST) != null) {
+      map.putTileAt(BITS_WEST + BITS_EAST, cell.pos.x * 2 + 1, cell.pos.y * 2)
+    }
+    if (cell.links.get(Point.WEST) != null) {
+      map.putTileAt(BITS_WEST + BITS_EAST, cell.pos.x * 2 - 1, cell.pos.y * 2)
+    }
+  })
 }
 
 export function generateLevel(rows: number, cols: number) {
@@ -38,10 +48,12 @@ export function generateLevel(rows: number, cols: number) {
   const left = maze.cell_atv(random(0))
   const right = maze.cell_atv(random(cols - 1))
   maze.generate(right)
-  return { path: maze.get_path_to(left), maze }
+  const path = maze.get_path_to(left)
+  return { path, maze }
 }
 
-export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group, showUndeyingMaze: boolean = false) {
+export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group,
+  usePath: boolean = true, showMaze: boolean = true) {
 
   const origin = new Point(6, 50)
   const cellSize = new Point(64, 64)
@@ -49,8 +61,16 @@ export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group,
   const cols = 9
 
   const { path, maze } = generateLevel(rows, cols)
-  if (showUndeyingMaze) {
-    makeTileMap(scene, maze, origin, cellSize, rows, cols)
+  if (usePath) {
+    path.forEach((cell: Cell) => cell.parent?.rechain(cell))
+  }
+
+  if (showMaze) {
+    if (usePath) {
+      makeTileMap(scene, path, origin, cellSize, rows, cols)
+    } else {
+      makeTileMap(scene, maze.grid.array, origin, cellSize, rows, cols)
+    }
   }
   renderPath(scene, enemyGroup, path, origin, cellSize)
 }
@@ -95,12 +115,12 @@ function renderPath(scene: Scene, enemyGroup: GameObjects.Group, path: Cell[], o
   }
   const radius = 44
   const g = scene.add.graphics({ lineStyle: { color: 0x00FF00, alpha: 1.0, width: radius } })
-  curve.draw(g)
+  //  curve.draw(g)
   // Round corners overlay
-  for (let i = 0; i < points.length; i++) {
-    const p = points[i]
-    scene.add.ellipse(p.x, p.y, radius, radius, 0x00FF00)
-  }
+  // for (let i = 0; i < points.length; i++) {
+  //   const p = points[i]
+  //   scene.add.ellipse(p.x, p.y, radius, radius, 0x00FF00)
+  // }
   addFollower("enemy-1", scene, enemyGroup, origin, curve)
   addFollower("enemy-2", scene, enemyGroup, origin, curve, 0.01)
   addFollower("enemy-3", scene, enemyGroup, origin, curve, 0.02)
