@@ -1,5 +1,5 @@
 
-import { Scene, Types, Math as PMath, GameObjects } from "phaser"
+import { Scene, GameObjects, Types, FX, Math as PMath } from "phaser"
 import { makeEllipse, makeHeightRects, makePathTiles, makeTowerBase, makeTowerGun, makeTowerTurret } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
@@ -54,7 +54,7 @@ export default class TDPlayScene extends Scene {
         pos = randomCell()
       }
       checkDuplicates.add(pos)
-      return new TDTower(this, pos.x, pos.y, `Tower ${i + 1}`)
+      return new TDTower(this, pos.x, pos.y, towerGroup, `Tower ${i + 1}`)
     }
     for (let i = 0; i < towerCount; i++) {
       towers.push(generateTower(i))
