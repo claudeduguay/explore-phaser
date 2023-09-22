@@ -15,6 +15,7 @@ export default class TDEnemyScene extends Scene {
       name: "Generic Enemy",
       stats: {
         health: 100,
+        shield: 100,
         speed: 100
       },
       damage: {

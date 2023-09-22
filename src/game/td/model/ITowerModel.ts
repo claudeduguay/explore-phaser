@@ -1,4 +1,11 @@
 
+export interface ITowerMeta {
+  key: string
+  base: string
+  turret: string
+  gun: string
+}
+
 export interface ITowerStatistics {
   range: number
   emitters: number
@@ -15,6 +22,7 @@ export interface ITowerDamage {
 
 export interface ITowerModel {
   name: string
+  meta: ITowerMeta
   stats: ITowerStatistics
   damage: ITowerDamage
 }

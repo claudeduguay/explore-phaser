@@ -118,8 +118,8 @@ function renderPath(scene: Scene, enemyGroup: GameObjects.Group, path: Cell[], o
       curve.lineTo(p.x, p.y)
     }
   }
-  const radius = 44
-  const g = scene.add.graphics({ lineStyle: { color: 0x00FF00, alpha: 1.0, width: radius } })
+  // const radius = 44
+  // const g = scene.add.graphics({ lineStyle: { color: 0x00FF00, alpha: 1.0, width: radius } })
   //  curve.draw(g)
   // Round corners overlay
   // for (let i = 0; i < points.length; i++) {

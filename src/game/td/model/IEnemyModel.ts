@@ -1,6 +1,7 @@
 
 export interface IEnemyStatistics {
   health: number
+  shield: number
   speed: number
 }
 

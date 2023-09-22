@@ -4,14 +4,16 @@ import { makeEllipse, makeHeightRects, makePathTiles, makeTowerBase, makeTowerGu
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
 import TDGameScene from "./TDGameScene"
-import BaseEnemy from "../enemy/BaseEnemy"
 import GameHeader from "./react/GameHeader"
 import GameFooter from "./react/GameFooter"
 import { fireEmitter, cloudEmitter } from "../emitter/EmitterConfig"
 import generateMap from "./TDMazeMap"
 import Point from "../../../util/Point"
+import SelectionManager from "./SelectionManager"
 
 export default class TDPlayScene extends Scene {
+
+  selectionManager!: SelectionManager
 
   constructor(public readonly gameScene: TDGameScene) {
     super({ key: "play" })
@@ -41,6 +43,7 @@ export default class TDPlayScene extends Scene {
 
     const origin = new Point(6, 50)
     const towerGroup = this.physics.add.group({ key: "towerGroup" })
+    this.selectionManager = new SelectionManager(towerGroup)
     const randomCell = () => new Point(
       origin.x + Math.floor(Math.random() * 8) * 64 * 2 + 32 + 64,
       origin.y + Math.floor(Math.random() * 5) * 64 * 2 + 32 + 64)
@@ -54,23 +57,22 @@ export default class TDPlayScene extends Scene {
         pos = randomCell()
       }
       checkDuplicates.add(pos)
-      return new TDTower(this, pos.x, pos.y, towerGroup, `Tower ${i + 1}`)
+      return new TDTower(this, pos.x, pos.y)
     }
     for (let i = 0; i < towerCount; i++) {
-      towers.push(generateTower(i))
-    }
-    // Capture this as an HTMLImageElement
-    towers[0].capture()?.snapshot(image => {
-      console.log("Capture:", image)
-      if (image instanceof HTMLImageElement) {
-        this.gameScene.capture = image.src
-      }
-    })
-
-    for (let tower of towers) {
+      const tower = generateTower(i)
+      towers.push(tower)
       this.add.existing(tower)
       towerGroup.add(tower)
     }
+    this.selectionManager.select(towers[0])
+    // // Capture this as an HTMLImageElement
+    // towers[0].capture()?.snapshot(image => {
+    //   console.log("Capture:", image)
+    //   if (image instanceof HTMLImageElement) {
+    //     this.gameScene.capture = image.src
+    //   }
+    // })
 
     this.physics.add.overlap(towerGroup, enemyGroup, this.onOverlap)
 
@@ -92,13 +94,13 @@ export default class TDPlayScene extends Scene {
 
   // Note: Addition order appears to depend on enemyGroup order
   onOverlap(
-    towerObj: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
-    enemyObj: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
-    const tower = towerObj as TDTower
-    const enemy = enemyObj as BaseEnemy
-    const distance = PMath.Distance.BetweenPoints(enemy, tower)
-    if (distance <= tower.range) {
-      tower.targets.push(enemy as BaseEnemy)
+    tower: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
+    enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
+    if (tower instanceof TDTower && enemy instanceof GameObjects.PathFollower) {
+      const distance = PMath.Distance.BetweenPoints(enemy, tower)
+      if (distance <= tower.config.stats.range) {
+        tower.targets.push(enemy)
+      }
     }
   }
 
