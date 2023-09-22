@@ -51,7 +51,6 @@ export function makeHeightRects(scene: Scene, key: string, w: number, h: number,
       const c = Math.floor(255 * i / count)
       const hex = c.toString(16).toUpperCase()
       g.fillStyle = `#${hex}${hex}${hex}`
-      console.log(g.fillStyle)
       g.fillRect(w * i, 0, w, h)
     }
   }
