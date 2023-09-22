@@ -84,7 +84,7 @@ function addFollower(key: string, scene: Scene, enemyGroup: GameObjects.Group, o
   scene.add.existing(follower)
   follower.startFollow({
     positionOnPath: true,
-    duration: length * 2,
+    duration: length * 5,
     from: 0.0,
     to: 1.0,
     yoyo: false,
@@ -153,7 +153,7 @@ function makeTimelinePreview(scene: Scene, enemyGroup: GameObjects.Group, origin
     const follower = new GameObjects.PathFollower(scene, path, 0, 0, key)
     follower.startFollow({
       positionOnPath: true,
-      duration: path.getLength() * 20,
+      duration: path.getLength() * 50,
       from: 0.0,
       to: 1.0,
       yoyo: false,
@@ -172,13 +172,13 @@ function makeTimelinePreview(scene: Scene, enemyGroup: GameObjects.Group, origin
 
   const config: Phaser.Types.Time.TimelineEventConfig[] = []
   for (let i = 1; i <= 3; i++) {
-    config.push({ at: 150 * i, run: run("path-green") })
+    config.push({ at: 250 * i, run: run("path-green") })
   }
   for (let i = 1; i <= 3; i++) {
-    config.push({ at: 1000 + 150 * i, run: run("path-blue") })
+    config.push({ at: 1500 + 250 * i, run: run("path-blue") })
   }
   for (let i = 1; i <= 3; i++) {
-    config.push({ at: 2000 + 150 * i, run: run("path-red", i === 3) })
+    config.push({ at: 3000 + 250 * i, run: run("path-red", i === 3) })
   }
   timeline.add(config)
 
