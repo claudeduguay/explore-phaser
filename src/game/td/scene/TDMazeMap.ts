@@ -1,4 +1,4 @@
-import { Scene, Curves } from "phaser"
+import { Scene, Curves, GameObjects } from "phaser"
 import Maze from "../../../maze/Maze";
 import Point from "../../../util/Point";
 import Cell from "../../../maze/Cell";
@@ -41,7 +41,7 @@ export function generateLevel(rows: number, cols: number) {
   return { path: maze.get_path_to(left), maze }
 }
 
-export default function generateMap(scene: Scene, showUndeyingMaze: boolean = false) {
+export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group, showUndeyingMaze: boolean = false) {
 
   const origin = new Point(6, 50)
   const cellSize = new Point(64, 64)
@@ -52,12 +52,13 @@ export default function generateMap(scene: Scene, showUndeyingMaze: boolean = fa
   if (showUndeyingMaze) {
     makeTileMap(scene, maze, origin, cellSize, rows, cols)
   }
-  renderPath(scene, path, origin, cellSize)
+  renderPath(scene, enemyGroup, path, origin, cellSize)
 }
 
-function addFollower(scene: Scene, origin: Point, path: Curves.Path, offset: number = 0) {
+function addFollower(name: string, scene: Scene, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, offset: number = 0) {
   const length = path.getLength()
-  const follower = scene.add.follower(path, origin.x, origin.y, "path")
+  const follower = new GameObjects.PathFollower(scene, path, origin.x, origin.y, "path")
+  scene.add.existing(follower)
   follower.startFollow({
     positionOnPath: true,
     duration: length * 5,
@@ -66,12 +67,16 @@ function addFollower(scene: Scene, origin: Point, path: Curves.Path, offset: num
     yoyo: true,
     repeat: -1,
     rotateToPath: true,
-    startAt: offset
-  });
-
+    // onUpdate: (tween: any, target: any) => {
+    //   const pos = path.getPoint(target.value)
+    //   console.log(`Update "${name})":`, pos)
+    // }
+  }, offset)
+  console.log(enemyGroup)
+  enemyGroup.add(follower)
 }
 
-function renderPath(scene: Scene, path: Cell[], origin: Point, cellSize: Point) {
+function renderPath(scene: Scene, enemyGroup: GameObjects.Group, path: Cell[], origin: Point, cellSize: Point) {
   const centering = new Point(32, 32)
   const points = path.map(cell => cell.pos.times(new Point(2, 2)).times(cellSize).plus(origin).plus(centering))
   if (points.length) {
@@ -95,9 +100,9 @@ function renderPath(scene: Scene, path: Cell[], origin: Point, cellSize: Point) 
       const p = points[i]
       scene.add.ellipse(p.x, p.y, radius, radius, 0x00FF00)
     }
-    addFollower(scene, origin, curve)
-    addFollower(scene, origin, curve, 0.01)
-    addFollower(scene, origin, curve, 0.02)
+    addFollower("enemy-1", scene, enemyGroup, origin, curve)
+    addFollower("enemy-2", scene, enemyGroup, origin, curve, 0.01)
+    addFollower("enemy-3", scene, enemyGroup, origin, curve, 0.02)
   } else {
     console.error("Path is empty")
   }

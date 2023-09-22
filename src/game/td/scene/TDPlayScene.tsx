@@ -1,5 +1,5 @@
 
-import { Scene, Types, Math as PMath } from "phaser"
+import { Scene, Types, Math as PMath, GameObjects } from "phaser"
 import { makeEllipse, makeHeightRects, makePathTiles, makeTowerBase, makeTowerGun, makeTowerTurret } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
@@ -9,6 +9,7 @@ import GameHeader from "./react/GameHeader"
 import GameFooter from "./react/GameFooter"
 import { fireEmitter, cloudEmitter } from "../emitter/EmitterConfig"
 import generateMap from "./TDMazeMap"
+import Point from "../../../util/Point"
 
 export default class TDPlayScene extends Scene {
 
@@ -32,24 +33,30 @@ export default class TDPlayScene extends Scene {
   }
 
   create() {
-    this.createMap()
-
-    const cx = this.game.canvas.width / 2
-    const cy = this.game.canvas.height / 2
-
     const enemyGroup = this.physics.add.group({ key: "enemyGroup" })
-    for (let a = 0; a < 360; a += 90) {
-      const enemy = new BaseEnemy(this, cx, cy, a)
-      this.add.existing(enemy)
-      enemyGroup.add(enemy)
-    }
 
+    this.createMap(enemyGroup) // Needs enemy group
+
+    const origin = new Point(6, 50)
     const towerGroup = this.physics.add.group({ key: "towerGroup" })
-    const towers = [
-      new TDTower(this, cx - 150, cy, "Tower 1"),
-      new TDTower(this, cx, cy, "Tower 2"),
-      new TDTower(this, cx + 150, cy, "Tower 3")
-    ]
+    const randomCell = () => new Point(
+      origin.x + Math.floor(Math.random() * 8) * 64 * 2 + 32 + 64,
+      origin.y + Math.floor(Math.random() * 5) * 64 * 2 + 32 + 64)
+
+    const towerCount = 10
+    const towers: TDTower[] = []
+    const checkDuplicates = new Set<Point>()
+    const generateTower = (i: number) => {
+      let pos = randomCell()
+      while (checkDuplicates.has(pos)) {
+        pos = randomCell()
+      }
+      checkDuplicates.add(pos)
+      return new TDTower(this, pos.x, pos.y, `Tower ${i + 1}`)
+    }
+    for (let i = 0; i < towerCount; i++) {
+      towers.push(generateTower(i))
+    }
 
     for (let tower of towers) {
       this.add.existing(tower)
@@ -59,16 +66,16 @@ export default class TDPlayScene extends Scene {
     this.physics.add.overlap(towerGroup, enemyGroup, this.onOverlap)
 
     const fireRange = 250
-    this.add.particles(100, 175, 'fire', fireEmitter(fireRange))
-    this.add.rectangle(100, 210, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
-    this.add.particles(900, 200, 'smoke', cloudEmitter())
+    this.add.particles(100, 765, 'fire', fireEmitter(fireRange))
+    this.add.rectangle(100, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
+    this.add.particles(900, 750, 'smoke', cloudEmitter())
 
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
     addReactNode(this, <GameFooter />, 0, this.game.canvas.height - 54)
   }
 
-  createMap() {
-    generateMap(this)
+  createMap(enemyGroup: GameObjects.Group) {
+    generateMap(this, enemyGroup)
     // this.add.sprite(50, 650, "path_tiles").setOrigin(0, 0)
     // const map = new TDMap(this)
     // this.add.existing(map)
