@@ -26,6 +26,6 @@ export default class TDHomeScene extends Scene {
         poison: 0,
       }
     }
-    addReactNode(this, <TowerInfo navigator={this.gameScene} model={model} />, 25, 75)
+    addReactNode(this, <TowerInfo capture={this.gameScene.capture} navigator={this.gameScene} model={model} />, 25, 75)
   }
 }

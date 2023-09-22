@@ -53,4 +53,12 @@ export default class TDTower extends BehaviorContainer {
     this.behavior.push(new ClearTargetsBehavior())
   }
 
+  capture(key: string = "capture-tower") {
+    const capture = this.scene.textures.addDynamicTexture(key, 64, 64)
+    const tower = new TDTower(this.scene, 32, 32, this.towerGroup)
+    tower.angle = 90
+    capture?.draw(tower)
+    return capture
+  }
+
 }

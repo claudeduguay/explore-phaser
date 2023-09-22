@@ -9,6 +9,8 @@ import TDEnemyInfo from "./TDEnemyInfo"
 
 export default class TDGameScene extends Scene {
 
+  capture!: string
+
   create() {
     this.scene.add("home", new TDHomeScene(this))
     this.scene.add("play", new TDPlayScene(this), true)

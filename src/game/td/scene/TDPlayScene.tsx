@@ -1,5 +1,5 @@
 
-import { Scene, GameObjects, Types, FX, Math as PMath } from "phaser"
+import { Scene, GameObjects, Types, Math as PMath } from "phaser"
 import { makeEllipse, makeHeightRects, makePathTiles, makeTowerBase, makeTowerGun, makeTowerTurret } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
@@ -59,6 +59,13 @@ export default class TDPlayScene extends Scene {
     for (let i = 0; i < towerCount; i++) {
       towers.push(generateTower(i))
     }
+    // Capture this as an HTMLImageElement
+    towers[0].capture()?.snapshot(image => {
+      console.log("Capture:", image)
+      if (image instanceof HTMLImageElement) {
+        this.gameScene.capture = image.src
+      }
+    })
 
     for (let tower of towers) {
       this.add.existing(tower)

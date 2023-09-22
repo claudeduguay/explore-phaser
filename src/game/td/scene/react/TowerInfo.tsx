@@ -4,11 +4,13 @@ import INavigator from "./INavigator"
 import PropsInfo from "./PropsInfo"
 
 export interface ITowerInfoProps {
+  capture: string
   navigator: INavigator
   model: ITowerModel
 }
 
-export default function TowerInfo({ navigator, model }: ITowerInfoProps) {
+export default function TowerInfo({ capture, navigator, model }: ITowerInfoProps) {
+  console.log("Capture:", capture)
   const style: CSSProperties = {
     width: 350,
     // height: 600,
@@ -18,6 +20,7 @@ export default function TowerInfo({ navigator, model }: ITowerInfoProps) {
   return <div className="text-white bg-overlay border-gold glow -p-3" style={style}>
     <h1 className="fs-2 p-1 text-title">Tower Info</h1>
     <h4 className="fs-4 border-top p-2 m-2">{model.name}</h4>
+    <div><img src={capture} alt="Tower" /></div>
     <PropsInfo title="General" model={model.stats} />
     <PropsInfo title="Damage (dps per emitter)" model={model.damage} />
     <div className="text-end p-3 pt-0">
