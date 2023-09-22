@@ -6,7 +6,7 @@ export default class Point {
   static WEST = new Point(-1, 0)
   static EAST = new Point(1, 0)
 
-  constructor(public x: number, public y: number) {
+  constructor(public x: number = 0, public y: number = 0) {
   }
 
   equals(p: Point) {

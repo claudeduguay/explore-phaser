@@ -28,7 +28,9 @@ export default class TDPlayScene extends Scene {
     makeTowerTurret(this, "tower_turret", 48, 32)
     makeTowerGun(this, "tower_gun", 7, 32)
     makeEllipse(this, "enemy", 32, 32)
-    makeEllipse(this, "path", 20, 20, "#3333FF")
+    makeEllipse(this, "path-green", 20, 20, "#66FF66")
+    makeEllipse(this, "path-blue", 20, 20, "#6666FF")
+    makeEllipse(this, "path-red", 20, 20, "#FF6666")
     console.log("textures:", this.textures)
   }
 

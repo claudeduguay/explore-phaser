@@ -2,7 +2,7 @@ import { Scene, Curves, GameObjects } from "phaser"
 import Maze from "../../../maze/Maze";
 import Point from "../../../util/Point";
 import Cell from "../../../maze/Cell";
-import BITS_MAP, { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal";
+import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal";
 
 export function makeTileMap(scene: Scene, cells: Cell[], origin: Point, cellSize: Point, rows: number, cols: number) {
 
@@ -73,12 +73,14 @@ export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group,
     }
   }
   renderPath(scene, enemyGroup, path, origin, cellSize)
+
+  makeTimelinePreview(scene)
 }
 
 function addFollower(name: string, scene: Scene, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, offset: number = 0) {
   const length = path.getLength()
   console.log("Path length:", length)
-  const follower = new GameObjects.PathFollower(scene, path, origin.x, origin.y, "path")
+  const follower = new GameObjects.PathFollower(scene, path, origin.x, origin.y, "path-blue")
   scene.add.existing(follower)
   follower.startFollow({
     positionOnPath: true,
@@ -126,3 +128,55 @@ function renderPath(scene: Scene, enemyGroup: GameObjects.Group, path: Cell[], o
   addFollower("enemy-3", scene, enemyGroup, origin, curve, 0.02)
 
 }
+
+function makeTimelinePreview(scene: Scene) {
+  const radius = 44
+  const top = 725
+  const left = 350
+  const path = new Curves.Path()
+  path.moveTo(left, top)
+  path.lineTo(left + 400, top)
+  const g = scene.add.graphics({
+    lineStyle: { color: 0x006600, alpha: 1.0, width: radius },
+    fillStyle: { color: 0x000000, alpha: 0.5 }
+  })
+  path.draw(g)
+  g.fillRect(left + 100, top - radius / 2, 200, radius)
+
+  const timeline = scene.add.timeline({})
+  const run = (key: string = "path-blue", isLast: boolean = false) => () => {
+    const follower = new GameObjects.PathFollower(scene, path, 0, 0, key)
+    follower.startFollow({
+      positionOnPath: true,
+      duration: path.getLength() * 10,
+      from: 0.0,
+      to: 1.0,
+      yoyo: false,
+      repeat: 0,
+      rotateToPath: true,
+      // onStart: () => enemyGroup.add(follower),
+      onComplete: () => {
+        follower.destroy()
+        if (isLast) {
+          setTimeout(() => timeline.reset(), 2000)
+        }
+      }
+    })
+    scene.add.existing(follower)
+  }
+
+  const config: Phaser.Types.Time.TimelineEventConfig[] = []
+  for (let i = 1; i <= 3; i++) {
+    config.push({ at: 150 * i, run: run("path-green") })
+  }
+  for (let i = 1; i <= 3; i++) {
+    config.push({ at: 1000 + 150 * i, run: run("path-blue") })
+  }
+  for (let i = 1; i <= 3; i++) {
+    config.push({ at: 2000 + 150 * i, run: run("path-red", i === 3) })
+  }
+  timeline.add(config)
+
+  timeline.play()
+}
+
