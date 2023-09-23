@@ -11,6 +11,7 @@ export default class TDHomeScene extends Scene {
   }
 
   create() {
+    // TODO: This only creates the component but does not update the tower between calls
     const play: any = this.gameScene.scene.get("play")
     addReactNode(this, <TowerInfo tower={play?.selectionManager.selected} navigator={this.gameScene} />, 25, 75)
   }
