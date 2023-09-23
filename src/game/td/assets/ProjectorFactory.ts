@@ -36,10 +36,8 @@ export function projectorRenderer(g: CanvasRenderingContext2D,
   const y = h * margin
   const ww = w - (x * 2)
   const hh = h - (y * 2)
-  console.log("Width:", ww)
   const cx = ww / 2
   const main = { x: ww / 2 - ww * inset, w: ww * inset * 2 }
-  // const main = { x: 0, w: ww }
 
   g.fillStyle = linearGradient(g, 0, 0, ww, 0, ...distributedStops(gradient))
 

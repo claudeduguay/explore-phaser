@@ -10,7 +10,7 @@ import { fireEmitter, cloudEmitter } from "../emitter/ParticleConfig"
 import generateMap from "./TDMazeMap"
 import Point from "../../../util/Point"
 import SelectionManager from "./SelectionManager"
-import { BOOST_TOWER, BULLET_TOWER, FIRE_TOWER, ICE_TOWER, LAZER_TOWER, LIGHTNING_TOWER, MISSILE_TOWER, POISON_TOWER } from "../model/ITowerModel"
+import { ALL_TOWERS } from "../model/ITowerModel"
 import { addLabel } from "../../../util/TextUtil"
 
 export default class TDPlayScene extends Scene {
@@ -190,7 +190,6 @@ export default class TDPlayScene extends Scene {
     makeEllipse(this, "path-green", 20, 20, "#66FF66")
     makeEllipse(this, "path-blue", 20, 20, "#6666FF")
     makeEllipse(this, "path-red", 20, 20, "#FF6666")
-    console.log("textures:", this.textures)
   }
 
   create() {
@@ -208,17 +207,7 @@ export default class TDPlayScene extends Scene {
     const towerCount = 10
     const towers: TDTower[] = []
     const checkDuplicates = new Set<string>()
-    const towerModels = [
-      LAZER_TOWER,
-      FIRE_TOWER,
-      POISON_TOWER,
-      BULLET_TOWER,
-      MISSILE_TOWER,
-      LIGHTNING_TOWER,
-      ICE_TOWER,
-      BOOST_TOWER
-    ]
-    towerModels.forEach((model, i) => {
+    ALL_TOWERS.forEach((model, i) => {
       const p = new Point(50 + i * 100, 100)
       const t = new TDTower(this, p.x, p.y, model)
       this.add.existing(t)
@@ -231,8 +220,8 @@ export default class TDPlayScene extends Scene {
         pos = randomCell()
       }
       checkDuplicates.add(pos.toString())
-      const model = Utils.Array.GetRandom(towerModels)
-      return new TDTower(this, pos.x, pos.y, model)
+      const model = Utils.Array.GetRandom(ALL_TOWERS)
+      return new TDTower(this, pos.x, pos.y, model, this.selectionManager)
     }
     for (let i = 0; i < towerCount; i++) {
       const tower = generateTower(i)
@@ -250,7 +239,7 @@ export default class TDPlayScene extends Scene {
     this.add.particles(900, 750, 'smoke', cloudEmitter())
 
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
-    addReactNode(this, <GameFooter />, 0, this.game.canvas.height - 54)
+    addReactNode(this, <GameFooter scene={this} />, 0, this.game.canvas.height - 64)
   }
 
   createMap(enemyGroup: GameObjects.Group) {

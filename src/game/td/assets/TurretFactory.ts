@@ -23,7 +23,7 @@ export const DEFAULT_TURRET_OPTIONS: ITurretOptions = {
   topSeg: 7,
   botSeg: 10,
   gradient: ["#99F", "#00F", "#009"],
-  line: "transparent"
+  line: "white"
 }
 
 export function drawPolylipse(g: CanvasRenderingContext2D,
@@ -69,6 +69,7 @@ export function turretRenderer(g: CanvasRenderingContext2D,
 
   g.fillStyle = linearGradient(g, x, y, ww, hh, ...distributedStops(gradient))
   g.strokeStyle = line
+  g.lineWidth = 2
 
   g.beginPath()
   drawPolylipse(g, mid.x, mid.y, mid.x, tr, 0, 180, topSeg)

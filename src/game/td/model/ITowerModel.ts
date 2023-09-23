@@ -2,6 +2,7 @@
 export interface ITowerProjector {
   sprite: string  // Gun or radar, etc. sprite
   emitter: string // Emitter effect type
+  distribution?: "linear" | "radial" | "center"
 }
 
 export interface ITowerMeta {
@@ -295,3 +296,15 @@ export const BOOST_TOWER: ITowerModel = {
     boost: 100
   }
 }
+
+
+export const ALL_TOWERS = [
+  LAZER_TOWER,
+  FIRE_TOWER,
+  POISON_TOWER,
+  BULLET_TOWER,
+  MISSILE_TOWER,
+  LIGHTNING_TOWER,
+  ICE_TOWER,
+  BOOST_TOWER
+]

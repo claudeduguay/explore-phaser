@@ -80,7 +80,7 @@ export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group,
 
 function addFollower(key: string, scene: Scene, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, offset: number = 0) {
   const length = path.getLength()
-  console.log("Path length:", length)
+  // console.log("Path length:", length)
   const follower = new TDEnemy(scene, path, origin.x, origin.y, key)
   scene.add.existing(follower)
   follower.startFollow({

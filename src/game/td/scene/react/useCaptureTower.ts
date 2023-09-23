@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import TDTower from "../../tower/TDTower";
+import ITowerModel from "../../model/ITowerModel";
+import { Scene } from "phaser";
 
-export default function useCaptureTower(tower: TDTower, w: number = 64, h: number = 64): string {
+export default function useCaptureTower(scene: Scene, model: ITowerModel, w: number = 64, h: number = 64): string {
   const [imageSrc, setImageSrc] = useState<string>("")
   useEffect(() => {
-    const capture = tower.scene.textures.addDynamicTexture(tower.model.meta.capture, w, h)
+    const capture = scene.textures.addDynamicTexture(model.meta.capture, w, h)
     if (capture) {
-      const copy = new TDTower(tower.scene, w / 2, h / 2)
+      const copy = new TDTower(scene, w / 2, h / 2)
       copy.angle = 90
       capture.draw(copy)
       capture.snapshot(img => {
         if (img instanceof HTMLImageElement) {
-          console.log("Length:", img.src.length)
           setImageSrc(img.src)
         }
       })
       capture.destroy()
     }
-  }, [tower, w, h])
+  }, [scene, model, w, h])
   return imageSrc
 }

@@ -1,14 +1,16 @@
+import { Scene } from "phaser"
+import { ALL_TOWERS } from "../../model/ITowerModel"
+import TowerButton from "./TowerButton"
 
 export interface IGameFooterProps {
-
+  scene: Scene
 }
 
-export default function GameFooter(props: IGameFooterProps) {
-  return <div className="d-flexjustify-content-center p-2" style={{ width: 1100, height: 54 }}>
+export default function GameFooter({ scene }: IGameFooterProps) {
+  return <div className="d-flexjustify-content-center p-2" style={{ width: 1100 }}>
     <div className="btn-group">
-      <button className="btn btn-primary">Laser</button>
-      <button className="btn btn-primary">Bullet</button>
-      <button className="btn btn-primary">Missile</button>
+      {ALL_TOWERS.map((model, i) => <TowerButton key={i} scene={scene} model={model}
+        onClick={(m => console.log("Click:", m))} />)}
     </div>
   </div>
 }
