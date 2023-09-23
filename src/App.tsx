@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import "bootstrap"
 import "bootstrap/dist/css/bootstrap.css"
+import 'material-icons/iconfont/material-icons.css'
 import './App.css'
 import Explore from './game/Explore'
 import DungeonGen from './game/dungeon/DungeonGen'

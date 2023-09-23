@@ -16,6 +16,7 @@
     "graphology": "^0.25.4",
     "graphology-library": "^0.8.0",
     "graphology-types": "^0.24.7",
+    "material-icons": "^1.13.11",
     "phaser": "^3.60.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

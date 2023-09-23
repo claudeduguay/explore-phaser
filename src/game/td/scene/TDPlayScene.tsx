@@ -1,15 +1,16 @@
 
-import { Scene, GameObjects, Types, Math as PMath } from "phaser"
-import { makeEllipse, makeHeightRects, makePathTiles, makeTowerBase, makeTowerGun, makeTowerTurret } from "../assets/TextureFactory"
+import { Scene, GameObjects, Types, Utils, Math as PMath } from "phaser"
+import { makeEllipse, makeHeightRects, makePathTiles, makePlatform, makeTowerGun, makeTowerTurret } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
 import TDGameScene from "./TDGameScene"
 import GameHeader from "./react/GameHeader"
 import GameFooter from "./react/GameFooter"
-import { fireEmitter, cloudEmitter } from "../emitter/EmitterConfig"
+import { fireEmitter, cloudEmitter } from "../emitter/ParticleConfig"
 import generateMap from "./TDMazeMap"
 import Point from "../../../util/Point"
 import SelectionManager from "./SelectionManager"
+import { FIRE_TOWER, LAZER_TOWER, POISON_TOWER } from "../model/ITowerModel"
 
 export default class TDPlayScene extends Scene {
 
@@ -26,10 +27,31 @@ export default class TDPlayScene extends Scene {
     this.load.image('smoke', 'assets/particles/smoke_01.png')
     makePathTiles(this, "path_tiles", 64, 64)
     makeHeightRects(this, "height_cells", 64, 64, 10)
-    makeTowerBase(this, "lazer-platform", 64, 64)
+    makePlatform(this, "lazer-platform", 64, 64, {
+      type: "curve-o",
+      margin: 0,
+      inset: 0.2,
+      gradient: ["#99F", "#00F", "#009"]
+    })
+    makePlatform(this, "fire-platform", 64, 64, {
+      type: "box-i",
+      margin: 0,
+      inset: 0.1,
+      gradient: ["#F99", "#F00", "#900"]
+    })
+    makePlatform(this, "poison-platform", 64, 64, {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      gradient: ["#3C3", "#060", "#030"]
+    })
     makeTowerTurret(this, "lazer-turret", 48, 32)
-    makeTowerGun(this, "lazer-gun", 7, 32)
-    makeEllipse(this, "enemy", 32, 32)
+    makeTowerTurret(this, "fire-turret", 48, 32)
+    makeTowerTurret(this, "poison-turret", 48, 32)
+    makeTowerGun(this, "lazer-projector", 7, 32)
+    makeTowerGun(this, "fire-projector", 7, 32)
+    makeTowerGun(this, "poison-projector", 7, 32)
+    // Enemies
     makeEllipse(this, "path-green", 20, 20, "#66FF66")
     makeEllipse(this, "path-blue", 20, 20, "#6666FF")
     makeEllipse(this, "path-red", 20, 20, "#FF6666")
@@ -51,13 +73,15 @@ export default class TDPlayScene extends Scene {
     const towerCount = 10
     const towers: TDTower[] = []
     const checkDuplicates = new Set<Point>()
+    const towerModels = [LAZER_TOWER, FIRE_TOWER, POISON_TOWER]
     const generateTower = (i: number) => {
       let pos = randomCell()
       while (checkDuplicates.has(pos)) {
         pos = randomCell()
       }
       checkDuplicates.add(pos)
-      return new TDTower(this, pos.x, pos.y)
+      const model = Utils.Array.GetRandom(towerModels)
+      return new TDTower(this, pos.x, pos.y, model)
     }
     for (let i = 0; i < towerCount; i++) {
       const tower = generateTower(i)
@@ -66,13 +90,6 @@ export default class TDPlayScene extends Scene {
       towerGroup.add(tower)
     }
     this.selectionManager.select(towers[0])
-    // // Capture this as an HTMLImageElement
-    // towers[0].capture()?.snapshot(image => {
-    //   console.log("Capture:", image)
-    //   if (image instanceof HTMLImageElement) {
-    //     this.gameScene.capture = image.src
-    //   }
-    // })
 
     this.physics.add.overlap(towerGroup, enemyGroup, this.onOverlap)
 

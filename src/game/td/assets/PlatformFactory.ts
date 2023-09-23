@@ -1,4 +1,4 @@
-import { drawArc, linearGradient, stop } from "./util/DrawUtil";
+import { distributedStops, drawArc, linearGradient } from "./util/DrawUtil";
 import { canvasSize } from "./util/RenderUtil";
 
 export type IPlatformType = "angle" | "curve-o" | "curve-i" | "box-o" | "box-i"
@@ -7,18 +7,14 @@ export interface IPlatformOptions {
   type: IPlatformType;
   margin: number;
   inset: number;
-  gradientLite: string
-  gradientDark: string
-  gradientMid: string
+  gradient: string[]
 }
 
 export const DEFAULT_PLATFORM_OPTIONS: IPlatformOptions = {
   type: "curve-o",
   margin: 0,
   inset: 0.2,
-  gradientLite: "#CCF",
-  gradientDark: "#336",
-  gradientMid: "#00F"
+  gradient: ["#CCF", "#336", "#00F"]
 }
 
 function nwCorner(g: CanvasRenderingContext2D, { type, margin, inset }: IPlatformOptions) {
@@ -127,14 +123,14 @@ export function baseRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IPlatformOptions
 ) {
-  const { margin, inset, gradientLite, gradientMid, gradientDark } = options
+  const { margin, inset, gradient } = options
   const { w, h } = canvasSize(g)
   const x = margin * w
   const y = margin * h
   const ww = w - (x * 2)
   const hh = h - (y * 2)
   const i = inset * ww
-  g.fillStyle = linearGradient(g, x, y, ww, hh, stop(0, gradientLite), stop(0.5, gradientMid), stop(1, gradientDark))
+  g.fillStyle = linearGradient(g, x, y, ww, hh, ...distributedStops(gradient))
   g.beginPath()
   g.moveTo(x, y + i)
   nwCorner(g, options)

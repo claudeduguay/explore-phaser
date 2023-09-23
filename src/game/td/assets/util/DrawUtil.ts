@@ -38,6 +38,10 @@ export interface IColorStop {
 // Function to create IColorStop using a simple: stop(p, c) syntax
 export const stop = (offset: number, color: string): IColorStop => ({ offset, color })
 
+export function distributedStops(colors: string[]) {
+  return colors.map((c, i) => stop(i / colors.length, c))
+}
+
 export function linearGradient(g: CanvasRenderingContext2D,
   x0: number, y0: number, x1: number, y1: number, ...stops: IColorStop[]) {
   const gradient = g.createLinearGradient(x0, y0, x1, y1)

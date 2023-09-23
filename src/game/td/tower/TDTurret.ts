@@ -2,18 +2,27 @@
 import { GameObjects, Scene } from "phaser"
 import TDGun from "./TDGun"
 import ITowerModel from "../model/ITowerModel"
+import Point from "../../../util/Point"
 
 export default class TDTurret extends GameObjects.Container {
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x, public model: ITowerModel) {
     super(scene)
-    const tower_turret = this.scene.add.sprite(0, 0, model.meta.turret)
-    const gun_left = new TDGun(scene, -4, -3, model.meta.emitters[0])
-    const gun_center = new TDGun(scene, 0, -5, model.meta.emitters[1])
-    const gun_right = new TDGun(scene, 4, -3, model.meta.emitters[2])
-    this.add(tower_turret)
-    this.add(gun_left)
-    this.add(gun_center)
-    this.add(gun_right)
+    this.add(this.scene.add.sprite(0, 0, model.meta.turret))
+
+    let positions = [new Point(-4, -3), new Point(0, -5), new Point(4, -3)]
+    const count = model.meta.projectors.length
+    if (count === 1) {
+      positions = [new Point(0, -5)]
+    }
+    if (count === 2) {
+      positions = [new Point(-4, -3), new Point(4, -3)]
+    }
+
+    model.meta.projectors.forEach((projector, i) => {
+      const p = positions[i]
+      console.log(i, p)
+      this.add(new TDGun(scene, p.x, p.y, projector.sprite))
+    })
   }
 }

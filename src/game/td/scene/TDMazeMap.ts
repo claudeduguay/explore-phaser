@@ -119,17 +119,6 @@ function renderPath(scene: Scene, enemyGroup: GameObjects.Group, path: Cell[], o
       curve.lineTo(p.x, p.y)
     }
   }
-  // const radius = 44
-  // const g = scene.add.graphics({ lineStyle: { color: 0x00FF00, alpha: 1.0, width: radius } })
-  //  curve.draw(g)
-  // Round corners overlay
-  // for (let i = 0; i < points.length; i++) {
-  //   const p = points[i]
-  //   scene.add.ellipse(p.x, p.y, radius, radius, 0x00FF00)
-  // }
-  // addFollower("enemy-1", scene, enemyGroup, origin, curve)
-  // addFollower("enemy-2", scene, enemyGroup, origin, curve, 0.01)
-  // addFollower("enemy-3", scene, enemyGroup, origin, curve, 0.02)
   return curve
 
 }
@@ -142,8 +131,8 @@ function makeTimelinePreview(scene: Scene, enemyGroup: GameObjects.Group, origin
   path.moveTo(left, top)
   path.lineTo(left + 400, top)
   const g = scene.add.graphics({
-    lineStyle: { color: 0x006600, alpha: 1.0, width: radius },
-    fillStyle: { color: 0x000000, alpha: 0.5 }
+    lineStyle: { color: 0x003300, alpha: 1.0, width: radius },
+    fillStyle: { color: 0xFFFFFF, alpha: 0.5 }
   })
   path.draw(g)
   g.fillRect(left + 100, top - radius / 2, 200, radius)

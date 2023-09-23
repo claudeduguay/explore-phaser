@@ -1,7 +1,7 @@
 import { CSSProperties } from "react"
 import INavigator from "./INavigator"
 import PropsInfo from "./PropsInfo"
-import useCapture from "./useCapture"
+import useCaptureTower from "./useCaptureTower"
 import TDTower from "../../tower/TDTower"
 
 export interface ITowerInfoProps {
@@ -11,7 +11,7 @@ export interface ITowerInfoProps {
 
 export default function TowerInfo({ tower, navigator }: ITowerInfoProps) {
   const model = tower.model
-  const imageSrc = useCapture(tower.scene, tower.model)
+  const imageSrc = useCaptureTower(tower)
   console.log("Image:", imageSrc, ", length:", imageSrc.length)
   const style: CSSProperties = {
     width: 350,

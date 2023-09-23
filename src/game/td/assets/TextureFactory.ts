@@ -2,7 +2,7 @@
 import { Scene } from "phaser"
 import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal"
 import IRenderFunction from "./util/IRenderFunction"
-import { platformRendererFunctionFactory } from "./PlatformRenderer"
+import { IPlatformOptions, platformRendererFunctionFactory } from "./PlatformFactory"
 import { drawEllipse } from "./util/DrawUtil"
 
 // Render to a TextureCanvas using ...renderers
@@ -66,8 +66,8 @@ export function makeEllipse(scene: Scene, key: string, w: number, h: number, col
   renderCanvas(scene, key, w, h, render)
 }
 
-export function makeTowerBase(scene: Scene, key: string, w: number, h: number) {
-  const render: IRenderFunction = platformRendererFunctionFactory(0)
+export function makePlatform(scene: Scene, key: string, w: number, h: number, options?: IPlatformOptions) {
+  const render: IRenderFunction = platformRendererFunctionFactory(0, options)
   renderCanvas(scene, key, w, h, render)
 }
 
