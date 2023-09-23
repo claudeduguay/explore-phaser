@@ -10,7 +10,7 @@ import { fireEmitter, cloudEmitter } from "../emitter/ParticleConfig"
 import generateMap from "./TDMazeMap"
 import Point from "../../../util/Point"
 import SelectionManager from "./SelectionManager"
-import { FIRE_TOWER, LAZER_TOWER, POISON_TOWER } from "../model/ITowerModel"
+import { BULLET_TOWER, FIRE_TOWER, LAZER_TOWER, LIGHTNING_TOWER, MISSILE_TOWER, POISON_TOWER } from "../model/ITowerModel"
 
 export default class TDPlayScene extends Scene {
 
@@ -45,12 +45,36 @@ export default class TDPlayScene extends Scene {
       inset: 0.2,
       gradient: ["#3C3", "#060", "#030"]
     })
+    makePlatform(this, "bullet-platform", 64, 64, {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      gradient: ["#CC3", "#660", "#330"]
+    })
+    makePlatform(this, "missile-platform", 64, 64, {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      gradient: ["#3CC", "#066", "#033"]
+    })
+    makePlatform(this, "lightning-platform", 64, 64, {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      gradient: ["#C3C", "#606", "#303"]
+    })
     makeTowerTurret(this, "lazer-turret", 48, 32)
     makeTowerTurret(this, "fire-turret", 48, 32)
     makeTowerTurret(this, "poison-turret", 48, 32)
+    makeTowerTurret(this, "bullet-turret", 48, 32)
+    makeTowerTurret(this, "missile-turret", 48, 32)
+    makeTowerTurret(this, "lightning-turret", 48, 32)
     makeTowerGun(this, "lazer-projector", 7, 32)
     makeTowerGun(this, "fire-projector", 7, 32)
     makeTowerGun(this, "poison-projector", 7, 32)
+    makeTowerGun(this, "bullet-projector", 7, 32)
+    makeTowerGun(this, "missile-projector", 7, 32)
+    makeTowerGun(this, "lightning-projector", 7, 32)
     // Enemies
     makeEllipse(this, "path-green", 20, 20, "#66FF66")
     makeEllipse(this, "path-blue", 20, 20, "#6666FF")
@@ -72,14 +96,14 @@ export default class TDPlayScene extends Scene {
 
     const towerCount = 10
     const towers: TDTower[] = []
-    const checkDuplicates = new Set<Point>()
-    const towerModels = [LAZER_TOWER, FIRE_TOWER, POISON_TOWER]
+    const checkDuplicates = new Set<string>()
+    const towerModels = [LAZER_TOWER, FIRE_TOWER, POISON_TOWER, BULLET_TOWER, MISSILE_TOWER, LIGHTNING_TOWER]
     const generateTower = (i: number) => {
       let pos = randomCell()
-      while (checkDuplicates.has(pos)) {
+      while (checkDuplicates.has(pos.toString())) {
         pos = randomCell()
       }
-      checkDuplicates.add(pos)
+      checkDuplicates.add(pos.toString())
       const model = Utils.Array.GetRandom(towerModels)
       return new TDTower(this, pos.x, pos.y, model)
     }
@@ -105,8 +129,6 @@ export default class TDPlayScene extends Scene {
   createMap(enemyGroup: GameObjects.Group) {
     generateMap(this, enemyGroup)
     // this.add.sprite(50, 650, "path_tiles").setOrigin(0, 0)
-    // const map = new TDMap(this)
-    // this.add.existing(map)
   }
 
   // Note: Addition order appears to depend on enemyGroup order

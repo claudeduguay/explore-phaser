@@ -107,7 +107,7 @@ export const FIRE_TOWER: ITowerModel = {
 export const POISON_TOWER: ITowerModel = {
   name: "Poison Tower",
   meta: {
-    capture: "capture-fire-tower",
+    capture: "capture-poison-tower",
     platform: "poison-platform",
     turret: "poison-turret",
     projectors: [{
@@ -126,5 +126,80 @@ export const POISON_TOWER: ITowerModel = {
     fire: 0,
     lightning: 0,
     poison: 100,
+  }
+}
+
+export const BULLET_TOWER: ITowerModel = {
+  name: "Bullet Tower",
+  meta: {
+    capture: "capture-bullet-tower",
+    platform: "bullet-platform",
+    turret: "bullet-turret",
+    projectors: [{
+      sprite: "bullet-projector",
+      emitter: "bullet-emitter"
+    }]
+  },
+  stats: {
+    range: 150,
+    level: 3
+  },
+  damage: {
+    lazer: 0,
+    bullet: 100,
+    missile: 0,
+    fire: 0,
+    lightning: 0,
+    poison: 0,
+  }
+}
+
+export const MISSILE_TOWER: ITowerModel = {
+  name: "Missile Tower",
+  meta: {
+    capture: "capture-missile-tower",
+    platform: "missile-platform",
+    turret: "missile-turret",
+    projectors: [{
+      sprite: "missile-projector",
+      emitter: "missile-emitter"
+    }]
+  },
+  stats: {
+    range: 150,
+    level: 3
+  },
+  damage: {
+    lazer: 0,
+    bullet: 0,
+    missile: 100,
+    fire: 0,
+    lightning: 0,
+    poison: 0,
+  }
+}
+
+export const LIGHTNING_TOWER: ITowerModel = {
+  name: "Lightning Tower",
+  meta: {
+    capture: "capture-lightning-tower",
+    platform: "lightning-platform",
+    turret: "lightning-turret",
+    projectors: [{
+      sprite: "lightning-projector",
+      emitter: "lightning-emitter"
+    }]
+  },
+  stats: {
+    range: 150,
+    level: 3
+  },
+  damage: {
+    lazer: 0,
+    bullet: 0,
+    missile: 0,
+    fire: 0,
+    lightning: 100,
+    poison: 0,
   }
 }
