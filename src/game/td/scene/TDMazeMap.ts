@@ -3,6 +3,7 @@ import Maze from "../../../maze/Maze";
 import Point from "../../../util/Point";
 import Cell from "../../../maze/Cell";
 import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal";
+import TDEnemy from "../enemy/TDEnemy";
 
 export function makeTileMap(scene: Scene, cells: Cell[], origin: Point, cellSize: Point, rows: number, cols: number) {
 
@@ -80,7 +81,7 @@ export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group,
 function addFollower(key: string, scene: Scene, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, offset: number = 0) {
   const length = path.getLength()
   console.log("Path length:", length)
-  const follower = new GameObjects.PathFollower(scene, path, origin.x, origin.y, key)
+  const follower = new TDEnemy(scene, path, origin.x, origin.y, key)
   scene.add.existing(follower)
   follower.startFollow({
     positionOnPath: true,
@@ -150,7 +151,7 @@ function makeTimelinePreview(scene: Scene, enemyGroup: GameObjects.Group, origin
   const timeline = scene.add.timeline({})
   const run = (key: string = "path-blue", isLast: boolean = false) => () => {
     addFollower(key, scene, enemyGroup, origin, curve)
-    const follower = new GameObjects.PathFollower(scene, path, 0, 0, key)
+    const follower = new TDEnemy(scene, path, 0, 0, key)
     follower.startFollow({
       positionOnPath: true,
       duration: path.getLength() * 50,

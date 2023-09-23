@@ -10,8 +10,8 @@ export interface ITowerInfoProps {
 }
 
 export default function TowerInfo({ tower, navigator }: ITowerInfoProps) {
-  const model = tower.config
-  const imageSrc = useCapture(tower.scene, tower.config)
+  const model = tower.model
+  const imageSrc = useCapture(tower.scene, tower.model)
   console.log("Image:", imageSrc, ", length:", imageSrc.length)
   const style: CSSProperties = {
     width: 350,

@@ -98,8 +98,8 @@ export default class TDPlayScene extends Scene {
     enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
     if (tower instanceof TDTower && enemy instanceof GameObjects.PathFollower) {
       const distance = PMath.Distance.BetweenPoints(enemy, tower)
-      if (distance <= tower.config.stats.range) {
-        tower.targets.push(enemy)
+      if (distance <= tower.model.stats.range) {
+        tower.targets.unshift(enemy)
       }
     }
   }
