@@ -23,6 +23,8 @@ export interface ITowerDamage {
   fire?: number
   lightning?: number
   poison?: number
+  ice?: number
+  boost?: number
 }
 
 export interface ITowerModel {
@@ -68,6 +70,8 @@ export const LAZER_TOWER: ITowerModel = {
     fire: 0,
     lightning: 0,
     poison: 0,
+    ice: 0,
+    boost: 0
   }
 }
 
@@ -101,6 +105,8 @@ export const FIRE_TOWER: ITowerModel = {
     fire: 100,
     lightning: 0,
     poison: 0,
+    ice: 0,
+    boost: 0
   }
 }
 
@@ -126,6 +132,8 @@ export const POISON_TOWER: ITowerModel = {
     fire: 0,
     lightning: 0,
     poison: 100,
+    ice: 0,
+    boost: 0
   }
 }
 
@@ -159,6 +167,8 @@ export const BULLET_TOWER: ITowerModel = {
     fire: 0,
     lightning: 0,
     poison: 0,
+    ice: 0,
+    boost: 0
   }
 }
 
@@ -192,6 +202,8 @@ export const MISSILE_TOWER: ITowerModel = {
     fire: 0,
     lightning: 0,
     poison: 0,
+    ice: 0,
+    boost: 0
   }
 }
 
@@ -225,5 +237,61 @@ export const LIGHTNING_TOWER: ITowerModel = {
     fire: 0,
     lightning: 100,
     poison: 0,
+    ice: 0,
+    boost: 0
+  }
+}
+
+export const ICE_TOWER: ITowerModel = {
+  name: "Ice Tower",
+  meta: {
+    capture: "capture-ice-tower",
+    platform: "ice-platform",
+    turret: "ice-turret",
+    projectors: [{
+      sprite: "ice-projector",
+      emitter: "ice-emitter"
+    }]
+  },
+  stats: {
+    range: 150,
+    level: 3
+  },
+  damage: {
+    lazer: 0,
+    bullet: 0,
+    missile: 0,
+    fire: 0,
+    lightning: 0,
+    poison: 0,
+    ice: 100,
+    boost: 0
+  }
+}
+
+export const BOOST_TOWER: ITowerModel = {
+  name: "Boost Tower",
+  meta: {
+    capture: "capture-boost-tower",
+    platform: "boost-platform",
+    turret: "boost-turret",
+    projectors: [{
+      sprite: "boost-projector",
+      emitter: "boost-emitter"
+    }]
+  },
+  stats: {
+    range: 150,
+    level: 3
+  },
+  damage: {
+    lazer: 0,
+    bullet: 0,
+    missile: 0,
+    fire: 0,
+    lightning: 0,
+    poison: 0,
+    ice: 0,
+    boost: 100
   }
 }

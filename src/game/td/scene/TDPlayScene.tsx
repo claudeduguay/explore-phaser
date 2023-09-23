@@ -10,7 +10,7 @@ import { fireEmitter, cloudEmitter } from "../emitter/ParticleConfig"
 import generateMap from "./TDMazeMap"
 import Point from "../../../util/Point"
 import SelectionManager from "./SelectionManager"
-import { BULLET_TOWER, FIRE_TOWER, LAZER_TOWER, LIGHTNING_TOWER, MISSILE_TOWER, POISON_TOWER } from "../model/ITowerModel"
+import { BOOST_TOWER, BULLET_TOWER, FIRE_TOWER, ICE_TOWER, LAZER_TOWER, LIGHTNING_TOWER, MISSILE_TOWER, POISON_TOWER } from "../model/ITowerModel"
 import { addLabel } from "../../../util/TextUtil"
 
 export default class TDPlayScene extends Scene {
@@ -66,6 +66,18 @@ export default class TDPlayScene extends Scene {
       inset: 0.2,
       gradient: ["#C3C", "#606", "#303"]
     })
+    makePlatform(this, "ice-platform", 64, 64, {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      gradient: ["#C3C", "#606", "#303"]
+    })
+    makePlatform(this, "boost-platform", 64, 64, {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      gradient: ["#C3C", "#606", "#303"]
+    })
 
     // TURRETS
     makeTowerTurret(this, "lazer-turret", 48, 24, {
@@ -99,6 +111,18 @@ export default class TDPlayScene extends Scene {
       gradient: ["#3CC", "#066", "#033"]
     })
     makeTowerTurret(this, "lightning-turret", 42, 38, {
+      ratio: 0.5,
+      topSeg: 4,
+      botSeg: 10,
+      gradient: ["#C3C", "#606", "#303"]
+    })
+    makeTowerTurret(this, "ice-turret", 42, 38, {
+      ratio: 0.5,
+      topSeg: 4,
+      botSeg: 10,
+      gradient: ["#C3C", "#606", "#303"]
+    })
+    makeTowerTurret(this, "boost-turret", 42, 38, {
       ratio: 0.5,
       topSeg: 4,
       botSeg: 10,
@@ -147,6 +171,20 @@ export default class TDPlayScene extends Scene {
       balls: { count: 1, color: ["#FCF"], start: 0.1 },
       gradient: ["#FCF", "#FCF", "#E0E"]
     })
+    makeTowerProjector(this, "ice-projector", 7, 32, {
+      type: "point",
+      margin: 0,
+      inset: 0.4,
+      balls: { count: 1, color: ["#FCF"], start: 0.1 },
+      gradient: ["#FCF", "#FCF", "#E0E"]
+    })
+    makeTowerProjector(this, "boost-projector", 7, 32, {
+      type: "point",
+      margin: 0,
+      inset: 0.4,
+      balls: { count: 1, color: ["#FCF"], start: 0.1 },
+      gradient: ["#FCF", "#FCF", "#E0E"]
+    })
 
     // ENEMIES
     makeEllipse(this, "path-green", 20, 20, "#66FF66")
@@ -170,7 +208,16 @@ export default class TDPlayScene extends Scene {
     const towerCount = 10
     const towers: TDTower[] = []
     const checkDuplicates = new Set<string>()
-    const towerModels = [LAZER_TOWER, FIRE_TOWER, POISON_TOWER, BULLET_TOWER, MISSILE_TOWER, LIGHTNING_TOWER]
+    const towerModels = [
+      LAZER_TOWER,
+      FIRE_TOWER,
+      POISON_TOWER,
+      BULLET_TOWER,
+      MISSILE_TOWER,
+      LIGHTNING_TOWER,
+      ICE_TOWER,
+      BOOST_TOWER
+    ]
     towerModels.forEach((model, i) => {
       const p = new Point(50 + i * 100, 100)
       const t = new TDTower(this, p.x, p.y, model)
