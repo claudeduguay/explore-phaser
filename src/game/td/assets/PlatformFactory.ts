@@ -141,6 +141,7 @@ export function baseRenderer(g: CanvasRenderingContext2D,
   g.lineTo(x + i, hh)
   swCorner(g, options)
   g.lineTo(x, y + i)
+  g.closePath()
   g.fill()
 }
 
@@ -148,6 +149,7 @@ export function platformRendererFunctionFactory(
   frameIndexFraction: number,
   options: IPlatformOptions = DEFAULT_PLATFORM_OPTIONS
 ) {
+  options = { ...DEFAULT_PLATFORM_OPTIONS, ...options }
   return (g: CanvasRenderingContext2D) => {
     const { w, h } = canvasSize(g)
     g.rect(0, 0, w, h)

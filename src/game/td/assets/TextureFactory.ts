@@ -4,6 +4,8 @@ import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Card
 import IRenderFunction from "./util/IRenderFunction"
 import { IPlatformOptions, platformRendererFunctionFactory } from "./PlatformFactory"
 import { drawEllipse } from "./util/DrawUtil"
+import { ITurretOptions, turretRendererFunctionFactory } from "./TurretFactory"
+import { IProjectorOptions, projectorRendererFunctionFactory } from "./ProjectorFactory"
 
 // Render to a TextureCanvas using ...renderers
 export function renderCanvas(scene: Scene, key: string, w: number, h: number, ...renderers: IRenderFunction[]) {
@@ -71,29 +73,12 @@ export function makePlatform(scene: Scene, key: string, w: number, h: number, op
   renderCanvas(scene, key, w, h, render)
 }
 
-export function makeTowerTurret(scene: Scene, key: string, w: number, h: number) {
-  const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
-    g.fillStyle = "#00FF00"
-    g.strokeStyle = "#009900"
-    g.lineWidth = 2
-    g.beginPath()
-    g.moveTo(w * 0.2, h * 0.25)
-    g.lineTo(w * 0.8, h * 0.25)
-    g.lineTo(w, h)
-    g.lineTo(0, h)
-    g.closePath()
-    g.fill()
-    g.stroke()
-  }
+export function makeTowerTurret(scene: Scene, key: string, w: number, h: number, options?: Partial<ITurretOptions>) {
+  const render: IRenderFunction = turretRendererFunctionFactory(0, options)
   renderCanvas(scene, key, w, h, render)
 }
 
-export function makeTowerGun(scene: Scene, key: string, w: number, h: number) {
-  const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
-    g.fillStyle = "#996666"
-    g.strokeStyle = "#FFFFFF"
-    g.fillRect(0, 0, w, h)
-    g.strokeRect(0, 0, w, h)
-  }
+export function makeTowerProjector(scene: Scene, key: string, w: number, h: number, options?: Partial<IProjectorOptions>) {
+  const render: IRenderFunction = projectorRendererFunctionFactory(0, options)
   renderCanvas(scene, key, w, h, render)
 }

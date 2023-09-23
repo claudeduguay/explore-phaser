@@ -60,7 +60,7 @@ export function radialGradient(g: CanvasRenderingContext2D,
   return gradient
 }
 
-export function coniclGradient(g: CanvasRenderingContext2D,
+export function conicGradient(g: CanvasRenderingContext2D,
   startAngle: number, x: number, y: number, ...stops: IColorStop[]) {
   const gradient = g.createConicGradient(startAngle, x, y)
   for (let { offset, color } of stops) {
