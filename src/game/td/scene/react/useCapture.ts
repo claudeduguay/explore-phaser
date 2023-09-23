@@ -6,7 +6,7 @@ import TDPlayScene from "../TDPlayScene";
 export default function useCapture(scene: TDPlayScene, config: ITowerModel, w: number = 64, h: number = 64): string {
   const [imageSrc, setImageSrc] = useState<string>("")
   useEffect(() => {
-    const capture = scene.textures.addDynamicTexture(config.meta.key, w, h)
+    const capture = scene.textures.addDynamicTexture(config.meta.capture, w, h)
     if (capture) {
       const tower = new TDTower(scene, w / 2, h / 2)
       tower.angle = 90

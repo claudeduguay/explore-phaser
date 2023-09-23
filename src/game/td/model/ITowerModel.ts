@@ -1,6 +1,6 @@
 
 export interface ITowerMeta {
-  key: string
+  capture: string
   platform: string
   turret: string
   emitters: string[]
@@ -36,10 +36,10 @@ export default ITowerModel
 export const LAZER_TOWER: ITowerModel = {
   name: "Lazer Tower",
   meta: {
-    key: "lazer-tower",
-    platform: "",
-    turret: "",
-    emitters: [],
+    capture: "capture-lazer-tower",
+    platform: "lazer-platform",
+    turret: "lazer-turret",
+    emitters: ["lazer-gun", "lazer-gun", "lazer-gun"],
   },
   stats: {
     range: 150,

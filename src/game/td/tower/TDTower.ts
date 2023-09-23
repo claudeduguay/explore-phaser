@@ -22,7 +22,7 @@ export default class TDTower extends BehaviorContainer {
     super(scene)
     const selectionManager = scene.selectionManager
     const range = model.stats.range
-    this.tower_base = this.scene.add.sprite(0, 0, "tower_base").setInteractive()
+    this.tower_base = this.scene.add.sprite(0, 0, model.meta.platform).setInteractive()
       .on(Input.Events.POINTER_OVER, () => this.showRange.visible = true, this)
       .on(Input.Events.POINTER_OUT, () => this.showRange.visible = false, this)
       .on(Input.Events.POINTER_UP, () => {
@@ -31,10 +31,10 @@ export default class TDTower extends BehaviorContainer {
       .on(Input.Events.POINTER_DOWN, () => console.log("Mouse down"), this)
     this.add(this.tower_base)
 
-    this.turret = new TDTurret(scene)
+    this.turret = new TDTurret(scene, 0, 0, model)
     this.add(this.turret)
 
-    this.showRange = scene.add.existing(new TDRange(scene, this.x, this.y, range))
+    this.showRange = scene.add.existing(new TDRange(scene, this.x, this.y, model.stats.range))
     this.showRange.visible = false
 
     this.setSize(range * 2, range * 2) // Sets bounding box
