@@ -39,7 +39,7 @@ export interface IColorStop {
 export const stop = (offset: number, color: string): IColorStop => ({ offset, color })
 
 export function distributedStops(colors: string[]) {
-  return colors.map((c, i) => stop(i / colors.length, c))
+  return colors.map((c, i) => stop(i / Math.max(colors.length - 1, 1), c))
 }
 
 export function linearGradient(g: CanvasRenderingContext2D,

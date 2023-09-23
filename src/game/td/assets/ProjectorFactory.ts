@@ -1,28 +1,30 @@
 import { distributedStops, drawEllipse, drawPolygon, linearGradient } from "./util/DrawUtil";
 import { canvasSize } from "./util/RenderUtil";
 
-export type IProjectorType = "rect" | "point"
+export type IProjectorType = "rect" | "point" | "funnel"
+export interface IProjectorDecorator {
+  count: number
+  color: string[]
+  start: number
+  step?: number
+}
 
 export interface IProjectorOptions {
   type: IProjectorType;
   margin: number;
   inset: number;
-  ribs: number;
-  balls: number;
-  supressor?: { pos: number, len: number };
+  ribs?: IProjectorDecorator;
+  balls?: IProjectorDecorator;
+  supressor?: { pos: number, len: number, color: string[] };
   gradient: string[];
-  line: string;
+  line?: string;
 }
 
 export const DEFAULT_PROJECTOR_OPTIONS: IProjectorOptions = {
   type: "point",
   margin: 0,
   inset: 0.3,
-  ribs: 3,
-  balls: 0,
-  // supressor: { pos: 0.2, len: 0.4 },
   gradient: ["#00F"],
-  line: "white"
 }
 
 export function projectorRenderer(g: CanvasRenderingContext2D,
@@ -40,31 +42,44 @@ export function projectorRenderer(g: CanvasRenderingContext2D,
   // const main = { x: 0, w: ww }
 
   g.fillStyle = linearGradient(g, 0, 0, ww, 0, ...distributedStops(gradient))
-  g.strokeStyle = line
 
   if (type === "rect") {
-    g.fillRect(main.x, 0, main.w, h)
+    const r = main.x + main.w - 1
+    drawPolygon(g, [[main.x, 0], [r, 0], [r, hh], [main.x, hh]])
+    // g.fillRect(main.x, 0, main.w, h)
   }
   if (type === "point") {
     drawPolygon(g, [[0, hh], [ww, hh], [ww / 2, 0]])
-    g.fill()
+  }
+  if (type === "funnel") {
+    drawPolygon(g, [[0, 0], [ww, 0], [ww / 2, hh]])
+  }
+  g.fill()
+  if (line) {
+    g.strokeStyle = line
     g.stroke()
   }
 
   if (supressor) {
-    g.fillRect(x, hh * supressor.pos, ww, hh * supressor.len)
+    g.fillStyle = linearGradient(g, 0, 0, ww, 0, ...distributedStops(supressor.color))
+    g.fillRect(x, hh * supressor.pos, ww - 1, hh * supressor.len)
   }
 
-  for (let i = 0; i < ribs; i++) {
-    g.fillStyle = line
-    const p = hh * 0.15 + hh * 0.1 * i
-    g.fillRect(x, p, ww, hh * 0.05)
+  if (ribs) {
+    for (let i = 0; i < ribs.count; i++) {
+      g.fillStyle = linearGradient(g, 0, 0, ww, 0, ...distributedStops(ribs.color))
+      const p = hh * ribs.start + hh * (ribs.step || 0.1) * i
+      g.fillRect(x, p, ww - 1, hh * 0.05 - 1)
+    }
   }
 
-  for (let i = 0; i < balls; i++) {
-    const p = cx + hh * 0.25 * i
-    drawEllipse(g, cx, p, ww / 2, ww / 2)
-    g.fill()
+  if (balls) {
+    for (let i = 0; i < balls.count; i++) {
+      g.fillStyle = linearGradient(g, 0, 0, ww, 0, ...distributedStops(balls.color))
+      const p = hh * balls.start + hh * 0.1 + hh * (balls.step || 0.25) * i
+      drawEllipse(g, cx, p, ww / 2, ww / 2)
+      g.fill()
+    }
   }
 }
 

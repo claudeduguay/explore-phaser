@@ -68,9 +68,9 @@ export default class TDPlayScene extends Scene {
     })
 
     // TURRETS
-    makeTowerTurret(this, "lazer-turret", 48, 38, {
-      ratio: 0.5,
-      topSeg: 4,
+    makeTowerTurret(this, "lazer-turret", 48, 24, {
+      ratio: 0.6,
+      topSeg: 3,
       botSeg: 10,
       gradient: ["#33F", "#009", "#003"]
     })
@@ -108,62 +108,44 @@ export default class TDPlayScene extends Scene {
     makeTowerProjector(this, "lazer-projector", 7, 32, {
       type: "rect",
       margin: 0,
-      inset: 0.3,
-      ribs: 3,
-      balls: 0,
-      // supressor: { pos: 0.2, len: 0.4 },
-      gradient: ["#006"],
-      line: "white"
+      inset: 0.35,
+      ribs: { count: 3, color: ["#CCF"], start: 0.08, step: 0.08 },
+      gradient: ["#66C", "#009"]
     })
     makeTowerProjector(this, "fire-projector", 7, 32, {
+      type: "funnel",
+      margin: 0,
+      inset: 0.33,
+      gradient: ["#E00", "#FCC", "#E00"]
+    })
+    makeTowerProjector(this, "poison-projector", 7, 16, {
       type: "point",
       margin: 0,
-      inset: 0.3,
-      ribs: 3,
-      balls: 0,
-      // supressor: { pos: 0.2, len: 0.4 },
-      gradient: ["#00F"],
+      inset: 0.0,
+      gradient: ["#090"],
       line: "white"
     })
-    makeTowerProjector(this, "poison-projector", 7, 32, {
-      type: "point",
+    makeTowerProjector(this, "bullet-projector", 7, 38, {
+      type: "rect",
       margin: 0,
-      inset: 0.3,
-      ribs: 3,
-      balls: 0,
-      // supressor: { pos: 0.2, len: 0.4 },
-      gradient: ["#00F"],
-      line: "white"
-    })
-    makeTowerProjector(this, "bullet-projector", 7, 32, {
-      type: "point",
-      margin: 0,
-      inset: 0.3,
-      ribs: 3,
-      balls: 0,
-      // supressor: { pos: 0.2, len: 0.4 },
-      gradient: ["#00F"],
-      line: "white"
+      inset: 0.35,
+      supressor: { pos: 0.15, len: 0.4, color: ["#330", "#990", "#330"] },
+      gradient: ["#330", "#990", "#330"],
+      // line: "#FFF"
     })
     makeTowerProjector(this, "missile-projector", 7, 32, {
-      type: "point",
+      type: "rect",
       margin: 0,
-      inset: 0.3,
-      ribs: 3,
-      balls: 0,
-      // supressor: { pos: 0.2, len: 0.4 },
-      gradient: ["#00F"],
-      line: "white"
+      inset: 0.45,
+      gradient: ["#066"],
+      line: "#FFF"
     })
     makeTowerProjector(this, "lightning-projector", 7, 32, {
       type: "point",
       margin: 0,
-      inset: 0.3,
-      ribs: 3,
-      balls: 0,
-      // supressor: { pos: 0.2, len: 0.4 },
-      gradient: ["#606"],
-      line: "white"
+      inset: 0.4,
+      balls: { count: 1, color: ["#FCF"], start: 0.1 },
+      gradient: ["#FCF", "#FCF", "#E0E"]
     })
 
     // ENEMIES
@@ -189,6 +171,13 @@ export default class TDPlayScene extends Scene {
     const towers: TDTower[] = []
     const checkDuplicates = new Set<string>()
     const towerModels = [LAZER_TOWER, FIRE_TOWER, POISON_TOWER, BULLET_TOWER, MISSILE_TOWER, LIGHTNING_TOWER]
+    towerModels.forEach((model, i) => {
+      const p = new Point(50 + i * 100, 100)
+      const t = new TDTower(this, p.x, p.y, model)
+      this.add.existing(t)
+      addLabel(this, p.x - 32, p.y + 32, model.name.split(" ")[0])
+
+    })
     const generateTower = (i: number) => {
       let pos = randomCell()
       while (checkDuplicates.has(pos.toString())) {
@@ -196,7 +185,6 @@ export default class TDPlayScene extends Scene {
       }
       checkDuplicates.add(pos.toString())
       const model = Utils.Array.GetRandom(towerModels)
-      addLabel(this, pos.x, pos.y + 32, model.name.split(" ")[0])
       return new TDTower(this, pos.x, pos.y, model)
     }
     for (let i = 0; i < towerCount; i++) {

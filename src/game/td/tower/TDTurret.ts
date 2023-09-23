@@ -9,10 +9,10 @@ export default class TDTurret extends GameObjects.Container {
   constructor(public scene: Scene, public x: number = 0, public y: number = x, public model: ITowerModel) {
     super(scene)
     const turret = this.scene.add.sprite(0, 0, model.meta.turret)
-    turret.postFX.addGlow(0x999999, 3, 0)
+    turret.postFX.addGlow(0x000000, 2, 0)
     this.add(turret)
 
-    let positions = [new Point(-5, -3), new Point(0, -5), new Point(5, -3)]
+    let positions = [new Point(-5, -5), new Point(0, -7), new Point(5, -5)]
     const count = model.meta.projectors.length
     if (count === 1) {
       positions = [new Point(0, -5)]

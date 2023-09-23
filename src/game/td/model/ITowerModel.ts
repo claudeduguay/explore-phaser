@@ -138,6 +138,14 @@ export const BULLET_TOWER: ITowerModel = {
     projectors: [{
       sprite: "bullet-projector",
       emitter: "bullet-emitter"
+    },
+    {
+      sprite: "bullet-projector",
+      emitter: "bullet-emitter"
+    },
+    {
+      sprite: "bullet-projector",
+      emitter: "bullet-emitter"
     }]
   },
   stats: {
@@ -163,6 +171,14 @@ export const MISSILE_TOWER: ITowerModel = {
     projectors: [{
       sprite: "missile-projector",
       emitter: "missile-emitter"
+    },
+    {
+      sprite: "missile-projector",
+      emitter: "missile-emitter"
+    },
+    {
+      sprite: "missile-projector",
+      emitter: "missile-emitter"
     }]
   },
   stats: {
@@ -186,6 +202,14 @@ export const LIGHTNING_TOWER: ITowerModel = {
     platform: "lightning-platform",
     turret: "lightning-turret",
     projectors: [{
+      sprite: "lightning-projector",
+      emitter: "lightning-emitter"
+    },
+    {
+      sprite: "lightning-projector",
+      emitter: "lightning-emitter"
+    },
+    {
       sprite: "lightning-projector",
       emitter: "lightning-emitter"
     }]
