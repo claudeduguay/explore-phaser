@@ -13,6 +13,7 @@ import SelectionManager from "./SelectionManager"
 import { ALL_TOWERS } from "../model/ITowerModel"
 import { IColoring } from "../assets/util/DrawUtil"
 import { addLabel } from "../../../util/TextUtil"
+import TowerPreview from "../tower/TowerPreview"
 
 function colors(h: number, s: number = 1, l: number = 0.1) {
   const color = Display.Color.HSLToColor(h, s, l)
@@ -249,13 +250,6 @@ export default class TDPlayScene extends Scene {
     const towers: TDTower[] = []
     const checkDuplicates = new Set<string>()
 
-    ALL_TOWERS.forEach((model, i) => {
-      const p = new Point(50 + i * 100, 100)
-      const t = new TDTower(this, p.x, p.y, model)
-      this.add.existing(t)
-      addLabel(this, p.x, p.y + 35, model.name.split(" ")[0], "center")
-    })
-
     const randomCell = () => new Point(
       origin.x + Math.floor(Math.random() * 8) * 64 * 2 + 32 + 64,
       origin.y + Math.floor(Math.random() * 5) * 64 * 2 + 32 + 64)
@@ -285,6 +279,10 @@ export default class TDPlayScene extends Scene {
 
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
     addReactNode(this, <GameFooter scene={this} />, 0, this.game.canvas.height - 69)
+
+    const preview = new TowerPreview(this, 50, 70)
+    this.add.existing(preview)
+
   }
 
   createMap(enemyGroup: GameObjects.Group) {

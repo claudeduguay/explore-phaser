@@ -27,4 +27,5 @@ export function addLabel(scene: Scene, x: number, y: number, label: string, alig
       text.setOrigin(1.0, 0)
       break
   }
+  return text
 }
