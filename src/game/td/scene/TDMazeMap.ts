@@ -56,7 +56,7 @@ export function generateLevel(rows: number, cols: number) {
 export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group,
   usePath: boolean = true, showMaze: boolean = true) {
 
-  const origin = new Point(6, 50)
+  const origin = new Point(6, 46)
   const cellSize = new Point(64, 64)
   const rows = 6
   const cols = 9

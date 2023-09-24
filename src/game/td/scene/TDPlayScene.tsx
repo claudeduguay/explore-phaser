@@ -272,13 +272,13 @@ export default class TDPlayScene extends Scene {
 
     this.physics.add.overlap(towerGroup, enemyGroup, this.onOverlap)
 
-    const fireRange = 250
-    this.add.particles(100, 765, 'fire', fireEmitter(fireRange))
-    this.add.rectangle(100, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
-    this.add.particles(900, 795, 'smoke', cloudEmitter())
+    const fireRange = 220
+    this.add.particles(10, 765, 'fire', fireEmitter(fireRange))
+    this.add.rectangle(10, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
+    this.add.particles(950, 795, 'smoke', cloudEmitter())
 
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
-    addReactNode(this, <GameFooter scene={this} />, 0, this.game.canvas.height - 69)
+    addReactNode(this, <GameFooter scene={this} />, 0, this.game.canvas.height - 62)
 
     const preview = new TowerPreview(this, 85, 70)
     this.add.existing(preview)
