@@ -58,7 +58,7 @@ export default class TDPlayScene extends Scene {
       type: "angle",
       margin: 0,
       inset: 0.2,
-      color: ["#3CC", "#066", "#033"]
+      color: ["#C93", "#630", "#320"]
     })
     makePlatform(this, "lightning-platform", 64, 64, {
       type: "angle",
@@ -70,13 +70,19 @@ export default class TDPlayScene extends Scene {
       type: "angle",
       margin: 0,
       inset: 0.2,
-      color: ["#C3C", "#606", "#303"]
+      color: ["#3CC", "#066", "#033"]
     })
     makePlatform(this, "boost-platform", 64, 64, {
       type: "angle",
       margin: 0,
       inset: 0.2,
-      color: ["#C3C", "#606", "#303"]
+      color: ["#843", "#432", "#210"]
+    })
+    makePlatform(this, "slow-platform", 64, 64, {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      color: ["#244", "#122", "#000"]
     })
 
     // TURRETS
@@ -108,25 +114,31 @@ export default class TDPlayScene extends Scene {
       ratio: 0.5,
       topSeg: 4,
       botSeg: 10,
-      color: ["#3CC", "#066", "#033"]
+      color: ["#C93", "#630", "#320"]
     })
     makeTowerTurret(this, "lightning-turret", 42, 38, {
       ratio: 0.5,
-      topSeg: 4,
-      botSeg: 10,
+      topSeg: 10,
+      botSeg: 3,
       color: ["#C3C", "#606", "#303"]
     })
     makeTowerTurret(this, "ice-turret", 42, 38, {
-      ratio: 0.5,
-      topSeg: 4,
+      ratio: 0.66,
+      topSeg: 3,
       botSeg: 10,
-      color: ["#C3C", "#606", "#303"]
+      color: ["#3CC", "#066", "#033"]
     })
     makeTowerTurret(this, "boost-turret", 42, 38, {
       ratio: 0.5,
-      topSeg: 4,
+      topSeg: 10,
       botSeg: 10,
-      color: ["#C3C", "#606", "#303"]
+      color: ["#843", "#432", "#210"]
+    })
+    makeTowerTurret(this, "slow-turret", 42, 38, {
+      ratio: 0.5,
+      topSeg: 10,
+      botSeg: 10,
+      color: ["#244", "#122", "#000"]
     })
 
     makeTowerProjector(this, "lazer-projector", 7, 32, {
@@ -161,7 +173,7 @@ export default class TDPlayScene extends Scene {
       type: "rect",
       margin: 0,
       inset: 0.45,
-      color: ["#066"],
+      color: ["#C93", "#630", "#320"],
       line: "#FFF"
     })
     makeTowerProjector(this, "lightning-projector", 7, 32, {
@@ -172,18 +184,24 @@ export default class TDPlayScene extends Scene {
       color: ["#FCF", "#FCF", "#E0E"]
     })
     makeTowerProjector(this, "ice-projector", 7, 32, {
-      type: "point",
+      type: "rect",
       margin: 0,
       inset: 0.4,
-      balls: { count: 1, color: ["#FCF"], start: 0.1 },
-      color: ["#FCF", "#FCF", "#E0E"]
+      color: ["#3CC", "#066", "#033"]
     })
-    makeTowerProjector(this, "boost-projector", 7, 32, {
-      type: "point",
+    makeTowerProjector(this, "boost-projector", 7, 16, {
+      type: "funnel",
       margin: 0,
       inset: 0.4,
-      balls: { count: 1, color: ["#FCF"], start: 0.1 },
-      color: ["#FCF", "#FCF", "#E0E"]
+      color: ["#843", "#432", "#210"],
+      line: "white"
+    })
+    makeTowerProjector(this, "slow-projector", 7, 16, {
+      type: "rect",
+      margin: 0,
+      inset: 0.4,
+      color: ["#244", "#122", "#000"],
+      line: "white"
     })
 
     // ENEMIES
@@ -200,9 +218,6 @@ export default class TDPlayScene extends Scene {
     const origin = new Point(6, 50)
     const towerGroup = this.physics.add.group({ key: "towerGroup" })
     this.selectionManager = new SelectionManager(towerGroup)
-    const randomCell = () => new Point(
-      origin.x + Math.floor(Math.random() * 8) * 64 * 2 + 32 + 64,
-      origin.y + Math.floor(Math.random() * 4) * 64 * 2 + 32 + 64)
 
     const towerCount = 10
     const towers: TDTower[] = []
@@ -211,9 +226,13 @@ export default class TDPlayScene extends Scene {
       const p = new Point(50 + i * 100, 100)
       const t = new TDTower(this, p.x, p.y, model)
       this.add.existing(t)
-      addLabel(this, p.x - 32, p.y + 32, model.name.split(" ")[0])
+      addLabel(this, p.x, p.y + 35, model.name.split(" ")[0], "center")
 
     })
+
+    const randomCell = () => new Point(
+      origin.x + 64 + Math.floor(Math.random() * 7) * 64 * 2 + 32 + 64,
+      origin.y + 64 + Math.floor(Math.random() * 3) * 64 * 2 + 32 + 64)
     const generateTower = (i: number) => {
       let pos = randomCell()
       while (checkDuplicates.has(pos.toString())) {
@@ -244,12 +263,15 @@ export default class TDPlayScene extends Scene {
 
   createMap(enemyGroup: GameObjects.Group) {
     generateMap(this, enemyGroup)
-    // const g = this.add.graphics()
-    // const margin = 10
-    // const x = 38
-    // g.fillStyle(0xCCCCFF, 1)
-    // g.fillRect(x - margin, 650 - margin, 16 * 64 + margin * 2, 64 + margin * 2)
-    // this.add.sprite(x, 650, "path_tiles").setOrigin(0, 0)
+    const showSpriteSheet = false
+    if (showSpriteSheet) {
+      const g = this.add.graphics()
+      const margin = 10
+      const x = 38
+      g.fillStyle(0xCCCCFF, 1)
+      g.fillRect(x - margin, 650 - margin, 16 * 64 + margin * 2, 64 + margin * 2)
+      this.add.sprite(x, 650, "path_tiles").setOrigin(0, 0)
+    }
   }
 
   // Note: Addition order appears to depend on enemyGroup order

@@ -2,13 +2,13 @@
 export interface ITowerProjector {
   sprite: string  // Gun or radar, etc. sprite
   emitter: string // Emitter effect type
-  distribution?: "linear" | "radial" | "center"
 }
 
 export interface ITowerMeta {
   platform: string                // Base on which the turret rests
   turret: string                  // Turret form that holds projectors
   projectors: ITowerProjector[]   // 1..3 Projectors (guns, radar, etc)
+  distribution?: "linear" | "radial"
 }
 
 export interface ITowerStatistics {
@@ -25,6 +25,7 @@ export interface ITowerDamage {
   poison?: number
   ice?: number
   boost?: number
+  slow?: number
 }
 
 export interface ITowerModel {
@@ -57,6 +58,7 @@ export const LAZER_TOWER: ITowerModel = {
       sprite: "lazer-projector",
       emitter: "lazer-emitter"
     }],
+    distribution: "linear",
   },
   stats: {
     range: 150,
@@ -70,7 +72,8 @@ export const LAZER_TOWER: ITowerModel = {
     lightning: 0,
     poison: 0,
     ice: 0,
-    boost: 0
+    boost: 0,
+    slow: 0
   }
 }
 
@@ -91,6 +94,7 @@ export const FIRE_TOWER: ITowerModel = {
       sprite: "fire-projector",
       emitter: "fire-emitter"
     }],
+    distribution: "linear",
   },
   stats: {
     range: 150,
@@ -104,7 +108,8 @@ export const FIRE_TOWER: ITowerModel = {
     lightning: 0,
     poison: 0,
     ice: 0,
-    boost: 0
+    boost: 0,
+    slow: 0
   }
 }
 
@@ -116,7 +121,16 @@ export const POISON_TOWER: ITowerModel = {
     projectors: [{
       sprite: "poison-projector",
       emitter: "poison-emitter"
-    }]
+    },
+    {
+      sprite: "poison-projector",
+      emitter: "poison-emitter"
+    },
+    {
+      sprite: "poison-projector",
+      emitter: "poison-emitter"
+    }],
+    distribution: "radial",
   },
   stats: {
     range: 150,
@@ -130,7 +144,8 @@ export const POISON_TOWER: ITowerModel = {
     lightning: 0,
     poison: 100,
     ice: 0,
-    boost: 0
+    boost: 0,
+    slow: 0
   }
 }
 
@@ -150,7 +165,8 @@ export const BULLET_TOWER: ITowerModel = {
     {
       sprite: "bullet-projector",
       emitter: "bullet-emitter"
-    }]
+    }],
+    distribution: "linear",
   },
   stats: {
     range: 150,
@@ -164,7 +180,8 @@ export const BULLET_TOWER: ITowerModel = {
     lightning: 0,
     poison: 0,
     ice: 0,
-    boost: 0
+    boost: 0,
+    slow: 0
   }
 }
 
@@ -184,7 +201,8 @@ export const MISSILE_TOWER: ITowerModel = {
     {
       sprite: "missile-projector",
       emitter: "missile-emitter"
-    }]
+    }],
+    distribution: "linear",
   },
   stats: {
     range: 150,
@@ -198,7 +216,8 @@ export const MISSILE_TOWER: ITowerModel = {
     lightning: 0,
     poison: 0,
     ice: 0,
-    boost: 0
+    boost: 0,
+    slow: 0
   }
 }
 
@@ -218,7 +237,8 @@ export const LIGHTNING_TOWER: ITowerModel = {
     {
       sprite: "lightning-projector",
       emitter: "lightning-emitter"
-    }]
+    }],
+    distribution: "linear",
   },
   stats: {
     range: 150,
@@ -232,7 +252,8 @@ export const LIGHTNING_TOWER: ITowerModel = {
     lightning: 100,
     poison: 0,
     ice: 0,
-    boost: 0
+    boost: 0,
+    slow: 0
   }
 }
 
@@ -244,7 +265,16 @@ export const ICE_TOWER: ITowerModel = {
     projectors: [{
       sprite: "ice-projector",
       emitter: "ice-emitter"
-    }]
+    },
+    {
+      sprite: "ice-projector",
+      emitter: "ice-emitter"
+    },
+    {
+      sprite: "ice-projector",
+      emitter: "ice-emitter"
+    }],
+    distribution: "linear",
   },
   stats: {
     range: 150,
@@ -258,7 +288,8 @@ export const ICE_TOWER: ITowerModel = {
     lightning: 0,
     poison: 0,
     ice: 100,
-    boost: 0
+    boost: 0,
+    slow: 0
   }
 }
 
@@ -270,7 +301,16 @@ export const BOOST_TOWER: ITowerModel = {
     projectors: [{
       sprite: "boost-projector",
       emitter: "boost-emitter"
-    }]
+    },
+    {
+      sprite: "boost-projector",
+      emitter: "boost-emitter"
+    },
+    {
+      sprite: "boost-projector",
+      emitter: "boost-emitter"
+    }],
+    distribution: "radial",
   },
   stats: {
     range: 150,
@@ -288,6 +328,42 @@ export const BOOST_TOWER: ITowerModel = {
   }
 }
 
+export const SLOW_TOWER: ITowerModel = {
+  name: "Slow Tower",
+  meta: {
+    platform: "slow-platform",
+    turret: "slow-turret",
+    projectors: [{
+      sprite: "slow-projector",
+      emitter: "slow-emitter"
+    },
+    {
+      sprite: "slow-projector",
+      emitter: "slow-emitter"
+    },
+    {
+      sprite: "slow-projector",
+      emitter: "slow-emitter"
+    }],
+    distribution: "radial",
+  },
+  stats: {
+    range: 150,
+    level: 3
+  },
+  damage: {
+    lazer: 0,
+    bullet: 0,
+    missile: 0,
+    fire: 0,
+    lightning: 0,
+    poison: 0,
+    ice: 0,
+    boost: 0,
+    slow: 100
+  }
+}
+
 
 export const ALL_TOWERS = [
   LAZER_TOWER,
@@ -297,5 +373,6 @@ export const ALL_TOWERS = [
   MISSILE_TOWER,
   LIGHTNING_TOWER,
   ICE_TOWER,
-  BOOST_TOWER
+  BOOST_TOWER,
+  SLOW_TOWER
 ]
