@@ -65,9 +65,9 @@ export function turretRenderer(g: CanvasRenderingContext2D,
   const tr = hh * ratio - inset
   const br = hh * (1.0 - ratio) - inset
 
-  g.fillStyle = colorStyle(g, x, y, ww, hh, color)
+  g.fillStyle = colorStyle(g, x, y, x, hh, color)
   g.strokeStyle = line
-  g.lineWidth = 2
+  g.lineWidth = 0.5
 
   g.beginPath()
   drawPolylipse(g, mid.x, mid.y, mid.x, tr, 0, 180, topSeg)

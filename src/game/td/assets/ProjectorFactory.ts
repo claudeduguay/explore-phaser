@@ -39,7 +39,7 @@ export function projectorRenderer(g: CanvasRenderingContext2D,
   const cx = ww / 2
   const main = { x: ww / 2 - ww * inset, w: ww * inset * 2 }
 
-  g.fillStyle = colorStyle(g, 0, 0, ww, 0, gradient)
+  g.fillStyle = colorStyle(g, x, 0, ww, 0, gradient)
 
   if (type === "rect") {
     const r = main.x + main.w - 1
@@ -54,6 +54,7 @@ export function projectorRenderer(g: CanvasRenderingContext2D,
   }
   g.fill()
   if (line) {
+    g.lineWidth = 0.5
     g.strokeStyle = line
     g.stroke()
   }
