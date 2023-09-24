@@ -126,8 +126,8 @@ function renderPath(scene: Scene, enemyGroup: GameObjects.Group, path: Cell[], o
 function makeTimelinePreview(scene: Scene, enemyGroup: GameObjects.Group, origin: Point, curve: Curves.Path, offset: number = 0) {
   const radius = 39
   const top = 27
-  const left = 275
-  const width = 500
+  const left = 250
+  const width = 550
   const path = new Curves.Path()
   path.moveTo(left, top)
   path.lineTo(left + width, top)

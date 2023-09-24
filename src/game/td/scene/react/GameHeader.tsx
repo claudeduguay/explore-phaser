@@ -1,5 +1,6 @@
 import INavigator from "./INavigator"
 import Icon from "./Icon"
+import IconButton from "./IconButton"
 
 export interface IGameHeaderProps {
   navigator: INavigator
@@ -35,21 +36,11 @@ export default function GameHeader({ navigator }: IGameHeaderProps) {
     </div>
     <div className="justify-content-end bg-primary">
       <div className="btn-group">
-        <button className="btn btn-primary" onClick={onHome}>
-          <Icon icon="home" style={{ color: "white", fontSize: 22 }} />
-        </button>
-        <button className="btn btn-primary" onClick={onWin}>
-          <Icon icon="sentiment_satisfied" style={{ color: "white", fontSize: 22 }} />
-        </button>
-        <button className="btn btn-primary" onClick={onLose}>
-          <Icon icon="sentiment_very_dissatisfied" style={{ color: "white", fontSize: 22 }} />
-        </button>
-        <button className="btn btn-primary" onClick={onTower}>
-          <Icon icon="crop_square" style={{ color: "white", fontSize: 22 }} />
-        </button>
-        <button className="btn btn-primary" onClick={onEnemy}>
-          <Icon icon="circle" style={{ color: "white", fontSize: 22 }} />
-        </button>
+        <IconButton icon="home" onClick={onHome} />
+        <IconButton icon="sentiment_satisfied" onClick={onWin} />
+        <IconButton icon="sentiment_very_dissatisfied" onClick={onLose} />
+        <IconButton icon="crop_square" onClick={onTower} />
+        <IconButton icon="circle" onClick={onEnemy} />
       </div>
     </div>
   </div>

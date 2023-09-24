@@ -12,7 +12,6 @@ import Point from "../../../util/Point"
 import SelectionManager from "./SelectionManager"
 import { ALL_TOWERS } from "../model/ITowerModel"
 import { IColoring } from "../assets/util/DrawUtil"
-import { addLabel } from "../../../util/TextUtil"
 import TowerPreview from "../tower/TowerPreview"
 
 function colors(h: number, s: number = 1, l: number = 0.1) {
