@@ -7,16 +7,34 @@ export default function useCaptureTower(scene: Scene, model: ITowerModel, w: num
   const [imageSrc, setImageSrc] = useState<string>("")
   useEffect(() => {
     // Check if we already captured this texture, remove it (wasteful but we're trying to ensure new captures)
-    if (scene.textures.exists(model.meta.capture)) {
-      scene.textures.get(model.meta.capture)
-      scene.textures.remove(model.meta.capture)
-    }
-    const capture = scene.textures.addDynamicTexture(model.meta.capture, w, h)
-    Object.entries(scene.textures.list).forEach(([key, value]) => {
-      if (value.type === "DynamicTexture") {
-        console.log("Texture:", key, value.type)
+    // if (scene.textures.exists(model.meta.capture)) {
+    //   scene.textures.get(model.meta.capture)
+    //   scene.textures.remove(model.meta.capture)
+    // }
+
+    // Clear all dynamic textures
+    const dynamic = new Set<Textures.Texture>()
+    scene.textures.each((texture: any) => {
+      if (texture.type === "DynamicTexture") {
+        dynamic.add(texture)
       }
-    })
+    }, scene)
+    dynamic.forEach(texture => {
+      if (scene.textures.exists(texture.key)) {
+        console.log("Key:", texture.key)
+        scene.textures.remove(texture.key)
+      }
+    }, scene)
+    let count = 0
+    scene.textures.each((texture: any) => {
+      if (texture.type === "DynamicTexture") {
+        console.log("Found:", texture.key)
+        count++
+      }
+    }, scene)
+    console.log("Count:", count)
+
+    const capture: Textures.DynamicTexture | null = scene.textures.addDynamicTexture(model.meta.capture, w, h)
     if (capture) {
       console.log("Start:", model.meta.capture)
       console.log("Capture:", capture)
@@ -27,12 +45,14 @@ export default function useCaptureTower(scene: Scene, model: ITowerModel, w: num
       const copy = new TDTower(scene, w / 2, h / 2)
       copy.angle = 90
       capture.draw(copy)
+
+      console.log("Capture Image:", capture.source[0].context)
       capture.snapshot(img => {
         if (img instanceof HTMLImageElement) {
           setImageSrc(() => {
             console.log("Capturing:", model.meta.capture)
             console.log("Image:", img.src)
-            capture.destroy()
+            // capture.destroy()
             return img.src
           })
         }
