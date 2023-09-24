@@ -13,10 +13,10 @@ export default function GameHeader({ navigator }: IGameHeaderProps) {
   const onTower = () => navigator.transitionTo("tower", "game")
   const onEnemy = () => navigator.transitionTo("enemy", "game")
 
-  return <div className="d-flex p-2" style={{ width: 1100, height: 54 }}>
+  return <div className="d-flex p-2" style={{ width: 1100, height: 60 }}>
     <div className="flex-fill justify-content-start">
       <div className="row">
-        <div className="col-auto">
+        <div className="col-auto p-0 ms-2">
           <div className="input-group">
             <span className="input-group-text fw-bold">
               <Icon icon="favorite" style={{ color: "red", fontSize: 22 }} />
@@ -24,7 +24,7 @@ export default function GameHeader({ navigator }: IGameHeaderProps) {
             <span className="btn btn-success">100</span>
           </div>
         </div>
-        <div className="col-auto">
+        <div className="col-auto p-0 ms-2">
           <div className="input-group">
             <span className="input-group-text fw-bold">
               <Icon icon="attach_money" style={{ color: "green", fontSize: 22 }} />

@@ -50,13 +50,27 @@ export function generateLevel(rows: number, cols: number) {
   const right = maze.cell_atv(random(cols - 1))
   maze.generate(right)
   const path = maze.get_path_to(left)
+
+  // Add a head cell
+  const head = new Cell(-1, path[0].pos.y)
+  head.parent = path[0]
+  head.rechain(head)
+  path.unshift(head)
+
+  // Add a tail cell
+  const last = path.length - 1
+  const tail = new Cell(path[last].pos.x + 1, path[last].pos.y)
+  path[last].parent = tail
+  head.rechain(tail)
+  path.push(tail)
+
   return { path, maze }
 }
 
 export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group,
   usePath: boolean = true, showMaze: boolean = true) {
 
-  const origin = new Point(6, 46)
+  const origin = new Point(0, 46)
   const cellSize = new Point(64, 64)
   const rows = 6
   const cols = 9
@@ -126,8 +140,8 @@ function renderPath(scene: Scene, enemyGroup: GameObjects.Group, path: Cell[], o
 function makeTimelinePreview(scene: Scene, enemyGroup: GameObjects.Group, origin: Point, curve: Curves.Path, offset: number = 0) {
   const radius = 39
   const top = 27
-  const left = 250
-  const width = 550
+  const left = 220
+  const width = 615
   const path = new Curves.Path()
   path.moveTo(left, top)
   path.lineTo(left + width, top)

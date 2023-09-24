@@ -243,7 +243,7 @@ export default class TDPlayScene extends Scene {
 
     this.createMap(enemyGroup) // Needs enemy group
 
-    const origin = new Point(6, 46)
+    const origin = new Point(0, 46)
     const towerGroup = this.physics.add.group({ key: "towerGroup" })
     this.selectionManager = new SelectionManager(towerGroup)
 
@@ -281,9 +281,11 @@ export default class TDPlayScene extends Scene {
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
     addReactNode(this, <GameFooter scene={this} />, 0, this.game.canvas.height - 62)
 
-    const preview = new TowerPreview(this, 85, 70)
-    this.add.existing(preview)
-
+    const showTowerPreview = false
+    if (showTowerPreview) {
+      const preview = new TowerPreview(this, 85, 70)
+      this.add.existing(preview)
+    }
   }
 
   createMap(enemyGroup: GameObjects.Group) {
