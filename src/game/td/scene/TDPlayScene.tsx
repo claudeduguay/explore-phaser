@@ -178,7 +178,7 @@ export default class TDPlayScene extends Scene {
       color: COLORS.FIRE,
       line: "white"
     })
-    makeTowerProjector(this, "poison-projector", 7, 16, {
+    makeTowerProjector(this, "poison-projector", 7, 22, {
       type: "point",
       margin: 0,
       inset: 0.0,
@@ -215,18 +215,20 @@ export default class TDPlayScene extends Scene {
       color: COLORS.ICE,
       line: "white"
     })
-    makeTowerProjector(this, "boost-projector", 7, 16, {
+    makeTowerProjector(this, "boost-projector", 7, 18, {
       type: "funnel",
       margin: 0,
-      inset: 0.4,
+      inset: 0.8,
       color: COLORS.BOOST,
+      balls: { count: 1, color: ["#FCF"], start: 0.7 },
       line: "white"
     })
-    makeTowerProjector(this, "slow-projector", 7, 16, {
+    makeTowerProjector(this, "slow-projector", 7, 18, {
       type: "rect",
       margin: 0,
       inset: 0.4,
       color: COLORS.SLOW,
+      balls: { count: 1, color: ["#FCF"], start: 0 },
       line: "white"
     })
 
@@ -241,7 +243,7 @@ export default class TDPlayScene extends Scene {
 
     this.createMap(enemyGroup) // Needs enemy group
 
-    const origin = new Point(6, 50)
+    const origin = new Point(6, 46)
     const towerGroup = this.physics.add.group({ key: "towerGroup" })
     this.selectionManager = new SelectionManager(towerGroup)
 

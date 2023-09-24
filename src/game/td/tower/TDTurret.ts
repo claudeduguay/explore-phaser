@@ -10,7 +10,7 @@ export default class TDTurret extends BehaviorContainer {
   constructor(public scene: Scene, public x: number = 0, public y: number = x, public model: ITowerModel) {
     super(scene)
     const turret = this.scene.add.sprite(0, 0, model.meta.turret)
-    // turret.postFX.addGlow(0x000000, 2, 0)
+    turret.postFX.addShadow(10, 10)
     this.add(turret)
 
     const count = model.meta.projectors.length

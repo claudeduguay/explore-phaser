@@ -153,7 +153,7 @@ function makeTimelinePreview(scene: Scene, enemyGroup: GameObjects.Group, origin
       onComplete: () => {
         follower.destroy()
         if (isLast) {
-          setTimeout(() => timeline.reset(), 2000)
+          setTimeout(() => timeline.reset(), 1000)
         }
       }
     })
