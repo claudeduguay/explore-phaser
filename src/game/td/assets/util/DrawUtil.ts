@@ -71,6 +71,21 @@ export function conicGradient(g: CanvasRenderingContext2D,
 
 
 // ----------------------------------------------------------------------------
+// CORLORING (abstracts string | string[] for fill and line styles)
+// ----------------------------------------------------------------------------
+
+export type IColoring = string | string[]
+
+export function colorStyle(g: CanvasRenderingContext2D, coloring: IColoring,
+  x0: number, y0: number, x1: number, y1: number): string | CanvasGradient {
+  if (Array.isArray(coloring)) {
+    return linearGradient(g, x0, y0, x1, y1, ...distributedStops(coloring))
+  }
+  return coloring
+}
+
+
+// ----------------------------------------------------------------------------
 // POINT ROTATION
 // ----------------------------------------------------------------------------
 

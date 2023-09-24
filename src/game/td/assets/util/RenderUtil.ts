@@ -12,6 +12,18 @@ export function canvasSize(g: CanvasRenderingContext2D): { w: number, h: number 
   return { w: g.canvas.width, h: g.canvas.height }
 }
 
+export function canvasDims(g: CanvasRenderingContext2D, margin: number, inset: number) {
+  const { w, h } = canvasSize(g)
+  return {
+    w, h,
+    mx: w * margin, my: h * margin,
+    mw: w - w * margin * 2, mh: h - h * margin * 2,
+    cx: w / 2, cy: h / 2,
+    ix: w * inset, iy: h * inset
+  }
+}
+
+
 export function renderCanvas(
   width: number,
   height: number,
