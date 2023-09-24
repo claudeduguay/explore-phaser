@@ -40,14 +40,13 @@ export default function useCaptureTower(scene: Scene, model: ITowerModel, w: num
       console.log("Capture:", capture)
       console.log("Capture Is:", capture instanceof Textures.DynamicTexture)
       console.log("Capture Type:", capture.type)
-      console.log("Capture Source:", capture.source)
 
       const copy = new TDTower(scene, w / 2, h / 2)
       copy.angle = 90
       capture.draw(copy)
 
-      console.log("Capture Image:", capture.source[0])
       capture.snapshot(img => {
+        // PROBLEM: This callback keeps returning the same image
         if (img instanceof HTMLImageElement) {
           setImageSrc(() => {
             console.log("Capturing:", model.meta.capture)
