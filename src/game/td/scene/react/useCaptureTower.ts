@@ -46,7 +46,7 @@ export default function useCaptureTower(scene: Scene, model: ITowerModel, w: num
       copy.angle = 90
       capture.draw(copy)
 
-      console.log("Capture Image:", capture.source[0].context)
+      console.log("Capture Image:", capture.source[0])
       capture.snapshot(img => {
         if (img instanceof HTMLImageElement) {
           setImageSrc(() => {
