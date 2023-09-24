@@ -12,7 +12,12 @@ export function canvasSize(g: CanvasRenderingContext2D): { w: number, h: number 
   return { w: g.canvas.width, h: g.canvas.height }
 }
 
-export function canvasDims(g: CanvasRenderingContext2D, margin: number, inset: number) {
+export interface IMarginInsets {
+  margin: number
+  inset: number
+}
+
+export function canvasDimensions(g: CanvasRenderingContext2D, { margin, inset }: IMarginInsets) {
   const { w, h } = canvasSize(g)
   return {
     w, h,
@@ -22,7 +27,6 @@ export function canvasDims(g: CanvasRenderingContext2D, margin: number, inset: n
     ix: w * inset, iy: h * inset
   }
 }
-
 
 export function renderCanvas(
   width: number,

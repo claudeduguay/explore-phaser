@@ -9,14 +9,13 @@ export interface ITowerButtonProps {
 }
 
 export default function TowerButton({ scene, model, onClick }: ITowerButtonProps) {
-  console.log("Tower:", model)
   const imageSrc = useCaptureTower(scene, model)
   const handleClick = () => {
     if (onClick) {
       onClick(model)
     }
   }
-  return <button className="btn btn-primary" onClick={handleClick} style={{ padding: 3 }}>
+  return <button className="btn btn-primary" onClick={handleClick} style={{ padding: 3 }} title={model.name}>
     <img src={imageSrc} alt="Tower" width={48} height={48} />
   </button>
 }

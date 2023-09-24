@@ -1,17 +1,15 @@
-import { distributedStops, linearGradient } from "./util/DrawUtil";
+import { IColoring, colorStyle } from "./util/DrawUtil";
 import { toRadians } from "./util/MathUtil";
-import { canvasSize } from "./util/RenderUtil";
+import { canvasSize, canvasDimensions, IMarginInsets } from "./util/RenderUtil";
 
 export type ITurretType = "convex" | "concave"
 
-export interface ITurretOptions {
+export interface ITurretOptions extends IMarginInsets {
   type: ITurretType;
-  margin: number;
-  inset: number;
   ratio: number;
   topSeg: number;
   botSeg: number;
-  gradient: string[]
+  color: IColoring
   line: string
 }
 
@@ -22,7 +20,7 @@ export const DEFAULT_TURRET_OPTIONS: ITurretOptions = {
   ratio: 0.66,
   topSeg: 7,
   botSeg: 10,
-  gradient: ["#99F", "#00F", "#009"],
+  color: ["#99F", "#00F", "#009"],
   line: "white"
 }
 
@@ -56,8 +54,8 @@ export function drawPolylipse(g: CanvasRenderingContext2D,
 export function turretRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: ITurretOptions) {
-  const { type, margin, inset, ratio, topSeg, botSeg, gradient, line } = options
-  const { w, h } = canvasSize(g)
+  const { type, margin, inset, ratio, topSeg, botSeg, color: gradient, line } = options
+  const { w, h } = canvasDimensions(g, options)
   const x = w * margin
   const y = h * margin
   const ww = w - (x * 2)
@@ -67,7 +65,7 @@ export function turretRenderer(g: CanvasRenderingContext2D,
   const tr = hh * ratio - inset
   const br = hh * (1.0 - ratio) - inset
 
-  g.fillStyle = linearGradient(g, x, y, ww, hh, ...distributedStops(gradient))
+  g.fillStyle = colorStyle(g, x, y, ww, hh, gradient)
   g.strokeStyle = line
   g.lineWidth = 2
 

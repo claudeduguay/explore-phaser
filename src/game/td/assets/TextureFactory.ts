@@ -3,9 +3,10 @@ import { Scene } from "phaser"
 import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal"
 import IRenderFunction from "./util/IRenderFunction"
 import { IPlatformOptions, platformRendererFunctionFactory } from "./PlatformFactory"
-import { drawEllipse } from "./util/DrawUtil"
+import { drawEllipse, rotated } from "./util/DrawUtil"
 import { ITurretOptions, turretRendererFunctionFactory } from "./TurretFactory"
 import { IProjectorOptions, projectorRendererFunctionFactory } from "./ProjectorFactory"
+import { pathRendererFunctionFactory } from "./PathFactory"
 
 // Render to a TextureCanvas using ...renderers
 export function renderCanvas(scene: Scene, key: string, w: number, h: number, ...renderers: IRenderFunction[]) {
@@ -17,34 +18,93 @@ export function renderCanvas(scene: Scene, key: string, w: number, h: number, ..
   canvas?.refresh()
 }
 
+export function renderImage(g: CanvasRenderingContext2D, renderer: IRenderFunction,
+  x: number, y: number, w: number, h: number, a: number = 0) {
+  const cellRenderCanvas = document.createElement("canvas") as HTMLCanvasElement
+  const context = cellRenderCanvas.getContext("2d")
+  cellRenderCanvas.width = w
+  cellRenderCanvas.height = h
+  if (context) {
+    rotated(context, renderer, a)
+    // renderer(context)
+    g.drawImage(cellRenderCanvas, x, y)
+  }
+}
+
 export function makePathTiles(scene: Scene, key: string, w: number, h: number, insetRatio = 0.25) {
   const count = 0b1111
+  const straightPathRender: IRenderFunction = pathRendererFunctionFactory(0, { type: "straight", beltInset: insetRatio })
+  const endPathRender: IRenderFunction = pathRendererFunctionFactory(0, { type: "end", beltInset: insetRatio })
+  const turnPathRender: IRenderFunction = pathRendererFunctionFactory(0, { type: "turn", beltInset: insetRatio })
+  const tPathRender: IRenderFunction = pathRendererFunctionFactory(0, { type: "t", beltInset: insetRatio })
+  const xPathRender: IRenderFunction = pathRendererFunctionFactory(0, { type: "x", beltInset: insetRatio })
+
   const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
-    const hasBit = (i: number, test: number): boolean => (i & test) !== 0
-    const inset = (v: number) => v * insetRatio
-    for (let i = 0; i < count; i++) {
-      g.fillStyle = "#333333"
-      const left = w * i
-      const inside = { x: inset(w), y: inset(h), w: w - inset(w) * 2, h: h - inset(h) * 2 }
-      const size = { w: w - inset(w), h: h - inset(h) }
-      if (hasBit(i, BITS_NORTH)) {
-        g.fillRect(left + inside.x, 0, inside.w, size.h)
+    for (let i = 0; i <= count; i++) {
+      const x = w * i
+
+      // ENDS
+      if (i === (BITS_NORTH)) {
+        renderImage(g, endPathRender, x, 0, w, h)
       }
-      if (hasBit(i, BITS_SOUTH)) {
-        g.fillRect(left + inside.x, inside.y, inside.w, size.h)
+      if (i === (BITS_SOUTH)) {
+        renderImage(g, endPathRender, x, 0, w, h, 180)
       }
-      if (hasBit(i, BITS_WEST)) {
-        g.fillRect(left, inside.y, size.w, inside.h)
+      if (i === (BITS_EAST)) {
+        renderImage(g, endPathRender, x, 0, w, h, 90)
       }
-      if (hasBit(i, BITS_EAST)) {
-        g.fillRect(left + inside.x, inside.x, size.w, inside.h)
+      if (i === (BITS_WEST)) {
+        renderImage(g, endPathRender, x, 0, w, h, 270)
       }
+
+      // STRAIGHT
+      if (i === (BITS_NORTH + BITS_SOUTH)) {
+        renderImage(g, straightPathRender, x, 0, w, h)
+      }
+      if (i === (BITS_WEST + BITS_EAST)) {
+        renderImage(g, straightPathRender, x, 0, w, h, 90)
+      }
+
+      // TURNS
+      if (i === (BITS_SOUTH + BITS_WEST)) {
+        renderImage(g, turnPathRender, x, 0, w, h)
+      }
+      if (i === (BITS_WEST + BITS_NORTH)) {
+        renderImage(g, turnPathRender, x, 0, w, h, 90)
+      }
+      if (i === (BITS_NORTH + BITS_EAST)) {
+        renderImage(g, turnPathRender, x, 0, w, h, 180)
+      }
+      if (i === (BITS_EAST + BITS_SOUTH)) {
+        renderImage(g, turnPathRender, x, 0, w, h, 270)
+      }
+
+      // BRANCH
+      if (i === (BITS_EAST + BITS_WEST + BITS_SOUTH)) {
+        renderImage(g, tPathRender, x, 0, w, h)
+      }
+      if (i === (BITS_NORTH + BITS_SOUTH + BITS_WEST)) {
+        renderImage(g, tPathRender, x, 0, w, h, 90)
+      }
+      if (i === (BITS_EAST + BITS_WEST + BITS_NORTH)) {
+        renderImage(g, tPathRender, x, 0, w, h, 180)
+      }
+      if (i === (BITS_NORTH + BITS_SOUTH + BITS_EAST)) {
+        renderImage(g, tPathRender, x, 0, w, h, 270)
+      }
+
+      // CROSS
+      if (i === (BITS_NORTH + BITS_SOUTH + BITS_EAST + BITS_WEST)) {
+        renderImage(g, xPathRender, x, 0, w, h, 0)
+      }
+
       // g.strokeStyle = "#00FF00"
-      // g.rect(left, 0, w, h)
+      // g.lineWidth = 2
+      // g.rect(x, 0, w, h)
       // g.stroke()
     }
   }
-  renderCanvas(scene, key, w * count, h, render)
+  renderCanvas(scene, key, w * (count + 1), h, render)
 }
 
 export function makeHeightRects(scene: Scene, key: string, w: number, h: number, count: number = 16) {

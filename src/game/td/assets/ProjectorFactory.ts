@@ -1,10 +1,10 @@
-import { distributedStops, drawEllipse, drawPolygon, linearGradient } from "./util/DrawUtil";
-import { canvasSize } from "./util/RenderUtil";
+import { IColoring, colorStyle, drawEllipse, drawPolygon } from "./util/DrawUtil";
+import { canvasSize, canvasDimensions } from "./util/RenderUtil";
 
 export type IProjectorType = "rect" | "point" | "funnel"
 export interface IProjectorDecorator {
   count: number
-  color: string[]
+  color: IColoring
   start: number
   step?: number
 }
@@ -15,8 +15,8 @@ export interface IProjectorOptions {
   inset: number;
   ribs?: IProjectorDecorator;
   balls?: IProjectorDecorator;
-  supressor?: { pos: number, len: number, color: string[] };
-  gradient: string[];
+  supressor?: { pos: number, len: number, color: IColoring };
+  color: IColoring
   line?: string;
 }
 
@@ -24,14 +24,14 @@ export const DEFAULT_PROJECTOR_OPTIONS: IProjectorOptions = {
   type: "point",
   margin: 0,
   inset: 0.3,
-  gradient: ["#00F"],
+  color: ["#00F"],
 }
 
 export function projectorRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IProjectorOptions) {
-  const { type, margin, inset, ribs, balls, supressor, gradient, line } = options
-  const { w, h } = canvasSize(g)
+  const { type, margin, inset, ribs, balls, supressor, color: gradient, line } = options
+  const { w, h } = canvasDimensions(g, options)
   const x = w * margin
   const y = h * margin
   const ww = w - (x * 2)
@@ -39,7 +39,7 @@ export function projectorRenderer(g: CanvasRenderingContext2D,
   const cx = ww / 2
   const main = { x: ww / 2 - ww * inset, w: ww * inset * 2 }
 
-  g.fillStyle = linearGradient(g, 0, 0, ww, 0, ...distributedStops(gradient))
+  g.fillStyle = colorStyle(g, 0, 0, ww, 0, gradient)
 
   if (type === "rect") {
     const r = main.x + main.w - 1
@@ -59,13 +59,13 @@ export function projectorRenderer(g: CanvasRenderingContext2D,
   }
 
   if (supressor) {
-    g.fillStyle = linearGradient(g, 0, 0, ww, 0, ...distributedStops(supressor.color))
+    g.fillStyle = colorStyle(g, 0, 0, ww, 0, supressor.color)
     g.fillRect(x, hh * supressor.pos, ww - 1, hh * supressor.len)
   }
 
   if (ribs) {
     for (let i = 0; i < ribs.count; i++) {
-      g.fillStyle = linearGradient(g, 0, 0, ww, 0, ...distributedStops(ribs.color))
+      g.fillStyle = colorStyle(g, 0, 0, ww, 0, ribs.color)
       const p = hh * ribs.start + hh * (ribs.step || 0.1) * i
       g.fillRect(x, p, ww - 1, hh * 0.05 - 1)
     }
@@ -73,7 +73,7 @@ export function projectorRenderer(g: CanvasRenderingContext2D,
 
   if (balls) {
     for (let i = 0; i < balls.count; i++) {
-      g.fillStyle = linearGradient(g, 0, 0, ww, 0, ...distributedStops(balls.color))
+      g.fillStyle = colorStyle(g, 0, 0, ww, 0, balls.color)
       const p = hh * balls.start + hh * 0.1 + hh * (balls.step || 0.25) * i
       drawEllipse(g, cx, p, ww / 2, ww / 2)
       g.fill()

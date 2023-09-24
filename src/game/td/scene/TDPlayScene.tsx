@@ -34,49 +34,49 @@ export default class TDPlayScene extends Scene {
       type: "curve-o",
       margin: 0,
       inset: 0.2,
-      gradient: ["#99F", "#00F", "#009"]
+      color: ["#99F", "#00F", "#009"]
     })
     makePlatform(this, "fire-platform", 64, 64, {
       type: "box-i",
       margin: 0,
       inset: 0.1,
-      gradient: ["#F99", "#F00", "#900"]
+      color: ["#F99", "#F00", "#900"]
     })
     makePlatform(this, "poison-platform", 64, 64, {
       type: "angle",
       margin: 0,
       inset: 0.2,
-      gradient: ["#3C3", "#060", "#030"]
+      color: ["#3C3", "#060", "#030"]
     })
     makePlatform(this, "bullet-platform", 64, 64, {
       type: "angle",
       margin: 0,
       inset: 0.2,
-      gradient: ["#CC3", "#660", "#330"]
+      color: ["#CC3", "#660", "#330"]
     })
     makePlatform(this, "missile-platform", 64, 64, {
       type: "angle",
       margin: 0,
       inset: 0.2,
-      gradient: ["#3CC", "#066", "#033"]
+      color: ["#3CC", "#066", "#033"]
     })
     makePlatform(this, "lightning-platform", 64, 64, {
       type: "angle",
       margin: 0,
       inset: 0.2,
-      gradient: ["#C3C", "#606", "#303"]
+      color: ["#C3C", "#606", "#303"]
     })
     makePlatform(this, "ice-platform", 64, 64, {
       type: "angle",
       margin: 0,
       inset: 0.2,
-      gradient: ["#C3C", "#606", "#303"]
+      color: ["#C3C", "#606", "#303"]
     })
     makePlatform(this, "boost-platform", 64, 64, {
       type: "angle",
       margin: 0,
       inset: 0.2,
-      gradient: ["#C3C", "#606", "#303"]
+      color: ["#C3C", "#606", "#303"]
     })
 
     // TURRETS
@@ -84,49 +84,49 @@ export default class TDPlayScene extends Scene {
       ratio: 0.6,
       topSeg: 3,
       botSeg: 10,
-      gradient: ["#33F", "#009", "#003"]
+      color: ["#33F", "#009", "#003"]
     })
     makeTowerTurret(this, "fire-turret", 42, 38, {
       ratio: 0.6,
       topSeg: 10,
       botSeg: 10,
-      gradient: ["#933", "#900", "#300"]
+      color: ["#933", "#900", "#300"]
     })
     makeTowerTurret(this, "poison-turret", 38, 38, {
       ratio: 0.5,
       topSeg: 10,
       botSeg: 10,
-      gradient: ["#393", "#090", "#030"]
+      color: ["#393", "#090", "#030"]
     })
     makeTowerTurret(this, "bullet-turret", 42, 38, {
       ratio: 0.5,
       topSeg: 4,
       botSeg: 10,
-      gradient: ["#CC3", "#660", "#330"]
+      color: ["#CC3", "#660", "#330"]
     })
     makeTowerTurret(this, "missile-turret", 42, 38, {
       ratio: 0.5,
       topSeg: 4,
       botSeg: 10,
-      gradient: ["#3CC", "#066", "#033"]
+      color: ["#3CC", "#066", "#033"]
     })
     makeTowerTurret(this, "lightning-turret", 42, 38, {
       ratio: 0.5,
       topSeg: 4,
       botSeg: 10,
-      gradient: ["#C3C", "#606", "#303"]
+      color: ["#C3C", "#606", "#303"]
     })
     makeTowerTurret(this, "ice-turret", 42, 38, {
       ratio: 0.5,
       topSeg: 4,
       botSeg: 10,
-      gradient: ["#C3C", "#606", "#303"]
+      color: ["#C3C", "#606", "#303"]
     })
     makeTowerTurret(this, "boost-turret", 42, 38, {
       ratio: 0.5,
       topSeg: 4,
       botSeg: 10,
-      gradient: ["#C3C", "#606", "#303"]
+      color: ["#C3C", "#606", "#303"]
     })
 
     makeTowerProjector(this, "lazer-projector", 7, 32, {
@@ -134,19 +134,19 @@ export default class TDPlayScene extends Scene {
       margin: 0,
       inset: 0.35,
       ribs: { count: 3, color: ["#CCF"], start: 0.08, step: 0.08 },
-      gradient: ["#66C", "#009"]
+      color: ["#66C", "#009"]
     })
     makeTowerProjector(this, "fire-projector", 7, 32, {
       type: "funnel",
       margin: 0,
       inset: 0.33,
-      gradient: ["#E00", "#FCC", "#E00"]
+      color: ["#E00", "#FCC", "#E00"]
     })
     makeTowerProjector(this, "poison-projector", 7, 16, {
       type: "point",
       margin: 0,
       inset: 0.0,
-      gradient: ["#090"],
+      color: ["#090"],
       line: "white"
     })
     makeTowerProjector(this, "bullet-projector", 7, 38, {
@@ -154,14 +154,14 @@ export default class TDPlayScene extends Scene {
       margin: 0,
       inset: 0.35,
       supressor: { pos: 0.15, len: 0.4, color: ["#330", "#990", "#330"] },
-      gradient: ["#330", "#990", "#330"],
+      color: ["#330", "#990", "#330"],
       // line: "#FFF"
     })
     makeTowerProjector(this, "missile-projector", 7, 32, {
       type: "rect",
       margin: 0,
       inset: 0.45,
-      gradient: ["#066"],
+      color: ["#066"],
       line: "#FFF"
     })
     makeTowerProjector(this, "lightning-projector", 7, 32, {
@@ -169,21 +169,21 @@ export default class TDPlayScene extends Scene {
       margin: 0,
       inset: 0.4,
       balls: { count: 1, color: ["#FCF"], start: 0.1 },
-      gradient: ["#FCF", "#FCF", "#E0E"]
+      color: ["#FCF", "#FCF", "#E0E"]
     })
     makeTowerProjector(this, "ice-projector", 7, 32, {
       type: "point",
       margin: 0,
       inset: 0.4,
       balls: { count: 1, color: ["#FCF"], start: 0.1 },
-      gradient: ["#FCF", "#FCF", "#E0E"]
+      color: ["#FCF", "#FCF", "#E0E"]
     })
     makeTowerProjector(this, "boost-projector", 7, 32, {
       type: "point",
       margin: 0,
       inset: 0.4,
       balls: { count: 1, color: ["#FCF"], start: 0.1 },
-      gradient: ["#FCF", "#FCF", "#E0E"]
+      color: ["#FCF", "#FCF", "#E0E"]
     })
 
     // ENEMIES
@@ -202,7 +202,7 @@ export default class TDPlayScene extends Scene {
     this.selectionManager = new SelectionManager(towerGroup)
     const randomCell = () => new Point(
       origin.x + Math.floor(Math.random() * 8) * 64 * 2 + 32 + 64,
-      origin.y + Math.floor(Math.random() * 5) * 64 * 2 + 32 + 64)
+      origin.y + Math.floor(Math.random() * 4) * 64 * 2 + 32 + 64)
 
     const towerCount = 10
     const towers: TDTower[] = []
@@ -236,7 +236,7 @@ export default class TDPlayScene extends Scene {
     const fireRange = 250
     this.add.particles(100, 765, 'fire', fireEmitter(fireRange))
     this.add.rectangle(100, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
-    this.add.particles(900, 750, 'smoke', cloudEmitter())
+    this.add.particles(900, 795, 'smoke', cloudEmitter())
 
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
     addReactNode(this, <GameFooter scene={this} />, 0, this.game.canvas.height - 67)
@@ -244,7 +244,12 @@ export default class TDPlayScene extends Scene {
 
   createMap(enemyGroup: GameObjects.Group) {
     generateMap(this, enemyGroup)
-    // this.add.sprite(50, 650, "path_tiles").setOrigin(0, 0)
+    // const g = this.add.graphics()
+    // const margin = 10
+    // const x = 38
+    // g.fillStyle(0xCCCCFF, 1)
+    // g.fillRect(x - margin, 650 - margin, 16 * 64 + margin * 2, 64 + margin * 2)
+    // this.add.sprite(x, 650, "path_tiles").setOrigin(0, 0)
   }
 
   // Note: Addition order appears to depend on enemyGroup order

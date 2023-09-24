@@ -76,8 +76,9 @@ export function conicGradient(g: CanvasRenderingContext2D,
 
 export type IColoring = string | string[]
 
-export function colorStyle(g: CanvasRenderingContext2D, coloring: IColoring,
-  x0: number, y0: number, x1: number, y1: number): string | CanvasGradient {
+export function colorStyle(g: CanvasRenderingContext2D,
+  x0: number, y0: number, x1: number, y1: number,
+  coloring: IColoring): string | CanvasGradient {
   if (Array.isArray(coloring)) {
     return linearGradient(g, x0, y0, x1, y1, ...distributedStops(coloring))
   }
@@ -257,8 +258,10 @@ export function drawRectBorders(g: CanvasRenderingContext2D, x: number, y: numbe
 
 // Generalized rotation based on view Rectangle and origin fraction
 export function rotated(g: CanvasRenderingContext2D,
-  renderFunction: (g: CanvasRenderingContext2D) => void, view: Rectangle,
-  angle: number, xOriginFraction: number = 0.5, yOriginFraction: number = 0.5) {
+  renderFunction: (g: CanvasRenderingContext2D) => void,
+  angle: number = 0,
+  view: Rectangle = new Rectangle(0, 0, g.canvas.width, g.canvas.height),
+  xOriginFraction: number = 0.5, yOriginFraction: number = 0.5) {
   const cx: number = view.width * xOriginFraction;
   const cy: number = view.height * yOriginFraction;
   g.save();
