@@ -8,7 +8,7 @@ export interface IGameFooterProps {
 
 export default function GameFooter({ scene }: IGameFooterProps) {
   return <div className="d-flexjustify-content-center p-2" style={{ width: 1100 }}>
-    <div className="btn-group">
+    <div className="btn-group bg-primary">
       {ALL_TOWERS.map((model, i) => <TowerButton key={i} scene={scene} model={model}
         onClick={(m => console.log("Click:", m))} />)}
     </div>

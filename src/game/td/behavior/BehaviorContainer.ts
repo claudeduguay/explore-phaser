@@ -4,7 +4,7 @@ import BehaviorList from "./BehaviorList"
 
 export default class BehaviorContainer extends GameObjects.Container {
 
-  readonly behavior = new BehaviorList()
+  public readonly behavior = new BehaviorList()
 
   constructor(public scene: Scene) {
     super(scene)

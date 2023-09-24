@@ -6,8 +6,12 @@ export interface IHasAngle {
 
 export default class RotateBehavior implements IBehavior<IHasAngle> {
 
+  constructor(public step: number = 1) {
+
+  }
+
   update(obj: IHasAngle, time: number, delta: number) {
-    obj.angle += 1
+    obj.angle += this.step
   }
 
 }

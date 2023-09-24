@@ -8,7 +8,8 @@ export interface ITowerMeta {
   platform: string                // Base on which the turret rests
   turret: string                  // Turret form that holds projectors
   projectors: ITowerProjector[]   // 1..3 Projectors (guns, radar, etc)
-  distribution?: "linear" | "radial"
+  distribution: "linear" | "radial"
+  rotation: "target" | number
 }
 
 export interface ITowerStatistics {
@@ -59,6 +60,7 @@ export const LAZER_TOWER: ITowerModel = {
       emitter: "lazer-emitter"
     }],
     distribution: "linear",
+    rotation: "target",
   },
   stats: {
     range: 150,
@@ -95,6 +97,7 @@ export const FIRE_TOWER: ITowerModel = {
       emitter: "fire-emitter"
     }],
     distribution: "linear",
+    rotation: "target",
   },
   stats: {
     range: 150,
@@ -131,6 +134,7 @@ export const POISON_TOWER: ITowerModel = {
       emitter: "poison-emitter"
     }],
     distribution: "radial",
+    rotation: 1,
   },
   stats: {
     range: 150,
@@ -167,6 +171,7 @@ export const BULLET_TOWER: ITowerModel = {
       emitter: "bullet-emitter"
     }],
     distribution: "linear",
+    rotation: "target",
   },
   stats: {
     range: 150,
@@ -203,6 +208,7 @@ export const MISSILE_TOWER: ITowerModel = {
       emitter: "missile-emitter"
     }],
     distribution: "linear",
+    rotation: "target",
   },
   stats: {
     range: 150,
@@ -239,6 +245,7 @@ export const LIGHTNING_TOWER: ITowerModel = {
       emitter: "lightning-emitter"
     }],
     distribution: "linear",
+    rotation: "target",
   },
   stats: {
     range: 150,
@@ -275,6 +282,7 @@ export const ICE_TOWER: ITowerModel = {
       emitter: "ice-emitter"
     }],
     distribution: "linear",
+    rotation: "target",
   },
   stats: {
     range: 150,
@@ -311,6 +319,7 @@ export const BOOST_TOWER: ITowerModel = {
       emitter: "boost-emitter"
     }],
     distribution: "radial",
+    rotation: 4,
   },
   stats: {
     range: 150,
@@ -346,6 +355,7 @@ export const SLOW_TOWER: ITowerModel = {
       emitter: "slow-emitter"
     }],
     distribution: "radial",
+    rotation: -1,
   },
   stats: {
     range: 150,

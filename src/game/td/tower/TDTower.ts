@@ -9,11 +9,12 @@ import TDRange from "./TDRange"
 import ITowerModel from "../model/ITowerModel"
 import { LAZER_TOWER } from "../model/ITowerModel"
 import SelectionManager from "../scene/SelectionManager"
+import RotateBehavior from "../behavior/RotateBehavior"
 
 export default class TDTower extends BehaviorContainer {
 
   tower_base: GameObjects.Sprite
-  turret: GameObjects.Container
+  turret: TDTurret
   targets: GameObjects.PathFollower[] = []
   showRange: GameObjects.Container
   showSelection: boolean = false
@@ -31,14 +32,19 @@ export default class TDTower extends BehaviorContainer {
     this.add(this.tower_base)
 
     this.turret = new TDTurret(scene, 0, 0, model)
+    if (model.meta.rotation !== "target") {
+      this.turret.behavior.push(new RotateBehavior(model.meta.rotation))
+    }
     this.add(this.turret)
 
     this.showRange = scene.add.existing(new TDRange(scene, this.x, this.y, model.stats.range))
     this.showRange.visible = false
 
     this.setSize(range * 2, range * 2) // Sets bounding box
-    this.behavior.push(new TargetAimBehavior())
-    this.behavior.push(new LaserBehavior())
+    if (model.meta.rotation === "target") {
+      this.behavior.push(new TargetAimBehavior())
+      this.behavior.push(new LaserBehavior())
+    }
     this.behavior.push(new ClearTargetsBehavior())
   }
 

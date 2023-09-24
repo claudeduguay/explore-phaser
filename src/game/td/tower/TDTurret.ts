@@ -1,10 +1,11 @@
 
-import { GameObjects, Scene } from "phaser"
+import { Scene } from "phaser"
 import TDGun from "./TDGun"
 import ITowerModel from "../model/ITowerModel"
 import Point from "../../../util/Point"
+import BehaviorContainer from "../behavior/BehaviorContainer"
 
-export default class TDTurret extends GameObjects.Container {
+export default class TDTurret extends BehaviorContainer {
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x, public model: ITowerModel) {
     super(scene)

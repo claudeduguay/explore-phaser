@@ -60,14 +60,18 @@ export function projectorRenderer(g: CanvasRenderingContext2D,
 
   if (supressor) {
     g.fillStyle = colorStyle(g, 0, 0, ww, 0, supressor.color)
-    g.fillRect(x, hh * supressor.pos, ww - 1, hh * supressor.len)
+    g.rect(x, hh * supressor.pos, ww - 1, hh * supressor.len)
+    g.fill()
+    g.stroke()
   }
 
   if (ribs) {
     for (let i = 0; i < ribs.count; i++) {
       g.fillStyle = colorStyle(g, 0, 0, ww, 0, ribs.color)
       const p = hh * ribs.start + hh * (ribs.step || 0.1) * i
-      g.fillRect(x, p, ww - 1, hh * 0.05 - 1)
+      g.rect(x, p, ww - 1, hh * 0.05 - 1)
+      g.fill()
+      g.stroke()
     }
   }
 
@@ -77,6 +81,7 @@ export function projectorRenderer(g: CanvasRenderingContext2D,
       const p = hh * balls.start + hh * 0.1 + hh * (balls.step || 0.25) * i
       drawEllipse(g, cx, p, ww / 2, ww / 2)
       g.fill()
+      g.stroke()
     }
   }
 }

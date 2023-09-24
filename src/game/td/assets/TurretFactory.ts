@@ -54,7 +54,7 @@ export function drawPolylipse(g: CanvasRenderingContext2D,
 export function turretRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: ITurretOptions) {
-  const { type, margin, inset, ratio, topSeg, botSeg, color: gradient, line } = options
+  const { type, margin, inset, ratio, topSeg, botSeg, color, line } = options
   const { w, h } = canvasDimensions(g, options)
   const x = w * margin
   const y = h * margin
@@ -65,7 +65,7 @@ export function turretRenderer(g: CanvasRenderingContext2D,
   const tr = hh * ratio - inset
   const br = hh * (1.0 - ratio) - inset
 
-  g.fillStyle = colorStyle(g, x, y, ww, hh, gradient)
+  g.fillStyle = colorStyle(g, x, y, ww, hh, color)
   g.strokeStyle = line
   g.lineWidth = 2
 
