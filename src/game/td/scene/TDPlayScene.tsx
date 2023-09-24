@@ -11,7 +11,6 @@ import generateMap from "./TDMazeMap"
 import Point from "../../../util/Point"
 import SelectionManager from "./SelectionManager"
 import { ALL_TOWERS } from "../model/ITowerModel"
-import { addLabel } from "../../../util/TextUtil"
 
 export default class TDPlayScene extends Scene {
 
@@ -222,17 +221,17 @@ export default class TDPlayScene extends Scene {
     const towerCount = 10
     const towers: TDTower[] = []
     const checkDuplicates = new Set<string>()
-    ALL_TOWERS.forEach((model, i) => {
-      const p = new Point(50 + i * 100, 100)
-      const t = new TDTower(this, p.x, p.y, model)
-      this.add.existing(t)
-      addLabel(this, p.x, p.y + 35, model.name.split(" ")[0], "center")
+    // ALL_TOWERS.forEach((model, i) => {
+    //   const p = new Point(50 + i * 100, 100)
+    //   const t = new TDTower(this, p.x, p.y, model)
+    //   this.add.existing(t)
+    //   addLabel(this, p.x, p.y + 35, model.name.split(" ")[0], "center")
 
-    })
+    // })
 
     const randomCell = () => new Point(
-      origin.x + 64 + Math.floor(Math.random() * 7) * 64 * 2 + 32 + 64,
-      origin.y + 64 + Math.floor(Math.random() * 3) * 64 * 2 + 32 + 64)
+      origin.x + Math.floor(Math.random() * 8) * 64 * 2 + 32 + 64,
+      origin.y + Math.floor(Math.random() * 5) * 64 * 2 + 32 + 64)
     const generateTower = (i: number) => {
       let pos = randomCell()
       while (checkDuplicates.has(pos.toString())) {
