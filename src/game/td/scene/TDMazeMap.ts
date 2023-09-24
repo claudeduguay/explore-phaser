@@ -126,16 +126,16 @@ function renderPath(scene: Scene, enemyGroup: GameObjects.Group, path: Cell[], o
 function makeTimelinePreview(scene: Scene, enemyGroup: GameObjects.Group, origin: Point, curve: Curves.Path, offset: number = 0) {
   const radius = 39
   const top = 27
-  const left = 295
+  const left = 275
+  const width = 500
   const path = new Curves.Path()
   path.moveTo(left, top)
-  path.lineTo(left + 400, top)
-  const g = scene.add.graphics({
-    lineStyle: { color: 0x003300, alpha: 1.0, width: radius },
-    fillStyle: { color: 0xFFFFFF, alpha: 0.5 }
-  })
-  path.draw(g)
-  g.fillRect(left + 100, top - radius / 2, 200, radius)
+  path.lineTo(left + width, top)
+  const g = scene.add.graphics()
+  g.fillStyle(0x996666, 1.0)
+  g.fillRoundedRect(left, top - radius / 2, width, radius, 10)
+  g.fillStyle(0x666699, 1.0)
+  g.fillRoundedRect(left + 100, top - radius / 2, width - 200, radius, 10)
 
   const timeline = scene.add.timeline({})
   const run = (key: string = "path-blue", isLast: boolean = false) => () => {
