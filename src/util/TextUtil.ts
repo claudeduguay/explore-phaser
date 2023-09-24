@@ -7,8 +7,8 @@ export function addLabel(scene: Scene, x: number, y: number, label: string, alig
   const text = scene.add.text(x + shadowOffset, y + shadowOffset, label, {
     fontSize: '18px',
     padding: { x: 5, y: 5 },
-    backgroundColor: '#DDDDDD',
-    color: 'black',
+    // backgroundColor: '#DDDDDD',
+    color: 'white',
     // shadow: {
     //   offsetX: 1,
     //   offsetY: 1,
