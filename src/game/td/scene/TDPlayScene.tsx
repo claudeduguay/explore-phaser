@@ -239,7 +239,7 @@ export default class TDPlayScene extends Scene {
     this.add.particles(900, 750, 'smoke', cloudEmitter())
 
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
-    addReactNode(this, <GameFooter scene={this} />, 0, this.game.canvas.height - 64)
+    addReactNode(this, <GameFooter scene={this} />, 0, this.game.canvas.height - 67)
   }
 
   createMap(enemyGroup: GameObjects.Group) {

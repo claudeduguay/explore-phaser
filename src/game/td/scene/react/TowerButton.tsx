@@ -16,7 +16,7 @@ export default function TowerButton({ scene, model, onClick }: ITowerButtonProps
       onClick(model)
     }
   }
-  return <button className="btn btn-primary" onClick={handleClick} style={{ margin: 0, padding: 2 }}>
+  return <button className="btn btn-primary" onClick={handleClick} style={{ padding: 3 }}>
     <img src={imageSrc} alt="Tower" width={48} height={48} />
   </button>
 }
