@@ -161,7 +161,6 @@ export function pathRendererFunctionFactory(
     case "t":
       return tPathRendererFunctionFactory(frameIndexFraction, merged)
     case "x":
-      console.log("3Path")
       return xPathRendererFunctionFactory(frameIndexFraction, merged)
     default:
       return straightPathRendererFunctionFactory(frameIndexFraction, merged)

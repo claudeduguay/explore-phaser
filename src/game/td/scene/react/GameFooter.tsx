@@ -1,16 +1,22 @@
 import { Scene } from "phaser"
-import { ALL_TOWERS } from "../../model/ITowerModel"
+import ITowerModel, { ALL_TOWERS } from "../../model/ITowerModel"
 import TowerButton from "./TowerButton"
 
 export interface IGameFooterProps {
   scene: Scene
+  onAddTower?: (model: ITowerModel) => void
 }
 
-export default function GameFooter({ scene }: IGameFooterProps) {
+export default function GameFooter({ scene, onAddTower }: IGameFooterProps) {
+  const handleAddTower = (model: ITowerModel) => {
+    if (onAddTower) {
+      onAddTower(model)
+    }
+  }
   return <div className="d-flex justify-content-center p-2" style={{ width: 1100 }}>
     <div className="btn-group">
       {ALL_TOWERS.map((model, i) => <TowerButton key={i} scene={scene} model={model}
-        onClick={(m => console.log("Click:", m))} />)}
+        onClick={() => handleAddTower(model)} />)}
     </div>
   </div>
 }

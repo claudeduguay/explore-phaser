@@ -10,7 +10,7 @@ import { fireEmitter, cloudEmitter } from "../emitter/ParticleConfig"
 import generateMap from "./TDMazeMap"
 import Point from "../../../util/Point"
 import SelectionManager from "./SelectionManager"
-import { ALL_TOWERS } from "../model/ITowerModel"
+import ITowerModel, { ALL_TOWERS } from "../model/ITowerModel"
 import { IColoring } from "../assets/util/DrawUtil"
 import TowerPreview from "../tower/TowerPreview"
 
@@ -38,6 +38,7 @@ const COLORS: { [key: string]: IColoring } = {
 export default class TDPlayScene extends Scene {
 
   selectionManager!: SelectionManager
+  addingTower?: TDTower
 
   constructor(public readonly gameScene: TDGameScene) {
     super({ key: "play" })
@@ -278,8 +279,16 @@ export default class TDPlayScene extends Scene {
     this.add.rectangle(10, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
     this.add.particles(950, 795, 'smoke', cloudEmitter())
 
+    // this.input.mouse?.onMouseMove((e: any) => console.log("Mouse Position:", e))
+    const onAddTower = (model: ITowerModel) => {
+      this.addingTower = new TDTower(this, this.input.x, this.input.y, model, this.selectionManager)
+      this.selectionManager.select(this.addingTower)
+      towerGroup.add(this.addingTower)
+      this.add.existing(this.addingTower)
+    }
+
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
-    addReactNode(this, <GameFooter scene={this} />, 0, this.game.canvas.height - 62)
+    addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />, 0, this.game.canvas.height - 62)
 
     const showTowerPreview = false
     if (showTowerPreview) {
@@ -314,5 +323,15 @@ export default class TDPlayScene extends Scene {
   }
 
   update(time: number, delta: number): void {
+    if (this.addingTower) {
+      if (!this.input.mousePointer.isDown) {
+        const { x, y } = this.input
+        console.log("Dragging:", x, y)
+        this.addingTower.setPosition(x, y)
+      }
+      else {
+        this.addingTower = undefined
+      }
+    }
   }
 }
