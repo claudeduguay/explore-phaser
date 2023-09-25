@@ -39,7 +39,6 @@ const COLORS: { [key: string]: IColoring } = {
   SLOW: colors(0.8),
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface ITextureConfigs {
   platform: ITextureConfig<Partial<IPlatformOptions>>
   turret: ITextureConfig<Partial<ITurretOptions>>
