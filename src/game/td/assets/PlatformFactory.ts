@@ -149,13 +149,13 @@ export function baseRenderer(g: CanvasRenderingContext2D,
 
 export function platformRendererFunctionFactory(
   frameIndexFraction: number,
-  options: IPlatformOptions = DEFAULT_PLATFORM_OPTIONS
+  options: Partial<IPlatformOptions> = DEFAULT_PLATFORM_OPTIONS
 ) {
-  options = { ...DEFAULT_PLATFORM_OPTIONS, ...options }
+  const merged = { ...DEFAULT_PLATFORM_OPTIONS, ...options }
   return (g: CanvasRenderingContext2D) => {
     const { w, h } = canvasSize(g)
     g.rect(0, 0, w, h)
     g.clip()
-    baseRenderer(g, frameIndexFraction, options)
+    baseRenderer(g, frameIndexFraction, merged)
   };
 }

@@ -128,7 +128,7 @@ export function makeEllipse(scene: Scene, key: string, w: number, h: number, col
   renderCanvas(scene, key, w, h, render)
 }
 
-export function makePlatform(scene: Scene, key: string, w: number, h: number, options?: IPlatformOptions) {
+export function makeTowerPlatform(scene: Scene, key: string, w: number, h: number, options?: Partial<IPlatformOptions>) {
   const render: IRenderFunction = platformRendererFunctionFactory(0, options)
   renderCanvas(scene, key, w, h, render)
 }

@@ -1,6 +1,6 @@
 
 import { Scene, GameObjects, Types, Display, Physics, Utils, Math as PMath } from "phaser"
-import { makeEllipse, makeHeightRects, makePathTiles, makePlatform, makeTowerProjector, makeTowerTurret } from "../assets/TextureFactory"
+import { makeEllipse, makeHeightRects, makePathTiles, makeTowerPlatform, makeTowerProjector, makeTowerTurret } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
 import TDGameScene from "./TDGameScene"
@@ -14,6 +14,9 @@ import ITowerModel, { ALL_TOWERS } from "../model/ITowerModel"
 import { IColoring } from "../assets/util/DrawUtil"
 import TowerPreview from "../tower/TowerPreview"
 import PointCollider, { PointColliders } from "../../../util/PointCollider"
+import { IPlatformOptions } from "../assets/PlatformFactory"
+import { ITurretOptions } from "../assets/TurretFactory"
+import { IProjectorOptions } from "../assets/ProjectorFactory"
 
 function colors(h: number, s: number = 1, l: number = 0.1) {
   const color = Display.Color.HSLToColor(h, s, l)
@@ -22,6 +25,12 @@ function colors(h: number, s: number = 1, l: number = 0.1) {
     color.rgba,
     color.darken(25).rgba
   ]
+}
+
+interface ITextureConfig<T> {
+  width: number,
+  height: number,
+  options: T
 }
 
 const COLORS: { [key: string]: IColoring } = {
@@ -36,13 +45,304 @@ const COLORS: { [key: string]: IColoring } = {
   SLOW: colors(0.8),
 }
 
+const PLATFORMS: Record<string, ITextureConfig<Partial<IPlatformOptions>>> = {
+  LAZER: {
+    width: 64,
+    height: 64,
+    options: {
+      type: "curve-o",
+      margin: 0,
+      inset: 0.2,
+      color: COLORS.LAZER
+    }
+  },
+  FIRE: {
+    width: 64,
+    height: 64,
+    options: {
+      type: "box-i",
+      margin: 0,
+      inset: 0.1,
+      color: COLORS.FIRE
+    }
+  },
+  POISON: {
+    width: 64,
+    height: 64,
+    options: {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      color: COLORS.POISON
+    }
+  },
+  BULLET: {
+    width: 64,
+    height: 64,
+    options: {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      color: COLORS.BULLET
+    }
+  },
+  MISSILE: {
+    width: 64,
+    height: 64,
+    options: {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      color: COLORS.MISSILE
+    }
+  },
+  LIGHTNING: {
+    width: 64,
+    height: 64,
+    options: {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      color: COLORS.LIGHTNING
+    }
+  },
+  ICE: {
+    width: 64,
+    height: 64,
+    options: {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      color: COLORS.ICE
+    }
+  },
+  BOOST: {
+    width: 64,
+    height: 64,
+    options: {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      color: COLORS.BOOST
+    }
+  },
+  SLOW: {
+    width: 64,
+    height: 64,
+    options: {
+      type: "angle",
+      margin: 0,
+      inset: 0.2,
+      color: COLORS.SLOW
+    }
+  }
+}
+
+const TURRETS: Record<string, ITextureConfig<Partial<ITurretOptions>>> = {
+  LAZER: {
+    width: 48,
+    height: 24,
+    options: {
+      ratio: 0.6,
+      topSeg: 3,
+      botSeg: 10,
+      color: COLORS.LAZER
+    }
+  },
+  FIRE: {
+    width: 42,
+    height: 38,
+    options: {
+      ratio: 0.6,
+      topSeg: 10,
+      botSeg: 10,
+      color: COLORS.FIRE
+    }
+  },
+  POISON: {
+    width: 38,
+    height: 38,
+    options: {
+      ratio: 0.5,
+      topSeg: 10,
+      botSeg: 10,
+      color: COLORS.POISON
+    }
+  },
+  BULLET: {
+    width: 42,
+    height: 38,
+    options: {
+      ratio: 0.5,
+      topSeg: 4,
+      botSeg: 10,
+      color: COLORS.BULLET
+    }
+  },
+  MISSILE: {
+    width: 42,
+    height: 38,
+    options: {
+      ratio: 0.5,
+      topSeg: 4,
+      botSeg: 10,
+      color: COLORS.MISSILE
+    }
+  },
+  LIGHTNING: {
+    width: 42,
+    height: 38,
+    options: {
+      ratio: 0.5,
+      topSeg: 10,
+      botSeg: 3,
+      color: COLORS.LIGHTNING
+    }
+  },
+  ICE: {
+    width: 42,
+    height: 38,
+    options: {
+      ratio: 0.66,
+      topSeg: 3,
+      botSeg: 10,
+      color: COLORS.ICE
+    }
+  },
+  BOOST: {
+    width: 42,
+    height: 42,
+    options: {
+      ratio: 0.5,
+      topSeg: 10,
+      botSeg: 10,
+      color: COLORS.BOOST
+    }
+  },
+  SLOW: {
+    width: 42,
+    height: 42,
+    options: {
+      ratio: 0.5,
+      topSeg: 10,
+      botSeg: 10,
+      color: COLORS.SLOW
+    }
+  }
+}
+
+const PROJECTOR: Record<string, ITextureConfig<Partial<IProjectorOptions>>> = {
+  LAZER: {
+    width: 7,
+    height: 32,
+    options: {
+      type: "rect",
+      margin: 0,
+      inset: 0.4,
+      ribs: { count: 3, color: COLORS.LAZER[1], start: 0.08, step: 0.08 },
+      color: COLORS.LAZER,
+      line: "white"
+    }
+  },
+  FIRE: {
+    width: 7,
+    height: 32,
+    options: {
+      type: "funnel",
+      margin: 0,
+      inset: 0.33,
+      color: COLORS.FIRE,
+      line: "white"
+    },
+  },
+  POISON: {
+    width: 7,
+    height: 22,
+    options: {
+      type: "point",
+      margin: 0,
+      inset: 0.0,
+      color: COLORS.POISON,
+      line: "white"
+    },
+  },
+  BULLET: {
+    width: 7,
+    height: 38,
+    options: {
+      type: "rect",
+      margin: 0,
+      inset: 0.35,
+      supressor: { pos: 0.15, len: 0.4, color: ["#330", "#990", "#330"] },
+      color: COLORS.BULLET,
+      line: "white"
+    },
+  },
+  MISSILE: {
+    width: 7,
+    height: 32,
+    options: {
+      type: "rect",
+      margin: 0,
+      inset: 0.45,
+      color: COLORS.MISSILE,
+      line: "white"
+    },
+  },
+  LIGHTNING: {
+    width: 7,
+    height: 32,
+    options: {
+      type: "point",
+      margin: 0,
+      inset: 0.4,
+      balls: { count: 1, color: ["#FCF"], start: 0 },
+      color: COLORS.LIGHTNING,
+      line: "white"
+    },
+  },
+  ICE: {
+    width: 7,
+    height: 32,
+    options: {
+      type: "funnel",
+      margin: 0,
+      inset: 0.4,
+      color: COLORS.ICE,
+      line: "white"
+    },
+  },
+  BOOST: {
+    width: 7,
+    height: 18,
+    options: {
+      type: "funnel",
+      margin: 0,
+      inset: 0.8,
+      color: COLORS.BOOST,
+      balls: { count: 1, color: ["#FCF"], start: 0.7 },
+      line: "white"
+    },
+  },
+  SLOW: {
+    width: 7,
+    height: 18,
+    options: {
+      type: "rect",
+      margin: 0,
+      inset: 0.4,
+      color: COLORS.SLOW,
+      balls: { count: 1, color: ["#FCF"], start: 0 },
+      line: "white"
+    }
+  }
+}
+
 export default class TDPlayScene extends Scene {
 
   selectionManager!: SelectionManager
   towerGroup!: Physics.Arcade.Group
   pathPoints!: Point[]
-  // pathCollider?: PointCollider
-  // towerCollider?: PointCollider
   towerColliders = new PointColliders()
   addingTower?: TDTower
 
@@ -58,186 +358,16 @@ export default class TDPlayScene extends Scene {
     makePathTiles(this, "path_tiles", 64, 64)
     makeHeightRects(this, "height_cells", 64, 64, 10)
 
-    // PLATFORMS
-    makePlatform(this, "lazer-platform", 64, 64, {
-      type: "curve-o",
-      margin: 0,
-      inset: 0.2,
-      color: COLORS.LAZER
-    })
-    makePlatform(this, "fire-platform", 64, 64, {
-      type: "box-i",
-      margin: 0,
-      inset: 0.1,
-      color: COLORS.FIRE
-    })
-    makePlatform(this, "poison-platform", 64, 64, {
-      type: "angle",
-      margin: 0,
-      inset: 0.2,
-      color: COLORS.POISON
-    })
-    makePlatform(this, "bullet-platform", 64, 64, {
-      type: "angle",
-      margin: 0,
-      inset: 0.2,
-      color: COLORS.BULLET
-    })
-    makePlatform(this, "missile-platform", 64, 64, {
-      type: "angle",
-      margin: 0,
-      inset: 0.2,
-      color: COLORS.MISSILE
-    })
-    makePlatform(this, "lightning-platform", 64, 64, {
-      type: "angle",
-      margin: 0,
-      inset: 0.2,
-      color: COLORS.LIGHTNING
-    })
-    makePlatform(this, "ice-platform", 64, 64, {
-      type: "angle",
-      margin: 0,
-      inset: 0.2,
-      color: COLORS.ICE
-    })
-    makePlatform(this, "boost-platform", 64, 64, {
-      type: "angle",
-      margin: 0,
-      inset: 0.2,
-      color: COLORS.BOOST
-    })
-    makePlatform(this, "slow-platform", 64, 64, {
-      type: "angle",
-      margin: 0,
-      inset: 0.2,
-      color: COLORS.SLOW
-    })
-
-    // TURRETS
-    makeTowerTurret(this, "lazer-turret", 48, 24, {
-      ratio: 0.6,
-      topSeg: 3,
-      botSeg: 10,
-      color: COLORS.LAZER
-    })
-    makeTowerTurret(this, "fire-turret", 42, 38, {
-      ratio: 0.6,
-      topSeg: 10,
-      botSeg: 10,
-      color: COLORS.FIRE
-    })
-    makeTowerTurret(this, "poison-turret", 38, 38, {
-      ratio: 0.5,
-      topSeg: 10,
-      botSeg: 10,
-      color: COLORS.POISON
-    })
-    makeTowerTurret(this, "bullet-turret", 42, 38, {
-      ratio: 0.5,
-      topSeg: 4,
-      botSeg: 10,
-      color: COLORS.BULLET
-    })
-    makeTowerTurret(this, "missile-turret", 42, 38, {
-      ratio: 0.5,
-      topSeg: 4,
-      botSeg: 10,
-      color: COLORS.MISSILE
-    })
-    makeTowerTurret(this, "lightning-turret", 42, 38, {
-      ratio: 0.5,
-      topSeg: 10,
-      botSeg: 3,
-      color: COLORS.LIGHTNING
-    })
-    makeTowerTurret(this, "ice-turret", 42, 38, {
-      ratio: 0.66,
-      topSeg: 3,
-      botSeg: 10,
-      color: COLORS.ICE
-    })
-    makeTowerTurret(this, "boost-turret", 42, 38, {
-      ratio: 0.5,
-      topSeg: 10,
-      botSeg: 10,
-      color: COLORS.BOOST
-    })
-    makeTowerTurret(this, "slow-turret", 42, 38, {
-      ratio: 0.5,
-      topSeg: 10,
-      botSeg: 10,
-      color: COLORS.SLOW
-    })
-
-    makeTowerProjector(this, "lazer-projector", 7, 32, {
-      type: "rect",
-      margin: 0,
-      inset: 0.4,
-      ribs: { count: 3, color: COLORS.LAZER[1], start: 0.08, step: 0.08 },
-      color: COLORS.LAZER,
-      line: "white"
-    })
-    makeTowerProjector(this, "fire-projector", 7, 32, {
-      type: "funnel",
-      margin: 0,
-      inset: 0.33,
-      color: COLORS.FIRE,
-      line: "white"
-    })
-    makeTowerProjector(this, "poison-projector", 7, 22, {
-      type: "point",
-      margin: 0,
-      inset: 0.0,
-      color: COLORS.POISON,
-      line: "white"
-    })
-    makeTowerProjector(this, "bullet-projector", 7, 38, {
-      type: "rect",
-      margin: 0,
-      inset: 0.35,
-      supressor: { pos: 0.15, len: 0.4, color: ["#330", "#990", "#330"] },
-      color: COLORS.BULLET,
-      line: "white"
-    })
-    makeTowerProjector(this, "missile-projector", 7, 32, {
-      type: "rect",
-      margin: 0,
-      inset: 0.45,
-      color: COLORS.MISSILE,
-      line: "white"
-    })
-    makeTowerProjector(this, "lightning-projector", 7, 32, {
-      type: "point",
-      margin: 0,
-      inset: 0.4,
-      balls: { count: 1, color: ["#FCF"], start: 0 },
-      color: COLORS.LIGHTNING,
-      line: "white"
-    })
-    makeTowerProjector(this, "ice-projector", 7, 32, {
-      type: "funnel",
-      margin: 0,
-      inset: 0.4,
-      color: COLORS.ICE,
-      line: "white"
-    })
-    makeTowerProjector(this, "boost-projector", 7, 18, {
-      type: "funnel",
-      margin: 0,
-      inset: 0.8,
-      color: COLORS.BOOST,
-      balls: { count: 1, color: ["#FCF"], start: 0.7 },
-      line: "white"
-    })
-    makeTowerProjector(this, "slow-projector", 7, 18, {
-      type: "rect",
-      margin: 0,
-      inset: 0.4,
-      color: COLORS.SLOW,
-      balls: { count: 1, color: ["#FCF"], start: 0 },
-      line: "white"
-    })
+    // TOWER TEXTURES
+    for (let [key, { width, height, options }] of Object.entries(PLATFORMS)) {
+      makeTowerPlatform(this, `${key.toLowerCase()}-platform`, width, height, options)
+    }
+    for (let [key, { width, height, options }] of Object.entries(TURRETS)) {
+      makeTowerTurret(this, `${key.toLowerCase()}-turret`, width, height, options)
+    }
+    for (let [key, { width, height, options }] of Object.entries(PROJECTOR)) {
+      makeTowerProjector(this, `${key.toLowerCase()}-projector`, width, height, options)
+    }
 
     // ENEMIES
     makeEllipse(this, "path-green", 20, 20, "#66FF66")
