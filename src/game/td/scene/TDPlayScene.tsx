@@ -1,5 +1,5 @@
 
-import { Scene, GameObjects, Types, Display, Utils, Math as PMath } from "phaser"
+import { Scene, GameObjects, Types, Display, Utils, Math as PMath, Physics, Geom } from "phaser"
 import { makeEllipse, makeHeightRects, makePathTiles, makePlatform, makeTowerProjector, makeTowerTurret } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
@@ -24,20 +24,22 @@ function colors(h: number, s: number = 1, l: number = 0.1) {
 }
 
 const COLORS: { [key: string]: IColoring } = {
-  FIRE: colors(0.00), // ["#F99", "#F00", "#900"],
-  POISON: colors(0.3), // ["#3C3", "#060", "#030"],
-  LAZER: colors(0.6), // ["#99F", "#00F", "#009"],
-  BULLET: colors(0.2), // ["#CC3", "#660", "#330"],
-  MISSILE: colors(0.4), // ["#C93", "#630", "#320"],
-  LIGHTNING: colors(0.7), // ["#C3C", "#606", "#303"],
-  ICE: colors(0.5), // ["#3CC", "#066", "#033"],
-  BOOST: colors(0.9), // ["#843", "#432", "#210"],
-  SLOW: colors(0.8), // ["#244", "#122", "#000"],
+  FIRE: colors(0.00),
+  POISON: colors(0.3),
+  LAZER: colors(0.6),
+  BULLET: colors(0.2),
+  MISSILE: colors(0.4),
+  LIGHTNING: colors(0.7),
+  ICE: colors(0.5),
+  BOOST: colors(0.9),
+  SLOW: colors(0.8),
 }
 
 export default class TDPlayScene extends Scene {
 
   selectionManager!: SelectionManager
+  towerGroup!: Physics.Arcade.Group
+  pathPoints!: Point[]
   addingTower?: TDTower
 
   constructor(public readonly gameScene: TDGameScene) {
@@ -245,8 +247,8 @@ export default class TDPlayScene extends Scene {
     this.createMap(enemyGroup) // Needs enemy group
 
     const origin = new Point(0, 46)
-    const towerGroup = this.physics.add.group({ key: "towerGroup" })
-    this.selectionManager = new SelectionManager(towerGroup)
+    this.towerGroup = this.physics.add.group({ key: "towerGroup" })
+    this.selectionManager = new SelectionManager(this.towerGroup)
 
     const towerCount = 10
     const towers: TDTower[] = []
@@ -268,22 +270,22 @@ export default class TDPlayScene extends Scene {
       const tower = generateTower(i)
       towers.push(tower)
       this.add.existing(tower)
-      towerGroup.add(tower)
+      this.towerGroup.add(tower)
     }
     this.selectionManager.select(towers[0])
 
-    this.physics.add.overlap(towerGroup, enemyGroup, this.onOverlap)
+    this.physics.add.overlap(this.towerGroup, enemyGroup, this.onEnemyOverlap)
 
     const fireRange = 220
     this.add.particles(10, 765, 'fire', fireEmitter(fireRange))
     this.add.rectangle(10, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
     this.add.particles(950, 795, 'smoke', cloudEmitter())
 
-    // this.input.mouse?.onMouseMove((e: any) => console.log("Mouse Position:", e))
     const onAddTower = (model: ITowerModel) => {
       this.addingTower = new TDTower(this, this.input.x, this.input.y, model, this.selectionManager)
+      // this.addingTower.showRange.visible = true
       this.selectionManager.select(this.addingTower)
-      towerGroup.add(this.addingTower)
+      this.towerGroup.add(this.addingTower)
       this.add.existing(this.addingTower)
     }
 
@@ -298,7 +300,7 @@ export default class TDPlayScene extends Scene {
   }
 
   createMap(enemyGroup: GameObjects.Group) {
-    generateMap(this, enemyGroup)
+    this.pathPoints = generateMap(this, enemyGroup)
     const showSpriteSheet = false
     if (showSpriteSheet) {
       const g = this.add.graphics()
@@ -311,7 +313,7 @@ export default class TDPlayScene extends Scene {
   }
 
   // Note: Addition order appears to depend on enemyGroup order
-  onOverlap(
+  onEnemyOverlap(
     tower: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
     enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
     if (tower instanceof TDTower && enemy instanceof GameObjects.PathFollower) {
@@ -325,11 +327,48 @@ export default class TDPlayScene extends Scene {
   update(time: number, delta: number): void {
     if (this.addingTower) {
       if (!this.input.mousePointer.isDown) {
-        const { x, y } = this.input
-        console.log("Dragging:", x, y)
+        this.input.setDefaultCursor("none")
+        let { x, y } = this.input
+        x = PMath.Snap.Floor(x, 64) + 32
+        y = PMath.Snap.Floor(y, 64) + 46 - 32
+
+        let collision = false
+        // This is somewhat expensive, might want to cache relevant bounds on start
+        this.towerGroup.children.each((grouped: any) => {
+          if (grouped instanceof TDTower && grouped !== this.addingTower) {
+            if (this.addingTower) {
+              const intersection = Geom.Intersects.GetRectangleIntersection(
+                this.addingTower.getBounds(), grouped.getBounds())
+              if (intersection.width > 0 || intersection.height > 0) {
+                // console.log("Tower Intersection:", grouped.model.name)
+                collision = true
+              }
+            }
+          }
+          this.pathPoints.forEach(point => {
+            const intersection = Geom.Intersects.GetRectangleIntersection(
+              new Geom.Rectangle(point.x - 32, point.y - 32, 64, 64), grouped.getBounds())
+            if (intersection.width > 0 || intersection.height > 0) {
+              // console.log("Path Intersection:", point)
+              collision = true
+            }
+          })
+
+          return null
+        })
+        // Handle position validation
+        if (collision) {
+          this.addingTower.tower_base.setTint(0xff0000)
+        } else {
+          this.addingTower.tower_base.clearTint()
+        }
         this.addingTower.setPosition(x, y)
-      }
-      else {
+      } else {
+        this.input.setDefaultCursor("default")
+        if (this.addingTower.tower_base.isTinted) {
+          this.addingTower.destroy()
+        }
+        // this.addingTower.showRange.visible = false
         this.addingTower = undefined
       }
     }

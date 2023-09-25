@@ -88,9 +88,10 @@ export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group,
       makeTileMap(scene, maze.grid.array, origin, cellSize, rows, cols)
     }
   }
-  const curve = renderPath(scene, enemyGroup, path, origin, cellSize)
+  const { curve, points } = renderPath(scene, enemyGroup, path, origin, cellSize)
 
   makeTimelinePreview(scene, enemyGroup, origin, curve, 0)
+  return points
 }
 
 function addFollower(key: string, scene: Scene, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, offset: number = 0) {
@@ -134,7 +135,7 @@ function renderPath(scene: Scene, enemyGroup: GameObjects.Group, path: Cell[], o
       curve.lineTo(p.x, p.y)
     }
   }
-  return curve
+  return { curve, points }
 
 }
 
