@@ -332,7 +332,7 @@ export default class TDPlayScene extends Scene {
     }
   }
 
-  pointCollision(points: Point[], pos: Point, tolerance: number = 32,) {
+  checkPointCollision(points: Point[], pos: Point, tolerance: number = 32,) {
     let collision = false
     points?.forEach(point => {
       const diff = point.diff(pos)
@@ -359,10 +359,10 @@ export default class TDPlayScene extends Scene {
             isValid = false
           }
         })
-        if (this.pointCollision(this.towerPoints || [], pos, 32)) {
+        if (this.checkPointCollision(this.towerPoints || [], pos, 32)) {
           isValid = false
         }
-        if (this.pointCollision(this.pathPoints || [], pos, 32)) {
+        if (this.checkPointCollision(this.pathPoints || [], pos, 32)) {
           isValid = false
         }
 
