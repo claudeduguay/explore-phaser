@@ -4,6 +4,7 @@ import Point from "../../../util/Point";
 import Cell from "../../../maze/Cell";
 import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal";
 import TDEnemy from "../enemy/TDEnemy";
+import { WEAK_ENEMY } from "../model/IEnemyModel";
 
 export function makeTileMap(scene: Scene, cells: Cell[], origin: Point, cellSize: Point, rows: number, cols: number) {
 
@@ -95,7 +96,7 @@ export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group,
 function addFollower(key: string, scene: Scene, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, offset: number = 0) {
   const length = path.getLength()
   // console.log("Path length:", length)
-  const follower = new TDEnemy(scene, path, origin.x, origin.y, key)
+  const follower = new TDEnemy(scene, path, origin.x, origin.y, key, WEAK_ENEMY, true)
   scene.add.existing(follower)
   follower.startFollow({
     positionOnPath: true,

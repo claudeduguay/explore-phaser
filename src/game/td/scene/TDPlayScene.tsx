@@ -1,5 +1,5 @@
 
-import { Scene, GameObjects, Types, Display, Utils, Math as PMath } from "phaser"
+import { Scene, GameObjects, Types, Display, Utils, Math as PMath, Curves } from "phaser"
 import { makeEllipse, makeHeightRects, makePathTiles, makePlatform, makeTowerProjector, makeTowerTurret } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
@@ -13,6 +13,8 @@ import SelectionManager from "./SelectionManager"
 import { ALL_TOWERS } from "../model/ITowerModel"
 import { IColoring } from "../assets/util/DrawUtil"
 import TowerPreview from "../tower/TowerPreview"
+import HealthBar from "../enemy/HealthBar"
+import TDEnemy from "../enemy/TDEnemy"
 
 function colors(h: number, s: number = 1, l: number = 0.1) {
   const color = Display.Color.HSLToColor(h, s, l)
@@ -286,6 +288,12 @@ export default class TDPlayScene extends Scene {
       const preview = new TowerPreview(this, 85, 70)
       this.add.existing(preview)
     }
+
+    // const healthBar = new HealthBar(this, 50, 50, null)
+
+    // const path = new Curves.Path()
+    // const enemy = new TDEnemy(this, path, 90, 140, "path-green")
+    // this.add.existing(enemy)
   }
 
   createMap(enemyGroup: GameObjects.Group) {
