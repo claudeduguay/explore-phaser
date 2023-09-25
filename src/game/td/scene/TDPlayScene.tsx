@@ -13,7 +13,7 @@ import SelectionManager from "./SelectionManager"
 import ITowerModel, { ALL_TOWERS } from "../model/ITowerModel"
 import { IColoring } from "../assets/util/DrawUtil"
 import TowerPreview from "../tower/TowerPreview"
-import PointCollider from "../../../util/PointCollider"
+import PointCollider, { PointColliders } from "../../../util/PointCollider"
 
 function colors(h: number, s: number = 1, l: number = 0.1) {
   const color = Display.Color.HSLToColor(h, s, l)
@@ -41,8 +41,9 @@ export default class TDPlayScene extends Scene {
   selectionManager!: SelectionManager
   towerGroup!: Physics.Arcade.Group
   pathPoints!: Point[]
-  pathCollider?: PointCollider
-  towerCollider?: PointCollider
+  // pathCollider?: PointCollider
+  // towerCollider?: PointCollider
+  towerColliders = new PointColliders()
   addingTower?: TDTower
 
   constructor(public readonly gameScene: TDGameScene) {
@@ -284,21 +285,26 @@ export default class TDPlayScene extends Scene {
     this.add.rectangle(10, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
     this.add.particles(950, 795, 'smoke', cloudEmitter())
 
+    const collectTowerPoints = (adding: TDTower) => {
+      const towerPoints: Point[] = []
+      this.towerGroup.children.each((grouped: any) => {
+        if (grouped instanceof TDTower && grouped !== adding) {
+          towerPoints.push(new Point(grouped.x, grouped.y))
+        }
+        return null
+      })
+      return towerPoints
+    }
+
     const onAddTower = (model: ITowerModel) => {
       this.addingTower = new TDTower(this, this.input.x, this.input.y, model, this.selectionManager)
       // this.addingTower.showRange.visible = true
       this.selectionManager.select(this.addingTower)
       this.towerGroup.add(this.addingTower)
       this.add.existing(this.addingTower)
-      const towerPoints: Point[] = []
-      this.towerGroup.children.each((grouped: any) => {
-        if (grouped instanceof TDTower && grouped !== this.addingTower) {
-          towerPoints.push(new Point(grouped.x, grouped.y))
-        }
-        return null
-      })
-      this.towerCollider = new PointCollider(towerPoints)
-      this.pathCollider = new PointCollider(this.pathPoints)
+      const towerPoints = collectTowerPoints(this.addingTower)
+      this.towerColliders.push(new PointCollider(towerPoints))
+      this.towerColliders.push(new PointCollider(this.pathPoints))
     }
 
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
@@ -354,17 +360,8 @@ export default class TDPlayScene extends Scene {
         const x = PMath.Snap.Floor(this.input.x, 64) + 32
         const y = PMath.Snap.Floor(this.input.y, 64) + 46 - 32
 
-        let isValid = true
-        const pos = new Point(x, y)
-        if (this.towerCollider?.collision(pos)) {
-          isValid = false
-        }
-        if (this.pathCollider?.collision(pos)) {
-          isValid = false
-        }
-
         // Highlight invalid positions
-        if (isValid) {
+        if (!this.towerColliders.collision(new Point(x, y))) {
           this.addingTower.tower_base.clearTint()
         } else {
           this.addingTower.tower_base.setTint(0xff0000)
@@ -377,8 +374,6 @@ export default class TDPlayScene extends Scene {
         }
         // this.addingTower.showRange.visible = false
         this.addingTower = undefined
-        this.towerCollider = undefined
-        this.pathCollider = undefined
       }
     }
   }

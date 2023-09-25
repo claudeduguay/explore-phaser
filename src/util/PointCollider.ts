@@ -22,7 +22,7 @@ export default class PointCollider {
 // Support an array of colliders and a single collision call
 export class PointColliders extends Array<PointCollider> {
 
-  collisions(pos: Point) {
+  collision(pos: Point) {
     for (let collider of this) {
       if (collider.collision(pos)) {
         return true
