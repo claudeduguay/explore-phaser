@@ -28,7 +28,7 @@ export default class TDTower extends BehaviorContainer {
       .on(Input.Events.POINTER_UP, () => {
         selectionManager?.toggle(this)
       }, this)
-      .on(Input.Events.POINTER_DOWN, () => console.log("Mouse down"), this)
+    // .on(Input.Events.POINTER_DOWN, () => console.log("Mouse down"), this)
     this.add(this.tower_base)
 
     this.turret = new TDTurret(scene, 0, 0, model)
