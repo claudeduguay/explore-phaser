@@ -332,6 +332,17 @@ export default class TDPlayScene extends Scene {
     }
   }
 
+  pointCollision(points: Point[], pos: Point, tolerance: number = 32,) {
+    let collision = false
+    points?.forEach(point => {
+      const diff = point.diff(pos)
+      if (diff.x < tolerance && diff.y < tolerance) {
+        collision = true
+      }
+    })
+    return collision
+  }
+
   update(time: number, delta: number): void {
     if (this.addingTower) {
       if (!this.input.mousePointer.isDown) {
@@ -348,12 +359,12 @@ export default class TDPlayScene extends Scene {
             isValid = false
           }
         })
-        this.pathPoints?.forEach(point => {
-          const diff = point.diff(pos)
-          if (diff.x < 32 && diff.y < 32) {
-            isValid = false
-          }
-        })
+        if (this.pointCollision(this.towerPoints || [], pos, 32)) {
+          isValid = false
+        }
+        if (this.pointCollision(this.pathPoints || [], pos, 32)) {
+          isValid = false
+        }
 
         // Highlight invalid positions
         if (isValid) {
