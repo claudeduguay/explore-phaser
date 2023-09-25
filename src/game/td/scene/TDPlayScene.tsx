@@ -13,6 +13,7 @@ import SelectionManager from "./SelectionManager"
 import ITowerModel, { ALL_TOWERS } from "../model/ITowerModel"
 import { IColoring } from "../assets/util/DrawUtil"
 import TowerPreview from "../tower/TowerPreview"
+import PointCollider from "../../../util/PointCollider"
 
 function colors(h: number, s: number = 1, l: number = 0.1) {
   const color = Display.Color.HSLToColor(h, s, l)
@@ -40,7 +41,8 @@ export default class TDPlayScene extends Scene {
   selectionManager!: SelectionManager
   towerGroup!: Physics.Arcade.Group
   pathPoints!: Point[]
-  towerPoints!: Point[]
+  pathCollider?: PointCollider
+  towerCollider?: PointCollider
   addingTower?: TDTower
 
   constructor(public readonly gameScene: TDGameScene) {
@@ -288,13 +290,15 @@ export default class TDPlayScene extends Scene {
       this.selectionManager.select(this.addingTower)
       this.towerGroup.add(this.addingTower)
       this.add.existing(this.addingTower)
-      this.towerPoints = []
+      const towerPoints: Point[] = []
       this.towerGroup.children.each((grouped: any) => {
         if (grouped instanceof TDTower && grouped !== this.addingTower) {
-          this.towerPoints.push(new Point(grouped.x, grouped.y))
+          towerPoints.push(new Point(grouped.x, grouped.y))
         }
         return null
       })
+      this.towerCollider = new PointCollider(towerPoints)
+      this.pathCollider = new PointCollider(this.pathPoints)
     }
 
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
@@ -347,22 +351,15 @@ export default class TDPlayScene extends Scene {
     if (this.addingTower) {
       if (!this.input.mousePointer.isDown) {
         this.input.setDefaultCursor("none")
-        let { x, y } = this.input
-        x = PMath.Snap.Floor(x, 64) + 32
-        y = PMath.Snap.Floor(y, 64) + 46 - 32
-        const pos = new Point(x, y)
+        const x = PMath.Snap.Floor(this.input.x, 64) + 32
+        const y = PMath.Snap.Floor(this.input.y, 64) + 46 - 32
 
         let isValid = true
-        this.towerPoints?.forEach(point => {
-          const diff = point.diff(pos)
-          if (diff.x < 32 && diff.y < 32) {
-            isValid = false
-          }
-        })
-        if (this.checkPointCollision(this.towerPoints || [], pos, 32)) {
+        const pos = new Point(x, y)
+        if (this.towerCollider?.collision(pos)) {
           isValid = false
         }
-        if (this.checkPointCollision(this.pathPoints || [], pos, 32)) {
+        if (this.pathCollider?.collision(pos)) {
           isValid = false
         }
 
@@ -380,7 +377,8 @@ export default class TDPlayScene extends Scene {
         }
         // this.addingTower.showRange.visible = false
         this.addingTower = undefined
-        this.towerPoints = []
+        this.towerCollider = undefined
+        this.pathCollider = undefined
       }
     }
   }
