@@ -120,6 +120,20 @@ function addFollower(key: string, scene: Scene, enemyGroup: GameObjects.Group, o
 
 }
 
+// Since we skip grid rows/cols we need to mid-points for a full set of path points
+function interpolateMidPoints(points: Point[]) {
+  const results: Point[] = []
+  const half = new Point(2, 2)
+  for (let i = 0; i < points.length; i++) {
+    if (i > 0) {
+      const diff = points[i].minus(points[i - 1]).div(half)
+      results.push(points[i - 1].plus(diff))
+    }
+    results.push(points[i])
+  }
+  return results
+}
+
 function renderPath(scene: Scene, enemyGroup: GameObjects.Group, path: Cell[], origin: Point, cellSize: Point) {
   const centering = new Point(32, 32)
   const points = path.map(cell => cell.pos.times(new Point(2, 2)).times(cellSize).plus(origin).plus(centering))
@@ -135,7 +149,7 @@ function renderPath(scene: Scene, enemyGroup: GameObjects.Group, path: Cell[], o
       curve.lineTo(p.x, p.y)
     }
   }
-  return { curve, points }
+  return { curve, points: interpolateMidPoints(points) }
 
 }
 

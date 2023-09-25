@@ -32,8 +32,20 @@ export default class Point {
     return new Point(this.x + p.x, this.y + p.y)
   }
 
+  minus(p: Point) {
+    return new Point(this.x - p.x, this.y - p.y)
+  }
+
   times(p: Point) {
     return new Point(this.x * p.x, this.y * p.y)
+  }
+
+  div(p: Point) {
+    return new Point(this.x / p.x, this.y / p.y)
+  }
+
+  diff(p: Point) {
+    return new Point(Math.abs(this.x - p.x), Math.abs(this.y - p.y))
   }
 
   toString() {

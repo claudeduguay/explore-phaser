@@ -1,5 +1,5 @@
 
-import { Scene, GameObjects, Types, Display, Utils, Math as PMath, Physics, Geom } from "phaser"
+import { Scene, GameObjects, Types, Display, Physics, Utils, Math as PMath } from "phaser"
 import { makeEllipse, makeHeightRects, makePathTiles, makePlatform, makeTowerProjector, makeTowerTurret } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
@@ -40,6 +40,7 @@ export default class TDPlayScene extends Scene {
   selectionManager!: SelectionManager
   towerGroup!: Physics.Arcade.Group
   pathPoints!: Point[]
+  towerPoints!: Point[]
   addingTower?: TDTower
 
   constructor(public readonly gameScene: TDGameScene) {
@@ -287,6 +288,13 @@ export default class TDPlayScene extends Scene {
       this.selectionManager.select(this.addingTower)
       this.towerGroup.add(this.addingTower)
       this.add.existing(this.addingTower)
+      this.towerPoints = []
+      this.towerGroup.children.each((grouped: any) => {
+        if (grouped instanceof TDTower && grouped !== this.addingTower) {
+          this.towerPoints.push(new Point(grouped.x, grouped.y))
+        }
+        return null
+      })
     }
 
     addReactNode(this, <GameHeader navigator={this.gameScene} />, 0, 0)
@@ -331,36 +339,27 @@ export default class TDPlayScene extends Scene {
         let { x, y } = this.input
         x = PMath.Snap.Floor(x, 64) + 32
         y = PMath.Snap.Floor(y, 64) + 46 - 32
+        const pos = new Point(x, y)
 
-        let collision = false
-        // This is somewhat expensive, might want to cache relevant bounds on start
-        this.towerGroup.children.each((grouped: any) => {
-          if (grouped instanceof TDTower && grouped !== this.addingTower) {
-            if (this.addingTower) {
-              const intersection = Geom.Intersects.GetRectangleIntersection(
-                this.addingTower.getBounds(), grouped.getBounds())
-              if (intersection.width > 0 || intersection.height > 0) {
-                // console.log("Tower Intersection:", grouped.model.name)
-                collision = true
-              }
-            }
+        let isValid = true
+        this.towerPoints?.forEach(point => {
+          const diff = point.diff(pos)
+          if (diff.x < 32 && diff.y < 32) {
+            isValid = false
           }
-          this.pathPoints.forEach(point => {
-            const intersection = Geom.Intersects.GetRectangleIntersection(
-              new Geom.Rectangle(point.x - 32, point.y - 32, 64, 64), grouped.getBounds())
-            if (intersection.width > 0 || intersection.height > 0) {
-              // console.log("Path Intersection:", point)
-              collision = true
-            }
-          })
-
-          return null
         })
-        // Handle position validation
-        if (collision) {
-          this.addingTower.tower_base.setTint(0xff0000)
-        } else {
+        this.pathPoints?.forEach(point => {
+          const diff = point.diff(pos)
+          if (diff.x < 32 && diff.y < 32) {
+            isValid = false
+          }
+        })
+
+        // Highlight invalid positions
+        if (isValid) {
           this.addingTower.tower_base.clearTint()
+        } else {
+          this.addingTower.tower_base.setTint(0xff0000)
         }
         this.addingTower.setPosition(x, y)
       } else {
@@ -370,6 +369,7 @@ export default class TDPlayScene extends Scene {
         }
         // this.addingTower.showRange.visible = false
         this.addingTower = undefined
+        this.towerPoints = []
       }
     }
   }
