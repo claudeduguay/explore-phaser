@@ -23,12 +23,17 @@ export default class TargetSlowBehavior implements IBehavior<IHasTargets> {
       this.g.destroy()
     }
     if (obj.targets.length > 0) {
-      this.g = obj.scene.add.graphics({ fillStyle: { color: 0xff0000, alpha: 0.2 } })
+      this.g = obj.scene.add.graphics({
+        fillStyle: { color: 0xff0000, alpha: 0.2 },
+        lineStyle: { color: 0xff0000, alpha: 0.75, width: 2 }
+      })
       const f = time % 1000 / 1000
       const r1 = obj.model.stats.range * f
       const r2 = obj.model.stats.range - r1
       this.g.fillCircle(obj.x, obj.y, r1)
       this.g.fillCircle(obj.x, obj.y, r2)
+      this.g.strokeCircle(obj.x, obj.y, r1)
+      this.g.strokeCircle(obj.x, obj.y, r2)
     }
   }
 }

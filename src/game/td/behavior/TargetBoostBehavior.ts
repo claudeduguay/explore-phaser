@@ -26,11 +26,11 @@ export default class TargetBoostBehavior implements IBehavior<IHasTargets> {
     if (obj.targets.length > 0) {
       const slice = 20
       this.g = obj.scene.add.graphics({ fillStyle: { color: 0x00ff00, alpha: 0.1 } })
-      for (let a = 0; a < 360; a += slice * 2)
-        this.g.slice(obj.x, obj.y, obj.model.stats.range,
-          toRadians(obj.turret.angle + a),
-          toRadians(obj.turret.angle + a + slice)
-        ).fill()
+      for (let a = 0; a < 360; a += slice * 2) {
+        const startAngle = toRadians(obj.turret.angle + a)
+        const endAngle = toRadians(obj.turret.angle + a + slice)
+        this.g.slice(obj.x, obj.y, obj.model.stats.range, startAngle, endAngle).fill()
+      }
     }
   }
 }
