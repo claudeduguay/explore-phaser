@@ -16,6 +16,8 @@ import TargePoisonBehavior from "../behavior/TargetPoisonBehavior"
 import TargetFireBehavior from "../behavior/TargetFireBehavior"
 import TargetIceBehavior from "../behavior/TargetIceBehavior"
 import TargetBulletBehavior from "../behavior/TargetBulletBehavior"
+import TargetBoostBehavior from "../behavior/TargetBoostBehavior"
+import TargetSlowBehavior from "../behavior/TargetSlowBehavior"
 
 export default class TDTower extends BehaviorContainer {
 
@@ -48,7 +50,9 @@ export default class TDTower extends BehaviorContainer {
 
     this.setSize(range * 2, range * 2) // Sets bounding box
 
-    this.behavior.push(new TargetAimBehavior())
+    if (model.meta.rotation === "target") {
+      this.behavior.push(new TargetAimBehavior())
+    }
     switch (model.meta.key) {
       case "fire":
         this.behavior.push(new TargetFireBehavior())
@@ -65,11 +69,16 @@ export default class TDTower extends BehaviorContainer {
       case "bullet":
         this.behavior.push(new TargetBulletBehavior())
         break
+      case "boost":
+        this.behavior.push(new TargetBoostBehavior())
+        break
+      case "slow":
+        this.behavior.push(new TargetSlowBehavior())
+        break
       default:
         console.log("Add default (lazer) behavior")
         this.behavior.push(new TargetLaserBehavior())
     }
-    // }
     this.behavior.push(new ClearTargetsBehavior())
   }
 
