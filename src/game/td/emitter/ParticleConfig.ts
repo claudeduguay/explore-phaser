@@ -64,8 +64,8 @@ export function fireEmitter(range: number = 100): EmitterConfig {
 }
 
 export function iceEmitter(range: number = 100): EmitterConfig {
-  const speed = 150
-  const travelPerSecond = speed / 2500
+  const speed = 100
+  const travelPerSecond = speed / 1000
   // Distance traveled is range divided by travelPerSecond
   // Note, we add 25% to range to wrap the enemy
   const lifespan = (range * 1.25) / travelPerSecond
@@ -77,9 +77,9 @@ export function iceEmitter(range: number = 100): EmitterConfig {
     lifespan,
     speed,
     advance: 0,
-    angle: { min: 5, max: -5 },  // 90 +/- 5
+    angle: { min: 10, max: -10 },  // 90 +/- 5
     rotate: { min: 0, max: 360 },
-    scale: { start: 0.001, end: 0.1, ease: 'sine.out' },
+    scale: { start: 0.01, end: 0.2, ease: 'sine.out' },
     blendMode: 'ADD',
   }
 }
