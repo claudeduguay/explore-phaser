@@ -5,6 +5,7 @@ export interface ITowerProjector {
 }
 
 export interface ITowerMeta {
+  key: string                   // Tower key
   platform: string                // Base on which the turret rests
   turret: string                  // Turret form that holds projectors
   projectors: ITowerProjector[]   // 1..3 Projectors (guns, radar, etc)
@@ -45,6 +46,7 @@ export default ITowerModel
 export const LAZER_TOWER: ITowerModel = {
   name: "Lazer Tower",
   meta: {
+    key: "lazer",
     platform: "lazer-platform",
     turret: "lazer-turret",
     projectors: [{
@@ -82,6 +84,7 @@ export const LAZER_TOWER: ITowerModel = {
 export const FIRE_TOWER: ITowerModel = {
   name: "Fire Tower",
   meta: {
+    key: "fire",
     platform: "fire-platform",
     turret: "fire-turret",
     projectors: [{
@@ -119,6 +122,7 @@ export const FIRE_TOWER: ITowerModel = {
 export const POISON_TOWER: ITowerModel = {
   name: "Poison Tower",
   meta: {
+    key: "poison",
     platform: "poison-platform",
     turret: "poison-turret",
     projectors: [{
@@ -156,6 +160,7 @@ export const POISON_TOWER: ITowerModel = {
 export const BULLET_TOWER: ITowerModel = {
   name: "Bullet Tower",
   meta: {
+    key: "bullet",
     platform: "bullet-platform",
     turret: "bullet-turret",
     projectors: [{
@@ -193,6 +198,7 @@ export const BULLET_TOWER: ITowerModel = {
 export const MISSILE_TOWER: ITowerModel = {
   name: "Missile Tower",
   meta: {
+    key: "missile",
     platform: "missile-platform",
     turret: "missile-turret",
     projectors: [{
@@ -230,6 +236,7 @@ export const MISSILE_TOWER: ITowerModel = {
 export const LIGHTNING_TOWER: ITowerModel = {
   name: "Lightning Tower",
   meta: {
+    key: "lightning",
     platform: "lightning-platform",
     turret: "lightning-turret",
     projectors: [{
@@ -267,6 +274,7 @@ export const LIGHTNING_TOWER: ITowerModel = {
 export const ICE_TOWER: ITowerModel = {
   name: "Ice Tower",
   meta: {
+    key: "ice",
     platform: "ice-platform",
     turret: "ice-turret",
     projectors: [{
@@ -304,6 +312,7 @@ export const ICE_TOWER: ITowerModel = {
 export const BOOST_TOWER: ITowerModel = {
   name: "Boost Tower",
   meta: {
+    key: "boost",
     platform: "boost-platform",
     turret: "boost-turret",
     projectors: [{
@@ -340,6 +349,7 @@ export const BOOST_TOWER: ITowerModel = {
 export const SLOW_TOWER: ITowerModel = {
   name: "Slow Tower",
   meta: {
+    key: "slow",
     platform: "slow-platform",
     turret: "slow-turret",
     projectors: [{

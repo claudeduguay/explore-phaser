@@ -1,3 +1,4 @@
+import { lerp } from "./MathUtil"
 
 export default class Point {
 
@@ -46,6 +47,13 @@ export default class Point {
 
   diff(p: Point) {
     return new Point(Math.abs(this.x - p.x), Math.abs(this.y - p.y))
+  }
+
+  lerp(p: Point, f: number) {
+    return new Point(
+      lerp(this.x, p.x, f),
+      lerp(this.y, p.y, f)
+    )
   }
 
   toString() {

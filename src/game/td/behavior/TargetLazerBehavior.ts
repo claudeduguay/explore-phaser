@@ -11,7 +11,7 @@ export interface IHasTargets extends IHasPosition {
   targets: IHasPosition[]
 }
 
-export default class LaserBehavior implements IBehavior<IHasTargets> {
+export default class TargetLaserBehavior implements IBehavior<IHasTargets> {
 
   line?: GameObjects.Graphics
 
@@ -21,7 +21,6 @@ export default class LaserBehavior implements IBehavior<IHasTargets> {
     }
     if (obj.targets.length > 0) {
       const target = obj.targets[0]
-      // console.log("Laster:", target)
       this.line = obj.scene.add.graphics({ lineStyle: { color: 0xFF0000, alpha: 1.0, width: 3 } })
         .lineBetween(obj.x, obj.y, target.x, target.y)
     }

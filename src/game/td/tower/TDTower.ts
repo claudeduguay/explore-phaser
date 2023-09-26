@@ -4,12 +4,18 @@ import TDTurret from "./TDTurret"
 import BehaviorContainer from "../behavior/BehaviorContainer"
 import TargetAimBehavior from "../behavior/TargetAimBehavior"
 import ClearTargetsBehavior from "../behavior/TargetsClearBehavior"
-import LaserBehavior from "../behavior/LazerBehavior"
+import TargetLaserBehavior from "../behavior/TargetLazerBehavior"
 import TDRange from "./TDRange"
 import ITowerModel from "../model/ITowerModel"
 import { LAZER_TOWER } from "../model/ITowerModel"
 import SelectionManager from "../scene/SelectionManager"
+
 import RotateBehavior from "../behavior/RotateBehavior"
+import TargetLightningBehavior from "../behavior/TargetLightningBehavior"
+import TargePoisonBehavior from "../behavior/TargetPoisonBehavior"
+import TargetFireBehavior from "../behavior/TargetFireBehavior"
+import TargetIceBehavior from "../behavior/TargetIceBehavior"
+import TargetBulletBehavior from "../behavior/TargetBulletBehavior"
 
 export default class TDTower extends BehaviorContainer {
 
@@ -41,10 +47,29 @@ export default class TDTower extends BehaviorContainer {
     this.showRange.visible = false
 
     this.setSize(range * 2, range * 2) // Sets bounding box
-    if (model.meta.rotation === "target") {
-      this.behavior.push(new TargetAimBehavior())
-      this.behavior.push(new LaserBehavior())
+
+    this.behavior.push(new TargetAimBehavior())
+    switch (model.meta.key) {
+      case "fire":
+        this.behavior.push(new TargetFireBehavior())
+        break
+      case "ice":
+        this.behavior.push(new TargetIceBehavior())
+        break
+      case "lightning":
+        this.behavior.push(new TargetLightningBehavior())
+        break
+      case "poison":
+        this.behavior.push(new TargePoisonBehavior())
+        break
+      case "bullet":
+        this.behavior.push(new TargetBulletBehavior())
+        break
+      default:
+        console.log("Add default (lazer) behavior")
+        this.behavior.push(new TargetLaserBehavior())
     }
+    // }
     this.behavior.push(new ClearTargetsBehavior())
   }
 

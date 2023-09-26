@@ -427,6 +427,8 @@ export default class TDPlayScene extends Scene {
     this.load.atlas('flares', 'assets/particles/flares.png', 'assets/particles/flares.json')
     this.load.image('fire', 'assets/particles/fire_01.png')
     this.load.image('smoke', 'assets/particles/smoke_01.png')
+    this.load.image('ice', 'assets/particles/star_08.png')
+    this.load.image('muzzle', 'assets/particles/muzzle_01.png')
     makePathTiles(this, "path_tiles", 64, 64)
     makeHeightRects(this, "height_cells", 64, 64, 10)
 
@@ -483,10 +485,10 @@ export default class TDPlayScene extends Scene {
 
     this.physics.add.overlap(this.towerGroup, enemyGroup, this.onEnemyOverlap)
 
-    const fireRange = 220
-    this.add.particles(10, 765, 'fire', fireEmitter(fireRange))
-    this.add.rectangle(10, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
-    this.add.particles(950, 795, 'smoke', cloudEmitter())
+    // const fireRange = 220
+    // this.add.particles(10, 765, 'fire', fireEmitter(fireRange))
+    // this.add.rectangle(10, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
+    // this.add.particles(950, 795, 'smoke', cloudEmitter())
 
     const collectTowerPoints = (adding: TDTower) => {
       const towerPoints: Point[] = []
