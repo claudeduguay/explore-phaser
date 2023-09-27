@@ -1,7 +1,7 @@
 import { Scene, GameObjects } from "phaser"
 import IBehavior from "./IBehavior"
 import ITowerModel from "../model/ITowerModel"
-import { toRadians } from "../assets/util/MathUtil"
+import { toRadians } from "../../../util/MathUtil"
 
 export interface IHasPosition {
   x: number

@@ -1,5 +1,5 @@
-import { IColoring, colorStyle, drawEllipse, drawPolygon } from "./util/DrawUtil";
-import { canvasSize, canvasDimensions } from "./util/RenderUtil";
+import { IColoring, colorStyle, drawEllipse, drawPolygon } from "../../../util/DrawUtil";
+import { canvasSize, canvasDimensions } from "../../../util/RenderUtil";
 
 export type IProjectorType = "rect" | "point" | "funnel"
 export interface IProjectorDecorator {

@@ -1,6 +1,6 @@
-import { IColoring, colorStyle } from "./util/DrawUtil";
-import { toRadians } from "./util/MathUtil";
-import { canvasSize, canvasDimensions, IMarginInsets } from "./util/RenderUtil";
+import { IColoring, colorStyle } from "../../../util/DrawUtil";
+import { toRadians } from "../../../util/MathUtil";
+import { canvasSize, canvasDimensions, IMarginInsets } from "../../../util/RenderUtil";
 
 export type ITurretType = "convex" | "concave"
 

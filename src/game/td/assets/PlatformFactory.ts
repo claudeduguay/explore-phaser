@@ -1,5 +1,5 @@
-import { IColoring, colorStyle, drawArc } from "./util/DrawUtil";
-import { canvasSize, canvasDimensions, IMarginInsets } from "./util/RenderUtil";
+import { IColoring, colorStyle, drawArc } from "../../../util/DrawUtil";
+import { canvasSize, canvasDimensions, IMarginInsets } from "../../../util/RenderUtil";
 
 export type IPlatformType = "angle" | "curve-o" | "curve-i" | "box-o" | "box-i"
 

@@ -1,5 +1,5 @@
-import { drawArc, rotated, Stroke } from "./util/DrawUtil";
-import { canvasSize } from "./util/RenderUtil";
+import { drawArc, rotated, Stroke } from "../../../util/DrawUtil";
+import { canvasSize } from "../../../util/RenderUtil";
 
 // TODO: Could reduce the use of right rendering by rotating left
 

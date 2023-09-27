@@ -1,9 +1,9 @@
 
 import { Scene } from "phaser"
 import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal"
-import IRenderFunction from "./util/IRenderFunction"
+import IRenderFunction from "../../../util/IRenderFunction"
 import { IPlatformOptions, platformRendererFunctionFactory } from "./PlatformFactory"
-import { drawEllipse, rotated } from "./util/DrawUtil"
+import { drawEllipse, rotated } from "../../../util/DrawUtil"
 import { ITurretOptions, turretRendererFunctionFactory } from "./TurretFactory"
 import { IProjectorOptions, projectorRendererFunctionFactory } from "./ProjectorFactory"
 import { pathRendererFunctionFactory } from "./PathFactory"
@@ -119,9 +119,15 @@ export function makeHeightRects(scene: Scene, key: string, w: number, h: number,
   renderCanvas(scene, key, w * count, h, render)
 }
 
-export function makeEllipse(scene: Scene, key: string, w: number, h: number, color: string = "#FFA500") {
+export function makeEllipse(scene: Scene, key: string, w: number, h: number,
+  fillStyle: { color?: string, alpha?: number } = { color: "#FFA500", alpha: 1 }) {
   const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
-    g.fillStyle = color
+    if (fillStyle.color) {
+      g.fillStyle = fillStyle.color
+    }
+    if (fillStyle.alpha) {
+      g.globalAlpha = fillStyle.alpha
+    }
     drawEllipse(g, w / 2, h / 2, w / 2, h / 2)
     g.fill()
   }

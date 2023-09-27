@@ -3,6 +3,7 @@ import IBehavior from "./IBehavior"
 import Point from "../../../util/Point"
 import { lerp } from "../../../util/MathUtil"
 
+
 export interface IHasPosition {
   x: number
   y: number

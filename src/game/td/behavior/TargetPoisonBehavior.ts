@@ -20,9 +20,13 @@ export default class TargePoisonBehavior implements IBehavior<IHasTargets> {
 
   update(obj: IHasTargets, time: number, delta: number) {
     if (!this.cloud) {
-      console.log("Add poison emitter")
-      this.cloud = obj.scene.add.particles(obj.x, obj.y, 'smoke', cloudEmitter(obj.model.stats.range / 2))
+      this.cloud = obj.scene.add.particles(0, 0, 'smoke', cloudEmitter(obj.model.stats.range / 2))
       this.cloud.stop()
+      // Push effect behind the tower
+      if (obj instanceof GameObjects.Container) {
+        obj.add(this.cloud)
+        obj.sendToBack(this.cloud)
+      }
     }
     if (obj.targets.length) {
       this.cloud?.start()

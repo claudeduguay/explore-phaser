@@ -1,6 +1,7 @@
 import { Scene, GameObjects, Curves } from "phaser";
 import IEnemyModel from "../model/IEnemyModel";
 import HealthBar from "./HealthBar";
+import ActiveValue from "../value/ActiveValue";
 
 export default class TDEnemy extends GameObjects.PathFollower {
 
@@ -9,10 +10,16 @@ export default class TDEnemy extends GameObjects.PathFollower {
   healthBar!: HealthBar
   status: { health: number, shield: number } = { health: 1.0, shield: 1.0 }
 
+  health!: ActiveValue
+  shield!: ActiveValue
+
   constructor(scene: Scene, public path: Curves.Path,
     public x: number, public y: number, key: string,
     public model?: IEnemyModel, public showStatisBars: boolean = false) {
     super(scene, path, x, y, key)
+
+    this.health = new ActiveValue(model?.stats.health || 0)
+    this.shield = new ActiveValue(model?.stats.shield || 0)
 
     if (showStatisBars) {
       this.shieldBar = new HealthBar(scene, this, 0, 0, 30, 5, 0xffa500)

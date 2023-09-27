@@ -20,7 +20,6 @@ export default class TargePoisonBehavior implements IBehavior<IHasTargets> {
 
   update(obj: IHasTargets, time: number, delta: number) {
     if (!this.cloud) {
-      console.log("Add emitter")
       this.cloud = obj.scene.add.particles(obj.x, obj.y, 'fire', fireEmitter(obj.model.stats.range))
       this.cloud.stop()
     }

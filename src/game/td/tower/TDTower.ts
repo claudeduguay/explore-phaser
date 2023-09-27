@@ -76,7 +76,6 @@ export default class TDTower extends BehaviorContainer {
         this.behavior.push(new TargetSlowBehavior())
         break
       default:
-        console.log("Add default (lazer) behavior")
         this.behavior.push(new TargetLaserBehavior())
     }
     this.behavior.push(new ClearTargetsBehavior())

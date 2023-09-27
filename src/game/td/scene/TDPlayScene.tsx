@@ -10,7 +10,7 @@ import generateMap from "./TDMazeMap"
 import Point from "../../../util/Point"
 import SelectionManager from "./SelectionManager"
 import ITowerModel, { ALL_TOWERS } from "../model/ITowerModel"
-import { IColoring } from "../assets/util/DrawUtil"
+import { IColoring } from "../../../util/DrawUtil"
 import TowerPreview from "../tower/TowerPreview"
 import PointCollider, { PointColliders } from "../../../util/PointCollider"
 import { IPlatformOptions } from "../assets/PlatformFactory"
@@ -431,6 +431,7 @@ export default class TDPlayScene extends Scene {
     makePathTiles(this, "path_tiles", 64, 64)
     makeHeightRects(this, "height_cells", 64, 64, 10)
 
+
     // TOWER TEXTURES
     for (let [key, value] of Object.entries(TOWERS)) {
       const {
@@ -444,9 +445,9 @@ export default class TDPlayScene extends Scene {
     }
 
     // ENEMY TEXTURES
-    makeEllipse(this, "path-green", 20, 20, "#66FF66")
-    makeEllipse(this, "path-blue", 20, 20, "#6666FF")
-    makeEllipse(this, "path-red", 20, 20, "#FF6666")
+    makeEllipse(this, "path-green", 20, 20, { color: "#66FF66" })
+    makeEllipse(this, "path-blue", 20, 20, { color: "#6666FF" })
+    makeEllipse(this, "path-red", 20, 20, { color: "#FF6666" })
   }
 
   create() {
