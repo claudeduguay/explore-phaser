@@ -14,6 +14,7 @@ import TowerPreview from "../tower/TowerPreview"
 import PointCollider, { PointColliders } from "../../../util/PointCollider"
 import TowerInfo from "./react/TowerInfo"
 import registerTowerTextures from "./TowerTextures"
+// import { testLightiningPath } from "../behavior/TargetLightningBehavior"
 
 
 export default class TDPlayScene extends Scene {
@@ -130,6 +131,8 @@ export default class TDPlayScene extends Scene {
       const preview = new TowerPreview(this, 85, 70)
       this.add.existing(preview)
     }
+
+    // testLightiningPath(this)
   }
 
   createMap(enemyGroup: GameObjects.Group) {
