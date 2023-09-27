@@ -134,17 +134,22 @@ export function makeEllipse(scene: Scene, key: string, w: number, h: number,
   renderCanvas(scene, key, w, h, render)
 }
 
-export function makeTowerPlatform(scene: Scene, key: string, w: number, h: number, options?: Partial<IPlatformOptions>) {
-  const render: IRenderFunction = platformRendererFunctionFactory(0, options)
-  renderCanvas(scene, key, w, h, render)
+export interface ITextureConfig<T> {
+  size: { x: number, y: number },
+  options: T
 }
 
-export function makeTowerTurret(scene: Scene, key: string, w: number, h: number, options?: Partial<ITurretOptions>) {
-  const render: IRenderFunction = turretRendererFunctionFactory(0, options)
-  renderCanvas(scene, key, w, h, render)
+export function makeTowerPlatform(scene: Scene, key: string, config: ITextureConfig<Partial<IPlatformOptions>>) {
+  const render: IRenderFunction = platformRendererFunctionFactory(0, config.options)
+  renderCanvas(scene, key, config.size.x, config.size.y, render)
 }
 
-export function makeTowerProjector(scene: Scene, key: string, w: number, h: number, options?: Partial<IProjectorOptions>) {
-  const render: IRenderFunction = projectorRendererFunctionFactory(0, options)
-  renderCanvas(scene, key, w, h, render)
+export function makeTowerTurret(scene: Scene, key: string, config: ITextureConfig<Partial<ITurretOptions>>) {
+  const render: IRenderFunction = turretRendererFunctionFactory(0, config.options)
+  renderCanvas(scene, key, config.size.x, config.size.y, render)
+}
+
+export function makeTowerProjector(scene: Scene, key: string, config: ITextureConfig<Partial<IProjectorOptions>>) {
+  const render: IRenderFunction = projectorRendererFunctionFactory(0, config.options)
+  renderCanvas(scene, key, config.size.x, config.size.y, render)
 }

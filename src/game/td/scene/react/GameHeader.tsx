@@ -4,13 +4,14 @@ import IconButton from "./IconButton"
 
 export interface IGameHeaderProps {
   navigator: INavigator
+  onShowTowerInfo: () => void
 }
 
-export default function GameHeader({ navigator }: IGameHeaderProps) {
+export default function GameHeader({ navigator, onShowTowerInfo }: IGameHeaderProps) {
   const onHome = () => navigator.transitionTo("home", "game")
   const onWin = () => navigator.transitionTo("win", "game")
   const onLose = () => navigator.transitionTo("lose", "game")
-  const onTower = () => navigator.transitionTo("tower", "game")
+  // const onTower = () => navigator.transitionTo("tower", "game")
   const onEnemy = () => navigator.transitionTo("enemy", "game")
 
   return <div className="d-flex p-2" style={{ width: 1100, height: 60 }}>
@@ -39,7 +40,7 @@ export default function GameHeader({ navigator }: IGameHeaderProps) {
         <IconButton icon="home" onClick={onHome} />
         <IconButton icon="sentiment_satisfied" onClick={onWin} />
         <IconButton icon="sentiment_very_dissatisfied" onClick={onLose} />
-        <IconButton icon="crop_square" onClick={onTower} />
+        <IconButton icon="crop_square" onClick={onShowTowerInfo} />
         <IconButton icon="circle" onClick={onEnemy} />
       </div>
     </div>
