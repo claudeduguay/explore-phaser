@@ -83,14 +83,23 @@ export default class TDTower extends BehaviorContainer {
     this.behavior.push(new ClearTargetsBehavior())
   }
 
+  getRotatedPosition(obj: { x: number, y: number, width: number, height: number, rotation: number }) {
+    return new Point(
+      obj.x + Math.cos(obj.rotation) * obj.width,
+      obj.y + Math.sin(obj.rotation) * obj.height
+    )
+  }
+
+  // May be useful to studdy: https://www.html5gamedevs.com/topic/24535-how-to-calculate-absolute-world-xy-without-using-world-xy-property/
   emissionPoint(index: number = 1) {
     if (this.model.meta.rotation === "target") {
       const i = clamp(index, 0, this.turret.projectors.length - 1)
-      const angle = 0 - this.turret.rotation - Math.PI / 2
+      // const angle = this.turret.rotation
       const projector = this.turret.projectors[i]
-      const offset = this.turret.projectors[i].getOffset()
-      const x = this.x + (projector.x + offset) * Math.sin(angle)
-      const y = this.y + (projector.y + offset) * Math.cos(angle)
+      // const offset = this.turret.projectors[i].getOffset()
+      const rotatedProjector = this.getRotatedPosition(projector)
+      const x = this.x + rotatedProjector.x // + offset * Math.cos(angle)
+      const y = this.y + rotatedProjector.y // + offset * Math.sin(angle)
       return new Point(x, y)
     } else {
       return new Point(this.x, this.y)
