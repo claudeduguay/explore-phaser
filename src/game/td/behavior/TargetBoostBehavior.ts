@@ -1,4 +1,4 @@
-import { Scene, GameObjects, Math as PMath } from "phaser"
+import { Scene, GameObjects } from "phaser"
 import IBehavior from "./IBehavior"
 import ITowerModel from "../model/ITowerModel"
 import { toRadians } from "../assets/util/MathUtil"

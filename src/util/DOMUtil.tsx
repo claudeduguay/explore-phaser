@@ -1,5 +1,5 @@
 
-import { Scene, Scenes } from "phaser"
+import { GameObjects, Scene, Scenes } from "phaser"
 import { ReactNode, useState, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 
@@ -27,11 +27,11 @@ export function Visible({ scene, children, visible: initVisible = true, overlay 
   return <div>{visible && children}</div>
 }
 
-export function addReactNode(scene: Scene, node: ReactNode, x: number = 0, y: number = 0, overlay?: false) {
+export function addReactNode(scene: Scene, node: ReactNode, x: number = 0, y: number = 0, overlay?: false): GameObjects.DOMElement {
   const id = crypto.randomUUID()
-  scene.add.dom(x, y).createFromHTML(`<div id="${id}" />`)
+  const gameDOM = scene.add.dom(x, y).createFromHTML(`<div id="${id}" />`)
   const element = document.getElementById(id) as HTMLElement
   const root = ReactDOM.createRoot(element)
   root.render(<Visible scene={scene} overlay={overlay}>{node}</Visible>)
-  return element
+  return gameDOM
 }
