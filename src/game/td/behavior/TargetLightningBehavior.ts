@@ -1,7 +1,7 @@
 import { Scene, GameObjects, Curves, Math as PMath } from "phaser"
 import IBehavior from "./IBehavior"
 import Point from "../../../util/Point"
-import { lerp, toDegrees } from "../../../util/MathUtil"
+import { lerp } from "../../../util/MathUtil"
 
 
 export interface IHasPosition {
@@ -33,7 +33,6 @@ export default class TargetLaserBehavior implements IBehavior<IHasTargets> {
 
 export function computeLightningPath(source: Point, target: Point, divisions: number = 15, deviation: number = 15) {
   const angle = PMath.Angle.BetweenPoints(target, source) - Math.PI
-  console.log("Angle:", toDegrees(angle))
   const distort = () => {
     const dev = lerp(-deviation, deviation, Math.random())
     return new Point(Math.sin(angle) * dev, Math.cos(angle) * dev)

@@ -18,6 +18,8 @@ import TargetIceBehavior from "../behavior/TargetIceBehavior"
 import TargetBulletBehavior from "../behavior/TargetBulletBehavior"
 import TargetBoostBehavior from "../behavior/TargetBoostBehavior"
 import TargetSlowBehavior from "../behavior/TargetSlowBehavior"
+import Point from "../../../util/Point"
+import { clamp } from "../../../util/MathUtil"
 
 export default class TDTower extends BehaviorContainer {
 
@@ -79,6 +81,20 @@ export default class TDTower extends BehaviorContainer {
         this.behavior.push(new TargetLaserBehavior())
     }
     this.behavior.push(new ClearTargetsBehavior())
+  }
+
+  emissionPoint(index: number = 1) {
+    if (this.model.meta.rotation === "target") {
+      const i = clamp(index, 0, this.turret.projectors.length - 1)
+      const angle = 0 - this.turret.rotation - Math.PI / 2
+      const projector = this.turret.projectors[i]
+      const offset = this.turret.projectors[i].getOffset()
+      const x = this.x + (projector.x + offset) * Math.sin(angle)
+      const y = this.y + (projector.y + offset) * Math.cos(angle)
+      return new Point(x, y)
+    } else {
+      return new Point(this.x, this.y)
+    }
   }
 
 }

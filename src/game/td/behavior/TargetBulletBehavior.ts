@@ -1,5 +1,6 @@
 import { Scene, GameObjects, Math as PMath } from "phaser"
 import IBehavior from "./IBehavior"
+import Point from "../../../util/Point"
 
 export interface IHasPosition {
   x: number
@@ -8,6 +9,7 @@ export interface IHasPosition {
 
 export interface IHasTargets extends IHasPosition {
   scene: Scene
+  emissionPoint: (index?: number) => Point
   targets: IHasPosition[]
 }
 
@@ -24,9 +26,11 @@ export default class TargetBulletBehavior implements IBehavior<IHasTargets> {
       if (show) {
         const target = obj.targets[0]
         const angle = PMath.Angle.BetweenPoints(target, obj) + Math.PI / 2
-        this.muzzleFlash = obj.scene.add.sprite(obj.x, obj.y, "muzzle")
-        this.muzzleFlash.setScale(0.1)
-        this.muzzleFlash.rotation = angle
+        const { x, y } = obj.emissionPoint(1)
+
+        this.muzzleFlash = obj.scene.add.sprite(x, y, "muzzle").setOrigin(0, 0.5)
+        this.muzzleFlash.setScale(0.075)
+        this.muzzleFlash.rotation = angle - Math.PI
       }
     }
   }

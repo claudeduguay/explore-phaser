@@ -1,11 +1,13 @@
 
 import { Scene } from "phaser"
-import TDGun from "./TDGun"
+import TDProjector from "./TDProjector"
 import ITowerModel from "../model/ITowerModel"
 import Point from "../../../util/Point"
 import BehaviorContainer from "../behavior/BehaviorContainer"
 
 export default class TDTurret extends BehaviorContainer {
+
+  projectors: TDProjector[] = []
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x, public model: ITowerModel) {
     super(scene)
@@ -24,7 +26,8 @@ export default class TDTurret extends BehaviorContainer {
 
       model.meta.projectors.forEach((projector, i) => {
         const p = positions[i]
-        this.add(new TDGun(scene, p.x, p.y, projector.sprite))
+        this.projectors[i] = new TDProjector(scene, p.x, p.y, projector.sprite)
+        this.add(this.projectors[i])
       })
     }
 
@@ -37,9 +40,9 @@ export default class TDTurret extends BehaviorContainer {
         angles = [0, 180]
       }
       model.meta.projectors.forEach((projector, i) => {
-        const gun = new TDGun(scene, 0, 0, projector.sprite)
-        gun.angle = angles[i]
-        this.add(gun)
+        this.projectors[i] = new TDProjector(scene, 0, 0, projector.sprite)
+        this.projectors[i].angle = angles[i]
+        this.add(this.projectors[i])
       })
     }
   }
