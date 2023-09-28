@@ -22,15 +22,16 @@ export default class TargetBulletBehavior implements IBehavior<IHasTargets> {
       this.muzzleFlash.destroy()
     }
     if (obj.targets.length > 0) {
-      const show = time % 150 > 75 //  Visible half of every 150ms
+      const show = true // time % 150 > 75 //  Visible half of every 150ms
       if (show) {
         const target = obj.targets[0]
         const angle = PMath.Angle.BetweenPoints(target, obj) + Math.PI / 2
-        const { x, y } = obj.emissionPoint(1)
+        const { x, y } = obj.emissionPoint()
 
-        this.muzzleFlash = obj.scene.add.sprite(x, y, "muzzle").setOrigin(0, 0.5)
-        this.muzzleFlash.setScale(0.075)
-        this.muzzleFlash.rotation = angle - Math.PI
+        // muzzle
+        this.muzzleFlash = obj.scene.add.sprite(x, y, "path-red") //.setOrigin(0, 0.5)
+        // this.muzzleFlash.setScale(0.075)
+        // this.muzzleFlash.rotation = angle - Math.PI
       }
     }
   }

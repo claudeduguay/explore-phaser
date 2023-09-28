@@ -1,5 +1,6 @@
 
 import { GameObjects, Scene } from "phaser"
+import Point from "../../../util/Point"
 
 export default class TDProjector extends GameObjects.Container {
 
@@ -12,7 +13,10 @@ export default class TDProjector extends GameObjects.Container {
 
   getOffset() {
     const texture = this.scene.textures.get(this.key)
-    return (texture?.source[0].height || 0)
+    const source = texture?.source[0]
+    return new Point(
+      source?.height || 0,
+      source?.width || 0)
   }
 
 }

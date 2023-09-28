@@ -1,7 +1,6 @@
-import { drawArc, rotated, Stroke } from "../../../util/DrawUtil";
+import { drawArc, rotated } from "../../../util/DrawUtil";
 import { canvasSize } from "../../../util/RenderUtil";
-
-// TODO: Could reduce the use of right rendering by rotating left
+import { Stroke } from "../../../util/StyleUtil";
 
 const DEFAULT_BELT_FILL = "#45171d";
 const DEFAULT_BELT_FORE = "#83580b";

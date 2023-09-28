@@ -1,29 +1,9 @@
 import Vector from "./Vector"
 import { toRadians } from "./MathUtil"
 import Rectangle from "./Rectangle"
+import { Stroke, maybeStroke } from "./StyleUtil";
 
 export type Optional<T> = T | null | undefined;
-
-
-// ----------------------------------------------------------------------------
-// STROKE/FILL COLORING
-// ----------------------------------------------------------------------------
-
-export type Stroke = string | CanvasGradient | CanvasPattern;
-
-export function maybeFill(g: CanvasRenderingContext2D, fill?: Stroke) {
-  if (fill) {
-    g.fillStyle = fill;
-    g.fill();
-  }
-}
-
-export function maybeStroke(g: CanvasRenderingContext2D, stroke?: Stroke) {
-  if (stroke) {
-    g.strokeStyle = stroke;
-    g.stroke();
-  }
-}
 
 
 // ----------------------------------------------------------------------------

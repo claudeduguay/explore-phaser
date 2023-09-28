@@ -10,6 +10,10 @@ export default class Point {
   constructor(public x: number = 0, public y: number = 0) {
   }
 
+  static fromPointLine({ x, y }: { x: number, y: number }) {
+    return new Point(x, y)
+  }
+
   equals(p: Point) {
     return this.x === p.x && this.y === p.y
   }
@@ -47,6 +51,10 @@ export default class Point {
 
   diff(p: Point) {
     return new Point(Math.abs(this.x - p.x), Math.abs(this.y - p.y))
+  }
+
+  length() {
+    return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
   }
 
   lerp(p: Point, f: number) {

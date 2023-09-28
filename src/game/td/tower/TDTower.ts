@@ -19,7 +19,7 @@ import TargetBulletBehavior from "../behavior/TargetBulletBehavior"
 import TargetBoostBehavior from "../behavior/TargetBoostBehavior"
 import TargetSlowBehavior from "../behavior/TargetSlowBehavior"
 import Point from "../../../util/Point"
-import { clamp } from "../../../util/MathUtil"
+import { clamp, rotation } from "../../../util/MathUtil"
 
 export default class TDTower extends BehaviorContainer {
 
@@ -83,24 +83,24 @@ export default class TDTower extends BehaviorContainer {
     this.behavior.push(new ClearTargetsBehavior())
   }
 
-  getRotatedPosition(obj: { x: number, y: number, width: number, height: number, rotation: number }) {
-    return new Point(
-      obj.x + Math.cos(obj.rotation) * obj.width,
-      obj.y + Math.sin(obj.rotation) * obj.height
-    )
-  }
+  // getRotatedPosition(obj: { x: number, y: number, width: number, height: number, r: number }) {
+  //   return rotation(x, y, widht / 2, height / 2, r)
+  // }
 
   // May be useful to studdy: https://www.html5gamedevs.com/topic/24535-how-to-calculate-absolute-world-xy-without-using-world-xy-property/
-  emissionPoint(index: number = 1) {
+  emissionPoint(index: number = 2) {
     if (this.model.meta.rotation === "target") {
       const i = clamp(index, 0, this.turret.projectors.length - 1)
-      // const angle = this.turret.rotation
+      const a = this.turret.rotation
       const projector = this.turret.projectors[i]
-      // const offset = this.turret.projectors[i].getOffset()
-      const rotatedProjector = this.getRotatedPosition(projector)
-      const x = this.x + rotatedProjector.x // + offset * Math.cos(angle)
-      const y = this.y + rotatedProjector.y // + offset * Math.sin(angle)
-      return new Point(x, y)
+      const p = Point.fromPointLine(projector)
+      const offset = projector.getOffset()
+      const r = 32 // p.plus(new Point(0, 0 - offset.y)).length()
+      console.log("Projector index (i, projector, radius):", i, p, r)
+      console.log(`Rotation projector: { x: ${projector.x}, y: ${projector.y} }, offset: {x: ${offset.x}, y: ${offset.y} }, r: ${r}`)
+      // Centered on tower center, rotated on projector position plus offset.y / 2
+      return rotation(this.x + p.x, this.y + p.y / 2, r, r, a)
+      // return new Point(this.x + p.x, this.y + p.y + offset.y / 2)
     } else {
       return new Point(this.x, this.y)
     }

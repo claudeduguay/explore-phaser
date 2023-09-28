@@ -1,3 +1,4 @@
+import Point from "./Point";
 
 export function toRadians(degrees: number): number {
   return degrees * Math.PI / 180;
@@ -50,4 +51,19 @@ export function snap(value: number, cellSize: number, strategy: SnapStrategy = "
 
 export function lerp(min: number, max: number, f: number) {
   return min + (max - min) * f
+}
+
+
+// Minics Phaser angle (radians)
+export function rotation(cx: number, cy: number, rx: number, ry: number, rotation: number): Point {
+  rotation -= Math.PI / 2
+  return new Point(
+    cx + Math.cos(rotation) * rx,
+    cy + Math.sin(rotation) * ry
+  )
+}
+
+// Minics Phaser angle (degrees)
+export function angle(cx: number, cy: number, rx: number, ry: number, angle: number): Point {
+  return rotation(cx, cy, rx, ry, toRadians(angle))
 }
