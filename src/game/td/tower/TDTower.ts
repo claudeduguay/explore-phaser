@@ -83,24 +83,45 @@ export default class TDTower extends BehaviorContainer {
     this.behavior.push(new ClearTargetsBehavior())
   }
 
-  // getRotatedPosition(obj: { x: number, y: number, width: number, height: number, r: number }) {
-  //   return rotation(x, y, widht / 2, height / 2, r)
-  // }
-
   // May be useful to studdy: https://www.html5gamedevs.com/topic/24535-how-to-calculate-absolute-world-xy-without-using-world-xy-property/
-  emissionPoint(index: number = 2) {
+  emissionPoint(index: number = 0) {
     if (this.model.meta.rotation === "target") {
       const i = clamp(index, 0, this.turret.projectors.length - 1)
       const a = this.turret.rotation
       const projector = this.turret.projectors[i]
-      const p = Point.fromPointLine(projector)
-      const offset = projector.getOffset()
-      const r = 32 // p.plus(new Point(0, 0 - offset.y)).length()
-      console.log("Projector index (i, projector, radius):", i, p, r)
-      console.log(`Rotation projector: { x: ${projector.x}, y: ${projector.y} }, offset: {x: ${offset.x}, y: ${offset.y} }, r: ${r}`)
-      // Centered on tower center, rotated on projector position plus offset.y / 2
-      return rotation(this.x + p.x, this.y + p.y / 2, r, r, a)
-      // return new Point(this.x + p.x, this.y + p.y + offset.y / 2)
+      const size = projector.getSize()
+      // Radius to projector x/y + projector.size.y / 2
+      const r = new Point(projector.x, projector.y + size.y / 2).length()
+      console.log("Projector:", projector.x, projector.y, r, size.y / 2)
+      return rotation(this.x, this.y, r, r, a)
+
+      // const length = Point.fromPointLine(projector).length()
+      // const offset = projector.getSize()
+      // const r = length + offset.y
+
+      // Takes the given `x` and `y` coordinates and converts them into local space for this
+      // Game Object, taking into account parent and local transforms, and the Display Origin.
+      // const pPoint = Point.fromPointLike(projector)
+      // const r = 32 // projector.y + offset.y
+      // return rotation(this.x, this.y, r, r, a)
+
+      // const p = Point.fromPointLike(
+      //   this.scene.cameras.main.getWorldPoint(projector.x, projector.y))
+      // console.log("World point:", p)
+      // return p
+      // console.log("Transformed point:", pPos)
+      // const p = Point.fromPointLike(this).plus(pPos)
+      // return p //.plus(point)
+      // const p = Point.fromPointLine(this).plus(pLocal)
+      // // const pPos = rotation(this.x, this.y, projector.x, projector.y, a) //.plus(new Point(0, offset.y / 2))
+      // return p
+
+      // const p = Point.fromPointLine(projector)
+      // const r = p.plus(new Point(0, 0 - offset.y / 2)) //.length()
+      // console.log("Projector index (i, projector, radius):", i, p, r)
+      // console.log(`Rotation projector: { x: ${projector.x}, y: ${projector.y} }, offset: {x: ${offset.x}, y: ${offset.y} }, r: ${r}`)
+      // // Centered on tower center, rotated on projector position plus offset.y / 2
+      // return rotation(this.x, this.y, r.x, r.y, a)
     } else {
       return new Point(this.x, this.y)
     }

@@ -24,8 +24,8 @@ export default class TargetBulletBehavior implements IBehavior<IHasTargets> {
     if (obj.targets.length > 0) {
       const show = true // time % 150 > 75 //  Visible half of every 150ms
       if (show) {
-        const target = obj.targets[0]
-        const angle = PMath.Angle.BetweenPoints(target, obj) + Math.PI / 2
+        // const target = obj.targets[0]
+        // const angle = PMath.Angle.BetweenPoints(target, obj) + Math.PI / 2
         const { x, y } = obj.emissionPoint()
 
         // muzzle

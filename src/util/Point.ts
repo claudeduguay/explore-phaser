@@ -10,7 +10,7 @@ export default class Point {
   constructor(public x: number = 0, public y: number = 0) {
   }
 
-  static fromPointLine({ x, y }: { x: number, y: number }) {
+  static fromPointLike({ x, y }: { x: number, y: number }) {
     return new Point(x, y)
   }
 
