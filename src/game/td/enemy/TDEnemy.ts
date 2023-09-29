@@ -15,13 +15,14 @@ export default class TDEnemy extends GameObjects.PathFollower {
 
   constructor(scene: Scene, public path: Curves.Path,
     public x: number, public y: number, key: string,
-    public model?: IEnemyModel, public showStatisBars: boolean = false) {
+    public model?: IEnemyModel,
+    public showStatusBars: boolean = false) {
     super(scene, path, x, y, key)
 
     this.health = new ActiveValue(model?.stats.health || 0)
     this.shield = new ActiveValue(model?.stats.shield || 0)
 
-    if (showStatisBars) {
+    if (showStatusBars) {
       this.shieldBar = new HealthBar(scene, this, 0, 0, 30, 5, 0xffa500)
       scene.add.existing(this.shieldBar)
 
@@ -37,11 +38,14 @@ export default class TDEnemy extends GameObjects.PathFollower {
 
   preUpdate(time: number, delta: number): void {
     super.preUpdate(time, delta)
-    if (this.showStatisBars) {
+    if (this.showStatusBars) {
       const SHIELD_TIME = 8000
       const HEALTH_TIME = 10000
       this.status.shield = 1.0 - time % SHIELD_TIME / SHIELD_TIME
       this.status.health = 1.0 - time % HEALTH_TIME / HEALTH_TIME
+      if (this.status.health <= 0.001) {
+        this.emit("died")
+      }
       this.shieldBar.fraction = this.status.shield
       this.healthBar.fraction = this.status.health
       const bounds = this.getBounds()

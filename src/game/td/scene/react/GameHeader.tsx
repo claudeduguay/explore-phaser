@@ -1,4 +1,5 @@
-import ActiveValue, { useActiveValue } from "../../value/ActiveValue"
+import { useActiveValue } from "../../value/ActiveValue"
+import { IActiveValues } from "../TDPlayScene"
 import INavigator from "./INavigator"
 import Icon from "./Icon"
 import IconButton from "./IconButton"
@@ -6,11 +7,11 @@ import IconButton from "./IconButton"
 export interface IGameHeaderProps {
   navigator: INavigator
   onShowTowerInfo: () => void
-  activeHealth: ActiveValue
-  activeCredits: ActiveValue
+  active: IActiveValues
 }
 
-export default function GameHeader({ activeHealth, activeCredits, navigator, onShowTowerInfo }: IGameHeaderProps) {
+export default function GameHeader({ active, navigator, onShowTowerInfo }: IGameHeaderProps) {
+  const { health: activeHealth, credits: activeCredits } = active
   const onHome = () => navigator.transitionTo("home", "game")
   const onWin = () => navigator.transitionTo("win", "game")
   const onLose = () => navigator.transitionTo("lose", "game")

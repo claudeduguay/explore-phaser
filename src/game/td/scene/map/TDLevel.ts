@@ -3,8 +3,9 @@ import Point from "../../../../util/Point";
 import makeTileMap from "./TDTileMap";
 import { generatePath, renderPath } from "./TDPath";
 import { makeTimelinePreview } from "./TDTimeline";
+import { IActiveValues } from "../TDPlayScene";
 
-export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group,
+export default function generateMap(scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group,
   prunePath: boolean = true, showMaze: boolean = true) {
 
   const origin = new Point(0, 46)
@@ -23,7 +24,7 @@ export default function generateMap(scene: Scene, enemyGroup: GameObjects.Group,
   }
   const { curve, points } = renderPath(scene, path, origin, cellSize)
 
-  makeTimelinePreview(scene, enemyGroup, origin, curve, 0)
+  makeTimelinePreview(scene, active, enemyGroup, origin, curve, 0)
   return points
 }
 

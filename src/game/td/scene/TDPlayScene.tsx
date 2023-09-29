@@ -16,10 +16,17 @@ import TowerInfo from "./react/TowerInfo"
 import registerTowerTextures from "./TowerTextures"
 import ActiveValue from "../value/ActiveValue"
 
+export interface IActiveValues {
+  health: ActiveValue,
+  credits: ActiveValue
+}
+
 export default class TDPlayScene extends Scene {
 
-  activeHealth = new ActiveValue(100, 0, 1000)
-  activeCredits = new ActiveValue(0, 0, 1000)
+  active: IActiveValues = {
+    health: new ActiveValue(100, 0, 1000),
+    credits: new ActiveValue(0, 0, 1000)
+  }
   selectionManager!: SelectionManager
   towerGroup!: Physics.Arcade.Group
   pathPoints!: Point[]
@@ -156,7 +163,7 @@ export default class TDPlayScene extends Scene {
       towerInfoDOM = addReactNode(this, <TowerInfo tower={this.selectionManager.selected} onClose={onCloseTowerInfo} />, 25, 75)
     }
 
-    addReactNode(this, <GameHeader activeHealth={this.activeHealth} activeCredits={this.activeCredits}
+    addReactNode(this, <GameHeader active={this.active}
       navigator={this.gameScene} onShowTowerInfo={onShowTowerInfo}
     />, 0, 0)
     addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />, 0, this.game.canvas.height - 62)
@@ -172,7 +179,7 @@ export default class TDPlayScene extends Scene {
   }
 
   createMap(enemyGroup: GameObjects.Group) {
-    this.pathPoints = generateMap(this, enemyGroup)
+    this.pathPoints = generateMap(this, this.active, enemyGroup)
     const showSpriteSheet = false
     if (showSpriteSheet) {
       const g = this.add.graphics()
@@ -207,14 +214,14 @@ export default class TDPlayScene extends Scene {
     return collision
   }
 
-  accumulator = 0
+  // accumulator = 0
   update(time: number, delta: number): void {
-    this.accumulator += delta
-    if (this.accumulator > 1000) {
-      this.activeHealth.adjust(-1)
-      this.activeCredits.adjust(2)
-      this.accumulator = 0
-    }
+    // this.accumulator += delta
+    // if (this.accumulator > 1000) {
+    //   this.active.health.adjust(-1)
+    //   this.active.credits.adjust(2)
+    //   this.accumulator = 0
+    // }
     if (this.addingTower) {
       if (!this.input.mousePointer.isDown) {
         this.input.setDefaultCursor("none")
