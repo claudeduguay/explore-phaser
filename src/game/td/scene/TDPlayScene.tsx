@@ -15,6 +15,7 @@ import PointCollider, { PointColliders } from "../../../util/PointCollider"
 import TowerInfo from "./react/TowerInfo"
 import registerTowerTextures from "./TowerTextures"
 import ActiveValue from "../value/ActiveValue"
+import { shuffle } from "../../../util/ArrayUtil"
 
 export interface IActiveValues {
   health: ActiveValue,
@@ -86,13 +87,58 @@ export default class TDPlayScene extends Scene {
       },
       ease: "Linear"
     })
+  }
 
+  generatePathAdjacentPositions(origin: Point): Point[] {
+    const WEST = new Point(-64, 0)
+    const EAST = new Point(64, 0)
+    const NORTH = new Point(0, -64)
+    const SOUTH = new Point(0, 64)
+    const inRange = ({ x, y }: Point) => x > 0 && x < 1100 - 64 * 2 && y > 64 && y < 800 - 64 * 2
+    const pointSet = new Set<string>(this.pathPoints.map(p => p.toKey()))
+    const towerSet = new Set<string>()
+    const positions: Point[] = []
+    for (let point of this.pathPoints) {
+      // Include only odd positions
+      if (Math.floor(point.x / 64) % 2 !== 0 && Math.floor(point.y / 64) % 2 !== 0) {
+        const west = point.plus(WEST)
+        const east = point.plus(EAST)
+        const north = point.plus(NORTH)
+        const south = point.plus(SOUTH)
+        // Avoid recomputing keys each time
+        const westKey = west.toKey()
+        const eastKey = east.toKey()
+        const northKey = north.toKey()
+        const southKey = south.toKey()
+        // console.log("Adjacencies:", point.toKey(), westKey, eastKey, northKey, southKey)
+
+        if (inRange(west) && !pointSet.has(westKey) && !towerSet.has(westKey)) {
+          towerSet.add(westKey)
+          positions.push(west)
+        }
+        if (inRange(east) && !pointSet.has(eastKey) && !towerSet.has(eastKey)) {
+          towerSet.add(eastKey)
+          positions.push(east)
+        }
+        if (inRange(north) && !pointSet.has(northKey) && !towerSet.has(northKey)) {
+          towerSet.add(northKey)
+          positions.push(north)
+        }
+        if (inRange(south) && !pointSet.has(southKey) && !towerSet.has(southKey)) {
+          towerSet.add(southKey)
+          positions.push(south)
+        }
+      }
+    }
+    console.log("Positions:", positions.map(x => x.toString()))
+    shuffle(positions)
+    return positions
   }
 
   create() {
     const enemyGroup = this.physics.add.group({ key: "enemyGroup" })
 
-    this.createMap(enemyGroup) // Needs enemy group
+    this.createMap(enemyGroup)
 
     const origin = new Point(0, 46)
     this.towerGroup = this.physics.add.group({ key: "towerGroup" })
@@ -100,17 +146,10 @@ export default class TDPlayScene extends Scene {
 
     const towerCount = 10
     const towers: TDTower[] = []
-    const checkDuplicates = new Set<string>()
 
-    const randomCell = () => new Point(
-      origin.x + Math.floor(Math.random() * 8) * 64 * 2 + 32 + 64,
-      origin.y + Math.floor(Math.random() * 5) * 64 * 2 + 32 + 64)
+    const towerPositions: Point[] = this.generatePathAdjacentPositions(origin)
     const generateTower = (i: number) => {
-      let pos = randomCell()
-      while (checkDuplicates.has(pos.toString())) {
-        pos = randomCell()
-      }
-      checkDuplicates.add(pos.toString())
+      let pos: Point = towerPositions[i] // randomCell()
       const model = Utils.Array.GetRandom(ALL_TOWERS)
       return new TDTower(this, pos.x, pos.y, model, this.selectionManager)
     }

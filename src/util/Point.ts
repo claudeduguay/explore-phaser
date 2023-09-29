@@ -64,6 +64,10 @@ export default class Point {
     )
   }
 
+  toKey() {
+    return `${this.x}, ${this.y}`
+  }
+
   toString() {
     return `{ x: ${this.x}, y: ${this.y} }`
   }

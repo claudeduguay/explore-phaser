@@ -1,5 +1,5 @@
 
-export function shuffle(array: Array<any>) {
+export function shuffle<T = any>(array: Array<T>) {
   for (let i = 0; i < array.length; i++) {
     const a = Math.floor(Math.random() * array.length)
     const b = Math.floor(Math.random() * array.length)
