@@ -15,8 +15,7 @@ import PointCollider, { PointColliders } from "../../../util/PointCollider"
 import TowerInfo from "./react/TowerInfo"
 import registerTowerTextures from "./TowerTextures"
 import ActiveValue from "../value/ActiveValue"
-// import { testLightiningPath } from "../behavior/TargetLightningBehavior"
-
+import { shuffle } from "../../../util/ArrayUtil"
 
 export default class TDPlayScene extends Scene {
 
@@ -51,11 +50,37 @@ export default class TDPlayScene extends Scene {
     makeEllipse(this, "path-red", 20, 20, { color: "#FF6666" })
 
     for (let i = 0; i < 8; i++) {
-      // Explosion image size: 583x536
-      const name = `explosion0${i}`
-      const asset = `assets/explosion/${name}.png`
-      this.load.image(name, asset)
+      // First Explosion image size: 583x536, but they are not all the same size
+      const key = `explosion0${i}`
+      const asset = `assets/explosion/${key}.png`
+      this.load.image(key, asset)
+      // Sprite has a setTexture(key, [frame]) function
     }
+  }
+
+  createExplosionSprite() {
+    const frames: { key: string }[] = []
+    for (let i = 0; i < 8; i++) {
+      frames.push({ key: `explosion0${i}` })
+    }
+    // shuffle(frames)
+    const repeat = -1
+    this.anims.create({
+      key: "explosion",
+      frames,
+      frameRate: 8,
+      repeat
+    })
+    const sprite = this.add.sprite(550, 400, "explosion00").setScale(0).play("explosion")
+    this.add.tween({
+      targets: sprite,
+      props: {
+        alpha: { value: 0, duration: 1500, repeat },
+        scale: { value: 0.4, duration: 1000, repeat }
+      },
+      ease: "Linear"
+    })
+
   }
 
   create() {
@@ -144,6 +169,7 @@ export default class TDPlayScene extends Scene {
     }
 
     // testLightiningPath(this)
+    this.createExplosionSprite()
   }
 
   createMap(enemyGroup: GameObjects.Group) {
@@ -187,6 +213,7 @@ export default class TDPlayScene extends Scene {
     this.accumulator += delta
     if (this.accumulator > 1000) {
       this.activeHealth.adjust(-1)
+      this.activeCredits.adjust(2)
       this.accumulator = 0
     }
     if (this.addingTower) {
