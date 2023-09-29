@@ -15,7 +15,6 @@ import PointCollider, { PointColliders } from "../../../util/PointCollider"
 import TowerInfo from "./react/TowerInfo"
 import registerTowerTextures from "./TowerTextures"
 import ActiveValue from "../value/ActiveValue"
-import { shuffle } from "../../../util/ArrayUtil"
 
 export default class TDPlayScene extends Scene {
 
