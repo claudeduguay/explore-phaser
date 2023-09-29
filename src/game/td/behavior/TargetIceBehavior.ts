@@ -1,35 +1,27 @@
-import { Scene, GameObjects, Math as PMath } from "phaser"
-import IBehavior from "./IBehavior"
+import { GameObjects, Math as PMath } from "phaser"
 import { iceEmitter } from "../emitter/ParticleConfig"
-import ITowerModel from "../model/ITowerModel"
+import BaseTargetBehavior, { IHasPosition, IHasTargets } from "./BaseTargetBehavior"
 
-export interface IHasPosition {
-  x: number
-  y: number
-}
+export default class TargetIceBehavior extends BaseTargetBehavior<GameObjects.Particles.ParticleEmitter> {
 
-export interface IHasTargets extends IHasPosition {
-  scene: Scene
-  model: ITowerModel
-  targets: IHasPosition[]
-}
+  constructor() {
+    super(false)
+  }
 
-export default class TargePoisonBehavior implements IBehavior<IHasTargets> {
-
-  cloud?: GameObjects.Particles.ParticleEmitter
-
-  update(obj: IHasTargets, time: number, delta: number) {
-    if (!this.cloud) {
-      this.cloud = obj.scene.add.particles(obj.x, obj.y, 'ice', iceEmitter(obj.model.stats.range / 2))
-      this.cloud.stop()
+  addEmitter(i: number, { x, y }: IHasPosition, obj: IHasTargets, time: number): void {
+    if (this.emitters.length < i + 1) {
+      console.log("Add fire emitter:", i)
+      const emitter = obj.scene.add.particles(x, y, 'ice', iceEmitter(obj.model.stats.range))
+      emitter.stop()
+      this.emitters.push(emitter)
     }
     if (obj.targets.length) {
       const target = obj.targets[0]
-      this.cloud.setPosition(obj.x, obj.y)
-      this.cloud.rotation = PMath.Angle.BetweenPoints(target, obj) - Math.PI
-      this.cloud?.start()
+      this.emitters[i].setPosition(x, y)
+      this.emitters[i].rotation = PMath.Angle.BetweenPoints(target, obj) - Math.PI
+      this.emitters[i]?.start()
     } else { // No target
-      this.cloud?.stop()
+      this.emitters[i]?.stop()
     }
   }
 }
