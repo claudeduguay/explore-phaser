@@ -84,7 +84,7 @@ export default class TDTower extends BehaviorContainer {
   }
 
   // May be useful to studdy: https://www.html5gamedevs.com/topic/24535-how-to-calculate-absolute-world-xy-without-using-world-xy-property/
-  emissionPoint(index: number = 0) {
+  emissionPoint(index: number = 1) {
     if (this.model.meta.rotation === "target") {
       const i = clamp(index, 0, this.turret.projectors.length - 1)
       const a = this.turret.rotation

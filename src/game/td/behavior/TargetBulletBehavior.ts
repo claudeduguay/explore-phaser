@@ -16,9 +16,12 @@ export interface IHasTargets extends IHasPosition {
 export default class TargetBulletBehavior implements IBehavior<IHasTargets> {
 
   test?: GameObjects.Sprite[] = []
-  // muzzleFlash?: GameObjects.Sprite
+  muzzleFlash?: GameObjects.Sprite
 
   update(obj: IHasTargets, time: number, delta: number) {
+    if (this.muzzleFlash) {
+      this.muzzleFlash.destroy()
+    }
     if (this.test?.length) {
       for (let test of this.test) {
         test.destroy()
@@ -26,22 +29,21 @@ export default class TargetBulletBehavior implements IBehavior<IHasTargets> {
       this.test = []
     }
     if (obj.targets.length > 0) {
-      const show = true // time % 150 > 75 //  Visible half of every 150ms
+      const show = time % 150 > 75 //  Visible half of every 150ms
       if (show) {
-        for (let i = 0; i < 3; i++) {
-          const { x, y } = obj.emissionPoint(i)
-          const test = obj.scene.add.sprite(x, y, "path-red")
-          this.test?.push(test)
-        }
+        // for (let i = 0; i < 3; i++) {
+        //   const { x, y } = obj.emissionPoint(i)
+        //   const test = obj.scene.add.sprite(x, y, "path-red")
+        //   this.test?.push(test)
+        // }
 
-        // const target = obj.targets[0]
-        // const angle = PMath.Angle.BetweenPoints(target, obj) + Math.PI / 2
-        // const { x, y } = obj.emissionPoint()
+        const target = obj.targets[0]
+        const angle = PMath.Angle.BetweenPoints(target, obj) + Math.PI / 2
+        const { x, y } = obj.emissionPoint()
 
-        // muzzle
-        // this.muzzleFlash = obj.scene.add.sprite(x, y, "muzzle").setOrigin(0, 0.5)
-        // this.muzzleFlash.setScale(0.075)
-        // this.muzzleFlash.rotation = angle - Math.PI
+        this.muzzleFlash = obj.scene.add.sprite(x, y, "muzzle")
+        this.muzzleFlash.setScale(0.075)
+        this.muzzleFlash.rotation = angle - Math.PI
       }
     }
   }

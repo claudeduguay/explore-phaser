@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from "phaser"
 import IBehavior from "./IBehavior"
+import Point from "../../../util/Point"
 
 export interface IHasPosition {
   x: number
@@ -9,6 +10,7 @@ export interface IHasPosition {
 export interface IHasTargets extends IHasPosition {
   scene: Scene
   targets: IHasPosition[]
+  emissionPoint: () => Point
 }
 
 export default class TargetLaserBehavior implements IBehavior<IHasTargets> {
@@ -20,9 +22,10 @@ export default class TargetLaserBehavior implements IBehavior<IHasTargets> {
       this.line.destroy()
     }
     if (obj.targets.length > 0) {
+      const { x, y } = obj.emissionPoint()
       const target = obj.targets[0]
       this.line = obj.scene.add.graphics({ lineStyle: { color: 0xFF0000, alpha: 1.0, width: 3 } })
-        .lineBetween(obj.x, obj.y, target.x, target.y)
+        .lineBetween(x, y, target.x, target.y)
     }
   }
 }
