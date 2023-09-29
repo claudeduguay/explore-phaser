@@ -10,7 +10,6 @@ export default class TargetFireBehavior extends BaseTargetBehavior<GameObjects.P
 
   addEmitter(i: number, { x, y }: IHasPosition, obj: IHasTargets, time: number): void {
     if (this.emitters.length < i + 1) {
-      console.log("Add fire emitter:", i)
       const emitter = obj.scene.add.particles(x, y, 'fire', fireEmitter(obj.model.stats.range))
       emitter.stop()
       this.emitters.push(emitter)
@@ -19,9 +18,7 @@ export default class TargetFireBehavior extends BaseTargetBehavior<GameObjects.P
       const target = obj.targets[0]
       this.emitters[i].setPosition(x, y)
       this.emitters[i].rotation = PMath.Angle.BetweenPoints(target, obj) - Math.PI
-      this.emitters[i]?.start()
-    } else { // No target
-      this.emitters[i]?.stop()
+      this.emitters[i].start()
     }
   }
 }

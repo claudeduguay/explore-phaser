@@ -14,9 +14,13 @@ export interface IHasTargets extends IHasPosition {
   targets: IHasPosition[]
 }
 
+export interface IEmitter {
+  destroy: () => void
+  stop: () => void
+}
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
-export default abstract class BaseTargetBehavior<T extends { destroy: () => void } = any> implements IBehavior<IHasTargets> {
+export default abstract class BaseTargetBehavior<T extends IEmitter = any> implements IBehavior<IHasTargets> {
 
   emitters: T[] = []
 
@@ -32,18 +36,26 @@ export default abstract class BaseTargetBehavior<T extends { destroy: () => void
     }
     if (obj.targets.length > 0) {
       obj.emissionPoints().forEach((point, i) => this.addEmitter(i, point, obj, time))
+    } else {
+      this.removeOrStopEmitters()
     }
   }
 
   abstract addEmitter(index: number, emissionPoint: IHasPosition, obj: IHasTargets, time: number): void
-  //  {
-  //   const show = time % 150 > 75 //  Visible half of every 150ms
-  //   if (show) {
-  //     const angle = PMath.Angle.BetweenPoints(target, obj) + Math.PI / 2
-  //     const emitter = obj.scene.add.sprite(x, y, "muzzle")
-  //     emitter.setScale(0.075)
-  //     emitter.rotation = angle - Math.PI
-  //     this.emitters?.push(emitter)
-  //   }
-  // }
+
+  removeOrStopEmitters(): void {
+    if (this.emitters?.length) {
+      for (let emitter of this.emitters) {
+        if (this.destroyEachFrame) {
+          emitter.destroy()
+        } else {
+          emitter.stop()
+        }
+      }
+      if (this.destroyEachFrame) {
+        this.emitters = []
+      }
+    }
+
+  }
 }

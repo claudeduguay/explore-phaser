@@ -20,8 +20,6 @@ export default class TargetIceBehavior extends BaseTargetBehavior<GameObjects.Pa
       this.emitters[i].setPosition(x, y)
       this.emitters[i].rotation = PMath.Angle.BetweenPoints(target, obj) - Math.PI
       this.emitters[i]?.start()
-    } else { // No target
-      this.emitters[i]?.stop()
     }
   }
 }
