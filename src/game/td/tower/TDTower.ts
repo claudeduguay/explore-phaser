@@ -1,5 +1,5 @@
 
-import { GameObjects, Input, Scene, Math as PMath } from "phaser"
+import { GameObjects, Input, Scene } from "phaser"
 import TDTurret from "./TDTurret"
 import BehaviorContainer from "../behavior/BehaviorContainer"
 import TargetAimBehavior from "../behavior/TargetAimBehavior"
@@ -83,17 +83,22 @@ export default class TDTower extends BehaviorContainer {
     this.behavior.push(new ClearTargetsBehavior())
   }
 
+  // This could start to get expensive on each frame
+  emissionPoints() {
+    return this.turret.projectors.map((p, i) => this.emissionPoint(i))
+  }
+
   // May be useful to studdy: https://www.html5gamedevs.com/topic/24535-how-to-calculate-absolute-world-xy-without-using-world-xy-property/
   emissionPoint(index: number = 1) {
     if (this.model.meta.rotation === "target") {
       const i = clamp(index, 0, this.turret.projectors.length - 1)
-      const a = this.turret.rotation
       const projector = this.turret.projectors[i]
       const size = projector.getSize()
       const p = new Point(projector.x, projector.y - size.y / 2)
-      const adjust = Math.atan2(p.y, p.x) + Math.PI / 2
       const r = p.length()
-      return rotation(this.x, this.y, r, r, a + adjust)
+      const a = this.turret.rotation
+      const adjust = Math.atan2(p.y, p.x) + Math.PI / 2
+      return rotation(this.x, this.y, r, r, a + adjust * 2)
     } else {
       return new Point(this.x, this.y)
     }

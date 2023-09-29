@@ -10,22 +10,27 @@ export interface IHasPosition {
 export interface IHasTargets extends IHasPosition {
   scene: Scene
   targets: IHasPosition[]
-  emissionPoint: () => Point
+  emissionPoints: () => Point[]
 }
 
 export default class TargetLaserBehavior implements IBehavior<IHasTargets> {
 
-  line?: GameObjects.Graphics
+  gs: GameObjects.Graphics[] = []
 
   update(obj: IHasTargets, time: number, delta: number) {
-    if (this.line) {
-      this.line.destroy()
+    if (this.gs.length) {
+      for (let g of this.gs) {
+        g.destroy()
+      }
+      this.gs = []
     }
     if (obj.targets.length > 0) {
-      const { x, y } = obj.emissionPoint()
       const target = obj.targets[0]
-      this.line = obj.scene.add.graphics({ lineStyle: { color: 0xFF0000, alpha: 1.0, width: 3 } })
-        .lineBetween(x, y, target.x, target.y)
+      for (let { x, y } of obj.emissionPoints()) {
+        const line = obj.scene.add.graphics({ lineStyle: { color: 0xFF0000, alpha: 1.0, width: 3 } })
+          .lineBetween(x, y, target.x, target.y)
+        this.gs.push(line)
+      }
     }
   }
 }
