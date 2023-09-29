@@ -14,11 +14,14 @@ import TowerPreview from "../tower/TowerPreview"
 import PointCollider, { PointColliders } from "../../../util/PointCollider"
 import TowerInfo from "./react/TowerInfo"
 import registerTowerTextures from "./TowerTextures"
+import ActiveValue from "../value/ActiveValue"
 // import { testLightiningPath } from "../behavior/TargetLightningBehavior"
 
 
 export default class TDPlayScene extends Scene {
 
+  activeHealth = new ActiveValue(100, 0, 1000)
+  activeCredits = new ActiveValue(0, 0, 1000)
   selectionManager!: SelectionManager
   towerGroup!: Physics.Arcade.Group
   pathPoints!: Point[]
@@ -36,6 +39,7 @@ export default class TDPlayScene extends Scene {
     this.load.image('smoke', 'assets/particles/smoke_01.png')
     this.load.image('ice', 'assets/particles/star_08.png')
     this.load.image('muzzle', 'assets/particles/muzzle_01.png')
+
     makePathTiles(this, "path_tiles", 64, 64)
     makeHeightRects(this, "height_cells", 64, 64, 10)
 
@@ -45,6 +49,13 @@ export default class TDPlayScene extends Scene {
     makeEllipse(this, "path-green", 20, 20, { color: "#66FF66" })
     makeEllipse(this, "path-blue", 20, 20, { color: "#6666FF" })
     makeEllipse(this, "path-red", 20, 20, { color: "#FF6666" })
+
+    for (let i = 0; i < 8; i++) {
+      // Explosion image size: 583x536
+      const name = `explosion0${i}`
+      const asset = `assets/explosion/${name}.png`
+      this.load.image(name, asset)
+    }
   }
 
   create() {
@@ -121,8 +132,8 @@ export default class TDPlayScene extends Scene {
       towerInfoDOM = addReactNode(this, <TowerInfo tower={this.selectionManager.selected} onClose={onCloseTowerInfo} />, 25, 75)
     }
 
-    addReactNode(this, <GameHeader navigator={this.gameScene}
-      onShowTowerInfo={onShowTowerInfo}
+    addReactNode(this, <GameHeader activeHealth={this.activeHealth} activeCredits={this.activeCredits}
+      navigator={this.gameScene} onShowTowerInfo={onShowTowerInfo}
     />, 0, 0)
     addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />, 0, this.game.canvas.height - 62)
 
@@ -171,7 +182,13 @@ export default class TDPlayScene extends Scene {
     return collision
   }
 
+  accumulator = 0
   update(time: number, delta: number): void {
+    this.accumulator += delta
+    if (this.accumulator > 1000) {
+      this.activeHealth.adjust(-1)
+      this.accumulator = 0
+    }
     if (this.addingTower) {
       if (!this.input.mousePointer.isDown) {
         this.input.setDefaultCursor("none")

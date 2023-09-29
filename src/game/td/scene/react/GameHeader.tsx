@@ -1,3 +1,4 @@
+import ActiveValue, { useActiveValue } from "../../value/ActiveValue"
 import INavigator from "./INavigator"
 import Icon from "./Icon"
 import IconButton from "./IconButton"
@@ -5,14 +6,17 @@ import IconButton from "./IconButton"
 export interface IGameHeaderProps {
   navigator: INavigator
   onShowTowerInfo: () => void
+  activeHealth: ActiveValue
+  activeCredits: ActiveValue
 }
 
-export default function GameHeader({ navigator, onShowTowerInfo }: IGameHeaderProps) {
+export default function GameHeader({ activeHealth, activeCredits, navigator, onShowTowerInfo }: IGameHeaderProps) {
   const onHome = () => navigator.transitionTo("home", "game")
   const onWin = () => navigator.transitionTo("win", "game")
   const onLose = () => navigator.transitionTo("lose", "game")
-  // const onTower = () => navigator.transitionTo("tower", "game")
   const onEnemy = () => navigator.transitionTo("enemy", "game")
+  const health = useActiveValue(activeHealth)
+  const credits = useActiveValue(activeCredits)
 
   return <div className="d-flex p-2" style={{ width: 1100, height: 60 }}>
     <div className="flex-fill justify-content-start">
@@ -22,7 +26,7 @@ export default function GameHeader({ navigator, onShowTowerInfo }: IGameHeaderPr
             <span className="input-group-text fw-bold">
               <Icon icon="favorite" style={{ color: "red", fontSize: 22 }} />
             </span>
-            <span className="btn btn-success">100</span>
+            <span className="btn btn-success">{health}</span>
           </div>
         </div>
         <div className="col-auto p-0 ms-2">
@@ -30,7 +34,7 @@ export default function GameHeader({ navigator, onShowTowerInfo }: IGameHeaderPr
             <span className="input-group-text fw-bold">
               <Icon icon="attach_money" style={{ color: "green", fontSize: 22 }} />
             </span>
-            <span className="btn btn-success">25</span>
+            <span className="btn btn-success">{credits}</span>
           </div>
         </div>
       </div>
