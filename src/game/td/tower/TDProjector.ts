@@ -11,7 +11,6 @@ export default class TDProjector extends GameObjects.Container {
     this.sprite = this.scene.add.sprite(this.x, this.y, key)
     this.sprite.setOrigin(0.5, 0)
     this.add(this.sprite)
-    console.log("Sprite size:", this.sprite.width, this.sprite.height)
   }
 
   getSize() {

@@ -1,5 +1,5 @@
 
-import { GameObjects, Input, Scene } from "phaser"
+import { GameObjects, Input, Scene, Math as PMath } from "phaser"
 import TDTurret from "./TDTurret"
 import BehaviorContainer from "../behavior/BehaviorContainer"
 import TargetAimBehavior from "../behavior/TargetAimBehavior"
@@ -84,16 +84,20 @@ export default class TDTower extends BehaviorContainer {
   }
 
   // May be useful to studdy: https://www.html5gamedevs.com/topic/24535-how-to-calculate-absolute-world-xy-without-using-world-xy-property/
-  emissionPoint(index: number = 0) {
+  emissionPoint(index: number = 2) {
     if (this.model.meta.rotation === "target") {
       const i = clamp(index, 0, this.turret.projectors.length - 1)
       const a = this.turret.rotation
       const projector = this.turret.projectors[i]
       const size = projector.getSize()
       // Radius to projector x/y + projector.size.y / 2
-      const r = new Point(projector.x, projector.y + size.y / 2).length()
-      console.log("Projector:", projector.x, projector.y, r, size.y / 2)
-      return rotation(this.x, this.y, r, r, a)
+      const r = new Point(projector.x, projector.y - size.y / 2) // .length()
+      // console.log("Projector:", projector.x, projector.y, r, size.y / 2)
+      const pp = rotation(this.x, this.y, r.length(), r.length(), a)
+      const point = new Point()
+      PMath.TransformXY(r.x, r.y, this.x, this.y, a, 1.0, 1.0, point)
+      console.log("Projection:", point, pp)
+      return point
 
       // const length = Point.fromPointLine(projector).length()
       // const offset = projector.getSize()
