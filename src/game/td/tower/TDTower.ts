@@ -84,7 +84,7 @@ export default class TDTower extends BehaviorContainer {
   }
 
   // May be useful to studdy: https://www.html5gamedevs.com/topic/24535-how-to-calculate-absolute-world-xy-without-using-world-xy-property/
-  emissionPoint(index: number = 2) {
+  emissionPoint(index: number = 1) {
     if (this.model.meta.rotation === "target") {
       const i = clamp(index, 0, this.turret.projectors.length - 1)
       const a = this.turret.rotation
@@ -92,12 +92,13 @@ export default class TDTower extends BehaviorContainer {
       const size = projector.getSize()
       // Radius to projector x/y + projector.size.y / 2
       const r = new Point(projector.x, projector.y - size.y / 2) // .length()
+      const adjust = 0 // PMath.Angle.BetweenPoints(this, r) //+ Math.PI / 2
       // console.log("Projector:", projector.x, projector.y, r, size.y / 2)
-      const pp = rotation(this.x, this.y, r.length(), r.length(), a)
-      const point = new Point()
-      PMath.TransformXY(r.x, r.y, this.x, this.y, a, 1.0, 1.0, point)
-      console.log("Projection:", point, pp)
-      return point
+      const pp = rotation(this.x, this.y, r.length(), r.length(), a + adjust)
+      // const point = new Point()
+      // PMath.TransformXY(r.x, r.y, this.x, this.y, a, 1.0, 1.0, point)
+      // console.log("Projection:", point, pp)
+      return pp
 
       // const length = Point.fromPointLine(projector).length()
       // const offset = projector.getSize()

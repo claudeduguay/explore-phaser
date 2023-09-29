@@ -3,7 +3,7 @@ import { Scene } from "phaser"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDGameScene from "./TDGameScene"
 import EnemyInfo from "./react/EnemyInfo"
-import IEnemyModel from "../model/IEnemyModel"
+import IEnemyModel, { WEAK_ENEMY } from "../model/IEnemyModel"
 
 export default class TDEnemyScene extends Scene {
   constructor(public readonly gameScene: TDGameScene) {
@@ -11,22 +11,7 @@ export default class TDEnemyScene extends Scene {
   }
 
   create() {
-    const model: IEnemyModel = {
-      name: "Generic Enemy",
-      stats: {
-        health: 100,
-        shield: 100,
-        speed: 100
-      },
-      damage: {
-        lazer: 1,
-        bullet: 1,
-        missile: 1,
-        fire: 1,
-        lightning: 1,
-        poison: 1
-      }
-    }
+    const model: IEnemyModel = WEAK_ENEMY
     addReactNode(this, <EnemyInfo navigator={this.gameScene} model={model} />, 1100 - 350 - 25, 75)
   }
 }

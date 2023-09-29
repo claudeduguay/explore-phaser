@@ -1,6 +1,5 @@
 
 export interface IEnemyMeta {
-  capture: string
   body: string
 }
 
@@ -21,6 +20,7 @@ export interface IEnemyDamage {
 
 export interface IEnemyModel {
   name: string
+  meta: IEnemyMeta
   stats: IEnemyStatistics
   damage: IEnemyDamage
 }
@@ -28,11 +28,10 @@ export interface IEnemyModel {
 export default IEnemyModel
 
 
-export const WEAK_ENEMY = {
+export const WEAK_ENEMY: IEnemyModel = {
   name: "Weak Enemy",
   meta: {
-    capture: "capture-enemy-weak",
-    body: "weak-enemy-body"
+    body: "path-green"
   },
   stats: {
     health: 100,
@@ -49,11 +48,10 @@ export const WEAK_ENEMY = {
   }
 }
 
-export const MODERATE_ENEMY = {
+export const MODERATE_ENEMY: IEnemyModel = {
   name: "Moderate Enemy",
   meta: {
-    capture: "capture-enemy-weak",
-    body: "body-enemy-weak"
+    body: "path-blue"
   },
   stats: {
     health: 100,
@@ -70,11 +68,10 @@ export const MODERATE_ENEMY = {
   }
 }
 
-export const STRONG_ENEMY = {
+export const STRONG_ENEMY: IEnemyModel = {
   name: "Moderate Enemy",
   meta: {
-    capture: "capture-enemy-strong",
-    body: "body-enemy-strong"
+    body: "path-red"
   },
   stats: {
     health: 100,
