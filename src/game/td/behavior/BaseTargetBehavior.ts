@@ -1,5 +1,6 @@
 import { Scene } from "phaser"
 import IBehavior from "./IBehavior"
+import ITowerModel from "../model/ITowerModel"
 
 export interface IHasPosition {
   x: number
@@ -8,15 +9,16 @@ export interface IHasPosition {
 
 export interface IHasTargets extends IHasPosition {
   scene: Scene
+  model: ITowerModel
   emissionPoints: () => IHasPosition[]
   targets: IHasPosition[]
 }
 
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
-export default abstract class BaseTargetBehavior implements IBehavior<IHasTargets> {
+export default abstract class BaseTargetBehavior<T extends { destroy: () => void } = any> implements IBehavior<IHasTargets> {
 
-  emitters?: { destroy: () => void }[] = []
+  emitters: T[] = []
 
   constructor(public destroyEachFrame: boolean = true) {
   }
@@ -29,14 +31,11 @@ export default abstract class BaseTargetBehavior implements IBehavior<IHasTarget
       this.emitters = []
     }
     if (obj.targets.length > 0) {
-      const target = obj.targets[0]
-      for (let point of obj.emissionPoints()) {
-        this.addEmitter(point, target, obj, time)
-      }
+      obj.emissionPoints().forEach((point, i) => this.addEmitter(i, point, obj, time))
     }
   }
 
-  abstract addEmitter(emissionPoint: IHasPosition, target: IHasPosition, obj: IHasTargets, time: number): void
+  abstract addEmitter(index: number, emissionPoint: IHasPosition, obj: IHasTargets, time: number): void
   //  {
   //   const show = time % 150 > 75 //  Visible half of every 150ms
   //   if (show) {
