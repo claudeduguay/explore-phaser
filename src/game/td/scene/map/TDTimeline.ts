@@ -31,6 +31,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
   const model = ALL_ENEMIES.find(m => m.meta.body === key)
   const follower = new TDEnemy(scene, path, origin.x, origin.y, key, model, true)
   follower.addListener("died", ({ x, y, model }: TDEnemy) => {
+    follower.destroy()
     if (model) {
       console.log("Enemy died:", model.name, model.stats)
       active.credits.adjust(model.stats.value || 0)
@@ -59,12 +60,15 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
     //   }
     // }
   }, offset)
-
+  return follower
 }
 
 // Add preview follower to the proview path, reset timeline after last is finished
-export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path, timeline: Time.Timeline, isLast: boolean) {
+export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path, timeline: Time.Timeline, isLast: boolean, twin: TDEnemy) {
   const follower = new TDEnemy(scene, path, 0, 0, key)
+  twin.addListener("died", ({ x, y, model }: TDEnemy) => {
+    follower.destroy()
+  })
   follower.startFollow({
     positionOnPath: true,
     duration: path.getLength() * 50,
@@ -90,8 +94,8 @@ export function makeTimelinePreview(scene: Scene, active: IActiveValues, enemyGr
   const timeline = scene.add.timeline({})
   // Build parameterized run timeline entries for both paths
   const run = (key: string = "path-blue", isLast: boolean = false) => () => {
-    addMainPathFollower(key, scene, active, enemyGroup, origin, mainPath)
-    addPreviewFollower(key, scene, previewPath, timeline, isLast)
+    const twin = addMainPathFollower(key, scene, active, enemyGroup, origin, mainPath)
+    addPreviewFollower(key, scene, previewPath, timeline, isLast, twin)
   }
 
   const config: Phaser.Types.Time.TimelineEventConfig[] = []
@@ -108,4 +112,3 @@ export function makeTimelinePreview(scene: Scene, active: IActiveValues, enemyGr
 
   timeline.play()
 }
-

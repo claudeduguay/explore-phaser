@@ -1,11 +1,8 @@
+import { ITower } from "./BaseTargetBehavior"
 import IBehavior from "./IBehavior"
 
-export interface IHasTargets {
-  targets: any[]
-}
-
-export default class TargetsClearBehavior implements IBehavior<IHasTargets> {
-  update(obj: IHasTargets, time: number, delta: number) {
-    obj.targets = []
+export default class TargetsClearBehavior implements IBehavior<ITower> {
+  update(tower: ITower, time: number, delta: number) {
+    tower.targets = []
   }
 }

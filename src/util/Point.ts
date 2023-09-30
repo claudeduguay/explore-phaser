@@ -1,5 +1,11 @@
 import { lerp } from "./MathUtil"
 
+
+export interface IPointLike {
+  x: number
+  y: number
+}
+
 export default class Point {
 
   static NORTH = new Point(0, -1)
@@ -10,7 +16,7 @@ export default class Point {
   constructor(public x: number = 0, public y: number = 0) {
   }
 
-  static fromPointLike({ x, y }: { x: number, y: number }) {
+  static fromPointLike({ x, y }: IPointLike) {
     return new Point(x, y)
   }
 
@@ -33,23 +39,23 @@ export default class Point {
     }
   }
 
-  plus(p: Point) {
+  plus(p: IPointLike) {
     return new Point(this.x + p.x, this.y + p.y)
   }
 
-  minus(p: Point) {
+  minus(p: IPointLike) {
     return new Point(this.x - p.x, this.y - p.y)
   }
 
-  times(p: Point) {
+  times(p: IPointLike) {
     return new Point(this.x * p.x, this.y * p.y)
   }
 
-  div(p: Point) {
+  div(p: IPointLike) {
     return new Point(this.x / p.x, this.y / p.y)
   }
 
-  diff(p: Point) {
+  diff(p: IPointLike) {
     return new Point(Math.abs(this.x - p.x), Math.abs(this.y - p.y))
   }
 
@@ -57,7 +63,7 @@ export default class Point {
     return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
   }
 
-  lerp(p: Point, f: number) {
+  lerp(p: IPointLike, f: number) {
     return new Point(
       lerp(this.x, p.x, f),
       lerp(this.y, p.y, f)

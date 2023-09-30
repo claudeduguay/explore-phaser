@@ -8,13 +8,13 @@ export default class TargetLaserBehavior extends BaseTargetBehavior<GameObjects.
     super(true)
   }
 
-  addEmitter(i: number, { x, y }: ITarget, obj: ITower, time: number): void {
+  addEmitter(i: number, { x, y }: ITarget, tower: ITower, time: number): void {
     // For lazer we may not need to flash
     const show = time % 150 > 75 //  Visible half of every 150ms
     if (show) {
-      const target = obj.targets[0]
+      const target = tower.targets[0]
       if (target) {
-        const emitter = obj.scene.add.graphics()
+        const emitter = tower.scene.add.graphics()
         this.draw(emitter, new Point(x, y), new Point(target.x, target.y))
         this.emitters?.push(emitter)
       }

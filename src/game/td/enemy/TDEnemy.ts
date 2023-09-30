@@ -39,17 +39,10 @@ export default class TDEnemy extends GameObjects.PathFollower {
   preUpdate(time: number, delta: number): void {
     super.preUpdate(time, delta)
     if (this.showStatusBars) {
-      // const SHIELD_TIME = 4000
-      // const HEALTH_TIME = 8000
-      // this.health.adjust(-1)
-      // this.shield.adjust(-1)
       const health_fraction = this.health.compute() / this.health.baseValue
       const shield_fraction = this.shield.compute() / this.shield.baseValue
-      // this.status.shield = 1.0 - time % SHIELD_TIME / SHIELD_TIME
-      // this.status.health = 1.0 - time % HEALTH_TIME / HEALTH_TIME
       if (health_fraction < 0.005) {
         this.emit("died", this)
-        this.destroy()
       }
       if (shield_fraction < 0.005) {
         this.shield.reset()

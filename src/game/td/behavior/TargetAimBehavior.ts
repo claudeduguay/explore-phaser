@@ -1,27 +1,12 @@
-import { GameObjects, Math as PMath, Scene } from "phaser"
+import { GameObjects, Math as PMath } from "phaser"
 import IBehavior from "./IBehavior"
-// import { rotation } from "../../../util/MathUtil"
+import { ITower } from "./BaseTargetBehavior"
 
-export interface IHasPosition {
-  x: number
-  y: number
-}
-
-export interface IHasAngle {
-  rotation: number
-}
-
-export interface IHasTargets extends IHasPosition {
-  scene: Scene
-  turret: IHasAngle
-  targets: IHasPosition[]
-}
-
-export default class TargetAimBehavior implements IBehavior<IHasTargets> {
+export default class TargetAimBehavior implements IBehavior<ITower> {
 
   g!: GameObjects.Graphics
 
-  update(obj: IHasTargets, time: number, delta: number) {
+  update(obj: ITower, time: number, delta: number) {
     if (this.g) {
       this.g.destroy()
     }
