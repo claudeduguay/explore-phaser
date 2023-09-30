@@ -2,6 +2,7 @@
 import { GameObjects, Scene, Scenes } from "phaser"
 import { ReactNode, useState, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
+import { v4 as uuid } from 'uuid';
 
 export interface IVisibleProps {
   scene: Scene,
@@ -28,7 +29,7 @@ export function Visible({ scene, children, visible: initVisible = true, overlay 
 }
 
 export function addReactNode(scene: Scene, node: ReactNode, x: number = 0, y: number = 0, overlay?: false): GameObjects.DOMElement {
-  const id = crypto.randomUUID()
+  const id = uuid()
   const gameDOM = scene.add.dom(x, y).createFromHTML(`<div id="${id}" />`)
   const element = document.getElementById(id) as HTMLElement
   const root = ReactDOM.createRoot(element)

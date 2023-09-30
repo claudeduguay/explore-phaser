@@ -16,11 +16,11 @@ export interface IHasTargets extends IHasPosition {
 
 export interface IEmitter {
   destroy: () => void
-  stop: () => void
+  stop?: () => void
 }
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
-export default abstract class BaseTargetBehavior<T extends IEmitter = any> implements IBehavior<IHasTargets> {
+export default abstract class BaseTargetBehavior<T extends IEmitter> implements IBehavior<IHasTargets> {
 
   emitters: T[] = []
 
@@ -48,7 +48,7 @@ export default abstract class BaseTargetBehavior<T extends IEmitter = any> imple
       for (let emitter of this.emitters) {
         if (this.destroyEachFrame) {
           emitter.destroy()
-        } else {
+        } else if (emitter.stop) {
           emitter.stop()
         }
       }

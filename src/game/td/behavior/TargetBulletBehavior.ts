@@ -1,7 +1,7 @@
-import { Math as PMath } from "phaser"
+import { GameObjects, Math as PMath } from "phaser"
 import BaseTargetBehavior, { IHasPosition, IHasTargets } from "./BaseTargetBehavior"
 
-export default class TargetBulletBehavior extends BaseTargetBehavior {
+export default class TargetBulletBehavior extends BaseTargetBehavior<GameObjects.Sprite> {
 
   constructor() {
     super(true)
