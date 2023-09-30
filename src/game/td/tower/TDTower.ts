@@ -47,8 +47,9 @@ export default class TDTower extends BehaviorContainer {
     }
     this.add(this.turret)
 
-    this.showRange = scene.add.existing(new TDRange(scene, this.x, this.y, model.stats.range))
+    this.showRange = scene.add.existing(new TDRange(scene, 0, 0, model.stats.range))
     this.showRange.visible = false
+    this.add(this.showRange)
 
     this.setSize(range * 2, range * 2) // Sets bounding box
 
