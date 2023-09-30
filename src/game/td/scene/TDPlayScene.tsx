@@ -164,6 +164,7 @@ export default class TDPlayScene extends Scene {
         towerInfoDOM.destroy()
       }
     }
+    // this.on("click", onCloseTowerInfo)
     const onShowTowerInfo = (tower: TDTower) => {
       towerInfoDOM = addReactNode(this, <TowerInfo tower={tower} onClose={onCloseTowerInfo} />, 25, 75)
     }
