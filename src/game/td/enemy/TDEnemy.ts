@@ -8,7 +8,7 @@ export default class TDEnemy extends GameObjects.PathFollower {
   container!: GameObjects.Container
   shieldBar!: HealthBar
   healthBar!: HealthBar
-  status: { health: number, shield: number } = { health: 1.0, shield: 1.0 }
+  // status: { health: number, shield: number } = { health: 1.0, shield: 1.0 }
 
   health!: ActiveValue
   shield!: ActiveValue
@@ -23,15 +23,15 @@ export default class TDEnemy extends GameObjects.PathFollower {
     this.shield = new ActiveValue(model?.stats.shield || 0)
 
     if (showStatusBars) {
-      this.shieldBar = new HealthBar(scene, this, 0, 0, 30, 5, 0xffa500)
-      scene.add.existing(this.shieldBar)
+      // this.shieldBar = new HealthBar(scene, this, 0, 0, 30, 5, 0xffa500)
+      // scene.add.existing(this.shieldBar)
 
       this.healthBar = new HealthBar(scene, this, 0, 3, 30, 5, 0x00ff00)
       scene.add.existing(this.healthBar)
 
       this.container = scene.add.container()
       this.container.add(this.healthBar)
-      this.container.add(this.shieldBar)
+      // this.container.add(this.shieldBar)
       scene.add.existing(this.container)
     }
   }
@@ -39,15 +39,23 @@ export default class TDEnemy extends GameObjects.PathFollower {
   preUpdate(time: number, delta: number): void {
     super.preUpdate(time, delta)
     if (this.showStatusBars) {
-      const SHIELD_TIME = 8000
-      const HEALTH_TIME = 10000
-      this.status.shield = 1.0 - time % SHIELD_TIME / SHIELD_TIME
-      this.status.health = 1.0 - time % HEALTH_TIME / HEALTH_TIME
-      if (this.status.health <= 0.001) {
-        this.emit("died")
+      // const SHIELD_TIME = 4000
+      // const HEALTH_TIME = 8000
+      // this.health.adjust(-1)
+      // this.shield.adjust(-1)
+      const health_fraction = this.health.compute() / this.health.baseValue
+      const shield_fraction = this.shield.compute() / this.shield.baseValue
+      // this.status.shield = 1.0 - time % SHIELD_TIME / SHIELD_TIME
+      // this.status.health = 1.0 - time % HEALTH_TIME / HEALTH_TIME
+      if (health_fraction < 0.005) {
+        this.emit("died", this)
+        this.destroy()
       }
-      this.shieldBar.fraction = this.status.shield
-      this.healthBar.fraction = this.status.health
+      if (shield_fraction < 0.005) {
+        this.shield.reset()
+      }
+      // this.shieldBar.fraction = shield_fraction
+      this.healthBar.fraction = health_fraction
       const bounds = this.getBounds()
       const x = this.pathVector.x - this.healthBar.w / 2
       const y = this.pathVector.y - bounds.height - this.healthBar.h * 2

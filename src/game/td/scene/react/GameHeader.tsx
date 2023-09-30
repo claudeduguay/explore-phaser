@@ -13,8 +13,14 @@ export interface IGameHeaderProps {
 export default function GameHeader({ active, navigator, onShowTowerInfo }: IGameHeaderProps) {
   const { health: activeHealth, credits: activeCredits } = active
   const onHome = () => navigator.transitionTo("home", "game")
-  const onWin = () => navigator.transitionTo("win", "game")
-  const onLose = () => navigator.transitionTo("lose", "game")
+  const onWin = () => {
+    const scene = navigator.transitionTo("win", "game")
+    scene.sound.play("win")
+  }
+  const onLose = () => {
+    const scene = navigator.transitionTo("lose", "game")
+    scene.sound.play("lose")
+  }
   const onEnemy = () => navigator.transitionTo("enemy", "game")
   const health = useActiveValue(activeHealth)
   const credits = useActiveValue(activeCredits)

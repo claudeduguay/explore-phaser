@@ -18,7 +18,7 @@ export default class TDGameScene extends Scene {
     this.scene.add("enemy", new TDEnemyInfo(this))
   }
 
-  transitionTo(target: string, sleep?: string) {
+  transitionTo(target: string, sleep?: string): Scene {
     // console.log(`Transition to ${target}`)
     if (sleep) {
       this.scene.sleep(sleep)
@@ -27,6 +27,7 @@ export default class TDGameScene extends Scene {
       target,
       duration: 1000
     })
+    return this
   }
 
   update(time: number, delta: number): void {

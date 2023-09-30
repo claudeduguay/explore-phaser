@@ -1,8 +1,8 @@
 import { Curves, GameObjects, Scene, Time } from "phaser"
 import Point from "../../../../util/Point"
 import TDEnemy from "../../enemy/TDEnemy"
-import { WEAK_ENEMY } from "../../model/IEnemyModel"
-import { IActiveValues } from "../TDPlayScene"
+import IEnemyModel, { ALL_ENEMIES, WEAK_ENEMY } from "../../model/IEnemyModel"
+import TDPlayScene, { IActiveValues } from "../TDPlayScene"
 
 // Create a graphics background and a line-based curve for the preview path
 export function makeTimelinePreviewGraphicsAndPath(scene: Scene) {
@@ -25,12 +25,15 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene) {
 }
 
 // Add an enemy to the main path (add/remove in group)
-export function addFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, offset: number = 0) {
+export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, offset: number = 0) {
   const length = path.getLength()
   // console.log("Path length:", length)
-  const follower = new TDEnemy(scene, path, origin.x, origin.y, WEAK_ENEMY.meta.body, WEAK_ENEMY, true)
-  follower.addListener("died", () => {
-    active.credits.adjust(10)
+  const model = ALL_ENEMIES.find(m => m.meta.body === key)
+  const follower = new TDEnemy(scene, path, origin.x, origin.y, key, model, true)
+  follower.addListener("died", ({ x, y, model }: TDEnemy) => {
+    console.log("Enemy died:", model?.name, model?.stats)
+    active.credits.adjust(model?.stats.value || 0)
+    TDPlayScene.createExplosionSprite(scene, x, y)
   })
   scene.add.existing(follower)
   follower.startFollow({
@@ -46,6 +49,7 @@ export function addFollower(key: string, scene: Scene, active: IActiveValues, en
       follower.destroy()
       enemyGroup.remove(follower)
       active.health.adjust(-1)
+      scene.sound.play("woe")
     },
     // onUpdate: () => {
     //   if (!follower.health) { // If health is zero
@@ -84,7 +88,7 @@ export function makeTimelinePreview(scene: Scene, active: IActiveValues, enemyGr
   const timeline = scene.add.timeline({})
   // Build parameterized run timeline entries for both paths
   const run = (key: string = "path-blue", isLast: boolean = false) => () => {
-    addFollower(key, scene, active, enemyGroup, origin, mainPath)
+    addMainPathFollower(key, scene, active, enemyGroup, origin, mainPath)
     addPreviewFollower(key, scene, previewPath, timeline, isLast)
   }
 

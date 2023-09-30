@@ -1,7 +1,7 @@
 import { Scene, GameObjects, Curves, Math as PMath } from "phaser"
 import Point from "../../../util/Point"
 import { rotation } from "../../../util/MathUtil"
-import BaseTargetBehavior, { IHasPosition, IHasTargets } from "./BaseTargetBehavior"
+import BaseTargetBehavior, { ITarget, ITower } from "./BaseTargetBehavior"
 
 function perpendicular({ x, y }: Point, angle: number, r: number, pos: boolean = true) {
   return rotation(x, y, r, r, angle + (pos ? 0 : -Math.PI))
@@ -13,7 +13,7 @@ export default class TargetLightningBehavior extends BaseTargetBehavior<GameObje
     super(true)
   }
 
-  addEmitter(i: number, { x, y }: IHasPosition, obj: IHasTargets, time: number): void {
+  addEmitter(i: number, { x, y }: ITarget, obj: ITower, time: number): void {
     const target = obj.targets[0]
     if (target) {
       const emitter = obj.scene.add.graphics()

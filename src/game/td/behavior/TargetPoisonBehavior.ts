@@ -1,35 +1,25 @@
-import { Scene, GameObjects } from "phaser"
+import { GameObjects } from "phaser"
 import IBehavior from "./IBehavior"
 import { cloudEmitter } from "../emitter/ParticleConfig"
-import ITowerModel from "../model/ITowerModel"
+import { ITower, applyDamage } from "./BaseTargetBehavior"
 
-export interface IHasPosition {
-  x: number
-  y: number
-}
-
-export interface IHasTargets extends IHasPosition {
-  scene: Scene
-  model: ITowerModel
-  targets: IHasPosition[]
-}
-
-export default class TargePoisonBehavior implements IBehavior<IHasTargets> {
+export default class TargePoisonBehavior implements IBehavior<ITower> {
 
   cloud?: GameObjects.Particles.ParticleEmitter
 
-  update(obj: IHasTargets, time: number, delta: number) {
+  update(tower: ITower, time: number, delta: number) {
     if (!this.cloud) {
-      this.cloud = obj.scene.add.particles(0, 0, 'smoke', cloudEmitter(obj.model.stats.range / 2))
+      this.cloud = tower.scene.add.particles(0, 0, 'smoke', cloudEmitter(tower.model.stats.range / 2))
       this.cloud.stop()
       // Push effect behind the tower
-      if (obj instanceof GameObjects.Container) {
-        obj.add(this.cloud)
-        obj.sendToBack(this.cloud)
+      if (tower instanceof GameObjects.Container) {
+        tower.add(this.cloud)
+        tower.sendToBack(this.cloud)
       }
     }
-    if (obj.targets.length) {
+    if (tower.targets.length) {
       this.cloud?.start()
+      applyDamage(tower, tower.targets)
     } else { // No target
       this.cloud?.stop()
     }

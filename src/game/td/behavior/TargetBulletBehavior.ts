@@ -1,5 +1,5 @@
 import { GameObjects, Math as PMath } from "phaser"
-import BaseTargetBehavior, { IHasPosition, IHasTargets } from "./BaseTargetBehavior"
+import BaseTargetBehavior, { ITarget, ITower } from "./BaseTargetBehavior"
 
 export default class TargetBulletBehavior extends BaseTargetBehavior<GameObjects.Sprite> {
 
@@ -7,7 +7,7 @@ export default class TargetBulletBehavior extends BaseTargetBehavior<GameObjects
     super(true)
   }
 
-  addEmitter(i: number, { x, y }: IHasPosition, obj: IHasTargets, time: number): void {
+  addEmitter(i: number, { x, y }: ITarget, obj: ITower, time: number): void {
     const target = obj.targets[0]
     const show = time % 150 > 75 //  Visible half of every 150ms
     if (show) {

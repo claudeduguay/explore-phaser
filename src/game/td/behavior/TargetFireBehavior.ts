@@ -1,6 +1,6 @@
 import { GameObjects, Math as PMath } from "phaser"
 import { fireEmitter } from "../emitter/ParticleConfig"
-import BaseTargetBehavior, { IHasPosition, IHasTargets } from "./BaseTargetBehavior"
+import BaseTargetBehavior, { ITarget, ITower } from "./BaseTargetBehavior"
 
 export default class TargetFireBehavior extends BaseTargetBehavior<GameObjects.Particles.ParticleEmitter> {
 
@@ -8,7 +8,7 @@ export default class TargetFireBehavior extends BaseTargetBehavior<GameObjects.P
     super(false)
   }
 
-  addEmitter(i: number, { x, y }: IHasPosition, obj: IHasTargets, time: number): void {
+  addEmitter(i: number, { x, y }: ITarget, obj: ITower, time: number): void {
     if (this.emitters.length < i + 1) {
       const emitter = obj.scene.add.particles(x, y, 'fire', fireEmitter(obj.model.stats.range))
       emitter.stop()

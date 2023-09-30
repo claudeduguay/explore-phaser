@@ -7,6 +7,7 @@ export interface IEnemyStatistics {
   health: number
   shield: number
   speed: number
+  value: number
 }
 
 export interface IEnemyDamage {
@@ -36,7 +37,8 @@ export const WEAK_ENEMY: IEnemyModel = {
   stats: {
     health: 100,
     shield: 100,
-    speed: 100
+    speed: 100,
+    value: 10
   },
   damage: {
     lazer: 1,
@@ -54,9 +56,10 @@ export const MODERATE_ENEMY: IEnemyModel = {
     body: "path-blue"
   },
   stats: {
-    health: 100,
+    health: 200,
     shield: 100,
-    speed: 100
+    speed: 100,
+    value: 15
   },
   damage: {
     lazer: 1,
@@ -74,9 +77,10 @@ export const STRONG_ENEMY: IEnemyModel = {
     body: "path-red"
   },
   stats: {
-    health: 100,
+    health: 300,
     shield: 100,
-    speed: 100
+    speed: 100,
+    value: 20
   },
   damage: {
     lazer: 1,
@@ -87,3 +91,9 @@ export const STRONG_ENEMY: IEnemyModel = {
     poison: 1
   }
 }
+
+export const ALL_ENEMIES: IEnemyModel[] = [
+  WEAK_ENEMY,
+  MODERATE_ENEMY,
+  STRONG_ENEMY
+]

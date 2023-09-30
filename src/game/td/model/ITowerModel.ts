@@ -5,7 +5,7 @@ export interface ITowerProjector {
 }
 
 export interface ITowerMeta {
-  key: string                   // Tower key
+  key: string                     // Tower key
   platform: string                // Base on which the turret rests
   turret: string                  // Turret form that holds projectors
   projectors: ITowerProjector[]   // 1..3 Projectors (guns, radar, etc)

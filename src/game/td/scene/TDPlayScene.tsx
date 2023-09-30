@@ -41,6 +41,18 @@ export default class TDPlayScene extends Scene {
 
   preload() {
 
+    this.load.audio('boop', "assets/audio/drop_003.ogg")
+    this.load.audio('cash', "assets/audio/dropmetalthing.ogg")
+    this.load.audio('explosion', "assets/audio/explosionCrunch_004.ogg")
+    this.load.audio('gun', "assets/audio/GunShot.wav")
+    this.load.audio('tick', "assets/audio/impactMetal_medium_002.ogg")
+    this.load.audio('woe', "assets/audio/lowDown.ogg")
+    this.load.audio('three', "assets/audio/lowThreeTone.ogg")
+    this.load.audio('beboop', "assets/audio/pepSound1.ogg")
+    this.load.audio('bip', "assets/audio/tone1.ogg")
+    this.load.audio('lose', "assets/audio/you_lose.ogg")
+    this.load.audio('win', "assets/audio/you_win.ogg")
+
     this.load.atlas('flares', 'assets/particles/flares.png', 'assets/particles/flares.json')
     this.load.image('fire', 'assets/particles/fire_01.png')
     this.load.image('smoke', 'assets/particles/smoke_01.png')
@@ -66,27 +78,30 @@ export default class TDPlayScene extends Scene {
     }
   }
 
-  createExplosionSprite() {
+  static createExplosionSprite(scene: Scene, x: number, y: number) {
     const frames: { key: string }[] = []
     for (let i = 0; i < 8; i++) {
       frames.push({ key: `explosion0${i}` })
     }
     // shuffle(frames)
-    const repeat = -1
-    this.anims.create({
+    scene.anims.create({
       key: "explosion",
       frames,
       frameRate: 8,
-      repeat
+      repeat: 0
     })
-    const sprite = this.add.sprite(550, 400, "explosion00").setScale(0).play("explosion")
-    this.add.tween({
+    const sprite = scene.add.sprite(x, y, "explosion00").setScale(0).play("explosion")
+    scene.add.tween({
       targets: sprite,
       props: {
-        alpha: { value: 0, duration: 1500, repeat },
-        scale: { value: 0.4, duration: 1000, repeat }
+        alpha: { value: 0, duration: 1500, repeat: 0 },
+        scale: { value: 0.4, duration: 1000, repeat: 0 }
       },
-      ease: "Linear"
+      ease: "Linear",
+      onComplete: () => {
+        sprite.destroy()
+        // scene.sound.play("cash")
+      }
     })
   }
 
@@ -215,7 +230,7 @@ export default class TDPlayScene extends Scene {
     }
 
     testPlasmaPath(this)
-    this.createExplosionSprite()
+    TDPlayScene.createExplosionSprite(this, 550, 400)
   }
 
   createMap(enemyGroup: GameObjects.Group) {
