@@ -15,16 +15,16 @@ export default class SelectionManager {
     this.group.children.entries.forEach((t) => {
       if (t instanceof TDTower) {
         t.showSelection = false
-        t.postFX?.clear()
+        t.tower_base.postFX?.clear()
       }
     })
     // Toggle showSelection
     selected.showSelection = !selected.showSelection
     if (selected.showSelection) {
       selected.showSelection = true
-      selected.postFX?.addGlow()
+      selected.tower_base.postFX?.addGlow()
     } else {
-      selected.postFX?.clear()
+      selected.tower_base.postFX?.clear()
     }
   }
 
@@ -34,16 +34,16 @@ export default class SelectionManager {
     this.group.children.entries.forEach((t) => {
       if (t instanceof TDTower) {
         t.showSelection = false
-        t.postFX?.clear()
+        t.tower_base.postFX?.clear()
       }
     })
     // Toggle showSelection
     selected.showSelection = !selected.showSelection
     if (selected.showSelection) {
       selected.showSelection = true
-      selected.postFX?.addGlow()
+      selected.tower_base.postFX?.addGlow()
     } else {
-      selected.postFX?.clear()
+      selected.tower_base.postFX?.clear()
     }
   }
 }

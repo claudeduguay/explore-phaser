@@ -40,7 +40,7 @@ export default class TargetPlasmaBehavior extends BaseTargetBehavior<GameObjects
 
     // Map each axis (for CatmulRom)
     const xs = points.map(p => p.x)
-    const ys = points.map(p => p.x)
+    const ys = points.map(p => p.y)
 
     // Collect curve points (every 3 pixels)
     const curve: Point[] = []

@@ -16,7 +16,7 @@ import TowerInfo from "./react/TowerInfo"
 import registerTowerTextures from "./TowerTextures"
 import ActiveValue from "../value/ActiveValue"
 import { shuffle } from "../../../util/ArrayUtil"
-import { testLightiningPath } from "../behavior/TargetLightningBehavior"
+import { testPlasmaPath } from "../behavior/TargetPlasmaBehavior"
 
 export interface IActiveValues {
   health: ActiveValue,
@@ -214,7 +214,7 @@ export default class TDPlayScene extends Scene {
       this.add.existing(preview)
     }
 
-    testLightiningPath(this)
+    testPlasmaPath(this)
     this.createExplosionSprite()
   }
 
