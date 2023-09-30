@@ -1,7 +1,7 @@
 import { Curves, GameObjects, Scene, Time } from "phaser"
 import Point from "../../../../util/Point"
 import TDEnemy from "../../enemy/TDEnemy"
-import IEnemyModel, { ALL_ENEMIES, WEAK_ENEMY } from "../../model/IEnemyModel"
+import { ALL_ENEMIES } from "../../model/IEnemyModel"
 import TDPlayScene, { IActiveValues } from "../TDPlayScene"
 
 // Create a graphics background and a line-based curve for the preview path
