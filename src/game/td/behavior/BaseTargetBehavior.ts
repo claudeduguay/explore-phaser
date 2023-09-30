@@ -15,6 +15,7 @@ export interface ITower {
   scene: Scene
   model: ITowerModel
   emissionPoints: () => ITarget[]
+  turret: { angle: number, rotation: number }
   targets: ITarget[]
 }
 
@@ -23,13 +24,10 @@ export interface IEmitter {
   stop?: () => void
 }
 
-export function applyDamage(tower: ITower, targets: ITarget | ITarget[]) {
-  if (!Array.isArray(targets)) {
-    targets = [targets]
-  }
+export function applyDamage(tower: ITower, singleTarget: boolean = true) {
   const key = tower.model.meta.key as keyof ITowerDamage
   const damage = (tower.model.damage[key] || 0) / 100
-  targets.forEach(target => target.health.adjust(-damage))
+  tower.targets.forEach(target => target.health.adjust(-damage))
 }
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
@@ -49,7 +47,7 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
     }
     if (tower.targets.length > 0) {
       tower.emissionPoints().forEach((point, i) => this.addEmitter(i, point, tower, time))
-      applyDamage(tower, this.singleTarget ? tower.targets[0] : tower.targets)
+      applyDamage(tower, this.singleTarget)
     } else {
       this.removeOrStopEmitters()
     }

@@ -19,7 +19,7 @@ export default class TargePoisonBehavior implements IBehavior<ITower> {
     }
     if (tower.targets.length) {
       this.cloud?.start()
-      applyDamage(tower, tower.targets)
+      applyDamage(tower)
     } else { // No target
       this.cloud?.stop()
     }

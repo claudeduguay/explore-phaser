@@ -16,13 +16,16 @@ export default function GameHeader({ navigator }: IGameHomeProps) {
         <button className="btn btn-primary col-4" onClick={onPlay}>Play</button>
       </div>
       <div className="p-2">
-        <button className="btn btn-primary col-4" onClick={() => console.log("Click")}>Continue</button>
+        <button className="btn btn-primary col-4" onClick={() => console.log("Continue")}>Continue</button>
       </div>
       <div className="p-2">
-        <button className="btn btn-primary col-4" onClick={() => console.log("Click")}>Quit</button>
+        <button className="btn btn-primary col-4" onClick={() => console.log("Options")}>Options</button>
       </div>
       <div className="p-2">
-        <button className="btn btn-primary col-4" onClick={() => console.log("Click")}>About</button>
+        <button className="btn btn-primary col-4" onClick={() => console.log("About")}>About</button>
+      </div>
+      <div className="p-2">
+        <button className="btn btn-primary col-4" onClick={() => console.log("Quit")}>Quit</button>
       </div>
     </div>
   </div>

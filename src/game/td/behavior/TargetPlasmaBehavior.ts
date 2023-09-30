@@ -23,40 +23,32 @@ export default class TargetPlasmaBehavior extends BaseTargetBehavior<GameObjects
   }
 
   draw(g: GameObjects.Graphics, source: Point, target: Point) {
-    g.lineStyle(2, 0x00FFFF, 1.0)
+    g.lineStyle(2, 0x0000FF, 1.0)
     const divisions = 7
     const deviation = 10
     const angle = PMath.Angle.BetweenPoints(source, target)
 
-    // Collect source, ...midpoints, target
-    const points: Point[] = []
-    points.push(source)
+    // Collect source, ...midpoints, target (x and y coordinates)
+    const xs: number[] = [source.x]
+    const ys: number[] = [source.y]
     for (let i = 1; i < divisions; i++) {
       const mid = source.lerp(target, i / divisions)
       const p = perpendicular(mid, angle, deviation * Math.random(), i % 2 === 0)
-      points.push(p)
+      xs.push(p.x)
+      ys.push(p.y)
     }
-    points.push(target)
+    xs.push(target.x)
+    ys.push(target.y)
 
-    // Map each axis (for CatmulRom)
-    const xs = points.map(p => p.x)
-    const ys = points.map(p => p.y)
-
-    // Collect curve points (every 3 pixels)
-    const curve: Point[] = []
+    // Draw interpolated curve (every 3 pixels)
     const divs = source.diff(target).length() / 3
     for (let i = 0; i < divs; i++) {
       const x = PMath.Interpolation.CatmullRom(xs, i / divs)
       const y = PMath.Interpolation.CatmullRom(ys, i / divs)
-      curve.push(new Point(x, y))
-    }
-    // Draw interpolated curve
-    for (let i = 0; i < curve.length; i++) {
-      const p = curve[i]
       if (i === 0) {
-        g.moveTo(p.x, p.y)
+        g.moveTo(x, y)
       } else {
-        g.lineTo(p.x, p.y)
+        g.lineTo(x, y)
       }
     }
     g.stroke()
