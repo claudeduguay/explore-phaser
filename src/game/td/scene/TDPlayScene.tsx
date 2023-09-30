@@ -154,11 +154,23 @@ export default class TDPlayScene extends Scene {
   create() {
     const enemyGroup = this.physics.add.group({ key: "enemyGroup" })
 
+    let towerInfoDOM: GameObjects.DOMElement
+    const onCloseTowerInfo = () => {
+      console.log("Close:", towerInfoDOM)
+      if (towerInfoDOM) {
+        towerInfoDOM.removeElement()
+        towerInfoDOM.destroy()
+      }
+    }
+    const onShowTowerInfo = (tower: TDTower) => {
+      towerInfoDOM = addReactNode(this, <TowerInfo tower={tower} onClose={onCloseTowerInfo} />, 25, 75)
+    }
+    this.towerGroup = this.physics.add.group({ key: "towerGroup" })
+    this.selectionManager = new SelectionManager(this.towerGroup, onShowTowerInfo)
+
     this.createMap(enemyGroup)
 
     const origin = new Point(0, 46)
-    this.towerGroup = this.physics.add.group({ key: "towerGroup" })
-    this.selectionManager = new SelectionManager(this.towerGroup)
 
     const towerCount = 10
     const towers: TDTower[] = []
@@ -206,21 +218,7 @@ export default class TDPlayScene extends Scene {
       this.towerColliders.push(new PointCollider(this.pathPoints))
     }
 
-    let towerInfoDOM: GameObjects.DOMElement
-    const onCloseTowerInfo = () => {
-      console.log("Close:", towerInfoDOM)
-      if (towerInfoDOM) {
-        towerInfoDOM.removeElement()
-        towerInfoDOM.destroy()
-      }
-    }
-    const onShowTowerInfo = () => {
-      towerInfoDOM = addReactNode(this, <TowerInfo tower={this.selectionManager.selected} onClose={onCloseTowerInfo} />, 25, 75)
-    }
-
-    addReactNode(this, <GameHeader active={this.active}
-      navigator={this.gameScene} onShowTowerInfo={onShowTowerInfo}
-    />, 0, 0)
+    addReactNode(this, <GameHeader active={this.active} navigator={this.gameScene} />, 0, 0)
     addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />, 0, this.game.canvas.height - 62)
 
     const showTowerPreview = false

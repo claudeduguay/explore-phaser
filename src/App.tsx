@@ -31,7 +31,6 @@ export default function App() {
   return (
     <div className="p-0 m-0">
       <center>
-        <h1 className="p-4">Explore Phaser 3 in React</h1>
         <Explore w={1100} h={800} scene={scene} />
         <nav className="btn-group m-3">
           <button className="btn btn-primary" onClick={() => onSelect("dungeon")}>Dungeon Generator</button>
@@ -39,6 +38,7 @@ export default function App() {
           <button className="btn btn-primary" onClick={() => onSelect("tile")}>Tile Scene</button>
           <button className="btn btn-primary" onClick={() => onSelect("td")}>Tower Defense</button>
         </nav>
+        <h1 className="p-4">Explore Phaser 3 in React</h1>
         <p>The Explore component encapsulates the <b><code>Phaser.Game</code></b> initialization.</p>
       </center>
     </div>

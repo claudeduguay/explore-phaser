@@ -6,7 +6,7 @@ import IconButton from "./IconButton"
 
 export interface IGameHeaderProps {
   navigator: INavigator
-  onShowTowerInfo: () => void
+  onShowTowerInfo?: () => void
   active: IActiveValues
 }
 
@@ -51,7 +51,7 @@ export default function GameHeader({ active, navigator, onShowTowerInfo }: IGame
         <IconButton icon="home" onClick={onHome} />
         <IconButton icon="sentiment_satisfied" onClick={onWin} />
         <IconButton icon="sentiment_very_dissatisfied" onClick={onLose} />
-        <IconButton icon="crop_square" onClick={onShowTowerInfo} />
+        {onShowTowerInfo && <IconButton icon="crop_square" onClick={onShowTowerInfo} />}
         <IconButton icon="circle" onClick={onEnemy} />
       </div>
     </div>

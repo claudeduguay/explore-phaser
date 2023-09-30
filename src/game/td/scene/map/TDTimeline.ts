@@ -45,7 +45,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
     from: 0.0,
     to: 1.0,
     yoyo: false,
-    // repeat: -1,
+    repeat: 0,
     rotateToPath: true,
     onStart: () => enemyGroup.add(follower),
     onComplete: () => {

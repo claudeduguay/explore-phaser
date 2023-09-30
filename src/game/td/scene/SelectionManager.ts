@@ -5,7 +5,7 @@ export default class SelectionManager {
 
   selected!: TDTower
 
-  constructor(public group: GameObjects.Group) {
+  constructor(public group: GameObjects.Group, public onShowTowerInfo: (tower: TDTower) => void) {
 
   }
 
@@ -45,5 +45,6 @@ export default class SelectionManager {
     } else {
       selected.tower_base.postFX?.clear()
     }
+    this.onShowTowerInfo(selected)
   }
 }
