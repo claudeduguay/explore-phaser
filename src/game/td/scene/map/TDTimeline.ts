@@ -33,7 +33,6 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
   follower.addListener("died", ({ x, y, model }: TDEnemy) => {
     follower.destroy()
     if (model) {
-      console.log("Enemy died:", model.name, model.stats)
       active.credits.adjust(model.stats.value || 0)
       TDPlayScene.createExplosionSprite(scene, x, y)
     }
