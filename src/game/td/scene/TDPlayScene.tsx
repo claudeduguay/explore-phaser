@@ -84,12 +84,14 @@ export default class TDPlayScene extends Scene {
       frames.push({ key: `explosion0${i}` })
     }
     // shuffle(frames)
-    scene.anims.create({
-      key: "explosion",
-      frames,
-      frameRate: 8,
-      repeat: 0
-    })
+    if (!scene.anims.exists("explosion")) {
+      scene.anims.create({
+        key: "explosion",
+        frames,
+        frameRate: 8,
+        repeat: 0
+      })
+    }
     const sprite = scene.add.sprite(x, y, "explosion00").setScale(0).play("explosion")
     scene.add.tween({
       targets: sprite,
@@ -146,7 +148,7 @@ export default class TDPlayScene extends Scene {
         }
       }
     }
-    console.log("Positions:", positions.map(x => x.toString()))
+    // console.log("Positions:", positions.map(x => x.toString()))
     shuffle(positions)
     return positions
   }
