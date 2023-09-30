@@ -230,7 +230,7 @@ export default class TDPlayScene extends Scene {
     }
 
     testPlasmaPath(this)
-    TDPlayScene.createExplosionSprite(this, 550, 400)
+    // TDPlayScene.createExplosionSprite(this, 550, 400)
   }
 
   createMap(enemyGroup: GameObjects.Group) {

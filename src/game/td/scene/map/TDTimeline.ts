@@ -31,9 +31,11 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
   const model = ALL_ENEMIES.find(m => m.meta.body === key)
   const follower = new TDEnemy(scene, path, origin.x, origin.y, key, model, true)
   follower.addListener("died", ({ x, y, model }: TDEnemy) => {
-    console.log("Enemy died:", model?.name, model?.stats)
-    active.credits.adjust(model?.stats.value || 0)
-    TDPlayScene.createExplosionSprite(scene, x, y)
+    if (model) {
+      console.log("Enemy died:", model.name, model.stats)
+      active.credits.adjust(model.stats.value || 0)
+      TDPlayScene.createExplosionSprite(scene, x, y)
+    }
   })
   scene.add.existing(follower)
   follower.startFollow({
@@ -49,7 +51,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
       follower.destroy()
       enemyGroup.remove(follower)
       active.health.adjust(-1)
-      scene.sound.play("woe")
+      // scene.sound.play("woe")
     },
     // onUpdate: () => {
     //   if (!follower.health) { // If health is zero
