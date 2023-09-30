@@ -83,7 +83,7 @@ export default class TDPlayScene extends Scene {
     for (let i = 0; i < 8; i++) {
       frames.push({ key: `explosion0${i}` })
     }
-    // shuffle(frames)
+    shuffle(frames)
     if (!scene.anims.exists("explosion")) {
       scene.anims.create({
         key: "explosion",
