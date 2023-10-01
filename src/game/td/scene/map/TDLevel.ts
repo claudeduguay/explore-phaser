@@ -4,6 +4,8 @@ import makeTileMap from "./TDTileMap";
 import { generatePath, renderPath } from "./TDPath";
 import { makeTimelinePreview } from "./TDTimeline";
 import { IActiveValues } from "../TDPlayScene";
+import IMapModel, { IMapPath } from "./IMapModel";
+import Cell from "../../../../maze/Cell";
 
 export default function generateMap(scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group,
   prunePath: boolean = true, showMaze: boolean = true) {
@@ -17,9 +19,9 @@ export default function generateMap(scene: Scene, active: IActiveValues, enemyGr
 
   if (showMaze) {
     if (prunePath) {
-      makeTileMap(scene, path, origin, cellSize, rows, cols)
+      makeTileMap(scene, asMapModel(path), origin, cellSize, rows, cols)
     } else {
-      makeTileMap(scene, maze.grid.array, origin, cellSize, rows, cols)
+      makeTileMap(scene, asMapModel(maze.grid.array), origin, cellSize, rows, cols)
     }
   }
   const { curve, points } = renderPath(scene, path, origin, cellSize)
@@ -28,3 +30,7 @@ export default function generateMap(scene: Scene, active: IActiveValues, enemyGr
   return points
 }
 
+export function asMapModel(cells: Cell[]): IMapModel {
+  const path: IMapPath = cells.map((cell: Cell) => ({ bits: cell.connectionsBits(), pos: cell.pos }))
+  return { path }
+}

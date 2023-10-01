@@ -13,3 +13,7 @@ export const BITS_MAP = new Map<Point, number>([
 ])
 
 export default BITS_MAP
+
+export function hasBits(bits: number, mask: number) {
+  return (bits & mask) === mask;
+}
