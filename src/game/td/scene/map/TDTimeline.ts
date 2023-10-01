@@ -3,6 +3,7 @@ import Point from "../../../../util/Point"
 import TDEnemy from "../../enemy/TDEnemy"
 import { ALL_ENEMIES } from "../../model/IEnemyModel"
 import TDPlayScene, { IActiveValues } from "../TDPlayScene"
+import { DEFAULT_WAVES, IWaveGroup } from "./IWaveConfig"
 
 // Create a graphics background and a line-based curve for the preview path
 export function makeTimelinePreviewGraphicsAndPath(scene: Scene) {
@@ -26,7 +27,7 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene) {
 
 // Add an enemy to the main path (add/remove in group)
 export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, offset: number = 0) {
-  const pixelsPerSecond = 64 * 2
+  const pixelsPerSecond = 64 * 5
   const length = path.getLength()
   const model = ALL_ENEMIES.find(m => m.meta.body === key)
   const follower = new TDEnemy(scene, path, origin.x, origin.y, key, model, true)
@@ -50,7 +51,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
       follower.destroy()
       enemyGroup.remove(follower)
       active.health.adjust(-1)
-      // scene.sound.play("woe")
+      scene.sound.play("woe")
     },
     // onUpdate: () => {
     //   if (!follower.health) { // If health is zero
@@ -91,21 +92,20 @@ export function makeTimelinePreview(scene: Scene, active: IActiveValues, enemyGr
 
   const timeline = scene.add.timeline({})
   // Build parameterized run timeline entries for both paths
-  const run = (key: string = "path-blue", isLast: boolean = false) => () => {
+  const run = (key: string, isLast: boolean = false) => () => {
     const twin = addMainPathFollower(key, scene, active, enemyGroup, origin, mainPath)
     addPreviewFollower(key, scene, previewPath, timeline, isLast, twin)
   }
 
   const config: Phaser.Types.Time.TimelineEventConfig[] = []
-  for (let i = 1; i <= 3; i++) {
-    config.push({ at: 250 * i, run: run("path-green") })
-  }
-  for (let i = 1; i <= 3; i++) {
-    config.push({ at: 1500 + 250 * i, run: run("path-blue") })
-  }
-  for (let i = 1; i <= 3; i++) {
-    config.push({ at: 3000 + 250 * i, run: run("path-red", i === 3) })
-  }
+  const waveModel = DEFAULT_WAVES
+  waveModel.groups.forEach((group: IWaveGroup, index: number) => {
+    const lastGroup = index === waveModel.groups.length - 1
+    for (let i = 0; i < group.count; i++) {
+      const lastEntry = i === group.count - 1
+      config.push({ at: group.offset + group.spacing * i, run: run(group.key, lastGroup && lastEntry) })
+    }
+  })
   timeline.add(config)
 
   timeline.play()
