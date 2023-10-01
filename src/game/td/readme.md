@@ -30,13 +30,15 @@ Need for consider whether we can embed a new scene inside and DOM object.
 
 * Plasma: Graphics/wave projector
 * Freeze: Cloud effect made of ice
+* Shock: Cloud effect made of electricity
+* Smoke: Cloud effect made gray smoke
 * Impact: Spray effect with expanding wave/curve sprite
 
 Major categories:
 
 * Beam weapons, like Lazer and Plasma
-* Projectile, like Bullet and Missile
-* Cloud, like Poison and Freeze
+* Projectile, like Bullet and Missile (note that Bullet is not a guided projectile)
+* Cloud, like Poison, Smoke, Freeze, Shock
 * Spray, like Fire and Ice
 * Effect, like Boost and Slow
 

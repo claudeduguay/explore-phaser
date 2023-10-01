@@ -6,16 +6,18 @@ import { Types, Math as PMath } from "phaser"
 
 type EmitterConfig = Types.GameObjects.Particles.ParticleEmitterConfig
 
-export function cloudEmitter(range: number = 80): EmitterConfig {
+// ------------------------------------------------------------------
+// CLOUD EMITTERS
+// ------------------------------------------------------------------
+
+export function commonCloud(range: number = 100): Partial<EmitterConfig> {
   return {
     alpha: { start: 0.2, end: 0 },
-    color: [0x009900, 0x00FF00, 0x009900, 0x000000],
     colorEase: PMath.Easing.Linear.name,
     lifespan: 3000,
     advance: 0,
     angle: { min: 0, max: 360 },
     rotate: { min: 0, max: 360 },
-    scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
     speed: 0.1,
     blendMode: 'NORMAL',
     emitZone: {
@@ -29,6 +31,48 @@ export function cloudEmitter(range: number = 80): EmitterConfig {
         }
       }
     }
+  }
+}
+
+export function poisonEmitter(range: number = 80): EmitterConfig {
+  return {
+    ...commonCloud(range),
+    color: [0x009900, 0x00FF00, 0x009900],
+    scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
+  }
+}
+
+export function smokeEmitter(range: number = 80): EmitterConfig {
+  return {
+    ...commonCloud(range),
+    color: [0x999999, 0xCCCCCC, 0x999999],
+    scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
+  }
+}
+
+export function freezeEmitter(range: number = 80): EmitterConfig {
+  return {
+    ...commonCloud(range),
+    color: [0x00ffff, 0x009999, 0x003333],
+    scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
+  }
+}
+
+export function shockEmitter(range: number = 80): EmitterConfig {
+  return {
+    ...commonCloud(range),
+    color: [0x00ffff, 0x009999, 0x003333],
+    scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
+  }
+}
+
+
+// ------------------------------------------------------------------
+// SPRAY EMITTERS
+// ------------------------------------------------------------------
+
+export function commonSpray(range: number = 100): Partial<EmitterConfig> {
+  return {
   }
 }
 
@@ -83,6 +127,31 @@ export function iceEmitter(range: number = 100): EmitterConfig {
     blendMode: 'ADD',
   }
 }
+
+export function impactEmitter(range: number = 100): EmitterConfig {
+  const speed = 100
+  const travelPerSecond = speed / 1000
+  // Distance traveled is range divided by travelPerSecond
+  // Note, we add 25% to range to wrap the enemy
+  const lifespan = (range * 1.25) / travelPerSecond
+  return {
+    gravityY: 0,
+    alpha: 1.0, // { start: 0.75, end: 0.25 },
+    color: [0x00ffff, 0x009999, 0x003333],
+    colorEase: PMath.Easing.Quadratic.Out.name,
+    lifespan,
+    speed,
+    advance: 0,
+    angle: 0,
+    rotate: 0,
+    scale: { start: 0.01, end: 0.3, ease: 'sine.out' },
+    blendMode: 'ADD',
+  }
+}
+
+// ------------------------------------------------------------------
+// SAMPLE EMITTERS
+// ------------------------------------------------------------------
 
 export const flameEmitter: EmitterConfig = {
   frame: 'white',

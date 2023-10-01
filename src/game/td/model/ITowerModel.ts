@@ -117,7 +117,7 @@ export const POISON_TOWER: ITowerModel = {
     rotation: 1,
   },
   stats: {
-    range: 150,
+    range: 100,
     level: 3
   },
   damage: {
