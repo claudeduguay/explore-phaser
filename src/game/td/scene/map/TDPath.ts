@@ -2,6 +2,7 @@ import { Curves, Scene } from "phaser"
 import Cell from "../../../../maze/Cell"
 import Maze from "../../../../maze/Maze"
 import Point from "../../../../util/Point"
+import IMapModel from "./IMapModel"
 
 // Generate a maze, add entry/exit cells and, optionally, Prune unused cells
 export function generatePath(rows: number, cols: number, prunePath: boolean = true) {
@@ -33,28 +34,11 @@ export function generatePath(rows: number, cols: number, prunePath: boolean = tr
   return { path, maze }
 }
 
-// Since we skip grid rows/cols we need to add mid-points for a full set of path points
-function interpolateMidPoints(points: Point[]) {
-  const results: Point[] = []
-  const half = new Point(2, 2)
-  for (let i = 0; i < points.length; i++) {
-    if (i > 0) {
-      const diff = points[i].minus(points[i - 1]).div(half)
-      results.push(points[i - 1].plus(diff))
-    }
-    results.push(points[i])
-  }
-  return results
-}
-
 // Create a curve with scaled points that follow the path
-export function renderPath(scene: Scene, path: Cell[], origin: Point, cellSize: Point) {
+export function renderPath(scene: Scene, model: IMapModel, origin: Point, cellSize: Point) {
   const centering = new Point(32, 32)
-  const points = path.map(cell => cell.pos.times(new Point(2, 2)).times(cellSize).plus(origin).plus(centering))
+  const points = model.path.map(cell => cell.pos.times(Point.TWO).times(cellSize).plus(origin).plus(centering))
   const curve = new Curves.Path()
-  // points.unshift(points[0].plus(new Point(-64, 0)))
-  // const last = points.length - 1
-  // points.push(points[last].plus(new Point(64, 0)))
   for (let i = 0; i < points.length; i++) {
     const p = points[i]
     if (i === 0) {
@@ -63,8 +47,5 @@ export function renderPath(scene: Scene, path: Cell[], origin: Point, cellSize: 
       curve.lineTo(p.x, p.y)
     }
   }
-  // Curve doesn't need the intermediate cells
-  return { curve, points: interpolateMidPoints(points) }
-
+  return { curve, points }
 }
-
