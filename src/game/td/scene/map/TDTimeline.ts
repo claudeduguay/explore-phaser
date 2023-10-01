@@ -26,8 +26,8 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene) {
 
 // Add an enemy to the main path (add/remove in group)
 export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, offset: number = 0) {
+  const pixelsPerSecond = 64 * 2
   const length = path.getLength()
-  // console.log("Path length:", length)
   const model = ALL_ENEMIES.find(m => m.meta.body === key)
   const follower = new TDEnemy(scene, path, origin.x, origin.y, key, model, true)
   follower.addListener("died", ({ x, y, model }: TDEnemy) => {
@@ -37,10 +37,9 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
       TDPlayScene.createExplosionSprite(scene, x, y)
     }
   })
-  scene.add.existing(follower)
   follower.startFollow({
     positionOnPath: true,
-    duration: length * 5,
+    duration: length * 1000 / pixelsPerSecond,
     from: 0.0,
     to: 1.0,
     yoyo: false,
@@ -59,6 +58,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
     //   }
     // }
   }, offset)
+  scene.add.existing(follower)
   return follower
 }
 
@@ -84,7 +84,6 @@ export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path,
     }
   })
   scene.add.existing(follower)
-
 }
 
 export function makeTimelinePreview(scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, mainPath: Curves.Path, offset: number = 0) {

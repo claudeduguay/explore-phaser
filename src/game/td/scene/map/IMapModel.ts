@@ -35,8 +35,8 @@ export function interpolateMidPoints(cells: IMapCell[]): IMapCell[] {
 
 // Convert cell array intp an IMapModel
 export function asMapModel(cells: Cell[]): IMapModel {
-  let path: IMapPath = cells.map((cell: Cell) => ({ bits: cell.connectionsBits(), pos: cell.pos.times(Point.TWO) }))
-  path = interpolateMidPoints(path)
-  path.forEach(cell => console.log(`Path Cell: ${cell.pos}`))
-  return { path }
+  return {
+    path: interpolateMidPoints(
+      cells.map((cell: Cell) => ({ bits: cell.connectionsBits(), pos: cell.pos.times(Point.TWO) })))
+  }
 }

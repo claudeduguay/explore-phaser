@@ -17,6 +17,7 @@ export default function generateMap(scene: Scene, active: IActiveValues, enemyGr
   const { path, maze } = generatePath(rows, cols, prunePath)
 
   const model = prunePath ? asMapModel(path) : asMapModel(maze.grid.array)
+  console.log("Path cells:", model.path.length)
   if (showMaze) {
     if (prunePath) {
       makeTileMap(scene, model, origin, cellSize, rows, cols)
@@ -25,6 +26,9 @@ export default function generateMap(scene: Scene, active: IActiveValues, enemyGr
     }
   }
   const { curve, points } = renderPath(scene, model, origin, cellSize)
+  const length = curve.getLength()
+  console.log("Path length:", length)
+  console.log("Pixels per cell:", length / model.path.length)
 
   makeTimelinePreview(scene, active, enemyGroup, origin, curve, 0)
   return points

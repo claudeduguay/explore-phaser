@@ -13,9 +13,12 @@ Damage Formula: <:Enemy Health:> -= <:Tower Damage:> * (1.0 - <:Enemy Resistance
 
 Need to account for shields (can disable for now)
 
-## ToDo Planning
+Need to develop a design language for tower texture selection that accomodates
+the various types of towers. This incudes coloring and base shapes. For example,
+perhaps all AOE effect towers use round-ish bases, while spray towers use rounded
+corners an beam towers use squared corners?  
 
-Add basic damage to lower enemy health when attacked.
+## ToDo Planning
 
 ---
 Need to develop preview boxes:
