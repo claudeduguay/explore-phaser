@@ -25,7 +25,8 @@ export default function makeTileMap(scene: Scene, model: IMapModel, origin: Poin
   layer.setPosition(origin.x, origin.y)
 
   model.path.forEach(cell => {
-    const pos = cell.pos.times(Point.TWO)
-    map.putTileAt(cell.bits, pos.x, pos.y)
+    map.putTileAt(cell.bits, cell.pos.x, cell.pos.y)
   })
+
+  return layer
 }

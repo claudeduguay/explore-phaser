@@ -25,7 +25,6 @@ export function interpolateMidPoints(cells: IMapCell[]): IMapCell[] {
       const prev = cells[i - 1].pos
       const current = cells[i].pos
       const diff = current.minus(prev).div(Point.TWO)
-      console.log(`Interpolate: ${prev} -> ${current} = ${diff}`)
       const bits = diff.x === 0 ? BITS_NORTH + BITS_SOUTH : BITS_WEST + BITS_EAST
       result.push({ bits, pos: prev.plus(diff) })
     }
@@ -36,7 +35,8 @@ export function interpolateMidPoints(cells: IMapCell[]): IMapCell[] {
 
 // Convert cell array intp an IMapModel
 export function asMapModel(cells: Cell[]): IMapModel {
-  let path: IMapPath = cells.map((cell: Cell) => ({ bits: cell.connectionsBits(), pos: cell.pos }))
+  let path: IMapPath = cells.map((cell: Cell) => ({ bits: cell.connectionsBits(), pos: cell.pos.times(Point.TWO) }))
   path = interpolateMidPoints(path)
+  path.forEach(cell => console.log(`Path Cell: ${cell.pos}`))
   return { path }
 }
