@@ -17,12 +17,12 @@ export default function makeTileMap(scene: Scene, model: IMapModel, origin: Poin
     throw new Error("Failed to create tileset")
   }
 
-  const layer = map.createBlankLayer('Map Layer', tileset)
+  const layer = map.createBlankLayer('Path Layer', tileset)
   if (!layer) {
     throw new Error("Failed to create layer")
   }
-  layer.fill(20)  // Fill with black tiles
   layer.setPosition(origin.x, origin.y)
+  layer.fill(20)  // Fill with black tiles
 
   model.path.forEach(cell => {
     map.putTileAt(cell.bits, cell.pos.x, cell.pos.y)
