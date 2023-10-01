@@ -17,6 +17,9 @@ export function colors(h: number, s: number = 1, l: number = 0.1) {
 export const COLORS: { [key: string]: IColoring } = {
   FIRE: colors(0.0),
   POISON: colors(0.3),
+  SMOKE: colors(0, 1.0, 0),
+  SHOCK: colors(0.7),
+  FREEZE: colors(0.5),
   LAZER: colors(0.6),
   BULLET: colors(0.2),
   MISSILE: colors(0.4),
@@ -148,6 +151,123 @@ const TOWERS: Record<string, ITextureConfigs> = {
         margin: 0,
         inset: 0.0,
         color: COLORS.POISON,
+        line: "white"
+      },
+    }
+  },
+  SMOKE: {
+    platform: {
+      size: {
+        x: 64,
+        y: 64
+      },
+      options: {
+        type: "angle",
+        margin: 0,
+        inset: 0.2,
+        color: COLORS.SMOKE
+      }
+    },
+    turret: {
+      size: {
+        x: 38,
+        y: 38
+      },
+      options: {
+        ratio: 0.5,
+        topSeg: 10,
+        botSeg: 10,
+        color: COLORS.SMOKE
+      }
+    },
+    projector: {
+      size: {
+        x: 7,
+        y: 22
+      },
+      options: {
+        type: "point",
+        margin: 0,
+        inset: 0.0,
+        color: COLORS.SMOKE,
+        line: "white"
+      },
+    }
+  },
+  SHOCK: {
+    platform: {
+      size: {
+        x: 64,
+        y: 64
+      },
+      options: {
+        type: "angle",
+        margin: 0,
+        inset: 0.2,
+        color: COLORS.SHOCK
+      }
+    },
+    turret: {
+      size: {
+        x: 38,
+        y: 38
+      },
+      options: {
+        ratio: 0.5,
+        topSeg: 10,
+        botSeg: 10,
+        color: COLORS.SHOCK
+      }
+    },
+    projector: {
+      size: {
+        x: 7,
+        y: 22
+      },
+      options: {
+        type: "point",
+        margin: 0,
+        inset: 0.0,
+        color: COLORS.SHOCK,
+        line: "white"
+      },
+    }
+  },
+  FREEZE: {
+    platform: {
+      size: {
+        x: 64,
+        y: 64
+      },
+      options: {
+        type: "angle",
+        margin: 0,
+        inset: 0.2,
+        color: COLORS.FREEZE
+      }
+    },
+    turret: {
+      size: {
+        x: 38,
+        y: 38
+      },
+      options: {
+        ratio: 0.5,
+        topSeg: 10,
+        botSeg: 10,
+        color: COLORS.FREEZE
+      }
+    },
+    projector: {
+      size: {
+        x: 7,
+        y: 22
+      },
+      options: {
+        type: "point",
+        margin: 0,
+        inset: 0.0,
+        color: COLORS.FREEZE,
         line: "white"
       },
     }

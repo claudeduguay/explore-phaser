@@ -20,6 +20,9 @@ import TargetBoostBehavior from "../behavior/TargetBoostBehavior"
 import TargetSlowBehavior from "../behavior/TargetSlowBehavior"
 import Point from "../../../util/Point"
 import { clamp, rotation } from "../../../util/MathUtil"
+import TargetSmokeBehavior from "../behavior/TargetSmokeBehavior"
+import TargetShockBehavior from "../behavior/TargetShockBehavior"
+import TargetFreezeBehavior from "../behavior/TargetFreezeBehavior"
 
 export default class TDTower extends BehaviorContainer {
 
@@ -68,6 +71,15 @@ export default class TDTower extends BehaviorContainer {
         break
       case "poison":
         this.behavior.push(new TargePoisonBehavior())
+        break
+      case "smoke":
+        this.behavior.push(new TargetSmokeBehavior())
+        break
+      case "shock":
+        this.behavior.push(new TargetShockBehavior())
+        break
+      case "freeze":
+        this.behavior.push(new TargetFreezeBehavior())
         break
       case "bullet":
         this.behavior.push(new TargetBulletBehavior())

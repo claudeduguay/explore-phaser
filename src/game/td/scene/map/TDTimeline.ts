@@ -33,9 +33,11 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
   const follower = new TDEnemy(scene, path, origin.x, origin.y, key, model, true)
   follower.addListener("died", ({ x, y, model }: TDEnemy) => {
     follower.destroy()
+    enemyGroup.remove(follower)
     if (model) {
       active.credits.adjust(model.stats.value || 0)
       TDPlayScene.createExplosionSprite(scene, x, y)
+      scene.sound.play("cash")
     }
   })
   follower.startFollow({
@@ -48,17 +50,24 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
     rotateToPath: true,
     onStart: () => enemyGroup.add(follower),
     onComplete: () => {
-      follower.destroy()
-      enemyGroup.remove(follower)
-      active.health.adjust(-1)
-      scene.sound.play("woe")
+      if (follower.health.compute() > 0) {
+        follower.destroy()
+        enemyGroup.remove(follower)
+        active.health.adjust(-1)
+        scene.sound.play("woe")
+      }
     },
-    // onUpdate: () => {
-    //   if (!follower.health) { // If health is zero
-    //     console.log("Enemy died.")
-    //   }
-    // }
+    // Test if we can change the speed of a follower on the fly
+    // See: https://phaser.discourse.group/t/change-path-duration-speed-while-its-playing/9712
+    onUpdate: () => {
+      if (follower.health.compute() < 0.8) { // If health is getting low
+        // scene.tweens.timeScale = 5.0 // Global to all tweens
+        follower.pathTween.timeScale = 5.0
+        console.log("Speed up:", follower.pathTween.timeScale)
+      }
+    }
   }, offset)
+  enemyGroup.add(follower)
   scene.add.existing(follower)
   return follower
 }
@@ -87,7 +96,8 @@ export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path,
   scene.add.existing(follower)
 }
 
-export function makeTimelinePreview(scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, mainPath: Curves.Path, offset: number = 0) {
+export function makeTimeline(scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, mainPath: Curves.Path, offset: number = 0) {
+  enemyGroup.clear()
   const previewPath = makeTimelinePreviewGraphicsAndPath(scene)
 
   const timeline = scene.add.timeline({})

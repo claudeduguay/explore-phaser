@@ -54,7 +54,7 @@ export function freezeEmitter(range: number = 80): EmitterConfig {
   return {
     ...commonCloud(range),
     color: [0x00ffff, 0x009999, 0x003333],
-    scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
+    scale: { start: 0.33, end: 0.66, ease: 'sine.out' },
   }
 }
 

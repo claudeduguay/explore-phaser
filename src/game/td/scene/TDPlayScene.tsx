@@ -52,6 +52,8 @@ export default class TDPlayScene extends Scene {
     this.load.audio('bip', "assets/audio/tone1.ogg")
     this.load.audio('lose', "assets/audio/you_lose.ogg")
     this.load.audio('win', "assets/audio/you_win.ogg")
+    this.load.audio('plop', "assets/audio/impactPlate_heavy_004.ogg")
+    this.load.audio('fail', "assets/audio/back_001.ogg")
 
     this.load.atlas('flares', 'assets/particles/flares.png', 'assets/particles/flares.json')
     this.load.image('fire', 'assets/particles/fire_01.png')
@@ -177,7 +179,7 @@ export default class TDPlayScene extends Scene {
 
     const origin = new Point(0, 46)
 
-    const towerCount = 10
+    const towerCount = 3
     const towers: TDTower[] = []
 
     const towerPositions: Point[] = this.generatePathAdjacentPositions(origin)
@@ -274,12 +276,6 @@ export default class TDPlayScene extends Scene {
 
   // accumulator = 0
   update(time: number, delta: number): void {
-    // this.accumulator += delta
-    // if (this.accumulator > 1000) {
-    //   this.active.health.adjust(-1)
-    //   this.active.credits.adjust(2)
-    //   this.accumulator = 0
-    // }
     if (this.addingTower) {
       if (!this.input.mousePointer.isDown) {
         this.input.setDefaultCursor("none")
@@ -297,8 +293,11 @@ export default class TDPlayScene extends Scene {
         this.input.setDefaultCursor("default")
         if (this.addingTower.tower_base.isTinted) {
           this.addingTower.destroy()
+          this.sound.play("fail")
+        } else {
+          this.sound.play("plop")
         }
-        // this.addingTower.showRange.visible = false
+        this.addingTower.showRange.visible = false
         this.addingTower = undefined
       }
     }

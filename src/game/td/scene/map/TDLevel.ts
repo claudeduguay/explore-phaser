@@ -2,7 +2,7 @@ import { Scene, GameObjects } from "phaser"
 import Point from "../../../../util/Point";
 import makeTileMap from "./TDTileMap";
 import { generatePath, renderPath } from "./TDPath";
-import { makeTimelinePreview } from "./TDTimeline";
+import { makeTimeline } from "./TDTimeline";
 import { IActiveValues } from "../TDPlayScene";
 import { asMapModel } from "./IMapModel";
 
@@ -30,6 +30,6 @@ export default function generateMap(scene: Scene, active: IActiveValues, enemyGr
   console.log("Path length:", length)
   console.log("Pixels per cell:", length / model.path.length)
 
-  makeTimelinePreview(scene, active, enemyGroup, origin, curve, 0)
+  makeTimeline(scene, active, enemyGroup, origin, curve, 0)
   return points
 }
