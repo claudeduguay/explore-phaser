@@ -8,7 +8,7 @@ export interface ITowerMeta {
   key: string                     // Tower key
   platform: string                // Base on which the turret rests
   turret: string                  // Turret form that holds projectors
-  projectors: ITowerProjector[]   // 1..3 Projectors (guns, radar, etc)
+  projector: ITowerProjector      // Projectors (guns, radar, etc) oner for each level
   distribution: "linear" | "radial"
   rotation: "target" | number
 }
@@ -49,18 +49,10 @@ export const LAZER_TOWER: ITowerModel = {
     key: "lazer",
     platform: "lazer-platform",
     turret: "lazer-turret",
-    projectors: [{
+    projector: {
       sprite: "lazer-projector",
       emitter: "lazer-emitter"
     },
-    {
-      sprite: "lazer-projector",
-      emitter: "lazer-emitter"
-    },
-    {
-      sprite: "lazer-projector",
-      emitter: "lazer-emitter"
-    }],
     distribution: "linear",
     rotation: "target",
   },
@@ -87,18 +79,10 @@ export const FIRE_TOWER: ITowerModel = {
     key: "fire",
     platform: "fire-platform",
     turret: "fire-turret",
-    projectors: [{
+    projector: {
       sprite: "fire-projector",
       emitter: "fire-emitter"
     },
-    {
-      sprite: "fire-projector",
-      emitter: "fire-emitter"
-    },
-    {
-      sprite: "fire-projector",
-      emitter: "fire-emitter"
-    }],
     distribution: "linear",
     rotation: "target",
   },
@@ -125,18 +109,10 @@ export const POISON_TOWER: ITowerModel = {
     key: "poison",
     platform: "poison-platform",
     turret: "poison-turret",
-    projectors: [{
+    projector: {
       sprite: "poison-projector",
       emitter: "poison-emitter"
     },
-    {
-      sprite: "poison-projector",
-      emitter: "poison-emitter"
-    },
-    {
-      sprite: "poison-projector",
-      emitter: "poison-emitter"
-    }],
     distribution: "radial",
     rotation: 1,
   },
@@ -163,18 +139,10 @@ export const BULLET_TOWER: ITowerModel = {
     key: "bullet",
     platform: "bullet-platform",
     turret: "bullet-turret",
-    projectors: [{
+    projector: {
       sprite: "bullet-projector",
       emitter: "bullet-emitter"
     },
-    {
-      sprite: "bullet-projector",
-      emitter: "bullet-emitter"
-    },
-    {
-      sprite: "bullet-projector",
-      emitter: "bullet-emitter"
-    }],
     distribution: "linear",
     rotation: "target",
   },
@@ -201,18 +169,10 @@ export const MISSILE_TOWER: ITowerModel = {
     key: "missile",
     platform: "missile-platform",
     turret: "missile-turret",
-    projectors: [{
+    projector: {
       sprite: "missile-projector",
       emitter: "missile-emitter"
     },
-    {
-      sprite: "missile-projector",
-      emitter: "missile-emitter"
-    },
-    {
-      sprite: "missile-projector",
-      emitter: "missile-emitter"
-    }],
     distribution: "linear",
     rotation: "target",
   },
@@ -239,18 +199,10 @@ export const LIGHTNING_TOWER: ITowerModel = {
     key: "lightning",
     platform: "lightning-platform",
     turret: "lightning-turret",
-    projectors: [{
+    projector: {
       sprite: "lightning-projector",
       emitter: "lightning-emitter"
     },
-    {
-      sprite: "lightning-projector",
-      emitter: "lightning-emitter"
-    },
-    {
-      sprite: "lightning-projector",
-      emitter: "lightning-emitter"
-    }],
     distribution: "linear",
     rotation: "target",
   },
@@ -277,18 +229,10 @@ export const ICE_TOWER: ITowerModel = {
     key: "ice",
     platform: "ice-platform",
     turret: "ice-turret",
-    projectors: [{
+    projector: {
       sprite: "ice-projector",
       emitter: "ice-emitter"
     },
-    {
-      sprite: "ice-projector",
-      emitter: "ice-emitter"
-    },
-    {
-      sprite: "ice-projector",
-      emitter: "ice-emitter"
-    }],
     distribution: "linear",
     rotation: "target",
   },
@@ -315,18 +259,10 @@ export const BOOST_TOWER: ITowerModel = {
     key: "boost",
     platform: "boost-platform",
     turret: "boost-turret",
-    projectors: [{
+    projector: {
       sprite: "boost-projector",
       emitter: "boost-emitter"
     },
-    {
-      sprite: "boost-projector",
-      emitter: "boost-emitter"
-    },
-    {
-      sprite: "boost-projector",
-      emitter: "boost-emitter"
-    }],
     distribution: "radial",
     rotation: 4,
   },
@@ -352,18 +288,10 @@ export const SLOW_TOWER: ITowerModel = {
     key: "slow",
     platform: "slow-platform",
     turret: "slow-turret",
-    projectors: [{
+    projector: {
       sprite: "slow-projector",
       emitter: "slow-emitter"
     },
-    {
-      sprite: "slow-projector",
-      emitter: "slow-emitter"
-    },
-    {
-      sprite: "slow-projector",
-      emitter: "slow-emitter"
-    }],
     distribution: "radial",
     rotation: -1,
   },
