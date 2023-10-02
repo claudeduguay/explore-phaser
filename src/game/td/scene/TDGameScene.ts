@@ -8,6 +8,7 @@ import TDEnemyInfo from "./TDEnemyInfo"
 import INavigator from "./react/INavigator"
 import TDMapsScene from "./TDMapsScene"
 import { makePathTiles } from "../assets/TextureFactory"
+import TDOptionsScene from "./TDOptionsScene"
 
 export default class TDGameScene extends Scene implements INavigator {
 
@@ -20,8 +21,10 @@ export default class TDGameScene extends Scene implements INavigator {
 
   create() {
     this.mute = true
+    // console.log("Mute:", this.mute)
 
     this.scene.add("home", new TDHomeScene(this), true)
+    this.scene.add("options", new TDOptionsScene(this))
     this.scene.add("maps", new TDMapsScene(this))
     this.scene.add("play", new TDPlayScene(this))
     this.scene.add("win", new TDWinScene(this))
@@ -38,7 +41,8 @@ export default class TDGameScene extends Scene implements INavigator {
   }
 
   set mute(value: boolean) {
-    this.sound.mute = value
+    this.sound.setMute(value)
+    console.log("this.sound.mute=", this.sound.mute, value)
   }
 
   transitionTo(target: string, sleep?: string): Scene {
