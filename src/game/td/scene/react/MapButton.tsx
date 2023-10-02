@@ -19,7 +19,7 @@ export default function MapButton({ scene, navigator, model, title, onClick }: I
       onClick(model)
     }
   }
-  return <ClickButton navigator={navigator} className="btn btn-outline-primary m-2" onClick={handleClick}>
+  return <ClickButton navigator={navigator} className="btn btn-outline-primary py-1 m-2" onClick={handleClick}>
     {title && <div className="text-white">{title}</div>}
     <img src={imageSrc} alt="Map" />
   </ClickButton>
