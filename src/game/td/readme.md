@@ -6,17 +6,30 @@ by Claude Duguay
 
 Each tower and enemy stats need to be refined.
 
-Path timing needs to be figured out.
-
-Damage Formula: <:Enemy Health:> -= <:Tower Damage:> * (1.0 - <:Enemy Resistance Factor:>)
-<!-- Shield Formula: <:Sheild Health:> -= <:Tower Damage:> * (1.0 - <:Enemy Resistance Factor:>) -->
-
 Need to account for shields (can disable for now)
 
 Need to develop a design language for tower texture selection that accomodates
 the various types of towers. This incudes coloring and base shapes. For example,
 perhaps all AOE effect towers use round-ish bases, while spray towers use rounded
 corners an beam towers use squared corners?  
+
+### Path Timeline Notes
+
+Path timing needs to be figured out.
+
+* The preview needs to start earlier by some configurable percentage
+
+Make preview edges specified by a given percentage.
+
+```typescript
+const mainPathLength = mainPath.getLength()
+const previewPathLength = previewPath.getLength()
+const mainSpeed = 100 (pixels per second)
+const mainDuration = mainPathLength * mainSpeed * 1000 // One Second
+const previewPrefixLength = previewPathLength * 0.20 // Preview percent
+const previewSuffixLength = previewPathLength * 0.20 // Preview percent
+const previewVisibleLength = previewPathLength - (previewPrefixLength + previewSuffixLength)
+```
 
 ## ToDo Planning
 

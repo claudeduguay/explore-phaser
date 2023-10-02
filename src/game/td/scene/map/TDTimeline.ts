@@ -6,29 +6,30 @@ import TDPlayScene, { IActiveValues } from "../TDPlayScene"
 import { DEFAULT_WAVES, IWaveGroup } from "./IWaveConfig"
 
 // Create a graphics background and a line-based curve for the preview path
-export function makeTimelinePreviewGraphicsAndPath(scene: Scene) {
+export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction: number, suffixFraction: number) {
   const radius = 39
   const top = 27
-  const left = 220
   const width = 615
+  const left = 220
+  const insetStart = left + width * prefixFraction
+  const insetWidth = width * (1.0 - (prefixFraction + suffixFraction))
 
-  const path = new Curves.Path()
-  path.moveTo(left, top)
-  path.lineTo(left + width, top)
-
-  // NOte: Could be converted into a generated texture
+  // Note: Could be converted into a generated texture
   const g = scene.add.graphics()
   g.fillStyle(0x996666, 1.0)
   g.fillRoundedRect(left, top - radius / 2, width, radius, 10)
   g.fillStyle(0x666699, 1.0)
-  g.fillRoundedRect(left + 100, top - radius / 2, width - 200, radius, 10)
+  g.fillRoundedRect(insetStart, top - radius / 2, insetWidth, radius, 10)
+
+  // Generate path curve
+  const path = new Curves.Path()
+  path.moveTo(left, top)
+  path.lineTo(left + width, top)
   return path
 }
 
 // Add an enemy to the main path (add/remove in group)
-export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, offset: number = 0) {
-  const pixelsPerSecond = 64 * 5
-  const length = path.getLength()
+export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, duration: number) {
   const model = ALL_ENEMIES.find(m => m.meta.body === key)
   const follower = new TDEnemy(scene, path, origin.x, origin.y, key, model, true)
   follower.addListener("died", ({ x, y, model }: TDEnemy) => {
@@ -42,7 +43,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
   })
   follower.startFollow({
     positionOnPath: true,
-    duration: length * 1000 / pixelsPerSecond,
+    duration,
     from: 0.0,
     to: 1.0,
     yoyo: false,
@@ -66,21 +67,21 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
         console.log("Speed up:", follower.pathTween.timeScale)
       }
     }
-  }, offset)
+  })
   enemyGroup.add(follower)
   scene.add.existing(follower)
   return follower
 }
 
 // Add preview follower to the proview path, reset timeline after last is finished
-export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path, timeline: Time.Timeline, isLast: boolean, twin: TDEnemy) {
+export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path, timeline: Time.Timeline, duration: number, isLast: boolean, twin: TDEnemy) {
   const follower = new TDEnemy(scene, path, 0, 0, key)
   twin.addListener("died", ({ x, y, model }: TDEnemy) => {
     follower.destroy()
   })
   follower.startFollow({
+    duration,
     positionOnPath: true,
-    duration: path.getLength() * 50,
     from: 0.0,
     to: 1.0,
     yoyo: false,
@@ -98,13 +99,24 @@ export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path,
 
 export function makeTimeline(scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, mainPath: Curves.Path, offset: number = 0) {
   enemyGroup.clear()
-  const previewPath = makeTimelinePreviewGraphicsAndPath(scene)
+  const prefixFraction = 0.15
+  const suffixFraction = 0.15
+  const previewPath = makeTimelinePreviewGraphicsAndPath(scene, prefixFraction, suffixFraction)
+
+  const mainPathLength = mainPath.getLength()
+  // const previewPathLength = previewPath.getLength()
+  const mainSpeed = 300 // (pixels per second)
+  const mainDuration = mainPathLength / mainSpeed * 1000 // One Second
+  // const previewPrefixLength = previewPathLength * prefixFraction
+  // const previewSuffixLength = previewPathLength * suffixFraction
+  // const previewVisibleLength = previewPathLength - (previewPrefixLength + previewSuffixLength)
+  const previewDuration = mainDuration
 
   const timeline = scene.add.timeline({})
   // Build parameterized run timeline entries for both paths
   const run = (key: string, isLast: boolean = false) => () => {
-    const twin = addMainPathFollower(key, scene, active, enemyGroup, origin, mainPath)
-    addPreviewFollower(key, scene, previewPath, timeline, isLast, twin)
+    const twin = addMainPathFollower(key, scene, active, enemyGroup, origin, mainPath, mainDuration)
+    addPreviewFollower(key, scene, previewPath, timeline, previewDuration, isLast, twin)
   }
 
   const config: Phaser.Types.Time.TimelineEventConfig[] = []

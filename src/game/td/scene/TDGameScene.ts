@@ -16,6 +16,8 @@ export default class TDGameScene extends Scene implements INavigator {
   }
 
   create() {
+    this.mute = true
+
     this.scene.add("home", new TDHomeScene(this), true)
     this.scene.add("play", new TDPlayScene(this))
     this.scene.add("win", new TDWinScene(this))
