@@ -1,3 +1,4 @@
+import ClickButton from "./ClickButton"
 import INavigator from "./INavigator"
 
 export interface IGameLoseProps {
@@ -14,10 +15,10 @@ export default function GameLose({ navigator }: IGameLoseProps) {
         <p className="p-2">Keep practicing. You'll almost certainly do better next time.</p>
       </div>
       <div className="p-2">
-        <button className="btn btn-primary col-4" onClick={onReplay}>Replay</button>
+        <ClickButton navigator={navigator} className="btn btn-primary col-4" onClick={onReplay}>Replay</ClickButton>
       </div>
       <div className="p-2">
-        <button className="btn btn-primary col-4" onClick={onHome}>Main Menu</button>
+        <ClickButton navigator={navigator} className="btn btn-primary col-4" onClick={onHome}>Main Menu</ClickButton>
       </div>
     </div>
   </div>
