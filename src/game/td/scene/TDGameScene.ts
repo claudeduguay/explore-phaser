@@ -6,6 +6,8 @@ import TDWinScene from "./TDWinScene"
 import TDLoseScene from "./TDLoseScene"
 import TDEnemyInfo from "./TDEnemyInfo"
 import INavigator from "./react/INavigator"
+import TDMapsScene from "./TDMapsScene"
+import { makePathTiles } from "../assets/TextureFactory"
 
 export default class TDGameScene extends Scene implements INavigator {
 
@@ -13,12 +15,14 @@ export default class TDGameScene extends Scene implements INavigator {
 
   preload() {
     this.load.audio('click', "assets/audio/click3.ogg")
+    makePathTiles(this, "path_tiles", 64, 64)
   }
 
   create() {
     this.mute = true
 
     this.scene.add("home", new TDHomeScene(this), true)
+    this.scene.add("maps", new TDMapsScene(this))
     this.scene.add("play", new TDPlayScene(this))
     this.scene.add("win", new TDWinScene(this))
     this.scene.add("lose", new TDLoseScene(this))

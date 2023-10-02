@@ -15,5 +15,5 @@ export default function ClickButton({ className = "btn btn-primary col-4", navig
       onClick()
     }
   }
-  return <button className="btn btn-primary col-4" onClick={handleClick}>{children}</button>
+  return <button className={className} onClick={handleClick}>{children}</button>
 }

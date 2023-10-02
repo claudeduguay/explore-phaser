@@ -1,6 +1,6 @@
 import { Scene, GameObjects } from "phaser"
 import Point from "../../../../util/Point";
-import makeTileMap from "./TDTileMap";
+import makeTileMap, { DEFAULT_CONFIG, IMapConfig } from "./TDTileMap";
 import { generatePath, renderPath } from "./TDPath";
 import { makeTimeline } from "./TDTimeline";
 import { IActiveValues } from "../TDPlayScene";
@@ -10,22 +10,16 @@ export default function generateMap(scene: Scene, active: IActiveValues, enemyGr
   prunePath: boolean = true, showMaze: boolean = true) {
 
   const origin = new Point(0, 46)
-  const cellSize = new Point(64, 64)
-  const rows = 6
-  const cols = 9
+  const config: IMapConfig = DEFAULT_CONFIG
 
-  const { path, maze } = generatePath(rows, cols, prunePath)
+  const { path, maze } = generatePath(config.rows, config.cols, prunePath)
 
   const model = prunePath ? asMapModel(path) : asMapModel(maze.grid.array)
   console.log("Path cells:", model.path.length)
   if (showMaze) {
-    if (prunePath) {
-      makeTileMap(scene, model, origin, cellSize, rows, cols)
-    } else {
-      makeTileMap(scene, model, origin, cellSize, rows, cols)
-    }
+    makeTileMap(scene, origin.x, origin.y, model, config)
   }
-  const { curve, points } = renderPath(scene, model, origin, cellSize)
+  const { curve, points } = renderPath(scene, model, origin, config.cellSize)
   const length = curve.getLength()
   console.log("Path length:", length)
   console.log("Pixels per cell:", length / model.path.length)

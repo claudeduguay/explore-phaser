@@ -63,7 +63,6 @@ export default class TDPlayScene extends Scene {
     this.load.image('slash', 'assets/particles/slash_03.png')
     this.load.image('muzzle', 'assets/particles/muzzle_01.png')
 
-    makePathTiles(this, "path_tiles", 64, 64)
     makeHeightRects(this, "height_cells", 64, 64, 10)
 
     registerTowerTextures(this)

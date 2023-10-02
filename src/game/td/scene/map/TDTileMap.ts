@@ -3,9 +3,20 @@ import Point from "../../../../util/Point";
 import IMapModel from "./IMapModel";
 import BehaviorContainer from "../../behavior/BehaviorContainer";
 
+export interface IMapConfig {
+  cellSize: Point
+  rows: number
+  cols: number
+}
 
-export default function makeTileMap(scene: Scene, model: IMapModel, origin: Point, cellSize: Point, rows: number, cols: number) {
-  const map = new TDTileMap(scene, origin.x, origin.y, cellSize, rows, cols)
+export const DEFAULT_CONFIG = {
+  cellSize: new Point(64, 64),
+  rows: 6,
+  cols: 9
+}
+
+export default function makeTileMap(scene: Scene, x: number, y: number, model: IMapModel, config: IMapConfig = DEFAULT_CONFIG) {
+  const map = new TDTileMap(scene, x, y, config)
   map.setModel(model)
   scene.add.existing(map)
 }
@@ -16,7 +27,7 @@ export class TDTileMap extends BehaviorContainer {
   map!: Tilemaps.Tilemap
   layer!: Tilemaps.TilemapLayer
 
-  constructor(scene: Scene, x: number, y: number, cellSize = new Point(64, 64), rows: number, cols: number) {
+  constructor(scene: Scene, x: number, y: number, { cellSize, rows, cols }: IMapConfig) {
     super(scene, x, y)
 
     const map = scene.make.tilemap({
