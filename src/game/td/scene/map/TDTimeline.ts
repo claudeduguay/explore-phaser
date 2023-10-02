@@ -29,7 +29,7 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction:
 }
 
 // Add an enemy to the main path (add/remove in group)
-export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, duration: number) {
+export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, duration: number, delay: number) {
   const model = ALL_ENEMIES.find(m => m.meta.body === key)
   const follower = new TDEnemy(scene, path, origin.x, origin.y, key, model, true)
   follower.addListener("died", ({ x, y, model }: TDEnemy) => {
@@ -42,8 +42,9 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
     }
   })
   follower.startFollow({
-    positionOnPath: true,
     duration,
+    delay,
+    positionOnPath: true,
     from: 0.0,
     to: 1.0,
     yoyo: false,
@@ -103,19 +104,17 @@ export function makeTimeline(scene: Scene, active: IActiveValues, enemyGroup: Ga
   const suffixFraction = 0.15
   const previewPath = makeTimelinePreviewGraphicsAndPath(scene, prefixFraction, suffixFraction)
 
+  const ONE_SECOND = 1000
   const mainPathLength = mainPath.getLength()
-  // const previewPathLength = previewPath.getLength()
   const mainSpeed = 300 // (pixels per second)
-  const mainDuration = mainPathLength / mainSpeed * 1000 // One Second
-  // const previewPrefixLength = previewPathLength * prefixFraction
-  // const previewSuffixLength = previewPathLength * suffixFraction
-  // const previewVisibleLength = previewPathLength - (previewPrefixLength + previewSuffixLength)
-  const previewDuration = mainDuration
+  const mainDuration = mainPathLength / mainSpeed * ONE_SECOND
+  const previewDuration = mainDuration + (mainDuration * prefixFraction) + (mainDuration * suffixFraction)
+  const mainDelay = mainDuration * prefixFraction
 
   const timeline = scene.add.timeline({})
   // Build parameterized run timeline entries for both paths
   const run = (key: string, isLast: boolean = false) => () => {
-    const twin = addMainPathFollower(key, scene, active, enemyGroup, origin, mainPath, mainDuration)
+    const twin = addMainPathFollower(key, scene, active, enemyGroup, origin, mainPath, mainDuration, mainDelay)
     addPreviewFollower(key, scene, previewPath, timeline, previewDuration, isLast, twin)
   }
 
