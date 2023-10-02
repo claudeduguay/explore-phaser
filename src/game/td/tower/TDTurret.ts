@@ -11,7 +11,7 @@ export default class TDTurret extends BehaviorContainer {
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x, public model: ITowerModel) {
     super(scene)
-    const turret = this.scene.add.sprite(0, 0, model.meta.turret)
+    const turret = this.scene.add.sprite(0, 0, `${model.meta.key}-turret`)
     this.add(turret)
 
     const count = model.stats.level
@@ -28,7 +28,7 @@ export default class TDTurret extends BehaviorContainer {
       this.projectors = []
       for (let i = 0; i < model.stats.level; i++) {
         const p = positions[i]
-        const projector = new TDProjector(scene, p.x, p.y, model.meta.projector.sprite)
+        const projector = new TDProjector(scene, p.x, p.y, `${model.meta.key}-projector`)
         this.projectors.push(projector)
         this.add(projector)
       }
@@ -46,7 +46,7 @@ export default class TDTurret extends BehaviorContainer {
 
       this.projectors = []
       for (let i = 0; i < model.stats.level; i++) {
-        const projector = new TDProjector(scene, 0, 0, model.meta.projector.sprite)
+        const projector = new TDProjector(scene, 0, 0, `${model.meta.key}-projector`)
         projector.angle = angles[i]
         this.projectors.push(projector)
         this.add(projector)

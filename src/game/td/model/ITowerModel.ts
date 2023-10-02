@@ -6,9 +6,9 @@ export interface ITowerProjector {
 
 export interface ITowerMeta {
   key: string                     // Tower key
-  platform: string                // Base on which the turret rests
-  turret: string                  // Turret form that holds projectors
-  projector: ITowerProjector      // Projectors (guns, radar, etc) oner for each level
+  // platform: string                // Base on which the turret rests
+  // turret: string                  // Turret form that holds projectors
+  // projector: ITowerProjector      // Projectors (guns, radar, etc) oner for each level
   distribution: "linear" | "radial"
   rotation: "target" | number
 }
@@ -19,15 +19,7 @@ export interface ITowerStatistics {
 }
 
 export interface ITowerDamage {
-  lazer?: number
-  bullet?: number
-  missile?: number
-  fire?: number
-  lightning?: number
-  poison?: number
-  ice?: number
-  boost?: number
-  slow?: number
+  [key: string]: number
 }
 
 export interface ITowerModel {
@@ -47,12 +39,6 @@ export const LAZER_TOWER: ITowerModel = {
   name: "Lazer Tower",
   meta: {
     key: "lazer",
-    platform: "lazer-platform",
-    turret: "lazer-turret",
-    projector: {
-      sprite: "lazer-projector",
-      emitter: "lazer-emitter"
-    },
     distribution: "linear",
     rotation: "target",
   },
@@ -61,15 +47,23 @@ export const LAZER_TOWER: ITowerModel = {
     level: 3
   },
   damage: {
-    lazer: 100,
-    bullet: 0,
-    missile: 0,
-    fire: 0,
-    lightning: 0,
-    poison: 0,
-    ice: 0,
-    boost: 0,
-    slow: 0
+    lazer: 1
+  }
+}
+
+export const PLASMA_TOWER: ITowerModel = {
+  name: "Plasma Tower",
+  meta: {
+    key: "plasma",
+    distribution: "linear",
+    rotation: "target",
+  },
+  stats: {
+    range: 150,
+    level: 3
+  },
+  damage: {
+    plasma: 1
   }
 }
 
@@ -77,12 +71,6 @@ export const FIRE_TOWER: ITowerModel = {
   name: "Fire Tower",
   meta: {
     key: "fire",
-    platform: "fire-platform",
-    turret: "fire-turret",
-    projector: {
-      sprite: "fire-projector",
-      emitter: "fire-emitter"
-    },
     distribution: "linear",
     rotation: "target",
   },
@@ -91,15 +79,7 @@ export const FIRE_TOWER: ITowerModel = {
     level: 3
   },
   damage: {
-    lazer: 0,
-    bullet: 0,
-    missile: 0,
-    fire: 100,
-    lightning: 0,
-    poison: 0,
-    ice: 0,
-    boost: 0,
-    slow: 0
+    fire: 1
   }
 }
 
@@ -107,12 +87,6 @@ export const POISON_TOWER: ITowerModel = {
   name: "Poison Tower",
   meta: {
     key: "poison",
-    platform: "poison-platform",
-    turret: "poison-turret",
-    projector: {
-      sprite: "poison-projector",
-      emitter: "poison-emitter"
-    },
     distribution: "radial",
     rotation: 1,
   },
@@ -121,15 +95,7 @@ export const POISON_TOWER: ITowerModel = {
     level: 3
   },
   damage: {
-    lazer: 0,
-    bullet: 0,
-    missile: 0,
-    fire: 0,
-    lightning: 0,
-    poison: 100,
-    ice: 0,
-    boost: 0,
-    slow: 0
+    posion: 1
   }
 }
 
@@ -137,12 +103,6 @@ export const SMOKE_TOWER: ITowerModel = {
   name: "Smoke Tower",
   meta: {
     key: "smoke",
-    platform: "smoke-platform",
-    turret: "smoke-turret",
-    projector: {
-      sprite: "smoke-projector",
-      emitter: "smoke-emitter"
-    },
     distribution: "radial",
     rotation: 1,
   },
@@ -151,15 +111,7 @@ export const SMOKE_TOWER: ITowerModel = {
     level: 3
   },
   damage: {
-    lazer: 0,
-    bullet: 0,
-    missile: 0,
-    fire: 0,
-    lightning: 0,
-    poison: 100,
-    ice: 0,
-    boost: 0,
-    slow: 0
+    smoke: 1
   }
 }
 
@@ -167,12 +119,6 @@ export const SHOCK_TOWER: ITowerModel = {
   name: "Shock Tower",
   meta: {
     key: "shock",
-    platform: "shock-platform",
-    turret: "shock-turret",
-    projector: {
-      sprite: "shock-projector",
-      emitter: "shock-emitter"
-    },
     distribution: "radial",
     rotation: 1,
   },
@@ -181,15 +127,7 @@ export const SHOCK_TOWER: ITowerModel = {
     level: 3
   },
   damage: {
-    lazer: 0,
-    bullet: 0,
-    missile: 0,
-    fire: 0,
-    lightning: 0,
-    poison: 100,
-    ice: 0,
-    boost: 0,
-    slow: 0
+    shock: 1
   }
 }
 
@@ -197,12 +135,6 @@ export const FREEZE_TOWER: ITowerModel = {
   name: "Freeze Tower",
   meta: {
     key: "freeze",
-    platform: "freeze-platform",
-    turret: "freeze-turret",
-    projector: {
-      sprite: "freeze-projector",
-      emitter: "freeze-emitter"
-    },
     distribution: "radial",
     rotation: 1,
   },
@@ -211,15 +143,7 @@ export const FREEZE_TOWER: ITowerModel = {
     level: 3
   },
   damage: {
-    lazer: 0,
-    bullet: 0,
-    missile: 0,
-    fire: 0,
-    lightning: 0,
-    poison: 100,
-    ice: 0,
-    boost: 0,
-    slow: 0
+    freeze: 1
   }
 }
 
@@ -227,12 +151,6 @@ export const BULLET_TOWER: ITowerModel = {
   name: "Bullet Tower",
   meta: {
     key: "bullet",
-    platform: "bullet-platform",
-    turret: "bullet-turret",
-    projector: {
-      sprite: "bullet-projector",
-      emitter: "bullet-emitter"
-    },
     distribution: "linear",
     rotation: "target",
   },
@@ -241,15 +159,7 @@ export const BULLET_TOWER: ITowerModel = {
     level: 3
   },
   damage: {
-    lazer: 0,
-    bullet: 100,
-    missile: 0,
-    fire: 0,
-    lightning: 0,
-    poison: 0,
-    ice: 0,
-    boost: 0,
-    slow: 0
+    bullet: 1
   }
 }
 
@@ -257,12 +167,6 @@ export const MISSILE_TOWER: ITowerModel = {
   name: "Missile Tower",
   meta: {
     key: "missile",
-    platform: "missile-platform",
-    turret: "missile-turret",
-    projector: {
-      sprite: "missile-projector",
-      emitter: "missile-emitter"
-    },
     distribution: "linear",
     rotation: "target",
   },
@@ -271,15 +175,7 @@ export const MISSILE_TOWER: ITowerModel = {
     level: 3
   },
   damage: {
-    lazer: 0,
-    bullet: 0,
-    missile: 100,
-    fire: 0,
-    lightning: 0,
-    poison: 0,
-    ice: 0,
-    boost: 0,
-    slow: 0
+    missile: 1
   }
 }
 
@@ -287,12 +183,6 @@ export const LIGHTNING_TOWER: ITowerModel = {
   name: "Lightning Tower",
   meta: {
     key: "lightning",
-    platform: "lightning-platform",
-    turret: "lightning-turret",
-    projector: {
-      sprite: "lightning-projector",
-      emitter: "lightning-emitter"
-    },
     distribution: "linear",
     rotation: "target",
   },
@@ -301,15 +191,7 @@ export const LIGHTNING_TOWER: ITowerModel = {
     level: 3
   },
   damage: {
-    lazer: 0,
-    bullet: 0,
-    missile: 0,
-    fire: 0,
-    lightning: 100,
-    poison: 0,
-    ice: 0,
-    boost: 0,
-    slow: 0
+    lightning: 1
   }
 }
 
@@ -317,12 +199,6 @@ export const ICE_TOWER: ITowerModel = {
   name: "Ice Tower",
   meta: {
     key: "ice",
-    platform: "ice-platform",
-    turret: "ice-turret",
-    projector: {
-      sprite: "ice-projector",
-      emitter: "ice-emitter"
-    },
     distribution: "linear",
     rotation: "target",
   },
@@ -331,15 +207,7 @@ export const ICE_TOWER: ITowerModel = {
     level: 3
   },
   damage: {
-    lazer: 0,
-    bullet: 0,
-    missile: 0,
-    fire: 0,
-    lightning: 0,
-    poison: 0,
-    ice: 100,
-    boost: 0,
-    slow: 0
+    ice: 1
   }
 }
 
@@ -347,12 +215,6 @@ export const BOOST_TOWER: ITowerModel = {
   name: "Boost Tower",
   meta: {
     key: "boost",
-    platform: "boost-platform",
-    turret: "boost-turret",
-    projector: {
-      sprite: "boost-projector",
-      emitter: "boost-emitter"
-    },
     distribution: "radial",
     rotation: 4,
   },
@@ -361,14 +223,7 @@ export const BOOST_TOWER: ITowerModel = {
     level: 3
   },
   damage: {
-    lazer: 0,
-    bullet: 0,
-    missile: 0,
-    fire: 0,
-    lightning: 0,
-    poison: 0,
-    ice: 0,
-    boost: 100
+    boost: 1
   }
 }
 
@@ -376,12 +231,6 @@ export const SLOW_TOWER: ITowerModel = {
   name: "Slow Tower",
   meta: {
     key: "slow",
-    platform: "slow-platform",
-    turret: "slow-turret",
-    projector: {
-      sprite: "slow-projector",
-      emitter: "slow-emitter"
-    },
     distribution: "radial",
     rotation: -1,
   },
@@ -390,21 +239,14 @@ export const SLOW_TOWER: ITowerModel = {
     level: 3
   },
   damage: {
-    lazer: 0,
-    bullet: 0,
-    missile: 0,
-    fire: 0,
-    lightning: 0,
-    poison: 0,
-    ice: 0,
-    boost: 0,
-    slow: 100
+    slow: 1
   }
 }
 
 
 export const ALL_TOWERS = [
   LAZER_TOWER,
+  PLASMA_TOWER,
   FIRE_TOWER,
   POISON_TOWER,
   SMOKE_TOWER,

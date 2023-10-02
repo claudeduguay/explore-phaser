@@ -25,8 +25,11 @@ export interface IEmitter {
 }
 
 export function applyDamage(tower: ITower, singleTarget: boolean = true) {
-  const key = tower.model.meta.key as keyof ITowerDamage
-  const damage = (tower.model.damage[key] || 0) / 100
+  let damage = 0
+  Object.entries(tower.model.damage).forEach(([type, value]) => {
+    damage += value
+    console.log(`${value} ${type} damage from ${tower.model.name}`)
+  })
   tower.targets.forEach(target => target.health.adjust(-damage))
 }
 

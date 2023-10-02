@@ -21,6 +21,7 @@ export const COLORS: { [key: string]: IColoring } = {
   SHOCK: colors(0.7),
   FREEZE: colors(0.5),
   LAZER: colors(0.6),
+  PLASMA: colors(0.65),
   BULLET: colors(0.2),
   MISSILE: colors(0.4),
   LIGHTNING: colors(0.7),
@@ -312,6 +313,46 @@ const TOWERS: Record<string, ITextureConfigs> = {
       },
     }
   },
+  PLASMA: {
+    platform: {
+      size: {
+        x: 64,
+        y: 64
+      },
+      options: {
+        type: "angle",
+        margin: 0,
+        inset: 0.2,
+        color: COLORS.PLASMA
+      }
+    },
+    turret: {
+      size: {
+        x: 42,
+        y: 38
+      },
+      options: {
+        ratio: 0.5,
+        topSeg: 10,
+        botSeg: 3,
+        color: COLORS.PLASMA
+      }
+    },
+    projector: {
+      size: {
+        x: 7,
+        y: 32
+      },
+      options: {
+        type: "point",
+        margin: 0,
+        inset: 0.4,
+        balls: { count: 1, color: ["#FCF"], start: 0 },
+        color: COLORS.PLASMA,
+        line: "white"
+      },
+    }
+  },
   MISSILE: {
     platform: {
       size: {
@@ -513,10 +554,10 @@ const TOWERS: Record<string, ITextureConfigs> = {
 }
 
 export default function registerTowerTextures(scene: Scene) {
-  // TOWER TEXTURES
   for (let [key, { platform, turret, projector }] of Object.entries(TOWERS)) {
-    makeTowerPlatform(scene, `${key.toLowerCase()}-platform`, platform)
-    makeTowerTurret(scene, `${key.toLowerCase()}-turret`, turret)
-    makeTowerProjector(scene, `${key.toLowerCase()}-projector`, projector)
+    key = key.toLowerCase()
+    makeTowerPlatform(scene, `${key}-platform`, platform)
+    makeTowerTurret(scene, `${key}-turret`, turret)
+    makeTowerProjector(scene, `${key}-projector`, projector)
   }
 }

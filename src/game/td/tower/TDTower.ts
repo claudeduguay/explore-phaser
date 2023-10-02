@@ -23,6 +23,7 @@ import { clamp, rotation } from "../../../util/MathUtil"
 import TargetSmokeBehavior from "../behavior/TargetSmokeBehavior"
 import TargetShockBehavior from "../behavior/TargetShockBehavior"
 import TargetFreezeBehavior from "../behavior/TargetFreezeBehavior"
+import TargetPlasmaBehavior from "../behavior/TargetPlasmaBehavior"
 
 export default class TDTower extends BehaviorContainer {
 
@@ -35,7 +36,7 @@ export default class TDTower extends BehaviorContainer {
   constructor(public scene: Scene, public x: number = 0, public y: number = x, public model: ITowerModel = LAZER_TOWER, selectionManager?: SelectionManager) {
     super(scene)
     const range = model.stats.range
-    this.tower_base = this.scene.add.sprite(0, 0, model.meta.platform).setInteractive()
+    this.tower_base = this.scene.add.sprite(0, 0, `${model.meta.key}-platform`).setInteractive()
       .on(Input.Events.POINTER_OVER, () => this.showRange.visible = true, this)
       .on(Input.Events.POINTER_OUT, () => this.showRange.visible = false, this)
       .on(Input.Events.POINTER_UP, () => {
@@ -60,6 +61,9 @@ export default class TDTower extends BehaviorContainer {
       this.behavior.push(new TargetAimBehavior())
     }
     switch (model.meta.key) {
+      case "plasma":
+        this.behavior.push(new TargetPlasmaBehavior())
+        break
       case "fire":
         this.behavior.push(new TargetFireBehavior())
         break

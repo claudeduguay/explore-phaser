@@ -21,7 +21,7 @@ export default function TowerInfo({ tower, onClose }: ITowerInfoProps) {
     <h4 className="fs-4 border-top p-2 m-2">{model.name}</h4>
     <div><img src={imageSrc} alt="Tower" /></div>
     <PropsInfo title="General" model={model.stats} />
-    <PropsInfo title="Damage (dps per emitter)" model={model.damage} />
+    <PropsInfo title="Damage (dps per level)" model={model.damage} />
     <div className="text-end p-3 pt-0">
       <button className="btn btn-primary" onClick={onClose}>Close</button>
     </div>

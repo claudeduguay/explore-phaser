@@ -2,6 +2,7 @@ import { CSSProperties } from "react"
 import IEnemyModel from "../../model/IEnemyModel"
 import INavigator from "./INavigator"
 import PropsInfo from "./PropsInfo"
+import ClickButton from "./ClickButton"
 
 export interface IEnemyInfoProps {
   navigator: INavigator
@@ -20,7 +21,7 @@ export default function EnemyInfo({ navigator, model }: IEnemyInfoProps) {
     <PropsInfo title="General" model={model.stats} />
     <PropsInfo title="Damage (dps multiplier)" model={model.damage} valueFormatter={percentFormatter} />
     <div className="text-end  p-3 pt-0">
-      <button className="btn btn-primary" onClick={onClose}>Close</button>
+      <ClickButton navigator={navigator} className="btn btn-primary" onClick={onClose}>Close</ClickButton>
     </div>
   </div>
 }
