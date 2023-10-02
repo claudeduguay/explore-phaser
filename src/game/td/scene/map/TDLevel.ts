@@ -20,9 +20,6 @@ export default function generateMap(scene: Scene, active: IActiveValues, enemyGr
     makeTileMap(scene, origin.x, origin.y, model, config)
   }
   const { curve, points } = renderPath(scene, model, origin, config.cellSize)
-  const length = curve.getLength()
-  console.log("Path length:", length)
-  console.log("Pixels per cell:", length / model.path.length)
 
   makeTimeline(scene, active, enemyGroup, origin, curve, 0)
   return points

@@ -15,16 +15,27 @@ corners an beam towers use squared corners?
 
 ## ToDo Planning
 
----
-Need to develop preview boxes:
+* Need for consider whether we can embed a new scene inside and DOM object.
+* Need to figure out leveling
+* Add speed controls
 
-* Recangular for Beam, Spray effects (tower, with effect toward the right)
-* Square for AOE cloud or radiating AOE effects
+### Leveling Notes
 
-Need for consider whether we can embed a new scene inside and DOM object.
----
+There are two ways to upgrade:
+
+* Tower upgrades
+  * Increase level (up to max)
+  * Increase range (up to some max)
+  * Increase damage (dps per emitter)
+  * Decrease cost of buying a tower
+* Tower purchases
+  * Buy new towers to ad to your inventory.
+  * Each purchases tower is available in upgraded levels/range/dps.
 
 # Towers to add:
+
+* NEW = Sleep: Suspends an enemy's movement for a specified amount of time
+Look into using stopFollow and resumeFollow to slow and sleep
 
 * Plasma: Graphics/wave projector
 * Freeze: Cloud effect made of ice

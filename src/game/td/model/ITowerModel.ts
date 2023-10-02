@@ -6,16 +6,14 @@ export interface ITowerProjector {
 
 export interface ITowerMeta {
   key: string                     // Tower key
-  // platform: string                // Base on which the turret rests
-  // turret: string                  // Turret form that holds projectors
-  // projector: ITowerProjector      // Projectors (guns, radar, etc) oner for each level
   distribution: "linear" | "radial"
   rotation: "target" | number
 }
 
 export interface ITowerStatistics {
-  range: number
+  cost: number
   level: number
+  range: number
 }
 
 export interface ITowerDamage {
@@ -43,8 +41,9 @@ export const LAZER_TOWER: ITowerModel = {
     rotation: "target",
   },
   stats: {
+    level: 3,
+    cost: 100,
     range: 150,
-    level: 3
   },
   damage: {
     lazer: 1
@@ -59,8 +58,9 @@ export const PLASMA_TOWER: ITowerModel = {
     rotation: "target",
   },
   stats: {
+    level: 3,
+    cost: 100,
     range: 150,
-    level: 3
   },
   damage: {
     plasma: 1
@@ -75,8 +75,9 @@ export const FIRE_TOWER: ITowerModel = {
     rotation: "target",
   },
   stats: {
+    level: 3,
+    cost: 100,
     range: 150,
-    level: 3
   },
   damage: {
     fire: 1
@@ -91,8 +92,9 @@ export const POISON_TOWER: ITowerModel = {
     rotation: 1,
   },
   stats: {
+    level: 3,
+    cost: 100,
     range: 100,
-    level: 3
   },
   damage: {
     posion: 1
@@ -107,8 +109,9 @@ export const SMOKE_TOWER: ITowerModel = {
     rotation: 1,
   },
   stats: {
+    level: 3,
+    cost: 100,
     range: 100,
-    level: 3
   },
   damage: {
     smoke: 1
@@ -123,8 +126,9 @@ export const SHOCK_TOWER: ITowerModel = {
     rotation: 1,
   },
   stats: {
+    level: 3,
+    cost: 100,
     range: 100,
-    level: 3
   },
   damage: {
     shock: 1
@@ -139,8 +143,9 @@ export const FREEZE_TOWER: ITowerModel = {
     rotation: 1,
   },
   stats: {
+    level: 3,
+    cost: 100,
     range: 100,
-    level: 3
   },
   damage: {
     freeze: 1
@@ -155,8 +160,9 @@ export const BULLET_TOWER: ITowerModel = {
     rotation: "target",
   },
   stats: {
+    level: 3,
+    cost: 100,
     range: 150,
-    level: 3
   },
   damage: {
     bullet: 1
@@ -171,8 +177,9 @@ export const MISSILE_TOWER: ITowerModel = {
     rotation: "target",
   },
   stats: {
+    level: 3,
+    cost: 100,
     range: 150,
-    level: 3
   },
   damage: {
     missile: 1
@@ -187,8 +194,9 @@ export const LIGHTNING_TOWER: ITowerModel = {
     rotation: "target",
   },
   stats: {
+    level: 3,
+    cost: 100,
     range: 150,
-    level: 3
   },
   damage: {
     lightning: 1
@@ -203,8 +211,9 @@ export const ICE_TOWER: ITowerModel = {
     rotation: "target",
   },
   stats: {
+    level: 3,
+    cost: 100,
     range: 150,
-    level: 3
   },
   damage: {
     ice: 1
@@ -219,8 +228,9 @@ export const BOOST_TOWER: ITowerModel = {
     rotation: 4,
   },
   stats: {
+    level: 3,
+    cost: 100,
     range: 150,
-    level: 3
   },
   damage: {
     boost: 1
@@ -235,8 +245,10 @@ export const SLOW_TOWER: ITowerModel = {
     rotation: -1,
   },
   stats: {
+    level: 3,
+    cost: 100,
     range: 150,
-    level: 3
+
   },
   damage: {
     slow: 1

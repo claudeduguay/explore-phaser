@@ -42,7 +42,7 @@ export default class TDGameScene extends Scene implements INavigator {
 
   set mute(value: boolean) {
     this.sound.setMute(value)
-    console.log("this.sound.mute=", this.sound.mute, value)
+    // console.log("this.sound.mute=", this.sound.mute, value)
   }
 
   transitionTo(target: string, sleep?: string): Scene {

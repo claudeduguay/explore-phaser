@@ -28,7 +28,7 @@ export default function GameMaps({ navigator }: IGameHomeProps) {
     <h1 className="text-white">Maps by Level</h1>
     <div className="p-2 text-white text-center">
       {models.map((model, i) =>
-        <MapButton scene={navigator} navigator={navigator} model={model} title={`Level ${i + 1}`} onClick={onPlay} />)}
+        <MapButton key={i} scene={navigator} navigator={navigator} model={model} title={`Level ${i + 1}`} onClick={onPlay} />)}
     </div>
   </div>
 }
