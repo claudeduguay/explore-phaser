@@ -40,6 +40,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
       TDPlayScene.createExplosionSprite(scene, x, y)
       scene.sound.play("cash")
     }
+    follower.removeListener("died")
   })
   follower.startFollow({
     duration,
@@ -79,6 +80,7 @@ export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path,
   const follower = new TDEnemy(scene, path, 0, 0, key)
   twin.addListener("died", ({ x, y, model }: TDEnemy) => {
     follower.destroy()
+    follower.removeListener("died")
   })
   follower.startFollow({
     duration,

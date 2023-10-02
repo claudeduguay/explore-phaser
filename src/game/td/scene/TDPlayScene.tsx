@@ -228,7 +228,7 @@ export default class TDPlayScene extends Scene {
     addReactNode(this, <GameHeader active={this.active} navigator={this.gameScene} />, 0, 0)
     addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />, 0, this.game.canvas.height - 62)
 
-    const showTowerPreview = true
+    const showTowerPreview = false
     if (showTowerPreview) {
       const preview = new TowerPreview(this, 50, 70)
       this.add.existing(preview)
