@@ -1,6 +1,6 @@
 
 import { Scene, GameObjects, Types, Physics, Utils, Math as PMath } from "phaser"
-import { makeEllipse, makeHeightRects, makePathTiles } from "../assets/TextureFactory"
+import { makeEllipse, makeHeightRects } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
 import TDGameScene from "./TDGameScene"

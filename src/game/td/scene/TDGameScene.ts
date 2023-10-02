@@ -42,7 +42,10 @@ export default class TDGameScene extends Scene implements INavigator {
   }
 
   transitionTo(target: string, sleep?: string): Scene {
-    // console.log(`Transition to ${target}`)
+    // this.cameras.main.once("camerafadeoutcomplete", (camera: Cameras.Scene2D.Camera) => {
+    //   console.log("Faded out")
+    // })
+    // this.cameras.main.fadeOut(1000, 0, 0, 0)
     if (sleep) {
       this.scene.sleep(sleep)
     }
@@ -50,6 +53,10 @@ export default class TDGameScene extends Scene implements INavigator {
       target,
       duration: 1000
     })
+    // if (this.cameras.main) {
+    //   this.cameras.main.fadeIn(1000)
+    // }
+    // console.log(`Transition to ${target}`)
     return this
   }
 
