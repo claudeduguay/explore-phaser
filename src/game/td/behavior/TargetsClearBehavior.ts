@@ -3,6 +3,8 @@ import IBehavior from "./IBehavior"
 
 export default class TargetsClearBehavior implements IBehavior<ITower> {
   update(tower: ITower, time: number, delta: number) {
-    tower.targets = []
+    if (!tower.preview) {
+      tower.targets = []
+    }
   }
 }

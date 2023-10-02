@@ -1,6 +1,6 @@
 import { Scene } from "phaser"
 import IBehavior from "./IBehavior"
-import ITowerModel, { ITowerDamage } from "../model/ITowerModel"
+import ITowerModel from "../model/ITowerModel"
 import ActiveValue from "../value/ActiveValue"
 
 export interface ITarget {
@@ -10,6 +10,7 @@ export interface ITarget {
 }
 
 export interface ITower {
+  preview: boolean
   x: number
   y: number
   scene: Scene
@@ -28,7 +29,7 @@ export function applyDamage(tower: ITower, singleTarget: boolean = true) {
   let damage = 0
   Object.entries(tower.model.damage).forEach(([type, value]) => {
     damage += value
-    console.log(`${value} ${type} damage from ${tower.model.name}`)
+    // console.log(`${value} ${type} damage from ${tower.model.name}`)
   })
   tower.targets.forEach(target => target.health.adjust(-damage))
 }

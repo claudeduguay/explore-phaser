@@ -228,9 +228,9 @@ export default class TDPlayScene extends Scene {
     addReactNode(this, <GameHeader active={this.active} navigator={this.gameScene} />, 0, 0)
     addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />, 0, this.game.canvas.height - 62)
 
-    const showTowerPreview = false
+    const showTowerPreview = true
     if (showTowerPreview) {
-      const preview = new TowerPreview(this, 85, 70)
+      const preview = new TowerPreview(this, 50, 70)
       this.add.existing(preview)
     }
 
@@ -256,6 +256,9 @@ export default class TDPlayScene extends Scene {
     tower: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
     enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
     if (tower instanceof TDTower && enemy instanceof GameObjects.PathFollower) {
+      if (tower.preview) {
+        return
+      }
       const distance = PMath.Distance.BetweenPoints(enemy, tower)
       if (distance <= tower.model.stats.range) {
         tower.targets.unshift(enemy)

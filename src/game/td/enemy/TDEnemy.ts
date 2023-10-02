@@ -8,7 +8,6 @@ export default class TDEnemy extends GameObjects.PathFollower {
   container!: GameObjects.Container
   shieldBar!: HealthBar
   healthBar!: HealthBar
-  // status: { health: number, shield: number } = { health: 1.0, shield: 1.0 }
 
   health!: ActiveValue
   shield!: ActiveValue

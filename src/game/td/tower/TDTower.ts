@@ -32,6 +32,7 @@ export default class TDTower extends BehaviorContainer {
   targets: GameObjects.PathFollower[] = []
   showRange: GameObjects.Container
   showSelection: boolean = false
+  preview: boolean = false
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x, public model: ITowerModel = LAZER_TOWER, selectionManager?: SelectionManager) {
     super(scene)
