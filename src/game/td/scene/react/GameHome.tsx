@@ -1,7 +1,6 @@
 import { useState } from "react"
 import ClickButton from "./ClickButton"
 import INavigator from "./INavigator"
-import MapButton from "./MapButton"
 
 export interface IGameHomeProps {
   navigator: INavigator

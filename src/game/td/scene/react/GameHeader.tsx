@@ -1,12 +1,8 @@
 import { useActiveValue } from "../../value/ActiveValue"
 import { IActiveValues } from "../TDPlayScene"
-import { asMapModel } from "../map/IMapModel"
-import { generatePath } from "../map/TDPath"
-import { DEFAULT_CONFIG, IMapConfig } from "../map/TDTileMap"
 import INavigator from "./INavigator"
 import Icon from "./Icon"
 import IconButton from "./IconButton"
-import MapButton from "./MapButton"
 
 export interface IGameHeaderProps {
   navigator: INavigator
