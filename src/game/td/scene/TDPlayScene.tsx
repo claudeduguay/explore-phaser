@@ -1,5 +1,5 @@
 
-import { Scene, GameObjects, Types, Physics, Utils, Math as PMath } from "phaser"
+import { Scene, GameObjects, Types, Physics, Utils, Math as PMath, Input } from "phaser"
 import { makeEllipse, makeHeightRects } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
@@ -170,6 +170,11 @@ export default class TDPlayScene extends Scene {
 
     this.towerGroup = this.physics.add.group({ key: "towerGroup" })
     this.towerSelectionManager = new SelectionManager(this.towerGroup, selectedTower, towerInfoVisible)
+    // Clear selection when clicked outside a tower
+    this.input.on(Input.Events.POINTER_DOWN, () => {
+      this.towerSelectionManager.select(undefined)
+      towerInfoVisible.value = false
+    })
 
     this.createMap(enemyGroup)
 
@@ -190,7 +195,6 @@ export default class TDPlayScene extends Scene {
       this.add.existing(tower)
       this.towerGroup.add(tower)
     }
-    this.towerSelectionManager.select(towers[0])
 
     this.physics.add.overlap(this.towerGroup, enemyGroup, this.onEnemyOverlap)
 
@@ -212,8 +216,9 @@ export default class TDPlayScene extends Scene {
 
     const onAddTower = (model: ITowerModel) => {
       this.addingTower = new TDTower(this, this.input.x, this.input.y, model, this.towerSelectionManager)
-      // this.addingTower.showRange.visible = true
-      this.towerSelectionManager.select(this.addingTower)
+      this.addingTower.preview = true
+      this.addingTower.showRange.visible = true
+      this.towerSelectionManager.select(undefined)
       this.towerGroup.add(this.addingTower)
       this.add.existing(this.addingTower)
       const towerPoints = collectTowerPoints(this.addingTower)
@@ -294,6 +299,7 @@ export default class TDPlayScene extends Scene {
           this.addingTower.destroy()
           this.sound.play("fail")
         } else {
+          this.addingTower.preview = false
           this.sound.play("plop")
         }
         this.addingTower.showRange.visible = false

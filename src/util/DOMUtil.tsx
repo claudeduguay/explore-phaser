@@ -26,14 +26,8 @@ export type IShowHideVisible = [
 
 export function useShowHideVisible(initVisible: boolean = true): IShowHideVisible {
   const [visible, setVisible] = useState<boolean>(initVisible)
-  const onShow = () => {
-    console.log("Set visible")
-    setVisible(true)
-  }
-  const onHide = () => {
-    console.log("Set invisible")
-    setVisible(false)
-  }
+  const onShow = () => setVisible(true)
+  const onHide = () => setVisible(false)
   return [onShow, onHide, visible, setVisible]
 }
 
@@ -41,10 +35,7 @@ export function useVisible(scene: Scene, initVisible: boolean = true, observable
   const [onShow, onHide, visible] = useShowHideVisible(observable ? observable.value : initVisible)
   useEffect(() => {
     if (observable) {
-      const onChange = (value: boolean) => {
-        return value ? onShow() : onHide()
-      }
-      console.log("Register Observable")
+      const onChange = (value: boolean) => value ? onShow() : onHide()
       observable.addListener(CHANGED_EVENT, onChange)
       return () => {
         observable.removeListener(CHANGED_EVENT, onChange)

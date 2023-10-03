@@ -119,6 +119,22 @@ export function makeHeightRects(scene: Scene, key: string, w: number, h: number,
   renderCanvas(scene, key, w * count, h, render)
 }
 
+export function makeRect(scene: Scene, key: string, w: number, h: number,
+  fillStyle: { color?: string, alpha?: number } = { color: "#FFA500", alpha: 1 }) {
+  console.log("Rect size:", { w, h })
+  const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
+    if (fillStyle.color) {
+      g.fillStyle = fillStyle.color
+    }
+    if (fillStyle.alpha) {
+      g.globalAlpha = fillStyle.alpha
+    }
+    g.rect(0, 0, w, h)
+    g.fill()
+  }
+  renderCanvas(scene, key, w, h, render)
+}
+
 export function makeEllipse(scene: Scene, key: string, w: number, h: number,
   fillStyle: { color?: string, alpha?: number } = { color: "#FFA500", alpha: 1 }) {
   const render: IRenderFunction = (g: CanvasRenderingContext2D) => {

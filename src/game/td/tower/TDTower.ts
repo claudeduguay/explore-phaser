@@ -31,7 +31,6 @@ export default class TDTower extends BehaviorContainer {
   turret: TDTurret
   targets: GameObjects.PathFollower[] = []
   showRange: GameObjects.Container
-  showSelection: boolean = false
   preview: boolean = false
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x, public model: ITowerModel = LAZER_TOWER, selectionManager?: SelectionManager) {
@@ -40,9 +39,7 @@ export default class TDTower extends BehaviorContainer {
     this.tower_base = this.scene.add.sprite(0, 0, `${model.meta.key}-platform`).setInteractive()
       .on(Input.Events.POINTER_OVER, () => this.showRange.visible = true, this)
       .on(Input.Events.POINTER_OUT, () => this.showRange.visible = false, this)
-      .on(Input.Events.POINTER_UP, () => {
-        selectionManager?.toggle(this)
-      }, this)
+      .on(Input.Events.POINTER_UP, () => selectionManager?.select(this), this)
     // .on(Input.Events.POINTER_DOWN, () => console.log("Mouse down"), this)
     this.add(this.tower_base)
 

@@ -18,8 +18,12 @@ export default function TowerInfo({ tower: towerObservable, onClose }: ITowerInf
     width: 350,
     backgroundColor: "rgba(64, 64, 64, 0.75)"
   }
+  // Prevent auto-closing
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault()
+  }
   return <div className="position-reattive text-white bg-overlay border-gold glow -p-3"
-    style={style} data-bs-theme="dark">
+    style={style} data-bs-theme="dark" onMouseDown={onMouseDown}>
     <CloseButton onClick={onClose} />
     <h1 className="fs-2 p-1 text-title">Tower Info</h1>
     {model && <>
