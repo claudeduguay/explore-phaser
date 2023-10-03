@@ -5,7 +5,7 @@ import useCapture from "./useCapture";
 export default function useCaptureTower(tower?: TDTower, angle = 0): string {
   const render = (texture: GameObjects.RenderTexture) => {
     if (tower) {
-      const copy = tower.scene.add.tower(32, 32, tower.model)
+      const copy = new TDTower(tower.scene, 32, 32, tower.model)
       copy.angle = angle
       texture.draw(copy)
     }

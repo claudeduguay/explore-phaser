@@ -8,7 +8,7 @@ import TargetLaserBehavior from "../behavior/TargetLazerBehavior"
 import TDRange from "./TDRange"
 import ITowerModel from "../model/ITowerModel"
 import { LAZER_TOWER } from "../model/ITowerModel"
-import SelectionManager from "../scene/SelectionManager"
+import { ISelectable } from "../scene/SelectableGroup"
 
 import RotateBehavior from "../behavior/RotateBehavior"
 import TargetLightningBehavior from "../behavior/TargetLightningBehavior"
@@ -25,7 +25,7 @@ import TargetShockBehavior from "../behavior/TargetShockBehavior"
 import TargetFreezeBehavior from "../behavior/TargetFreezeBehavior"
 import TargetPlasmaBehavior from "../behavior/TargetPlasmaBehavior"
 
-export default class TDTower extends BehaviorContainer {
+export default class TDTower extends BehaviorContainer implements ISelectable {
 
   tower_base: GameObjects.Sprite
   turret: TDTurret
@@ -34,14 +34,12 @@ export default class TDTower extends BehaviorContainer {
   preview: boolean = false
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x,
-    public model: ITowerModel = LAZER_TOWER, public selectionManager?: SelectionManager<TDTower>) {
+    public model: ITowerModel = LAZER_TOWER) {
     super(scene)
     const range = model.stats.range
     this.tower_base = this.scene.add.sprite(0, 0, `${model.meta.key}-platform`).setInteractive()
       .on(Input.Events.POINTER_OVER, () => this.showRange.visible = true, this)
       .on(Input.Events.POINTER_OUT, () => this.showRange.visible = false, this)
-      .on(Input.Events.POINTER_UP, () => this.selectionManager?.select(this), this)
-    // .on(Input.Events.POINTER_DOWN, () => console.log("Mouse down"), this)
     this.add(this.tower_base)
 
     this.turret = new TDTurret(scene, 0, 0, model)
@@ -99,6 +97,26 @@ export default class TDTower extends BehaviorContainer {
     this.behavior.push(new ClearTargetsBehavior())
   }
 
+  addSelectHandler(select: (selection?: TDTower) => void) {
+    this.tower_base.on(Input.Events.POINTER_UP, () => {
+      select(this)
+      this.showSelection()
+    }, this)
+  }
+
+  removeSelectHandler() {
+    this.tower_base.off(Input.Events.POINTER_UP)
+  }
+
+  showSelection() {
+    this.tower_base.postFX?.addGlow()
+  }
+
+  hideSelection() {
+    this.tower_base.postFX?.clear()
+  }
+
+
   // This could start to get expensive on each frame
   emissionPoints() {
     return this.turret.projectors.map((p, i) => this.emissionPoint(i))
@@ -123,8 +141,8 @@ export default class TDTower extends BehaviorContainer {
 
 
 GameObjects.GameObjectFactory.register("tower",
-  function (this: GameObjects.GameObjectFactory, x: number, y: number, model: ITowerModel, selectionManager?: SelectionManager<TDTower>) {
-    const tower = new TDTower(this.scene, x, y, model, selectionManager)
+  function (this: GameObjects.GameObjectFactory, x: number, y: number, model: ITowerModel) {
+    const tower = new TDTower(this.scene, x, y, model)
     this.displayList.add(tower)
     this.updateList.add(tower)
     return tower

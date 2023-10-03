@@ -31,14 +31,14 @@ export function useShowHideVisible(initVisible: boolean = true): IShowHideVisibl
   return [onShow, onHide, visible, setVisible]
 }
 
-export function useVisible(scene: Scene, initVisible: boolean = true, observable?: ObservableValue<boolean>, overlay?: boolean) {
-  const [onShow, onHide, visible] = useShowHideVisible(observable ? observable.value : initVisible)
+export function useVisible(scene: Scene, initVisible: boolean = true, isVisible?: ObservableValue<boolean>, overlay?: boolean) {
+  const [onShow, onHide, visible] = useShowHideVisible(isVisible ? isVisible.value : initVisible)
   useEffect(() => {
-    if (observable) {
+    if (isVisible) {
       const onChange = (value: boolean) => value ? onShow() : onHide()
-      observable.addListener(CHANGED_EVENT, onChange)
+      isVisible.addListener(CHANGED_EVENT, onChange)
       return () => {
-        observable.removeListener(CHANGED_EVENT, onChange)
+        isVisible.removeListener(CHANGED_EVENT, onChange)
       }
     }
     if (!overlay) {
@@ -49,8 +49,8 @@ export function useVisible(scene: Scene, initVisible: boolean = true, observable
         scene.events.off(Scenes.Events.SLEEP, onHide)
       }
     }
-  }, [scene, overlay, onShow, onHide, observable])
-  return [onShow, onHide, visible, observable]
+  }, [scene, overlay, onShow, onHide, isVisible])
+  return [onShow, onHide, visible, isVisible]
 }
 
 export function Visible({ scene, children, visible: initVisible = true, observable, overlay }: IVisibleProps) {

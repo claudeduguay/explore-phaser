@@ -1,9 +1,10 @@
-import { Scene, GameObjects, Curves } from "phaser";
+import { Scene, GameObjects, Curves, Input } from "phaser";
 import IEnemyModel from "../model/IEnemyModel";
 import HealthBar from "./HealthBar";
 import ActiveValue from "../value/ActiveValue";
+import { ISelectable } from "../scene/SelectableGroup";
 
-export default class TDEnemy extends GameObjects.PathFollower {
+export default class TDEnemy extends GameObjects.PathFollower implements ISelectable {
 
   container!: GameObjects.Container
   shieldBar!: HealthBar
@@ -32,6 +33,22 @@ export default class TDEnemy extends GameObjects.PathFollower {
       // this.container.add(this.shieldBar)
       scene.add.existing(this.container)
     }
+  }
+
+  addSelectHandler(select: (selection?: TDEnemy) => void) {
+    this.on(Input.Events.POINTER_UP, () => select(this), this)
+  }
+
+  removeSelectHandler() {
+    this.off(Input.Events.POINTER_UP)
+  }
+
+  showSelection() {
+    this.postFX.addGlow()
+  }
+
+  hideSelection() {
+    this.postFX?.clear()
   }
 
   preUpdate(time: number, delta: number): void {
