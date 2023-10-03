@@ -10,6 +10,6 @@ export default class TDHomeScene extends Scene {
   }
 
   create() {
-    addReactNode(this, <GameHome navigator={this.gameScene} />, 0, 0)
+    addReactNode(this, 0, 0, <GameHome navigator={this.gameScene} />)
   }
 }

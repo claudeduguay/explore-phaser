@@ -17,6 +17,7 @@ import registerTowerTextures from "./TowerTextures"
 import ActiveValue from "../value/ActiveValue"
 import { shuffle } from "../../../util/ArrayUtil"
 import { testPlasmaPath } from "../behavior/TargetPlasmaBehavior"
+import ObservableValue from "../value/ObservableValue"
 
 export interface IActiveValues {
   health: ActiveValue,
@@ -29,7 +30,7 @@ export default class TDPlayScene extends Scene {
     health: new ActiveValue(100, 0, 1000),
     credits: new ActiveValue(0, 0, 1000)
   }
-  selectionManager!: SelectionManager
+  towerSelectionManager!: SelectionManager
   towerGroup!: Physics.Arcade.Group
   pathPoints!: Point[]
   towerColliders = new PointColliders()
@@ -159,20 +160,14 @@ export default class TDPlayScene extends Scene {
   create() {
     const enemyGroup = this.physics.add.group({ key: "enemyGroup" })
 
-    let towerInfoDOM: GameObjects.DOMElement
-    const onCloseTowerInfo = () => {
-      console.log("Close:", towerInfoDOM)
-      if (towerInfoDOM) {
-        towerInfoDOM.removeElement()
-        towerInfoDOM.destroy()
-      }
-    }
-    // this.on("click", onCloseTowerInfo)
-    const onShowTowerInfo = (tower: TDTower) => {
-      towerInfoDOM = addReactNode(this, <TowerInfo tower={tower} onClose={onCloseTowerInfo} />, 25, 75)
-    }
+    // Tower Info
+    const towerInfoVisible = new ObservableValue<boolean>(false)
+    const onCloseTowerInfo = () => towerInfoVisible.value = false
+    const selectedTower = new ObservableValue<TDTower | undefined>(undefined)
+    addReactNode(this, 25, 75, <TowerInfo tower={selectedTower} onClose={onCloseTowerInfo} />, towerInfoVisible)
+
     this.towerGroup = this.physics.add.group({ key: "towerGroup" })
-    this.selectionManager = new SelectionManager(this.towerGroup, onShowTowerInfo)
+    this.towerSelectionManager = new SelectionManager(this.towerGroup, selectedTower, towerInfoVisible)
 
     this.createMap(enemyGroup)
 
@@ -185,7 +180,7 @@ export default class TDPlayScene extends Scene {
     const generateTower = (i: number) => {
       let pos: Point = towerPositions[i] // randomCell()
       const model = Utils.Array.GetRandom(ALL_TOWERS)
-      return new TDTower(this, pos.x, pos.y, model, this.selectionManager)
+      return new TDTower(this, pos.x, pos.y, model, this.towerSelectionManager)
     }
     for (let i = 0; i < towerCount; i++) {
       const tower = generateTower(i)
@@ -193,7 +188,7 @@ export default class TDPlayScene extends Scene {
       this.add.existing(tower)
       this.towerGroup.add(tower)
     }
-    this.selectionManager.select(towers[0])
+    this.towerSelectionManager.select(towers[0])
 
     this.physics.add.overlap(this.towerGroup, enemyGroup, this.onEnemyOverlap)
 
@@ -214,9 +209,9 @@ export default class TDPlayScene extends Scene {
     }
 
     const onAddTower = (model: ITowerModel) => {
-      this.addingTower = new TDTower(this, this.input.x, this.input.y, model, this.selectionManager)
+      this.addingTower = new TDTower(this, this.input.x, this.input.y, model, this.towerSelectionManager)
       // this.addingTower.showRange.visible = true
-      this.selectionManager.select(this.addingTower)
+      this.towerSelectionManager.select(this.addingTower)
       this.towerGroup.add(this.addingTower)
       this.add.existing(this.addingTower)
       const towerPoints = collectTowerPoints(this.addingTower)
@@ -224,8 +219,8 @@ export default class TDPlayScene extends Scene {
       this.towerColliders.push(new PointCollider(this.pathPoints))
     }
 
-    addReactNode(this, <GameHeader active={this.active} navigator={this.gameScene} />, 0, 0)
-    addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />, 0, this.game.canvas.height - 62)
+    addReactNode(this, 0, 0, <GameHeader active={this.active} navigator={this.gameScene} />)
+    addReactNode(this, 0, this.game.canvas.height - 62, <GameFooter scene={this} onAddTower={onAddTower} />)
 
     const showTowerPreview = false
     if (showTowerPreview) {

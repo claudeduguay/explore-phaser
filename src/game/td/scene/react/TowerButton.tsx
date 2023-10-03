@@ -1,21 +1,20 @@
-import { Scene } from "phaser";
 import ITowerModel from "../../model/ITowerModel";
 import useCaptureTower from "./useCaptureTower";
+import TDTower from "../../tower/TDTower";
 
 export interface ITowerButtonProps {
-  scene: Scene
-  model: ITowerModel
-  onClick?: (model: ITowerModel) => void
+  tower: TDTower
+  onClick?: (model: ITowerModel | undefined) => void
 }
 
-export default function TowerButton({ scene, model, onClick }: ITowerButtonProps) {
-  const imageSrc = useCaptureTower(scene, model)
+export default function TowerButton({ tower, onClick }: ITowerButtonProps) {
+  const imageSrc = useCaptureTower(tower)
   const handleClick = () => {
     if (onClick) {
-      onClick(model)
+      onClick(tower.model)
     }
   }
-  return <button className="btn rounded p-0 m-0 mx-1" onClick={handleClick} title={model.name}>
+  return <button className="btn rounded p-0 m-0 mx-1" onClick={handleClick} title={tower.model.name}>
     <img src={imageSrc} alt="Tower" width={48} height={48} />
   </button>
 }

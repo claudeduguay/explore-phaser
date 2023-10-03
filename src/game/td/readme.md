@@ -37,10 +37,6 @@ There are two ways to upgrade:
 * NEW = Sleep: Suspends an enemy's movement for a specified amount of time
 Look into using stopFollow and resumeFollow to slow and sleep
 
-* Plasma: Graphics/wave projector
-* Freeze: Cloud effect made of ice
-* Shock: Cloud effect made of electricity
-* Smoke: Cloud effect made gray smoke
 * Impact: Spray effect with expanding wave/curve sprite
 
 Major categories:

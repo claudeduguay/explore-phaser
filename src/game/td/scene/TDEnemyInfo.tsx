@@ -12,6 +12,6 @@ export default class TDEnemyScene extends Scene {
 
   create() {
     const model: IEnemyModel = WEAK_ENEMY
-    addReactNode(this, <EnemyInfo navigator={this.gameScene} model={model} />, 1100 - 350 - 25, 75)
+    addReactNode(this, 1100 - 350 - 25, 75, <EnemyInfo navigator={this.gameScene} model={model} />)
   }
 }
