@@ -1,5 +1,5 @@
 
-import { Scene, GameObjects, Types, Physics, Utils, Math as PMath, Input } from "phaser"
+import { Scene, GameObjects, Types, Physics, Utils, Math as PMath, Input, Curves } from "phaser"
 import { makeEllipse, makeHeightRects } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
@@ -19,6 +19,9 @@ import { shuffle } from "../../../util/ArrayUtil"
 import { testPlasmaPath } from "../behavior/TargetPlasmaBehavior"
 import ObservableValue from "../value/ObservableValue"
 import { canvasSize } from "../../../util/SceneUtil"
+import EnemyInfo from "./react/EnemyInfo"
+import TDEnemy from "../enemy/TDEnemy"
+import { WEAK_ENEMY } from "../model/IEnemyModel"
 
 export interface IActiveValues {
   health: ActiveValue,
@@ -31,8 +34,10 @@ export default class TDPlayScene extends Scene {
     health: new ActiveValue(100, 0, 1000),
     credits: new ActiveValue(0, 0, 1000)
   }
-  towerSelectionManager!: SelectionManager
+  towerSelectionManager!: SelectionManager<TDTower>
+  enemySelectionManager!: SelectionManager<TDEnemy>
   towerGroup!: Physics.Arcade.Group
+  enemyGroup!: Physics.Arcade.Group
   pathPoints!: Point[]
   towerColliders = new PointColliders()
   addingTower?: TDTower
@@ -160,23 +165,33 @@ export default class TDPlayScene extends Scene {
   }
 
   create() {
-    const enemyGroup = this.physics.add.group({ key: "enemyGroup" })
-
+    const { w } = canvasSize(this)
     // Tower Info
     const towerInfoVisible = new ObservableValue<boolean>(false)
     const onCloseTowerInfo = () => towerInfoVisible.value = false
     const selectedTower = new ObservableValue<TDTower | undefined>(undefined)
     addReactNode(this, 25, 75, <TowerInfo tower={selectedTower} onClose={onCloseTowerInfo} />, towerInfoVisible)
-
     this.towerGroup = this.physics.add.group({ key: "towerGroup" })
     this.towerSelectionManager = new SelectionManager(this.towerGroup, selectedTower, towerInfoVisible)
-    // Clear selection when clicked outside a tower
+
+    // Enemy Info
+    const enemyInfoVisible = new ObservableValue<boolean>(false)
+    const onCloseEnemyInfo = () => enemyInfoVisible.value = false
+    const selectedEnemy = new ObservableValue<TDEnemy | undefined>(undefined)
+    addReactNode(this, w - 350 - 25, 75, <EnemyInfo enemy={selectedEnemy} onClose={onCloseEnemyInfo} />, enemyInfoVisible)
+    this.enemyGroup = this.physics.add.group({ key: "enemyGroup" })
+    this.enemySelectionManager = new SelectionManager(this.enemyGroup, selectedEnemy, enemyInfoVisible)
+
+    // Clear selections when clicked outside info panel
     this.input.on(Input.Events.POINTER_DOWN, () => {
       this.towerSelectionManager.select(undefined)
+      // this.enemySelectionManager.select(undefined)
       towerInfoVisible.value = false
     })
 
-    this.createMap(enemyGroup)
+    this.createMap() // Call this before selecting enemy
+    // Enemies are created as the timeline moves, so we can't take the first entry of the group
+    this.enemySelectionManager.select(new TDEnemy(this, 0, 0, WEAK_ENEMY.meta.body, new Curves.Path(), WEAK_ENEMY))
 
     const origin = new Point(0, 46)
 
@@ -196,7 +211,7 @@ export default class TDPlayScene extends Scene {
       this.towerGroup.add(tower)
     }
 
-    this.physics.add.overlap(this.towerGroup, enemyGroup, this.onEnemyOverlap)
+    this.physics.add.overlap(this.towerGroup, this.enemyGroup, this.onEnemyOverlap)
 
     // const fireRange = 220
     // this.add.particles(10, 765, 'fire', fireEmitter(fireRange))
@@ -227,7 +242,8 @@ export default class TDPlayScene extends Scene {
       }
     }
 
-    addReactNode(this, 0, 0, <GameHeader active={this.active} navigator={this.gameScene} />)
+    addReactNode(this, 0, 0, <GameHeader active={this.active}
+      navigator={this.gameScene} onShowEnemyInfo={() => enemyInfoVisible.value = true} />)
     addReactNode(this, 0, this.game.canvas.height - 62, <GameFooter scene={this} onAddTower={onAddTower} />)
 
     const showTowerPreview = false
@@ -240,8 +256,8 @@ export default class TDPlayScene extends Scene {
     // TDPlayScene.createExplosionSprite(this, 550, 400)
   }
 
-  createMap(enemyGroup: GameObjects.Group) {
-    this.pathPoints = generateMap(this, this.active, enemyGroup)
+  createMap() {
+    this.pathPoints = generateMap(this, this.active, this.enemyGroup)
     const showSpriteSheet = false
     if (showSpriteSheet) {
       const g = this.add.graphics()

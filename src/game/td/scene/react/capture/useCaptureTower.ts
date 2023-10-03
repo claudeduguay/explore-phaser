@@ -10,6 +10,5 @@ export default function useCaptureTower(tower?: TDTower, angle = 0): string {
       texture.draw(copy)
     }
   }
-  const imageSrc = useCapture(64, 64, render, tower?.scene)
-  return imageSrc
+  return useCapture(64, 64, render, tower?.scene)
 }

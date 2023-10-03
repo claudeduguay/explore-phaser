@@ -13,7 +13,7 @@ export default class TDEnemy extends GameObjects.PathFollower {
   shield!: ActiveValue
 
   constructor(scene: Scene,
-    public x: number, public y: number, key: string, public path: Curves.Path,
+    public x: number, public y: number, public key: string, public path: Curves.Path,
     public model?: IEnemyModel, public showStatusBars: boolean = false) {
     super(scene, path, x, y, key)
 

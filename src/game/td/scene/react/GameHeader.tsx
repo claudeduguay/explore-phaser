@@ -8,10 +8,11 @@ import IconButton from "./IconButton"
 export interface IGameHeaderProps {
   navigator: INavigator
   onShowTowerInfo?: () => void
+  onShowEnemyInfo?: () => void
   active: IActiveValues
 }
 
-export default function GameHeader({ active, navigator, onShowTowerInfo }: IGameHeaderProps) {
+export default function GameHeader({ active, navigator, onShowTowerInfo, onShowEnemyInfo }: IGameHeaderProps) {
   const { w } = canvasSize(navigator)
 
   const { health: activeHealth, credits: activeCredits } = active
@@ -24,7 +25,6 @@ export default function GameHeader({ active, navigator, onShowTowerInfo }: IGame
     const scene = navigator.transitionTo("lose", "game")
     scene.sound.play("lose")
   }
-  const onEnemy = () => navigator.transitionTo("enemy", "game")
   const health = useActiveValue(activeHealth)
   const credits = useActiveValue(activeCredits)
 
@@ -56,7 +56,7 @@ export default function GameHeader({ active, navigator, onShowTowerInfo }: IGame
           <IconButton icon="sentiment_satisfied" onClick={onWin} />
           <IconButton icon="sentiment_very_dissatisfied" onClick={onLose} />
           {onShowTowerInfo && <IconButton icon="crop_square" onClick={onShowTowerInfo} />}
-          <IconButton icon="circle" onClick={onEnemy} />
+          {onShowEnemyInfo && <IconButton icon="circle" onClick={onShowEnemyInfo} />}
         </div>
       </div>
     </div>

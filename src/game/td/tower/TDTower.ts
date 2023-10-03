@@ -34,7 +34,7 @@ export default class TDTower extends BehaviorContainer {
   preview: boolean = false
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x,
-    public model: ITowerModel = LAZER_TOWER, public selectionManager?: SelectionManager) {
+    public model: ITowerModel = LAZER_TOWER, public selectionManager?: SelectionManager<TDTower>) {
     super(scene)
     const range = model.stats.range
     this.tower_base = this.scene.add.sprite(0, 0, `${model.meta.key}-platform`).setInteractive()
@@ -119,12 +119,11 @@ export default class TDTower extends BehaviorContainer {
       return new Point(this.x, this.y)
     }
   }
-
 }
 
 
 GameObjects.GameObjectFactory.register("tower",
-  function (this: GameObjects.GameObjectFactory, x: number, y: number, model: ITowerModel, selectionManager?: SelectionManager) {
+  function (this: GameObjects.GameObjectFactory, x: number, y: number, model: ITowerModel, selectionManager?: SelectionManager<TDTower>) {
     const tower = new TDTower(this.scene, x, y, model, selectionManager)
     this.displayList.add(tower)
     this.updateList.add(tower)

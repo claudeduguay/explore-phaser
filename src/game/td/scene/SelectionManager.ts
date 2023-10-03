@@ -2,17 +2,17 @@ import { GameObjects } from "phaser";
 import TDTower from "../tower/TDTower";
 import ObservableValue from "../value/ObservableValue";
 
-export default class SelectionManager {
+export default class SelectionManager<T> {
 
-  selected?: TDTower
+  selected?: T
 
   constructor(
     public group: GameObjects.Group,
-    public selectedTower: ObservableValue<TDTower | undefined>,
+    public selectedTower: ObservableValue<T | undefined>,
     public towerInfoVisible: ObservableValue<boolean>) {
   }
 
-  select(selected?: TDTower) {
+  select(selected?: T) {
     if (selected) {
       this.selected = selected
       this.selectedTower.value = selected
@@ -24,7 +24,9 @@ export default class SelectionManager {
       }
     })
     if (selected) {
-      selected.tower_base.postFX?.addGlow()
+      if (selected instanceof TDTower) {
+        selected.tower_base.postFX?.addGlow()
+      }
       this.towerInfoVisible.adjust(true)
     }
   }
