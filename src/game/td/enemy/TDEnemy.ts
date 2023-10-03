@@ -12,10 +12,9 @@ export default class TDEnemy extends GameObjects.PathFollower {
   health!: ActiveValue
   shield!: ActiveValue
 
-  constructor(scene: Scene, public path: Curves.Path,
-    public x: number, public y: number, key: string,
-    public model?: IEnemyModel,
-    public showStatusBars: boolean = false) {
+  constructor(scene: Scene,
+    public x: number, public y: number, key: string, public path: Curves.Path,
+    public model?: IEnemyModel, public showStatusBars: boolean = false) {
     super(scene, path, x, y, key)
 
     this.health = new ActiveValue(model?.stats.health || 0)
@@ -56,3 +55,12 @@ export default class TDEnemy extends GameObjects.PathFollower {
   }
 
 }
+
+GameObjects.GameObjectFactory.register("enemy",
+  function (this: GameObjects.GameObjectFactory, x: number, y: number, key: string, path: Curves.Path, model: IEnemyModel, showStatusBars?: boolean) {
+    const tower = new TDEnemy(this.scene, x, y, key, path, model, showStatusBars)
+    this.displayList.add(tower)
+    this.updateList.add(tower)
+    return tower
+  }
+)

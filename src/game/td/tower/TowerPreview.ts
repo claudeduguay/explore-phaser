@@ -26,7 +26,7 @@ export default class TowerPreview extends GameObjects.Container {
       this.add(t)
       const l = addLabel(scene, x, y + 35, model.name.split(" ")[0], "center")
       this.add(l)
-      const e = new TDEnemy(scene, new Curves.Path(), x, y - 64, WEAK_ENEMY.meta.body, WEAK_ENEMY)
+      const e = new TDEnemy(scene, x, y - 64, WEAK_ENEMY.meta.body, new Curves.Path(), WEAK_ENEMY)
       t.targets = [e]
       this.add(e)
     })

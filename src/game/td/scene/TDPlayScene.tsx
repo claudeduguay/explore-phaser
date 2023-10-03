@@ -187,12 +187,12 @@ export default class TDPlayScene extends Scene {
     const generateTower = (i: number) => {
       let pos: Point = towerPositions[i] // randomCell()
       const model = Utils.Array.GetRandom(ALL_TOWERS)
-      return new TDTower(this, pos.x, pos.y, model, this.towerSelectionManager)
+      return this.add.tower(pos.x, pos.y, model, this.towerSelectionManager)
     }
     for (let i = 0; i < towerCount; i++) {
       const tower = generateTower(i)
       towers.push(tower)
-      this.add.existing(tower)
+      // this.add.existing(tower)
       this.towerGroup.add(tower)
     }
 
@@ -215,15 +215,16 @@ export default class TDPlayScene extends Scene {
     }
 
     const onAddTower = (model: ITowerModel) => {
-      this.addingTower = new TDTower(this, this.input.x, this.input.y, model, this.towerSelectionManager)
-      this.addingTower.preview = true
-      this.addingTower.showRange.visible = true
-      this.towerSelectionManager.select(undefined)
-      this.towerGroup.add(this.addingTower)
-      this.add.existing(this.addingTower)
-      const towerPoints = collectTowerPoints(this.addingTower)
-      this.towerColliders.push(new PointCollider(towerPoints))
-      this.towerColliders.push(new PointCollider(this.pathPoints))
+      this.addingTower = this.add.tower(this.input.x, this.input.y, model, this.towerSelectionManager)
+      if (this.addingTower) {
+        this.addingTower.preview = true
+        this.addingTower.showRange.visible = true
+        this.towerSelectionManager.select(undefined)
+        this.towerGroup.add(this.addingTower)
+        const towerPoints = collectTowerPoints(this.addingTower)
+        this.towerColliders.push(new PointCollider(towerPoints))
+        this.towerColliders.push(new PointCollider(this.pathPoints))
+      }
     }
 
     addReactNode(this, 0, 0, <GameHeader active={this.active} navigator={this.gameScene} />)

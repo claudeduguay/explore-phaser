@@ -33,13 +33,14 @@ export default class TDTower extends BehaviorContainer {
   showRange: GameObjects.Container
   preview: boolean = false
 
-  constructor(public scene: Scene, public x: number = 0, public y: number = x, public model: ITowerModel = LAZER_TOWER, selectionManager?: SelectionManager) {
+  constructor(public scene: Scene, public x: number = 0, public y: number = x,
+    public model: ITowerModel = LAZER_TOWER, public selectionManager?: SelectionManager) {
     super(scene)
     const range = model.stats.range
     this.tower_base = this.scene.add.sprite(0, 0, `${model.meta.key}-platform`).setInteractive()
       .on(Input.Events.POINTER_OVER, () => this.showRange.visible = true, this)
       .on(Input.Events.POINTER_OUT, () => this.showRange.visible = false, this)
-      .on(Input.Events.POINTER_UP, () => selectionManager?.select(this), this)
+      .on(Input.Events.POINTER_UP, () => this.selectionManager?.select(this), this)
     // .on(Input.Events.POINTER_DOWN, () => console.log("Mouse down"), this)
     this.add(this.tower_base)
 
@@ -120,3 +121,14 @@ export default class TDTower extends BehaviorContainer {
   }
 
 }
+
+
+GameObjects.GameObjectFactory.register("tower",
+  function (this: GameObjects.GameObjectFactory, x: number, y: number, model: ITowerModel, selectionManager?: SelectionManager) {
+    const tower = new TDTower(this.scene, x, y, model, selectionManager)
+    this.displayList.add(tower)
+    this.updateList.add(tower)
+    return tower
+  }
+)
+
