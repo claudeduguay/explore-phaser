@@ -1,5 +1,5 @@
 import ITowerModel from "../../model/ITowerModel";
-import useCaptureTower from "./useCaptureTower";
+import useCaptureTower from "./capture/useCaptureTower";
 import TDTower from "../../tower/TDTower";
 
 export interface ITowerButtonProps {

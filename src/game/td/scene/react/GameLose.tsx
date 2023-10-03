@@ -1,3 +1,4 @@
+import { canvasSize } from "../../../../util/SceneUtil"
 import ClickButton from "./ClickButton"
 import INavigator from "./INavigator"
 
@@ -6,9 +7,10 @@ export interface IGameLoseProps {
 }
 
 export default function GameLose({ navigator }: IGameLoseProps) {
+  const { w, h } = canvasSize(navigator)
   const onReplay = () => navigator.transitionTo("play", "lose")
   const onHome = () => navigator.transitionTo("home")
-  return <div className="d-flex justify-content-center align-items-center" style={{ width: 1100, height: 800, background: "black" }}>
+  return <div className="d-flex justify-content-center align-items-center" style={{ width: w, height: h, background: "black" }}>
     <div className="p-2 text-white container">
       <div className="p-2">
         <h1>You lost!</h1>

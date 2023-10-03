@@ -18,6 +18,7 @@ import ActiveValue from "../value/ActiveValue"
 import { shuffle } from "../../../util/ArrayUtil"
 import { testPlasmaPath } from "../behavior/TargetPlasmaBehavior"
 import ObservableValue from "../value/ObservableValue"
+import { canvasSize } from "../../../util/SceneUtil"
 
 export interface IActiveValues {
   health: ActiveValue,
@@ -112,11 +113,12 @@ export default class TDPlayScene extends Scene {
   }
 
   generatePathAdjacentPositions(origin: Point): Point[] {
+    const { w, h } = canvasSize(this)
     const WEST = new Point(-64, 0)
     const EAST = new Point(64, 0)
     const NORTH = new Point(0, -64)
     const SOUTH = new Point(0, 64)
-    const inRange = ({ x, y }: Point) => x > 0 && x < 1100 - 64 * 2 && y > 64 && y < 800 - 64 * 2
+    const inRange = ({ x, y }: Point) => x > 0 && x < w - 64 * 2 && y > 64 && y < h - 64 * 2
     const pointSet = new Set<string>(this.pathPoints.map(p => p.toKey()))
     const towerSet = new Set<string>()
     const positions: Point[] = []

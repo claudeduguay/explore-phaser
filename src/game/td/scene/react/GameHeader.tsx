@@ -1,3 +1,4 @@
+import { canvasSize } from "../../../../util/SceneUtil"
 import { useActiveValue } from "../../value/ActiveValue"
 import { IActiveValues } from "../TDPlayScene"
 import INavigator from "./INavigator"
@@ -11,6 +12,8 @@ export interface IGameHeaderProps {
 }
 
 export default function GameHeader({ active, navigator, onShowTowerInfo }: IGameHeaderProps) {
+  const { w } = canvasSize(navigator)
+
   const { health: activeHealth, credits: activeCredits } = active
   const onHome = () => navigator.transitionTo("home", "game")
   const onWin = () => {
@@ -26,7 +29,7 @@ export default function GameHeader({ active, navigator, onShowTowerInfo }: IGame
   const credits = useActiveValue(activeCredits)
 
   return <>
-    <div className="d-flex p-2" style={{ width: 1100, height: 60 }}>
+    <div className="d-flex p-2" style={{ width: w, height: 60 }}>
       <div className="flex-fill justify-content-start">
         <div className="row">
           <div className="col-auto p-0 ms-2">

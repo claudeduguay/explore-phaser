@@ -3,12 +3,14 @@ import MapButton from "./MapButton"
 import { DEFAULT_CONFIG, IMapConfig } from "../map/TDTileMap"
 import { generatePath } from "../map/TDPath"
 import IMapModel, { asMapModel } from "../map/IMapModel"
+import { canvasSize } from "../../../../util/SceneUtil"
 
 export interface IGameHomeProps {
   navigator: INavigator
 }
 
 export default function GameMaps({ navigator }: IGameHomeProps) {
+  const { w, h } = canvasSize(navigator)
   const config: IMapConfig = DEFAULT_CONFIG
   const count = 20
   const models: IMapModel[] = []
@@ -24,7 +26,7 @@ export default function GameMaps({ navigator }: IGameHomeProps) {
   const onPlay = () => {
     navigator.transitionTo("play", "maps")
   }
-  return <div className="p-1" style={{ width: 1100, height: 800, background: "black" }}>
+  return <div className="p-1" style={{ width: w, height: h, background: "black" }}>
     <h1 className="text-white">Maps by Level</h1>
     <div className="p-2 text-white text-center">
       {models.map((model, i) =>

@@ -1,12 +1,14 @@
 import { useState } from "react"
 import ClickButton from "./ClickButton"
 import INavigator from "./INavigator"
+import { canvasSize } from "../../../../util/SceneUtil"
 
 export interface IGameOptionsProps {
   navigator: INavigator
 }
 
 export default function GameOptions({ navigator }: IGameOptionsProps) {
+  const { w, h } = canvasSize(navigator)
   const [muted, setMuted] = useState<boolean>(navigator.mute)
   const onHome = () => {
     navigator.transitionTo("home", "options")
@@ -15,7 +17,7 @@ export default function GameOptions({ navigator }: IGameOptionsProps) {
     navigator.mute = !navigator.mute
     setMuted(navigator.mute)
   }
-  return <div className="d-flex justify-content-center align-items-center" style={{ width: 1100, height: 800, background: "black" }}>
+  return <div className="d-flex justify-content-center align-items-center" style={{ width: w, height: h, background: "black" }}>
     <div className="p-2 text-white container">
       <div className="p-2">
         <h1>Game Options</h1>

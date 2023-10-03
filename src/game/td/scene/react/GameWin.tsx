@@ -1,3 +1,4 @@
+import { canvasSize } from "../../../../util/SceneUtil"
 import ClickButton from "./ClickButton"
 import INavigator from "./INavigator"
 
@@ -6,9 +7,10 @@ export interface IGameWinProps {
 }
 
 export default function GameWin({ navigator }: IGameWinProps) {
+  const { w, h } = canvasSize(navigator)
   const onReplay = () => navigator.transitionTo("play", "win")
   const onHome = () => navigator.transitionTo("home", "win")
-  return <div className="d-flex justify-content-center align-items-center" style={{ width: 1100, height: 800, background: "black" }}>
+  return <div className="d-flex justify-content-center align-items-center" style={{ width: w, height: h, background: "black" }}>
     <div className="p-2 text-white container">
       <div className="p-2">
         <h1>You Win!</h1>

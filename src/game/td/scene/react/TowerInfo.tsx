@@ -1,6 +1,6 @@
 import { CSSProperties } from "react"
 import PropsInfo from "./PropsInfo"
-import useCaptureTower from "./useCaptureTower"
+import useCaptureTower from "./capture/useCaptureTower"
 import TDTower from "../../tower/TDTower"
 import CloseButton from "./CloseButton"
 import ObservableValue, { useObservableValue } from "../../value/ObservableValue"

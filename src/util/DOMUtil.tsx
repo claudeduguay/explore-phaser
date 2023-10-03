@@ -38,7 +38,7 @@ export function useShowHideVisible(initVisible: boolean = true): IShowHideVisibl
 }
 
 export function useVisible(scene: Scene, initVisible: boolean = true, observable?: ObservableValue<boolean>, overlay?: boolean) {
-  const [onShow, onHide, visible] = useShowHideVisible(initVisible)
+  const [onShow, onHide, visible] = useShowHideVisible(observable ? observable.value : initVisible)
   useEffect(() => {
     if (observable) {
       const onChange = (value: boolean) => {

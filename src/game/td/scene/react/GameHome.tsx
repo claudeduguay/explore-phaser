@@ -1,3 +1,4 @@
+import { canvasSize } from "../../../../util/SceneUtil"
 import ClickButton from "./ClickButton"
 import INavigator from "./INavigator"
 
@@ -6,6 +7,8 @@ export interface IGameHomeProps {
 }
 
 export default function GameHeader({ navigator }: IGameHomeProps) {
+  const { w, h } = canvasSize(navigator)
+
   const onPlay = () => {
     navigator.transitionTo("play", "home")
   }
@@ -15,7 +18,7 @@ export default function GameHeader({ navigator }: IGameHomeProps) {
   const onOptions = () => {
     navigator.transitionTo("options", "home")
   }
-  return <div className="d-flex justify-content-center align-items-center" style={{ width: 1100, height: 800, background: "black" }}>
+  return <div className="d-flex justify-content-center align-items-center" style={{ width: w, height: h, background: "black" }}>
     <div className="p-2 text-white container">
       <div className="p-2">
         <h1>Tower Defender</h1>
