@@ -25,10 +25,11 @@ export interface IEmitter {
   stop?: () => void
 }
 
-export function applyDamage(tower: ITower, singleTarget: boolean = true) {
+export function applyDamage(tower: ITower, delta: number, singleTarget: boolean = true) {
+  // console.log("Delta:", delta)
   let damage = 0
   Object.entries(tower.model.damage).forEach(([type, value]) => {
-    damage += value
+    damage += (value * delta / 1000 * tower.scene.time.timeScale)
     // console.log(`${value} ${type} damage from ${tower.model.name}`)
   })
   tower.targets.forEach(target => target.health.adjust(-damage))
@@ -51,7 +52,7 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
     }
     if (tower.targets.length > 0) {
       tower.emissionPoints().forEach((point, i) => this.addEmitter(i, point, tower, time))
-      applyDamage(tower, this.singleTarget)
+      applyDamage(tower, delta, this.singleTarget)
     } else {
       this.removeOrStopEmitters()
     }

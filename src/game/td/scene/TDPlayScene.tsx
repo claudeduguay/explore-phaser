@@ -316,6 +316,7 @@ export default class TDPlayScene extends Scene {
           this.sound.play("fail")
         } else {
           this.addingTower.preview = false
+          this.towerGroup.add(this.addingTower)
           this.sound.play("plop")
         }
         this.addingTower.showRange.visible = false

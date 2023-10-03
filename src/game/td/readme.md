@@ -38,6 +38,7 @@ There are two ways to upgrade:
 Look into using stopFollow and resumeFollow to slow and sleep
 
 * Impact: Spray effect with expanding wave/curve sprite
+* Sleep: Put enemies in range to sleep for a given amount of time
 
 Major categories:
 

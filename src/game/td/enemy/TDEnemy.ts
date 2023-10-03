@@ -18,6 +18,8 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     public model?: IEnemyModel, public showStatusBars: boolean = false) {
     super(scene, path, x, y, key)
 
+    this.setInteractive()
+
     this.health = new ActiveValue(model?.stats.health || 0)
     this.shield = new ActiveValue(model?.stats.shield || 0)
 
@@ -36,7 +38,10 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
   }
 
   addSelectHandler(select: (selection?: TDEnemy) => void) {
-    this.on(Input.Events.POINTER_UP, () => select(this), this)
+    this.on(Input.Events.POINTER_UP, () => {
+      select(this)
+      this.showSelection()
+    }, this)
   }
 
   removeSelectHandler() {
@@ -44,11 +49,12 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
   }
 
   showSelection() {
+    console.log("Add glow")
     this.postFX.addGlow()
   }
 
   hideSelection() {
-    this.postFX?.clear()
+    this.postFX.clear()
   }
 
   preUpdate(time: number, delta: number): void {

@@ -23,7 +23,7 @@ export default class BaseTargeCloudBehavior implements IBehavior<ITower> {
     }
     if (tower.targets.length) {
       this.cloud?.start()
-      applyDamage(tower)
+      applyDamage(tower, delta)
     } else { // No target
       this.cloud?.stop()
     }

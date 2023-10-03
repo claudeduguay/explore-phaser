@@ -58,7 +58,7 @@ export const MODERATE_ENEMY: IEnemyModel = {
 }
 
 export const STRONG_ENEMY: IEnemyModel = {
-  name: "Moderate Enemy",
+  name: "Strong Enemy",
   meta: {
     body: "path-red"
   },

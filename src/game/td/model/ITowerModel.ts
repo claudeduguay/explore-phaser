@@ -46,7 +46,7 @@ export const LAZER_TOWER: ITowerModel = {
     range: 150,
   },
   damage: {
-    lazer: 1
+    lazer: 10
   }
 }
 
@@ -63,7 +63,7 @@ export const PLASMA_TOWER: ITowerModel = {
     range: 150,
   },
   damage: {
-    plasma: 1
+    plasma: 10
   }
 }
 
@@ -80,7 +80,7 @@ export const FIRE_TOWER: ITowerModel = {
     range: 150,
   },
   damage: {
-    fire: 1
+    fire: 10
   }
 }
 
@@ -97,7 +97,7 @@ export const POISON_TOWER: ITowerModel = {
     range: 100,
   },
   damage: {
-    posion: 1
+    posion: 10
   }
 }
 
@@ -114,7 +114,7 @@ export const SMOKE_TOWER: ITowerModel = {
     range: 100,
   },
   damage: {
-    smoke: 1
+    smoke: 10
   }
 }
 
@@ -131,7 +131,7 @@ export const SHOCK_TOWER: ITowerModel = {
     range: 100,
   },
   damage: {
-    shock: 1
+    shock: 10
   }
 }
 
@@ -148,7 +148,7 @@ export const FREEZE_TOWER: ITowerModel = {
     range: 100,
   },
   damage: {
-    freeze: 1
+    freeze: 10
   }
 }
 
@@ -165,7 +165,7 @@ export const BULLET_TOWER: ITowerModel = {
     range: 150,
   },
   damage: {
-    bullet: 1
+    bullet: 10
   }
 }
 
@@ -182,7 +182,7 @@ export const MISSILE_TOWER: ITowerModel = {
     range: 150,
   },
   damage: {
-    missile: 1
+    missile: 10
   }
 }
 
@@ -199,7 +199,7 @@ export const LIGHTNING_TOWER: ITowerModel = {
     range: 150,
   },
   damage: {
-    lightning: 1
+    lightning: 10
   }
 }
 
@@ -216,7 +216,7 @@ export const ICE_TOWER: ITowerModel = {
     range: 150,
   },
   damage: {
-    ice: 1
+    ice: 10
   }
 }
 
@@ -233,7 +233,7 @@ export const BOOST_TOWER: ITowerModel = {
     range: 150,
   },
   damage: {
-    boost: 1
+    boost: 10
   }
 }
 
@@ -251,7 +251,7 @@ export const SLOW_TOWER: ITowerModel = {
 
   },
   damage: {
-    slow: 1
+    slow: 10
   }
 }
 
