@@ -1,18 +1,21 @@
+import { Scene } from "phaser"
 import { canvasSize } from "../../../../util/SceneUtil"
 import { useActiveValue } from "../../value/ActiveValue"
 import { IActiveValues } from "../TDPlayScene"
 import INavigator from "./INavigator"
 import Icon from "./Icon"
 import IconButton from "./IconButton"
+import SpeedControl from "./SpeedControl"
 
 export interface IGameHeaderProps {
+  scene: Scene
   navigator: INavigator
   onShowTowerInfo?: () => void
   onShowEnemyInfo?: () => void
   active: IActiveValues
 }
 
-export default function GameHeader({ active, navigator, onShowTowerInfo, onShowEnemyInfo }: IGameHeaderProps) {
+export default function GameHeader({ active, navigator, scene, onShowTowerInfo, onShowEnemyInfo }: IGameHeaderProps) {
   const { w } = canvasSize(navigator)
 
   const { health: activeHealth, credits: activeCredits } = active
@@ -29,7 +32,7 @@ export default function GameHeader({ active, navigator, onShowTowerInfo, onShowE
   const credits = useActiveValue(activeCredits)
 
   return <>
-    <div className="d-flex p-2" style={{ width: w, height: 60 }}>
+    <div className="d-flex p-2" style={{ width: w, height: 45 }}>
       <div className="flex-fill justify-content-start">
         <div className="row">
           <div className="col-auto p-0 ms-2">
@@ -52,6 +55,7 @@ export default function GameHeader({ active, navigator, onShowTowerInfo, onShowE
       </div>
       <div className="justify-content-end bg-primary">
         <div className="btn-group">
+          <SpeedControl scene={scene} />
           <IconButton icon="home" onClick={onHome} />
           <IconButton icon="sentiment_satisfied" onClick={onWin} />
           <IconButton icon="sentiment_very_dissatisfied" onClick={onLose} />
@@ -62,3 +66,4 @@ export default function GameHeader({ active, navigator, onShowTowerInfo, onShowE
     </div>
   </>
 }
+

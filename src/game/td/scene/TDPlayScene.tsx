@@ -179,6 +179,7 @@ export default class TDPlayScene extends Scene {
     this.physics.add.existing(this.enemyGroup)
     // Enemies are created as the timeline moves, so we can't take the first entry of the group
     this.enemyGroup.select(new TDEnemy(this, 0, 0, WEAK_ENEMY.meta.body, new Curves.Path(), WEAK_ENEMY))
+    this.enemyGroup.infoVisible.value = false
     addReactNode(this, w - 350 - 25, 75, <EnemyInfo enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
       this.enemyGroup.infoVisible, true)
 
@@ -240,7 +241,7 @@ export default class TDPlayScene extends Scene {
       }
     }
 
-    addReactNode(this, 0, 0, <GameHeader active={this.active}
+    addReactNode(this, 0, 0, <GameHeader scene={this} active={this.active}
       navigator={this.gameScene} onShowEnemyInfo={() => this.enemyGroup.infoVisible.value = true} />)
     addReactNode(this, 0, this.game.canvas.height - 62, <GameFooter scene={this} onAddTower={onAddTower} />)
 
