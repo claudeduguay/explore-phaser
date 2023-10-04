@@ -1,4 +1,4 @@
-import { poisonEmitter } from "../emitter/ParticleConfig"
+import { poisonEmitter } from "../../emitter/ParticleConfig"
 import BaseTargeCloudBehavior from "./BaseTargetCloudBehavior"
 
 export default class TargePoisonBehavior extends BaseTargeCloudBehavior {

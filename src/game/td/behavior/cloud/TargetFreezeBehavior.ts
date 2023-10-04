@@ -1,8 +1,8 @@
-import { smokeEmitter } from "../emitter/ParticleConfig"
+import { freezeEmitter } from "../../emitter/ParticleConfig"
 import BaseTargeCloudBehavior from "./BaseTargetCloudBehavior"
 
 export default class TargePoisonBehavior extends BaseTargeCloudBehavior {
   constructor() {
-    super("smoke", smokeEmitter)
+    super("ice", freezeEmitter)
   }
 }

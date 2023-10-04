@@ -1,5 +1,5 @@
 import { GameObjects, Types, Math as PMath } from "phaser"
-import BaseTargetBehavior, { ITarget, ITower } from "./BaseTargetBehavior"
+import BaseTargetBehavior, { ITarget, ITower } from "../BaseTargetBehavior"
 
 export type IEmitterConfigurator = (range: number) => Types.GameObjects.Particles.ParticleEmitterConfig
 

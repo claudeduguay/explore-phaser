@@ -1,4 +1,4 @@
-import { shockEmitter } from "../emitter/ParticleConfig"
+import { shockEmitter } from "../../emitter/ParticleConfig"
 import BaseTargeCloudBehavior from "./BaseTargetCloudBehavior"
 
 export default class TargePoisonBehavior extends BaseTargeCloudBehavior {
