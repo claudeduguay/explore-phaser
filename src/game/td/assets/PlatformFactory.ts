@@ -20,7 +20,7 @@ export const DEFAULT_PLATFORM_OPTIONS: IPlatformOptions = {
 function ntagon(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IPlatformOptions) {
-  const { margin, inset, color } = options
+  const { margin, color } = options
   const { w, h } = canvasDimensions(g, options)
   const x = margin * w
   const y = margin * h
@@ -28,7 +28,7 @@ function ntagon(g: CanvasRenderingContext2D,
   const hh = h - (y * 2)
   const cx = x + ww / 2
   const cy = y + hh / 2
-  const i = inset * ww
+  // const i = inset * ww
   const div = options.divisions || 0
   const slice = 360.0 / div
   g.fillStyle = colorStyle(g, x, y, ww, hh, color)
