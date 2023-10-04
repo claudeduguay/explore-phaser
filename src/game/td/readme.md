@@ -17,7 +17,26 @@ corners an beam towers use squared corners?
 
 * Need for consider whether we can embed a new scene inside and DOM object.
 * Need to figure out leveling
-* Add speed controls
+* Develop an EFFECT System to add/remove a modifier with time exiry (or none)
+* Add slow support using stopFollow and resumeFollow to slow and sleep
+
+### Effect/Afliction Design Notes
+
+An effect, to be most flexible, is like a modifier with a timeout to reversal.
+The problem with reversal is that we have to compute the value on the fly to
+success. A computed value has to account for a base and active value.
+We can use the AcvtiveValue system and support self-registering modifiers
+with a timeout.
+
+Aflictions should be shown in the EnemyInfo view (with a timeout counter
+also visible)
+
+So: An AFFLICTION is a Modifier function that is applied to an Enemy (such as
+Slow or Sleep, the latter of which times out) or affects a property like health
+or resistance. After a timeout, it automatically unregisters itself from the 
+property.
+
+A Tween may allow an effect on a named propery.
 
 ### Leveling Notes
 
@@ -34,19 +53,22 @@ There are two ways to upgrade:
 
 # Towers to add:
 
-* NEW = Sleep: Suspends an enemy's movement for a specified amount of time
-Look into using stopFollow and resumeFollow to slow and sleep
-
-* Impact: Spray effect with expanding wave/curve sprite
-* Sleep: Put enemies in range to sleep for a given amount of time
+* NEW = Sleep: Suspends an enemy's movement for a specified amount of time.
+  NEW = Rain: Applies wey efffect for a while after enemies exit the rain area.
+* NEW = Snow: Applies cold effect for a while after enemies exit the snow area.
+* NEW - Grenade throw a projectile that explodes after a second or so.
+* Create a Fire tower with an AOE effect and rename Fire (spray) to Flame
+* ADD - Impact: Spray effect with expanding wave/curve sprite
+* ADD - Sleep: Put enemies in range to sleep for a given amount of time
 
 Major categories:
 
-* Beam weapons, like Lazer and Plasma
-* Projectile, like Bullet and Missile (note that Bullet is not a guided projectile)
-* Cloud, like Poison, Smoke, Freeze, Shock
-* Spray, like Fire and Ice
-* Effect, like Boost and Slow
+* **Beam** weapons, like Lazer and Plasma
+* **Throw** weapons that projectile, like Bullet and Missile (note that Bullet is not a guided projectile)
+* **Cloud**, like Poison, Smoke, Freeze, Shock
+* **Spray**, like Fire and Ice
+* **Effect**, duff/debuff like Boost, Slow, Cold, Wet, etc
 
 Note that Boost towers affect other Towers and so don't operate on Enemy Targets.
 This is the only major deviation from other Tower models.
+
