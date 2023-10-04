@@ -1,4 +1,4 @@
-import { Types, Math as PMath } from "phaser"
+import { Types, Math as PMath, Geom } from "phaser"
 import Point from "../../../util/Point"
 import { lerp } from "../../../util/MathUtil"
 
@@ -120,17 +120,19 @@ export function edgeEmitZone(range: number): Types.GameObjects.Particles.Particl
 }
 
 // Points appear to be relative to the scene, not the emitter, so this is a problem w/o access to the emitter position
+// Reported at: https://github.com/photonstorm/phaser/issues/6371
 export function edgeDeathZone(range: number, cx: number = 0, cy: number = 0): Types.GameObjects.Particles.ParticleEmitterDeathZoneConfig {
   return {
     type: 'onLeave',
-    source: {
-      contains: (x: number, y: number) => {
-        const point = new Point(x - cx, y - cy)
-        const radius = point.length()
-        console.log("Point radius:", point, radius)
-        return radius < range
-      }
-    }
+    source: new Geom.Circle(cx, cy, range)
+    // source: {
+    //   contains: (x: number, y: number) => {
+    //     const point = new Point(x - cx, y - cy)
+    //     const radius = point.length()
+    //     console.log("Point radius:", point, radius)
+    //     return radius < range
+    //   }
+    // }
   }
 }
 
@@ -149,8 +151,9 @@ export function commonFall(range: number = 100): Partial<EmitterConfig> {
 
 
 export function rainEmitter(range: number = 100): EmitterConfig {
-  const speed = 200
-  const lifespan = range * 20
+  const speed = 100
+  const travelPerSecond = speed / 1000
+  const lifespan = range / travelPerSecond
   return {
     ...commonFall(range),
     alpha: 1.0,
@@ -159,13 +162,14 @@ export function rainEmitter(range: number = 100): EmitterConfig {
     speed,
     scale: 0.075,
     blendMode: 'ADD',
-    deathZone: edgeDeathZone(range, 135, 648)
+    // deathZone: edgeDeathZone(range, 135, 648)
   }
 }
 
 export function snowEmitter(range: number = 100): EmitterConfig {
   const speed = 100
-  const lifespan = range * 20
+  const travelPerSecond = speed / 1000
+  const lifespan = range / travelPerSecond
   return {
     ...commonFall(range),
     alpha: 1.0,
@@ -174,7 +178,7 @@ export function snowEmitter(range: number = 100): EmitterConfig {
     speed,
     scale: 0.05,
     blendMode: 'ADD',
-    deathZone: edgeDeathZone(range, 305, 648)
+    // deathZone: edgeDeathZone(range, 305, 648)
   }
 }
 
