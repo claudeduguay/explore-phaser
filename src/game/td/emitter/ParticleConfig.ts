@@ -59,7 +59,7 @@ export function fireEmitter(range: number = 80): EmitterConfig {
   return {
     ...commonCloud(range),
     alpha: { start: 0.1, end: 0 },
-    color: [0x00ffff, 0x009999, 0x003333],
+    color: [0xfacc22, 0xf89800, 0xf83600, 0x000000],
     scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
   }
 }
@@ -102,7 +102,7 @@ export function rainEmitter(range: number = 100): EmitterConfig {
   const travelPerSecond = speed / 1000
   // Distance traveled is range divided by travelPerSecond
   // Note, we add 25% to range to wrap the enemy
-  const lifespan = range / travelPerSecond
+  const lifespan = range / travelPerSecond * 0.5
   return {
     ...commonCloud(range),
     // gravityY: 10.0,
@@ -122,7 +122,7 @@ export function snowEmitter(range: number = 100): EmitterConfig {
   const travelPerSecond = speed / 1000
   // Distance traveled is range divided by travelPerSecond
   // Note, we add 25% to range to wrap the enemy
-  const lifespan = range / travelPerSecond
+  const lifespan = range / travelPerSecond * 0.5
   return {
     ...commonCloud(range),
     // gravityY: 10.0,

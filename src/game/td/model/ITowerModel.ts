@@ -101,6 +101,23 @@ export const POISON_TOWER: ITowerModel = {
   }
 }
 
+export const FIRE_TOWER: ITowerModel = {
+  name: "Fire Tower",
+  meta: {
+    key: "fire",
+    distribution: "radial",
+    rotation: 1,
+  },
+  stats: {
+    level: 3,
+    cost: 100,
+    range: 100,
+  },
+  damage: {
+    posion: 10
+  }
+}
+
 export const SMOKE_TOWER: ITowerModel = {
   name: "Smoke Tower",
   meta: {
@@ -298,6 +315,7 @@ export const ALL_TOWERS = [
   ICE_TOWER,
   BULLET_TOWER,
   POISON_TOWER,
+  FIRE_TOWER,
   SMOKE_TOWER,
   SHOCK_TOWER,
   FREEZE_TOWER,

@@ -1,7 +1,7 @@
 import { fireEmitter } from "../../emitter/ParticleConfig"
 import BaseTargeCloudBehavior from "./BaseTargetCloudBehavior"
 
-export default class TargetIceBehavior extends BaseTargeCloudBehavior {
+export default class TargetFireBehavior extends BaseTargeCloudBehavior {
 
   constructor() {
     super('fire', fireEmitter)

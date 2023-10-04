@@ -4,6 +4,6 @@ import BaseTargeCloudBehavior from "./BaseTargetCloudBehavior"
 
 export default class TargeSnowBehavior extends BaseTargeCloudBehavior {
   constructor() {
-    super("snow", snowEmitter, new Point(0, -64))
+    super("snow", snowEmitter, new Point(0, -32))
   }
 }
