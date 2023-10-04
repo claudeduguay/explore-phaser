@@ -37,7 +37,7 @@ export function applyDamage(tower: ITower, delta: number, singleTarget: boolean 
         const resistance = (target.model?.resistance[key] || target.model?.resistance.default)
         const multiplier = 1.0 - resistance
         damage += (dps * multiplier)
-        console.log(`${value}, (per update: ${dps}) ${key} damage from ${tower.model.name} (resistance: ${resistance})`)
+        // console.log(`${value}, (per update: ${dps}) ${key} damage from ${tower.model.name} (resistance: ${resistance})`)
       })
       target.health.adjust(-damage)
     }

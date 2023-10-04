@@ -36,6 +36,12 @@ export default class TowerPreview extends Scene {
       const e = new TDEnemy(this, x, y - 100, WEAK_ENEMY)
       t.targets = [e]
       this.add.existing(e)
+      if (model.meta.key === "rain") {
+        console.log("Rain tower positin:", x, y)
+      }
+      if (model.meta.key === "snow") {
+        console.log("Snow tower positin:", x, y)
+      }
     })
   }
 

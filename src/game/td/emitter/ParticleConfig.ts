@@ -99,18 +99,36 @@ export function sleepEmitter(range: number = 80): EmitterConfig {
 // DROP (GRAVITY) EMITTERS
 // ------------------------------------------------------------------
 
-export function lineEmitZone(range: number): Types.GameObjects.Particles.ParticleEmitterEdgeZoneConfig {
+// Upper arc of tower's range
+export function edgeEmitZone(range: number): Types.GameObjects.Particles.ParticleEmitterEdgeZoneConfig {
   return {
     type: 'edge',
-    quantity: 100,
+    quantity: 200,
     source: {
       getPoints: (quantity: number) => {
         const points = []
         for (let i = 0; i < quantity; i++) {
-          const x = lerp(-range, range, Math.random())
-          points.push(new Point(x, -range))
+          const a = lerp(Math.PI, Math.PI * 2, Math.random())
+          const x = Math.cos(a) * range
+          const y = Math.sin(a) * range
+          points.push(new Point(x, y))
         }
         return points
+      }
+    }
+  }
+}
+
+// Points appear to be relative to the scene, not the emitter, so this is a problem w/o access to the emitter position
+export function edgeDeathZone(range: number, cx: number = 0, cy: number = 0): Types.GameObjects.Particles.ParticleEmitterDeathZoneConfig {
+  return {
+    type: 'onLeave',
+    source: {
+      contains: (x: number, y: number) => {
+        const point = new Point(x - cx, y - cy)
+        const radius = point.length()
+        console.log("Point radius:", point, radius)
+        return radius < range
       }
     }
   }
@@ -123,15 +141,15 @@ export function commonFall(range: number = 100): Partial<EmitterConfig> {
     lifespan: 3000,
     angle: 90,
     rotate: 0,
-    speed: 0.1,
+    speed: 100,
     blendMode: 'NORMAL',
-    emitZone: lineEmitZone(range)
+    emitZone: edgeEmitZone(range),
   }
 }
 
 
 export function rainEmitter(range: number = 100): EmitterConfig {
-  const speed = 100
+  const speed = 200
   const lifespan = range * 20
   return {
     ...commonFall(range),
@@ -139,8 +157,9 @@ export function rainEmitter(range: number = 100): EmitterConfig {
     color: [0x6666ff],
     lifespan,
     speed,
-    scale: 0.05,
+    scale: 0.075,
     blendMode: 'ADD',
+    deathZone: edgeDeathZone(range, 135, 648)
   }
 }
 
@@ -155,6 +174,7 @@ export function snowEmitter(range: number = 100): EmitterConfig {
     speed,
     scale: 0.05,
     blendMode: 'ADD',
+    deathZone: edgeDeathZone(range, 305, 648)
   }
 }
 
