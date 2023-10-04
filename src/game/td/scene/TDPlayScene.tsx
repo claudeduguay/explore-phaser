@@ -39,7 +39,7 @@ export default class TDPlayScene extends Scene {
   towerColliders = new PointColliders()
   addingTower?: TDTower
 
-  constructor(public readonly gameScene: TDGameScene) {
+  constructor(public readonly parent: TDGameScene) {
     super({ key: "play" })
   }
 
@@ -242,13 +242,13 @@ export default class TDPlayScene extends Scene {
     }
 
     addReactNode(this, 0, 0, <GameHeader scene={this} active={this.active}
-      navigator={this.gameScene} onShowEnemyInfo={() => this.enemyGroup.infoVisible.value = true} />)
+      navigator={this.parent} onShowEnemyInfo={() => this.enemyGroup.infoVisible.value = true} />)
     addReactNode(this, 0, this.game.canvas.height - 62, <GameFooter scene={this} onAddTower={onAddTower} />)
 
-    const showTowerPreview = false
+    const showTowerPreview = true
     if (showTowerPreview) {
-      const preview = new TowerPreview(this, 50, 70)
-      this.add.existing(preview)
+      const preview = new TowerPreview(this, 50, 58)
+      this.scene.add("tower_preview", preview, true)
     }
 
     testPlasmaPath(this)

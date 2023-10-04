@@ -5,11 +5,11 @@ import TDGameScene from "./TDGameScene"
 import GameWin from "./react/GameWin"
 
 export default class TDHomeScene extends Scene {
-  constructor(public readonly gameScene: TDGameScene) {
+  constructor(public readonly main: TDGameScene) {
     super({ key: "win" })
   }
 
   create() {
-    addReactNode(this, 0, 0, <GameWin navigator={this.gameScene} />)
+    addReactNode(this, 0, 0, <GameWin navigator={this.main} />)
   }
 }
