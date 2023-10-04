@@ -67,10 +67,10 @@ export const PLASMA_TOWER: ITowerModel = {
   }
 }
 
-export const FIRE_TOWER: ITowerModel = {
-  name: "Fire Tower",
+export const FLAME_TOWER: ITowerModel = {
+  name: "Flame Tower",
   meta: {
-    key: "fire",
+    key: "flame",
     distribution: "linear",
     rotation: "target",
   },
@@ -259,7 +259,7 @@ export const SLOW_TOWER: ITowerModel = {
 export const ALL_TOWERS = [
   LAZER_TOWER,
   PLASMA_TOWER,
-  FIRE_TOWER,
+  FLAME_TOWER,
   POISON_TOWER,
   SMOKE_TOWER,
   SHOCK_TOWER,

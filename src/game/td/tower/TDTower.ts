@@ -13,7 +13,7 @@ import { ISelectable } from "../scene/SelectableGroup"
 import RotateBehavior from "../behavior/RotateBehavior"
 import TargetLightningBehavior from "../behavior/TargetLightningBehavior"
 import TargePoisonBehavior from "../behavior/TargetPoisonBehavior"
-import TargetFireBehavior from "../behavior/TargetFireBehavior"
+import TargetFlameBehavior from "../behavior/TargetFlameBehavior"
 import TargetIceBehavior from "../behavior/TargetIceBehavior"
 import TargetBulletBehavior from "../behavior/TargetBulletBehavior"
 import TargetBoostBehavior from "../behavior/TargetBoostBehavior"
@@ -61,8 +61,8 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
       case "plasma":
         this.behavior.push(new TargetPlasmaBehavior())
         break
-      case "fire":
-        this.behavior.push(new TargetFireBehavior())
+      case "flame":
+        this.behavior.push(new TargetFlameBehavior())
         break
       case "ice":
         this.behavior.push(new TargetIceBehavior())

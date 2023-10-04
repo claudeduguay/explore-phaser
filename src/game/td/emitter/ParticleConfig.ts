@@ -12,7 +12,6 @@ type EmitterConfig = Types.GameObjects.Particles.ParticleEmitterConfig
 
 export function commonCloud(range: number = 100): Partial<EmitterConfig> {
   return {
-    alpha: { start: 0.2, end: 0 },
     colorEase: PMath.Easing.Linear.name,
     lifespan: 3000,
     advance: 0,
@@ -37,6 +36,7 @@ export function commonCloud(range: number = 100): Partial<EmitterConfig> {
 export function poisonEmitter(range: number = 80): EmitterConfig {
   return {
     ...commonCloud(range),
+    alpha: { start: 0.2, end: 0 },
     color: [0x009900, 0x00FF00, 0x009900],
     scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
   }
@@ -45,7 +45,17 @@ export function poisonEmitter(range: number = 80): EmitterConfig {
 export function smokeEmitter(range: number = 80): EmitterConfig {
   return {
     ...commonCloud(range),
+    alpha: { start: 0.2, end: 0 },
     color: [0x999999, 0xCCCCCC, 0x999999],
+    scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
+  }
+}
+
+export function fireEmitter(range: number = 80): EmitterConfig {
+  return {
+    ...commonCloud(range),
+    alpha: { start: 0.1, end: 0 },
+    color: [0x00ffff, 0x009999, 0x003333],
     scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
   }
 }
@@ -53,15 +63,26 @@ export function smokeEmitter(range: number = 80): EmitterConfig {
 export function freezeEmitter(range: number = 80): EmitterConfig {
   return {
     ...commonCloud(range),
+    alpha: { start: 0.33, end: 0 },
     color: [0x00ffff, 0x009999, 0x003333],
-    scale: { start: 0.33, end: 0.66, ease: 'sine.out' },
+    scale: { start: 0.15, end: 0.33, ease: 'sine.out' },
   }
 }
 
 export function shockEmitter(range: number = 80): EmitterConfig {
   return {
     ...commonCloud(range),
+    alpha: { start: 0.5, end: 0 },
     color: [0x00ffff, 0x009999, 0x003333],
+    scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
+  }
+}
+
+export function sleepEmitter(range: number = 80): EmitterConfig {
+  return {
+    ...commonCloud(range),
+    alpha: { start: 0.3, end: 0 },
+    color: [0xffffff, 0x999999, 0xffffff],
     scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
   }
 }
@@ -76,7 +97,7 @@ export function commonSpray(range: number = 100): Partial<EmitterConfig> {
   }
 }
 
-export function fireEmitter(range: number = 100): EmitterConfig {
+export function flameEmitter(range: number = 100): EmitterConfig {
   const speed = 100
   const travelPerSecond = speed / 1000
   // Distance traveled is range divided by travelPerSecond
@@ -115,13 +136,13 @@ export function iceEmitter(range: number = 100): EmitterConfig {
   const lifespan = (range * 1.25) / travelPerSecond
   return {
     gravityY: 0,
-    alpha: 1.0, // { start: 0.75, end: 0.25 },
+    alpha: { start: 1, end: 0 },
     color: [0x00ffff, 0x009999, 0x003333],
     colorEase: PMath.Easing.Quadratic.Out.name,
     lifespan,
     speed,
     advance: 0,
-    angle: { min: 10, max: -10 },  // 90 +/- 5
+    angle: { min: 5, max: -5 },  // 90 +/- 5
     rotate: { min: 0, max: 360 },
     scale: { start: 0.01, end: 0.2, ease: 'sine.out' },
     blendMode: 'ADD',
@@ -149,10 +170,35 @@ export function impactEmitter(range: number = 100): EmitterConfig {
   }
 }
 
+// First fall (gravity) emitter
+
+export function snowEmitter(range: number = 100): EmitterConfig {
+  const speed = 100
+  const travelPerSecond = speed / 1000
+  // Distance traveled is range divided by travelPerSecond
+  // Note, we add 25% to range to wrap the enemy
+  const lifespan = (range * 1.25) / travelPerSecond
+  return {
+    gravityY: 1.0,
+    alpha: 1.0, // { start: 0.75, end: 0.25 },
+    color: [0xffffff, 0x999999, 0xffffff],
+    colorEase: PMath.Easing.Quadratic.Out.name,
+    lifespan,
+    speed,
+    advance: 0,
+    angle: 0,
+    rotate: 0,
+    scale: 0.02,
+    blendMode: 'ADD',
+  }
+}
+
+
+
 // ------------------------------------------------------------------
 // SAMPLE EMITTERS
 // ------------------------------------------------------------------
-
+/*
 export const flameEmitter: EmitterConfig = {
   frame: 'white',
   color: [0xfacc22, 0xf89800, 0xf83600, 0x9f0404],
@@ -187,3 +233,4 @@ export const smokeyEmitter: EmitterConfig = {
   advance: 2000,
   blendMode: 'ADD'
 }
+*/

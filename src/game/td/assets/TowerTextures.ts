@@ -1,9 +1,9 @@
 import { Display, Scene } from "phaser"
 import { IColoring } from "../../../util/DrawUtil"
-import { IPlatformOptions } from "../assets/PlatformFactory"
-import { IProjectorOptions } from "../assets/ProjectorFactory"
-import { ITurretOptions } from "../assets/TurretFactory"
-import { ITextureConfig, makeTowerPlatform, makeTowerProjector, makeTowerTurret } from "../assets/TextureFactory"
+import { IPlatformOptions } from "./PlatformFactory"
+import { IProjectorOptions } from "./ProjectorFactory"
+import { ITurretOptions } from "./TurretFactory"
+import { ITextureConfig, makeTowerPlatform, makeTowerProjector, makeTowerTurret } from "./TextureFactory"
 
 export function colors(h: number, s: number = 1, l: number = 0.1) {
   const color = Display.Color.HSLToColor(h, s, l)
@@ -15,7 +15,7 @@ export function colors(h: number, s: number = 1, l: number = 0.1) {
 }
 
 export const COLORS: { [key: string]: IColoring } = {
-  FIRE: colors(0.0),
+  FLAME: colors(0.0),
   POISON: colors(0.3),
   SMOKE: colors(0, 1.0, 0),
   SHOCK: colors(0.7),
@@ -78,7 +78,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
       }
     }
   },
-  FIRE: {
+  FLAME: {
     platform: {
       size: {
         x: 64,
@@ -88,7 +88,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
         type: "box-i",
         margin: 0,
         inset: 0.1,
-        color: COLORS.FIRE
+        color: COLORS.FLAME
       }
     },
     turret: {
@@ -100,7 +100,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
         ratio: 0.6,
         topSeg: 10,
         botSeg: 10,
-        color: COLORS.FIRE
+        color: COLORS.FLAME
       }
     },
     projector: {
@@ -112,7 +112,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
         type: "funnel",
         margin: 0,
         inset: 0.33,
-        color: COLORS.FIRE,
+        color: COLORS.FLAME,
         line: "white"
       },
     }
