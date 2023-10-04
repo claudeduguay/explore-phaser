@@ -1,11 +1,13 @@
 import { IColoring, colorStyle, drawArc } from "../../../util/DrawUtil";
+import { toRadians } from "../../../util/MathUtil";
 import { canvasSize, canvasDimensions, IMarginInsets } from "../../../util/RenderUtil";
 
-export type IPlatformType = "angle" | "curve-o" | "curve-i" | "box-o" | "box-i"
+export type IPlatformType = "angle" | "curve-o" | "curve-i" | "box-o" | "box-i" | "ntagon"
 
 export interface IPlatformOptions extends IMarginInsets {
   type: IPlatformType;
   color: IColoring
+  divisions?: number
 }
 
 export const DEFAULT_PLATFORM_OPTIONS: IPlatformOptions = {
@@ -13,6 +15,35 @@ export const DEFAULT_PLATFORM_OPTIONS: IPlatformOptions = {
   margin: 0,
   inset: 0.2,
   color: ["#CCF", "#336", "#00F"]
+}
+
+function ntagon(g: CanvasRenderingContext2D,
+  frameIndexFraction: number, // Ignored but compatible
+  options: IPlatformOptions) {
+  const { margin, inset, color } = options
+  const { w, h } = canvasDimensions(g, options)
+  const x = margin * w
+  const y = margin * h
+  const ww = w - (x * 2)
+  const hh = h - (y * 2)
+  const cx = x + ww / 2
+  const cy = y + hh / 2
+  const i = inset * ww
+  const div = options.divisions || 0
+  const slice = 360.0 / div
+  g.fillStyle = colorStyle(g, x, y, ww, hh, color)
+  g.beginPath()
+  for (let i = 0; i < div; i++) {
+    const a = toRadians(slice * i)
+    const x = cx + Math.cos(a) * cx
+    const y = cy + Math.sin(a) * cy
+    if (i === 0) {
+      g.moveTo(x, y)
+    } else {
+      g.lineTo(x, y)
+    }
+  }
+  g.fill()
 }
 
 function nwCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
@@ -125,14 +156,14 @@ export function baseRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IPlatformOptions
 ) {
-  const { margin, inset, color: gradient } = options
+  const { margin, inset, color } = options
   const { w, h } = canvasDimensions(g, options)
   const x = margin * w
   const y = margin * h
   const ww = w - (x * 2)
   const hh = h - (y * 2)
   const i = inset * ww
-  g.fillStyle = colorStyle(g, x, y, ww, hh, gradient)
+  g.fillStyle = colorStyle(g, x, y, ww, hh, color)
   g.beginPath()
   g.moveTo(x, y + i)
   nwCorner(g, options)
@@ -156,6 +187,10 @@ export function platformRendererFunctionFactory(
     const { w, h } = canvasSize(g)
     g.rect(0, 0, w, h)
     g.clip()
-    baseRenderer(g, frameIndexFraction, merged)
+    if (options.type === "ntagon") {
+      ntagon(g, frameIndexFraction, merged)
+    } else {
+      baseRenderer(g, frameIndexFraction, merged)
+    }
   };
 }

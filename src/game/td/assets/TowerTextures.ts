@@ -1,6 +1,6 @@
 import { Display, Scene } from "phaser"
 import { IColoring } from "../../../util/DrawUtil"
-import { IPlatformOptions } from "./PlatformFactory"
+import { IPlatformOptions, IPlatformType } from "./PlatformFactory"
 import { IProjectorOptions } from "./ProjectorFactory"
 import { ITurretOptions } from "./TurretFactory"
 import { ITextureConfig, makeTowerPlatform, makeTowerProjector, makeTowerTurret } from "./TextureFactory"
@@ -20,6 +20,8 @@ export const COLORS: { [key: string]: IColoring } = {
   SMOKE: colors(0, 1.0, 0),
   SHOCK: colors(0.7),
   FREEZE: colors(0.5),
+  RAIN: colors(0.55),
+  SNOW: colors(0.45),
   LAZER: colors(0.6),
   PLASMA: colors(0.65),
   BULLET: colors(0.2),
@@ -28,6 +30,13 @@ export const COLORS: { [key: string]: IColoring } = {
   ICE: colors(0.5),
   BOOST: colors(0.9),
   SLOW: colors(0.8),
+}
+
+export function platformConfig(type: IPlatformType, color: IColoring, divisions: number = 10) {
+  return {
+    size: { x: 64, y: 64 },
+    options: { type, divisions, color }
+  }
 }
 
 interface ITextureConfigs {
@@ -39,18 +48,7 @@ interface ITextureConfigs {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TOWERS: Record<string, ITextureConfigs> = {
   LAZER: {
-    platform: {
-      size: {
-        x: 64,
-        y: 64
-      },
-      options: {
-        type: "curve-o",
-        margin: 0,
-        inset: 0.2,
-        color: COLORS.LAZER
-      }
-    },
+    platform: platformConfig("ntagon", COLORS.LAZER),
     turret: {
       size: {
         x: 48,
@@ -79,18 +77,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
     }
   },
   FLAME: {
-    platform: {
-      size: {
-        x: 64,
-        y: 64
-      },
-      options: {
-        type: "box-i",
-        margin: 0,
-        inset: 0.1,
-        color: COLORS.FLAME
-      }
-    },
+    platform: platformConfig("box-i", COLORS.FLAME),
     turret: {
       size: {
         x: 42,
@@ -118,18 +105,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
     }
   },
   POISON: {
-    platform: {
-      size: {
-        x: 64,
-        y: 64
-      },
-      options: {
-        type: "angle",
-        margin: 0,
-        inset: 0.2,
-        color: COLORS.POISON
-      }
-    },
+    platform: platformConfig("angle", COLORS.POISON),
     turret: {
       size: {
         x: 38,
@@ -157,18 +133,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
     }
   },
   SMOKE: {
-    platform: {
-      size: {
-        x: 64,
-        y: 64
-      },
-      options: {
-        type: "angle",
-        margin: 0,
-        inset: 0.2,
-        color: COLORS.SMOKE
-      }
-    },
+    platform: platformConfig("angle", COLORS.SMOKE),
     turret: {
       size: {
         x: 38,
@@ -196,18 +161,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
     }
   },
   SHOCK: {
-    platform: {
-      size: {
-        x: 64,
-        y: 64
-      },
-      options: {
-        type: "angle",
-        margin: 0,
-        inset: 0.2,
-        color: COLORS.SHOCK
-      }
-    },
+    platform: platformConfig("angle", COLORS.SHOCK),
     turret: {
       size: {
         x: 38,
@@ -235,18 +189,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
     }
   },
   FREEZE: {
-    platform: {
-      size: {
-        x: 64,
-        y: 64
-      },
-      options: {
-        type: "angle",
-        margin: 0,
-        inset: 0.2,
-        color: COLORS.FREEZE
-      }
-    },
+    platform: platformConfig("angle", COLORS.FREEZE),
     turret: {
       size: {
         x: 38,
@@ -273,19 +216,64 @@ const TOWERS: Record<string, ITextureConfigs> = {
       },
     }
   },
-  BULLET: {
-    platform: {
+  RAIN: {
+    platform: platformConfig("angle", COLORS.RAIN),
+    turret: {
       size: {
-        x: 64,
-        y: 64
+        x: 38,
+        y: 38
       },
       options: {
-        type: "angle",
-        margin: 0,
-        inset: 0.2,
-        color: COLORS.BULLET
+        ratio: 0.5,
+        topSeg: 10,
+        botSeg: 10,
+        color: COLORS.RAIN
       }
     },
+    projector: {
+      size: {
+        x: 7,
+        y: 22
+      },
+      options: {
+        type: "point",
+        margin: 0,
+        inset: 0.0,
+        color: COLORS.RAIN,
+        line: "white"
+      },
+    }
+  },
+  SNOW: {
+    platform: platformConfig("angle", COLORS.SNOW),
+    turret: {
+      size: {
+        x: 38,
+        y: 38
+      },
+      options: {
+        ratio: 0.5,
+        topSeg: 10,
+        botSeg: 10,
+        color: COLORS.SNOW
+      }
+    },
+    projector: {
+      size: {
+        x: 7,
+        y: 22
+      },
+      options: {
+        type: "point",
+        margin: 0,
+        inset: 0.0,
+        color: COLORS.SNOW,
+        line: "white"
+      },
+    }
+  },
+  BULLET: {
+    platform: platformConfig("angle", COLORS.BULLET),
     turret: {
       size: {
         x: 42,
@@ -314,18 +302,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
     }
   },
   PLASMA: {
-    platform: {
-      size: {
-        x: 64,
-        y: 64
-      },
-      options: {
-        type: "angle",
-        margin: 0,
-        inset: 0.2,
-        color: COLORS.PLASMA
-      }
-    },
+    platform: platformConfig("angle", COLORS.PLASMA),
     turret: {
       size: {
         x: 42,
@@ -354,18 +331,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
     }
   },
   MISSILE: {
-    platform: {
-      size: {
-        x: 64,
-        y: 64
-      },
-      options: {
-        type: "angle",
-        margin: 0,
-        inset: 0.2,
-        color: COLORS.MISSILE
-      }
-    },
+    platform: platformConfig("angle", COLORS.MISSILE),
     turret: {
       size: {
         x: 42,
@@ -393,18 +359,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
     }
   },
   LIGHTNING: {
-    platform: {
-      size: {
-        x: 64,
-        y: 64
-      },
-      options: {
-        type: "angle",
-        margin: 0,
-        inset: 0.2,
-        color: COLORS.LIGHTNING
-      }
-    },
+    platform: platformConfig("angle", COLORS.LIGHTNING),
     turret: {
       size: {
         x: 42,
@@ -433,18 +388,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
     }
   },
   ICE: {
-    platform: {
-      size: {
-        x: 64,
-        y: 64
-      },
-      options: {
-        type: "angle",
-        margin: 0,
-        inset: 0.2,
-        color: COLORS.ICE
-      }
-    },
+    platform: platformConfig("angle", COLORS.ICE),
     turret: {
       size: {
         x: 42,
@@ -472,18 +416,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
     }
   },
   BOOST: {
-    platform: {
-      size: {
-        x: 64,
-        y: 64
-      },
-      options: {
-        type: "angle",
-        margin: 0,
-        inset: 0.2,
-        color: COLORS.BOOST
-      }
-    },
+    platform: platformConfig("angle", COLORS.BOOST),
     turret: {
       size: {
         x: 42,
@@ -512,18 +445,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
     }
   },
   SLOW: {
-    platform: {
-      size: {
-        x: 64,
-        y: 64
-      },
-      options: {
-        type: "angle",
-        margin: 0,
-        inset: 0.2,
-        color: COLORS.SLOW
-      }
-    },
+    platform: platformConfig("angle", COLORS.SLOW),
     turret: {
       size: {
         x: 42,

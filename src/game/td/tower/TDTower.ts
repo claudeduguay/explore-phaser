@@ -24,6 +24,8 @@ import TargetSmokeBehavior from "../behavior/cloud/TargetSmokeBehavior"
 import TargetShockBehavior from "../behavior/cloud/TargetShockBehavior"
 import TargetFreezeBehavior from "../behavior/cloud/TargetFreezeBehavior"
 import TargetPlasmaBehavior from "../behavior/TargetPlasmaBehavior"
+import TargetRainBehavior from "../behavior/cloud/TargetRainBehavior"
+import TargetSnowBehavior from "../behavior/cloud/TargetSnowBehavior"
 
 export default class TDTower extends BehaviorContainer implements ISelectable {
 
@@ -81,6 +83,12 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
         break
       case "freeze":
         this.behavior.push(new TargetFreezeBehavior())
+        break
+      case "rain":
+        this.behavior.push(new TargetRainBehavior())
+        break
+      case "snow":
+        this.behavior.push(new TargetSnowBehavior())
         break
       case "bullet":
         this.behavior.push(new TargetBulletBehavior())

@@ -10,6 +10,20 @@ type EmitterConfig = Types.GameObjects.Particles.ParticleEmitterConfig
 // CLOUD EMITTERS
 // ------------------------------------------------------------------
 
+export function circleEmitZone(range: number) {
+  return {
+    type: 'random',
+    source: {
+      getRandomPoint: (point: Phaser.Types.Math.Vector2Like) => {
+        const a = Math.PI * 2 * Math.random()
+        const r = Math.random() * range
+        point.x = Math.sin(a) * r
+        point.y = Math.cos(a) * r
+      }
+    }
+  }
+}
+
 export function commonCloud(range: number = 100): Partial<EmitterConfig> {
   return {
     colorEase: PMath.Easing.Linear.name,
@@ -19,17 +33,7 @@ export function commonCloud(range: number = 100): Partial<EmitterConfig> {
     rotate: { min: 0, max: 360 },
     speed: 0.1,
     blendMode: 'NORMAL',
-    emitZone: {
-      type: 'random',
-      source: {
-        getRandomPoint: (point: Phaser.Types.Math.Vector2Like) => {
-          const a = Math.PI * 2 * Math.random()
-          const r = Math.random() * range
-          point.x = Math.sin(a) * r
-          point.y = Math.cos(a) * r
-        }
-      }
-    }
+    emitZone: circleEmitZone(range)
   }
 }
 
@@ -64,16 +68,16 @@ export function freezeEmitter(range: number = 80): EmitterConfig {
   return {
     ...commonCloud(range),
     alpha: { start: 0.33, end: 0 },
-    color: [0x00ffff, 0x009999, 0x003333],
-    scale: { start: 0.15, end: 0.33, ease: 'sine.out' },
+    color: [0x6699ff],
+    scale: { start: 0.15, end: 0.2, ease: 'sine.out' },
   }
 }
 
 export function shockEmitter(range: number = 80): EmitterConfig {
   return {
     ...commonCloud(range),
-    alpha: { start: 0.5, end: 0 },
-    color: [0x00ffff, 0x009999, 0x003333],
+    alpha: { start: 0.33, end: 0 },
+    color: [0x00ffff],
     scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
   }
 }
@@ -84,6 +88,52 @@ export function sleepEmitter(range: number = 80): EmitterConfig {
     alpha: { start: 0.3, end: 0 },
     color: [0xffffff, 0x999999, 0xffffff],
     scale: { start: 0.25, end: 0.75, ease: 'sine.out' },
+    speed: 0.05
+  }
+}
+
+
+// ------------------------------------------------------------------
+// DROP (GRAVITY) EMITTERS
+// ------------------------------------------------------------------
+
+export function rainEmitter(range: number = 100): EmitterConfig {
+  const speed = 100
+  const travelPerSecond = speed / 1000
+  // Distance traveled is range divided by travelPerSecond
+  // Note, we add 25% to range to wrap the enemy
+  const lifespan = range / travelPerSecond
+  return {
+    ...commonCloud(range),
+    // gravityY: 10.0,
+    alpha: 1.0, // { start: 0.75, end: 0.25 },
+    color: [0x6666ff],
+    angle: 90,
+    rotate: 0,
+    lifespan,
+    speed,
+    scale: 0.05,
+    blendMode: 'ADD',
+  }
+}
+
+export function snowEmitter(range: number = 100): EmitterConfig {
+  const speed = 100
+  const travelPerSecond = speed / 1000
+  // Distance traveled is range divided by travelPerSecond
+  // Note, we add 25% to range to wrap the enemy
+  const lifespan = range / travelPerSecond
+  return {
+    ...commonCloud(range),
+    // gravityY: 10.0,
+    alpha: 1.0, // { start: 0.75, end: 0.25 },
+    color: [0xffffff],
+    angle: 90,
+    rotate: 0,
+    lifespan,
+    speed,
+    scale: 0.05,
+    blendMode: 'ADD',
   }
 }
 
@@ -169,30 +219,6 @@ export function impactEmitter(range: number = 100): EmitterConfig {
     blendMode: 'ADD',
   }
 }
-
-// First fall (gravity) emitter
-
-export function snowEmitter(range: number = 100): EmitterConfig {
-  const speed = 100
-  const travelPerSecond = speed / 1000
-  // Distance traveled is range divided by travelPerSecond
-  // Note, we add 25% to range to wrap the enemy
-  const lifespan = (range * 1.25) / travelPerSecond
-  return {
-    gravityY: 1.0,
-    alpha: 1.0, // { start: 0.75, end: 0.25 },
-    color: [0xffffff, 0x999999, 0xffffff],
-    colorEase: PMath.Easing.Quadratic.Out.name,
-    lifespan,
-    speed,
-    advance: 0,
-    angle: 0,
-    rotate: 0,
-    scale: 0.02,
-    blendMode: 'ADD',
-  }
-}
-
 
 
 // ------------------------------------------------------------------

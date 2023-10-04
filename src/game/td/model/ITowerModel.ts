@@ -152,6 +152,40 @@ export const FREEZE_TOWER: ITowerModel = {
   }
 }
 
+export const RAIN_TOWER: ITowerModel = {
+  name: "Rain Tower",
+  meta: {
+    key: "rain",
+    distribution: "radial",
+    rotation: 1,
+  },
+  stats: {
+    level: 3,
+    cost: 100,
+    range: 100,
+  },
+  damage: {
+    rain: 10
+  }
+}
+
+export const SNOW_TOWER: ITowerModel = {
+  name: "Snow Tower",
+  meta: {
+    key: "snow",
+    distribution: "radial",
+    rotation: 1,
+  },
+  stats: {
+    level: 3,
+    cost: 100,
+    range: 100,
+  },
+  damage: {
+    rain: 10
+  }
+}
+
 export const BULLET_TOWER: ITowerModel = {
   name: "Bullet Tower",
   meta: {
@@ -263,11 +297,13 @@ export const ALL_TOWERS = [
   FLAME_TOWER,
   ICE_TOWER,
   BULLET_TOWER,
-  MISSILE_TOWER,
   POISON_TOWER,
   SMOKE_TOWER,
   SHOCK_TOWER,
   FREEZE_TOWER,
+  RAIN_TOWER,
+  SNOW_TOWER,
+  MISSILE_TOWER,
   BOOST_TOWER,
   SLOW_TOWER,
 ]

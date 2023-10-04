@@ -72,3 +72,5 @@ Major categories:
 Note that Boost towers affect other Towers and so don't operate on Enemy Targets.
 This is the only major deviation from other Tower models.
 
+### Tower Type Design Language
+

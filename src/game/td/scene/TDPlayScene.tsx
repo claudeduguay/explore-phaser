@@ -63,6 +63,8 @@ export default class TDPlayScene extends Scene {
     this.load.image('fire', 'assets/particles/fire_01.png')
     this.load.image('smoke', 'assets/particles/smoke_01.png')
     this.load.image('ice', 'assets/particles/star_08.png')
+    this.load.image('rain', 'assets/particles/trace_01.png')
+    this.load.image('snow', 'assets/particles/star_05.png')
     this.load.image('spark', 'assets/particles/spark_04.png')
     this.load.image('slash', 'assets/particles/slash_03.png')
     this.load.image('muzzle', 'assets/particles/muzzle_01.png')
