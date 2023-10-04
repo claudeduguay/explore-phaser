@@ -6,6 +6,6 @@ declare namespace Phaser.GameObjects {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface GameObjectFactory {
     tower(x: number, y: number, model: ITowerModel): TDTower
-    enemy(x: number, y: number, key: string, path: Curves.Path, model: IEnemyModel, showStatusBars?: boolean): TDEnemy
+    enemy(x: number, y: number, key: string, model: IEnemyModel, path?: Curves.Path, showStatusBars?: boolean): TDEnemy
   }
 }

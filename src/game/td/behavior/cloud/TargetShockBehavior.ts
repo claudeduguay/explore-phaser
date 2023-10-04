@@ -1,7 +1,7 @@
 import { shockEmitter } from "../../emitter/ParticleConfig"
 import BaseTargeCloudBehavior from "./BaseTargetCloudBehavior"
 
-export default class TargePoisonBehavior extends BaseTargeCloudBehavior {
+export default class TargeShockBehavior extends BaseTargeCloudBehavior {
   constructor() {
     super("spark", shockEmitter)
   }

@@ -181,7 +181,7 @@ export default class TDPlayScene extends Scene {
     // @ts-ignore
     this.physics.add.existing(this.enemyGroup)
     // Enemies are created as the timeline moves, so we can't take the first entry of the group
-    this.enemyGroup.select(new TDEnemy(this, 0, 0, WEAK_ENEMY.meta.body, new Curves.Path(), WEAK_ENEMY))
+    this.enemyGroup.select(new TDEnemy(this, 0, 0, WEAK_ENEMY.meta.body, WEAK_ENEMY))
     this.enemyGroup.infoVisible.value = false
     addReactNode(this, w - 350 - 25, 75, <EnemyInfo enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
       this.enemyGroup.infoVisible, true)

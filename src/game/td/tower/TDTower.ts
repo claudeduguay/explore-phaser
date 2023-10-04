@@ -15,7 +15,7 @@ import TargetLightningBehavior from "../behavior/TargetLightningBehavior"
 import TargePoisonBehavior from "../behavior/cloud/TargetPoisonBehavior"
 import TargetFireBehavior from "../behavior/cloud/TargetFireBehavior"
 import TargetFlameBehavior from "../behavior/spray/TargetFlameBehavior"
-import TargetIceBehavior from "../behavior/spray/TargetIceBehavior"
+import TargetFreezeBehavior from "../behavior/spray/TargetFreezeBehavior"
 import TargetBulletBehavior from "../behavior/TargetBulletBehavior"
 import TargetBoostBehavior from "../behavior/TargetBoostBehavior"
 import TargetSlowBehavior from "../behavior/TargetSlowBehavior"
@@ -23,7 +23,7 @@ import Point from "../../../util/Point"
 import { clamp, rotation } from "../../../util/MathUtil"
 import TargetSmokeBehavior from "../behavior/cloud/TargetSmokeBehavior"
 import TargetShockBehavior from "../behavior/cloud/TargetShockBehavior"
-import TargetFreezeBehavior from "../behavior/cloud/TargetFreezeBehavior"
+import TargetIceBehavior from "../behavior/cloud/TargetIceBehavior"
 import TargetPlasmaBehavior from "../behavior/TargetPlasmaBehavior"
 import TargetRainBehavior from "../behavior/cloud/TargetRainBehavior"
 import TargetSnowBehavior from "../behavior/cloud/TargetSnowBehavior"
@@ -67,8 +67,8 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
       case "flame":
         this.behavior.push(new TargetFlameBehavior())
         break
-      case "ice":
-        this.behavior.push(new TargetIceBehavior())
+      case "freeze":
+        this.behavior.push(new TargetFreezeBehavior())
         break
       case "lightning":
         this.behavior.push(new TargetLightningBehavior())
@@ -85,8 +85,8 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
       case "shock":
         this.behavior.push(new TargetShockBehavior())
         break
-      case "freeze":
-        this.behavior.push(new TargetFreezeBehavior())
+      case "ice":
+        this.behavior.push(new TargetIceBehavior())
         break
       case "rain":
         this.behavior.push(new TargetRainBehavior())

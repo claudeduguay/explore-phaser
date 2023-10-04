@@ -14,14 +14,15 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
   shield!: ActiveValue
 
   constructor(scene: Scene,
-    public x: number, public y: number, public key: string, public path: Curves.Path,
-    public model?: IEnemyModel, public showStatusBars: boolean = false) {
+    public x: number, public y: number, public key: string,
+    public model: IEnemyModel, public path: Curves.Path = new Curves.Path(),
+    public showStatusBars: boolean = false) {
     super(scene, path, x, y, key)
 
     this.setInteractive()
 
-    this.health = new ActiveValue(model?.stats.health || 0)
-    this.shield = new ActiveValue(model?.stats.shield || 0)
+    this.health = new ActiveValue(model.stats.health || 0)
+    this.shield = new ActiveValue(model.stats.shield || 0)
 
     if (showStatusBars) {
       // this.shieldBar = new HealthBar(scene, this, 0, 0, 30, 5, 0xffa500)
@@ -80,8 +81,8 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
 }
 
 GameObjects.GameObjectFactory.register("enemy",
-  function (this: GameObjects.GameObjectFactory, x: number, y: number, key: string, path: Curves.Path, model: IEnemyModel, showStatusBars?: boolean) {
-    const tower = new TDEnemy(this.scene, x, y, key, path, model, showStatusBars)
+  function (this: GameObjects.GameObjectFactory, x: number, y: number, key: string, model: IEnemyModel, path?: Curves.Path, showStatusBars?: boolean) {
+    const tower = new TDEnemy(this.scene, x, y, key, model, path, showStatusBars)
     this.displayList.add(tower)
     this.updateList.add(tower)
     return tower

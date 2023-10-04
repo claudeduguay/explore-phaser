@@ -160,11 +160,11 @@ export const SHOCK_TOWER: ITowerModel = {
   }
 }
 
-export const FREEZE_TOWER: ITowerModel = {
-  name: "Freeze Tower",
+export const ICE_TOWER: ITowerModel = {
+  name: "Ice Tower",
   group: "cloud",
   meta: {
-    key: "freeze",
+    key: "ice",
     distribution: "radial",
     rotation: 1,
   },
@@ -268,11 +268,11 @@ export const LIGHTNING_TOWER: ITowerModel = {
   }
 }
 
-export const ICE_TOWER: ITowerModel = {
-  name: "Ice Tower",
+export const FREEZE_TOWER: ITowerModel = {
+  name: "Freeze Tower",
   group: "spray",
   meta: {
-    key: "ice",
+    key: "freeze",
     distribution: "linear",
     rotation: "target",
   },
@@ -329,13 +329,13 @@ export const ALL_TOWERS = [
   PLASMA_TOWER,
   LIGHTNING_TOWER,
   FLAME_TOWER,
-  ICE_TOWER,
+  FREEZE_TOWER,
   BULLET_TOWER,
   POISON_TOWER,
-  FIRE_TOWER,
   SMOKE_TOWER,
   SHOCK_TOWER,
-  FREEZE_TOWER,
+  FIRE_TOWER,
+  ICE_TOWER,
   RAIN_TOWER,
   SNOW_TOWER,
   MISSILE_TOWER,

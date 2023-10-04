@@ -2,6 +2,7 @@ import { Scene } from "phaser"
 import IBehavior from "./IBehavior"
 import ITowerModel from "../model/ITowerModel"
 import ActiveValue from "../value/ActiveValue"
+import TDEnemy from "../enemy/TDEnemy"
 
 export interface ITarget {
   x: number
@@ -28,11 +29,18 @@ export interface IEmitter {
 export function applyDamage(tower: ITower, delta: number, singleTarget: boolean = true) {
   // console.log("Delta:", delta)
   let damage = 0
-  Object.entries(tower.model.damage).forEach(([type, value]) => {
-    damage += (value * delta / 1000 * tower.scene.time.timeScale)
-    // console.log(`${value} ${type} damage from ${tower.model.name}`)
+  const targets = singleTarget ? [tower.targets[0]] : tower.targets
+  targets.forEach(target => {
+    if (target instanceof TDEnemy) {  // Ensure acces by type
+      Object.entries(tower.model.damage).forEach(([key, value]) => {
+        const dps = (value * delta / 1000 * tower.scene.time.timeScale)
+        const resistance = 1.0 - (target.model?.resistance[key] || target.model?.resistance.default)
+        damage += dps
+        // console.log(`${value} ${type} damage from ${tower.model.name}`)
+      })
+      target.health.adjust(-damage)
+    }
   })
-  tower.targets.forEach(target => target.health.adjust(-damage))
 }
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation

@@ -15,21 +15,26 @@ export function colors(h: number, s: number = 1, l: number = 0.1) {
 }
 
 export const COLORS: { [key: string]: IColoring } = {
+  // Spray
   FLAME: colors(0.0),
-  FIRE: colors(0.05),
-  POISON: colors(0.3),
-  SMOKE: colors(0, 1.0, 0),
-  SHOCK: colors(0.7),
   FREEZE: colors(0.5),
+  // Cloud
+  POISON: colors(0.3),
+  FIRE: colors(0.95),
+  SMOKE: colors(0, 1.0, 0),
+  SHOCK: colors(0.5),
+  ICE: colors(0.7),
+  // Fall
   RAIN: colors(0.55),
-  SNOW: colors(0.45),
-
+  SNOW: colors(0, 0, 0.35),
+  // Beam
   LAZER: colors(0.6),
   PLASMA: colors(0.65),
+  LIGHTNING: colors(0.7),
+  // Throw
   BULLET: colors(0.2),
   MISSILE: colors(0.4),
-  LIGHTNING: colors(0.7),
-  ICE: colors(0.5),
+  // Area
   BOOST: colors(0.9),
   SLOW: colors(0.8),
 }
@@ -113,6 +118,34 @@ const TOWERS: Record<string, ITextureConfigs> = {
       },
     }
   },
+  FREEZE: {
+    platform: platformConfig("angle", COLORS.FREEZE),
+    turret: {
+      size: {
+        x: 42,
+        y: 38
+      },
+      options: {
+        ratio: 0.66,
+        topSeg: 3,
+        botSeg: 10,
+        color: COLORS.FREEZE
+      }
+    },
+    projector: {
+      size: {
+        x: 7,
+        y: 32
+      },
+      options: {
+        type: "funnel",
+        margin: 0,
+        inset: 0.4,
+        color: COLORS.FREEZE,
+        line: "white"
+      },
+    }
+  },
   FIRE: {
     platform: platformConfig("angle", COLORS.FIRE),
     turret: roundTower(COLORS.FIRE),
@@ -192,9 +225,9 @@ const TOWERS: Record<string, ITextureConfigs> = {
       },
     }
   },
-  FREEZE: {
-    platform: platformConfig("angle", COLORS.FREEZE),
-    turret: roundTower(COLORS.FREEZE),
+  ICE: {
+    platform: platformConfig("angle", COLORS.ICE),
+    turret: roundTower(COLORS.ICE),
     projector: {
       size: {
         x: 7,
@@ -204,7 +237,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
         type: "point",
         margin: 0,
         inset: 0.0,
-        color: COLORS.FREEZE,
+        color: COLORS.ICE,
         line: "white"
       },
     }
@@ -354,34 +387,6 @@ const TOWERS: Record<string, ITextureConfigs> = {
         inset: 0.4,
         balls: { count: 1, color: ["#FCF"], start: 0 },
         color: COLORS.LIGHTNING,
-        line: "white"
-      },
-    }
-  },
-  ICE: {
-    platform: platformConfig("angle", COLORS.ICE),
-    turret: {
-      size: {
-        x: 42,
-        y: 38
-      },
-      options: {
-        ratio: 0.66,
-        topSeg: 3,
-        botSeg: 10,
-        color: COLORS.ICE
-      }
-    },
-    projector: {
-      size: {
-        x: 7,
-        y: 32
-      },
-      options: {
-        type: "funnel",
-        margin: 0,
-        inset: 0.4,
-        color: COLORS.ICE,
         line: "white"
       },
     }
