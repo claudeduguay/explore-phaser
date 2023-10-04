@@ -64,7 +64,7 @@ export function fireEmitter(range: number = 80): EmitterConfig {
   }
 }
 
-export function freezeEmitter(range: number = 80): EmitterConfig {
+export function iceEmitter(range: number = 80): EmitterConfig {
   return {
     ...commonCloud(range),
     alpha: { start: 0.33, end: 0 },
@@ -178,7 +178,7 @@ export function flameEmitter(range: number = 100): EmitterConfig {
   }
 }
 
-export function iceEmitter(range: number = 100): EmitterConfig {
+export function freezeEmitter(range: number = 100): EmitterConfig {
   const speed = 100
   const travelPerSecond = speed / 1000
   // Distance traveled is range divided by travelPerSecond
