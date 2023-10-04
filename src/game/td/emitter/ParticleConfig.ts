@@ -1,4 +1,6 @@
 import { Types, Math as PMath } from "phaser"
+import Point from "../../../util/Point"
+import { lerp } from "../../../util/MathUtil"
 
 // Best docs: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/particles/
 // Easing functions: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
@@ -27,8 +29,8 @@ export function circleEmitZone(range: number) {
 export function commonCloud(range: number = 100): Partial<EmitterConfig> {
   return {
     colorEase: PMath.Easing.Linear.name,
-    lifespan: 3000,
     advance: 0,
+    lifespan: 3000,
     angle: { min: 0, max: 360 },
     rotate: { min: 0, max: 360 },
     speed: 0.1,
@@ -97,19 +99,44 @@ export function sleepEmitter(range: number = 80): EmitterConfig {
 // DROP (GRAVITY) EMITTERS
 // ------------------------------------------------------------------
 
-export function rainEmitter(range: number = 100): EmitterConfig {
-  const speed = 100
-  const travelPerSecond = speed / 1000
-  // Distance traveled is range divided by travelPerSecond
-  // Note, we add 25% to range to wrap the enemy
-  const lifespan = range / travelPerSecond * 0.5
+export function lineEmitZone(range: number): Types.GameObjects.Particles.ParticleEmitterEdgeZoneConfig {
   return {
-    ...commonCloud(range),
-    // gravityY: 10.0,
-    alpha: 1.0, // { start: 0.75, end: 0.25 },
-    color: [0x6666ff],
+    type: 'edge',
+    quantity: 100,
+    source: {
+      getPoints: (quantity: number) => {
+        const points = []
+        for (let i = 0; i < quantity; i++) {
+          const x = lerp(-range, range, Math.random())
+          points.push(new Point(x, -range))
+        }
+        return points
+      }
+    }
+  }
+}
+
+export function commonFall(range: number = 100): Partial<EmitterConfig> {
+  return {
+    colorEase: PMath.Easing.Linear.name,
+    advance: 0,
+    lifespan: 3000,
     angle: 90,
     rotate: 0,
+    speed: 0.1,
+    blendMode: 'NORMAL',
+    emitZone: lineEmitZone(range)
+  }
+}
+
+
+export function rainEmitter(range: number = 100): EmitterConfig {
+  const speed = 100
+  const lifespan = range * 20
+  return {
+    ...commonFall(range),
+    alpha: 1.0,
+    color: [0x6666ff],
     lifespan,
     speed,
     scale: 0.05,
@@ -119,17 +146,11 @@ export function rainEmitter(range: number = 100): EmitterConfig {
 
 export function snowEmitter(range: number = 100): EmitterConfig {
   const speed = 100
-  const travelPerSecond = speed / 1000
-  // Distance traveled is range divided by travelPerSecond
-  // Note, we add 25% to range to wrap the enemy
-  const lifespan = range / travelPerSecond * 0.5
+  const lifespan = range * 20
   return {
-    ...commonCloud(range),
-    // gravityY: 10.0,
-    alpha: 1.0, // { start: 0.75, end: 0.25 },
+    ...commonFall(range),
+    alpha: 1.0,
     color: [0xffffff],
-    angle: 90,
-    rotate: 0,
     lifespan,
     speed,
     scale: 0.05,

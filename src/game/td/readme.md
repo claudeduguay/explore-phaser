@@ -53,11 +53,7 @@ There are two ways to upgrade:
 
 # Towers to add:
 
-* NEW = Sleep: Suspends an enemy's movement for a specified amount of time.
-  NEW = Rain: Applies wey efffect for a while after enemies exit the rain area.
-* NEW = Snow: Applies cold effect for a while after enemies exit the snow area.
-* NEW - Grenade throw a projectile that explodes after a second or so.
-* Create a Fire tower with an AOE effect and rename Fire (spray) to Flame
+  NEW - Grenade throw a projectile that explodes after a second or so.
 * ADD - Impact: Spray effect with expanding wave/curve sprite
 * ADD - Sleep: Put enemies in range to sleep for a given amount of time
 
@@ -67,10 +63,9 @@ Major categories:
 * **Throw** weapons that projectile, like Bullet and Missile (note that Bullet is not a guided projectile)
 * **Cloud**, like Poison, Smoke, Freeze, Shock
 * **Spray**, like Fire and Ice
-* **Effect**, duff/debuff like Boost, Slow, Cold, Wet, etc
+* **Area**, buff/debuff like Boost, Slow, Cold, Wet, etc
 
-Note that Boost towers affect other Towers and so don't operate on Enemy Targets.
+Note that Boost towers affect other Towers and so does't operate on Enemy Targets.
 This is the only major deviation from other Tower models.
 
 ### Tower Type Design Language
-
