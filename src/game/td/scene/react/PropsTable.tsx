@@ -1,8 +1,5 @@
 import { CSSProperties } from "react"
-
-export function entitle(text: string) {
-  return text[0].toUpperCase() + text.substring(1)
-}
+import { entitle } from "../../../../util/TextUtil"
 
 export type IValueFormatter = (value: any) => string
 

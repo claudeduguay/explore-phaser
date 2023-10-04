@@ -10,12 +10,11 @@ import SpeedControl from "./SpeedControl"
 export interface IGameHeaderProps {
   scene: Scene
   navigator: INavigator
-  onShowTowerInfo?: () => void
-  onShowEnemyInfo?: () => void
+  onToggleTowerPreview: () => void
   active: IActiveValues
 }
 
-export default function GameHeader({ active, navigator, scene, onShowTowerInfo, onShowEnemyInfo }: IGameHeaderProps) {
+export default function GameHeader({ active, navigator, scene, onToggleTowerPreview }: IGameHeaderProps) {
   const { w } = canvasSize(navigator)
 
   const { health: activeHealth, credits: activeCredits } = active
@@ -59,11 +58,9 @@ export default function GameHeader({ active, navigator, scene, onShowTowerInfo, 
           <IconButton icon="home" onClick={onHome} />
           <IconButton icon="sentiment_satisfied" onClick={onWin} />
           <IconButton icon="sentiment_very_dissatisfied" onClick={onLose} />
-          {onShowTowerInfo && <IconButton icon="crop_square" onClick={onShowTowerInfo} />}
-          {onShowEnemyInfo && <IconButton icon="circle" onClick={onShowEnemyInfo} />}
+          <IconButton icon="visibility" onClick={onToggleTowerPreview} />
         </div>
       </div>
     </div>
   </>
 }
-

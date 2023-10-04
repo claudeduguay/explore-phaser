@@ -22,6 +22,7 @@ export interface ITowerDamage {
 
 export interface ITowerModel {
   name: string
+  group: string
   meta: ITowerMeta
   stats: ITowerStatistics
   damage: ITowerDamage
@@ -35,6 +36,7 @@ export default ITowerModel
 
 export const LAZER_TOWER: ITowerModel = {
   name: "Lazer Tower",
+  group: "beam",
   meta: {
     key: "lazer",
     distribution: "linear",
@@ -52,6 +54,7 @@ export const LAZER_TOWER: ITowerModel = {
 
 export const PLASMA_TOWER: ITowerModel = {
   name: "Plasma Tower",
+  group: "beam",
   meta: {
     key: "plasma",
     distribution: "linear",
@@ -69,6 +72,7 @@ export const PLASMA_TOWER: ITowerModel = {
 
 export const FLAME_TOWER: ITowerModel = {
   name: "Flame Tower",
+  group: "spray",
   meta: {
     key: "flame",
     distribution: "linear",
@@ -86,6 +90,7 @@ export const FLAME_TOWER: ITowerModel = {
 
 export const POISON_TOWER: ITowerModel = {
   name: "Poison Tower",
+  group: "spray",
   meta: {
     key: "poison",
     distribution: "radial",
@@ -103,6 +108,7 @@ export const POISON_TOWER: ITowerModel = {
 
 export const FIRE_TOWER: ITowerModel = {
   name: "Fire Tower",
+  group: "cloud",
   meta: {
     key: "fire",
     distribution: "radial",
@@ -120,6 +126,7 @@ export const FIRE_TOWER: ITowerModel = {
 
 export const SMOKE_TOWER: ITowerModel = {
   name: "Smoke Tower",
+  group: "cloud",
   meta: {
     key: "smoke",
     distribution: "radial",
@@ -137,6 +144,7 @@ export const SMOKE_TOWER: ITowerModel = {
 
 export const SHOCK_TOWER: ITowerModel = {
   name: "Shock Tower",
+  group: "cloud",
   meta: {
     key: "shock",
     distribution: "radial",
@@ -154,6 +162,7 @@ export const SHOCK_TOWER: ITowerModel = {
 
 export const FREEZE_TOWER: ITowerModel = {
   name: "Freeze Tower",
+  group: "cloud",
   meta: {
     key: "freeze",
     distribution: "radial",
@@ -171,6 +180,7 @@ export const FREEZE_TOWER: ITowerModel = {
 
 export const RAIN_TOWER: ITowerModel = {
   name: "Rain Tower",
+  group: "fall",
   meta: {
     key: "rain",
     distribution: "radial",
@@ -188,6 +198,7 @@ export const RAIN_TOWER: ITowerModel = {
 
 export const SNOW_TOWER: ITowerModel = {
   name: "Snow Tower",
+  group: "fall",
   meta: {
     key: "snow",
     distribution: "radial",
@@ -205,6 +216,7 @@ export const SNOW_TOWER: ITowerModel = {
 
 export const BULLET_TOWER: ITowerModel = {
   name: "Bullet Tower",
+  group: "throw",
   meta: {
     key: "bullet",
     distribution: "linear",
@@ -222,6 +234,7 @@ export const BULLET_TOWER: ITowerModel = {
 
 export const MISSILE_TOWER: ITowerModel = {
   name: "Missile Tower",
+  group: "throw",
   meta: {
     key: "missile",
     distribution: "linear",
@@ -239,6 +252,7 @@ export const MISSILE_TOWER: ITowerModel = {
 
 export const LIGHTNING_TOWER: ITowerModel = {
   name: "Lightning Tower",
+  group: "beam",
   meta: {
     key: "lightning",
     distribution: "linear",
@@ -256,6 +270,7 @@ export const LIGHTNING_TOWER: ITowerModel = {
 
 export const ICE_TOWER: ITowerModel = {
   name: "Ice Tower",
+  group: "spray",
   meta: {
     key: "ice",
     distribution: "linear",
@@ -273,6 +288,7 @@ export const ICE_TOWER: ITowerModel = {
 
 export const BOOST_TOWER: ITowerModel = {
   name: "Boost Tower",
+  group: "area",
   meta: {
     key: "boost",
     distribution: "radial",
@@ -290,6 +306,7 @@ export const BOOST_TOWER: ITowerModel = {
 
 export const SLOW_TOWER: ITowerModel = {
   name: "Slow Tower",
+  group: "area",
   meta: {
     key: "slow",
     distribution: "radial",

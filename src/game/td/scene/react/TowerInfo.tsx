@@ -4,6 +4,7 @@ import useCaptureTower from "./capture/useCaptureTower"
 import TDTower from "../../tower/TDTower"
 import CloseButton from "./CloseButton"
 import ObservableValue, { useObservableValue } from "../../value/ObservableValue"
+import { entitle } from "../../../../util/TextUtil"
 
 export interface ITowerInfoProps {
   tower: ObservableValue<TDTower | undefined>
@@ -27,7 +28,8 @@ export default function TowerInfo({ tower: towerObservable, onClose }: ITowerInf
     <CloseButton onClick={onClose} />
     <h1 className="fs-2 p-1 text-title">Tower Info</h1>
     {model && <>
-      <h4 className="fs-4 border-top p-2 m-2">{model.name}</h4>
+      <h4 className="fs-4 border-top p-1 m-0">{model.name}</h4>
+      <p className="mb-4">({entitle(model.group)})</p>
       <div><img src={imageSrc} alt="Tower" /></div>
       <PropsInfo title="General" model={model.stats} />
       <PropsInfo title="Damage (dps per level)" model={model.damage} />

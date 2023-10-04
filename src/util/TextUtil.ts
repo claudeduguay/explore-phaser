@@ -1,6 +1,10 @@
 
 import { Scene } from "phaser"
 
+export function entitle(text: string) {
+  return text[0].toUpperCase() + text.substring(1)
+}
+
 export function addLabel(scene: Scene, x: number, y: number, label: string, align: "left" | "right" | "center" = "left") {
   // May want to explore: TextShadow (https://newdocs.phaser.io/docs/3.60.0/Phaser.Types.GameObjects.Text)
   const shadowOffset = 1
