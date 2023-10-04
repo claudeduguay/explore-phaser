@@ -1,4 +1,4 @@
-import { Scene, Curves } from "phaser";
+import { Scene } from "phaser";
 import { ALL_TOWERS } from "../model/ITowerModel";
 import TDTower from "./TDTower";
 import { addLabel } from "../../../util/TextUtil";
@@ -33,7 +33,7 @@ export default class TowerPreview extends Scene {
       t.preview = true
       this.add.existing(t)
       addLabel(this, x, y + 40, model.name.split(" ")[0], "center")
-      const e = new TDEnemy(this, x, y - 100, WEAK_ENEMY.meta.body, WEAK_ENEMY)
+      const e = new TDEnemy(this, x, y - 100, WEAK_ENEMY)
       t.targets = [e]
       this.add.existing(e)
     })

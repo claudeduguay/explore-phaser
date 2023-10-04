@@ -14,10 +14,10 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
   shield!: ActiveValue
 
   constructor(scene: Scene,
-    public x: number, public y: number, public key: string,
+    public x: number, public y: number,
     public model: IEnemyModel, public path: Curves.Path = new Curves.Path(),
     public showStatusBars: boolean = false) {
-    super(scene, path, x, y, key)
+    super(scene, path, x, y, model.meta.body)
 
     this.setInteractive()
 
@@ -81,8 +81,8 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
 }
 
 GameObjects.GameObjectFactory.register("enemy",
-  function (this: GameObjects.GameObjectFactory, x: number, y: number, key: string, model: IEnemyModel, path?: Curves.Path, showStatusBars?: boolean) {
-    const tower = new TDEnemy(this.scene, x, y, key, model, path, showStatusBars)
+  function (this: GameObjects.GameObjectFactory, x: number, y: number, model: IEnemyModel, path?: Curves.Path, showStatusBars?: boolean) {
+    const tower = new TDEnemy(this.scene, x, y, model, path, showStatusBars)
     this.displayList.add(tower)
     this.updateList.add(tower)
     return tower

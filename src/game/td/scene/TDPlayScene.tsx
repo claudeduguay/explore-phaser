@@ -1,5 +1,5 @@
 
-import { Scene, GameObjects, Types, Utils, Math as PMath, Input, Curves } from "phaser"
+import { Scene, GameObjects, Types, Utils, Math as PMath, Input } from "phaser"
 import { makeEllipse, makeHeightRects } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
@@ -181,7 +181,7 @@ export default class TDPlayScene extends Scene {
     // @ts-ignore
     this.physics.add.existing(this.enemyGroup)
     // Enemies are created as the timeline moves, so we can't take the first entry of the group
-    this.enemyGroup.select(new TDEnemy(this, 0, 0, WEAK_ENEMY.meta.body, WEAK_ENEMY))
+    this.enemyGroup.select(new TDEnemy(this, 0, 0, WEAK_ENEMY))
     this.enemyGroup.infoVisible.value = false
     addReactNode(this, w - 350 - 25, 75, <EnemyInfo enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
       this.enemyGroup.infoVisible, true)
@@ -198,7 +198,7 @@ export default class TDPlayScene extends Scene {
 
     const origin = new Point(0, 46)
 
-    const towerCount = 3
+    const towerCount = 5
     const towers: TDTower[] = []
 
     const towerPositions: Point[] = this.generatePathAdjacentPositions(origin)

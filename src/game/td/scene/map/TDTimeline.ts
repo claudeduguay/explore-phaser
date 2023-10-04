@@ -31,7 +31,7 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction:
 // Add an enemy to the main path (add/remove in group)
 export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, duration: number, delay: number) {
   const model = ALL_ENEMIES.find(m => m.meta.body === key)
-  const follower = scene.add.enemy(origin.x, origin.y, key, model, path, true)
+  const follower = scene.add.enemy(origin.x, origin.y, model, path, true)
   follower.addListener("died", ({ x, y, model }: TDEnemy) => {
     follower.destroy()
     enemyGroup.remove(follower)
@@ -77,7 +77,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
 // Add preview follower to the proview path, reset timeline after last is finished
 export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path, timeline: Time.Timeline, duration: number, isLast: boolean, twin: TDEnemy) {
   const model = ALL_ENEMIES.find(m => m.meta.body === key)
-  const follower = scene.add.enemy(0, 0, key, model, path, false)
+  const follower = scene.add.enemy(0, 0, model, path, false)
   twin.addListener("died", ({ x, y, model }: TDEnemy) => {
     follower.destroy()
     follower.removeListener("died")

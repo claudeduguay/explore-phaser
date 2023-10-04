@@ -31,7 +31,7 @@ export const WEAK_ENEMY: IEnemyModel = {
     body: "path-green"
   },
   stats: {
-    health: 100,
+    health: 50,
     shield: 100,
     speed: 100,
     value: 10
@@ -47,7 +47,7 @@ export const MODERATE_ENEMY: IEnemyModel = {
     body: "path-blue"
   },
   stats: {
-    health: 200,
+    health: 100,
     shield: 100,
     speed: 100,
     value: 15
@@ -63,7 +63,7 @@ export const STRONG_ENEMY: IEnemyModel = {
     body: "path-red"
   },
   stats: {
-    health: 300,
+    health: 200,
     shield: 100,
     speed: 100,
     value: 20
