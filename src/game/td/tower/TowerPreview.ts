@@ -13,8 +13,6 @@ export default class TowerPreview extends Scene {
   }
 
   create() {
-    console.log("Preview offset:", this.x, this.y)
-
     const vBox = 220
     const hBox = 170
     const g = this.add.graphics()
@@ -36,12 +34,6 @@ export default class TowerPreview extends Scene {
       const e = new TDEnemy(this, x, y - 100, ENEMY_MODELS.WEAK)
       t.targets = [e]
       this.add.existing(e)
-      if (model.meta.key === "rain") {
-        console.log("Rain tower positin:", x, y)
-      }
-      if (model.meta.key === "snow") {
-        console.log("Snow tower positin:", x, y)
-      }
     })
   }
 

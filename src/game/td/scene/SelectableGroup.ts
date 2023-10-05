@@ -10,6 +10,7 @@ export interface ISelectable extends GameObjects.GameObject {
 
 export default class SelectableGroup<T extends ISelectable> extends Physics.Arcade.Group {
 
+  printErrors = false
   infoVisible = new ObservableValue<boolean>(false)
   selected = new ObservableValue<T | undefined>(undefined)
 
@@ -21,8 +22,8 @@ export default class SelectableGroup<T extends ISelectable> extends Physics.Arca
     if (child.addSelectHandler) {
       child.addSelectHandler(this.select)
       super.add(child, addToScene)
-    } else {
-      console.log("Add error (not added to group):", child)
+    } else if (this.printErrors) {
+      console.warn("Add error (not added to group):", child)
     }
     return this
   }
@@ -31,8 +32,8 @@ export default class SelectableGroup<T extends ISelectable> extends Physics.Arca
     if (child.removeSelectHandler) {
       child.removeSelectHandler()
       super.remove(child, removeFromScene, destroyChild)
-    } else {
-      console.log("Remove error (not removed from group):", child)
+    } else if (this.printErrors) {
+      console.warn("Remove error (not removed from group):", child)
     }
     return this
   }

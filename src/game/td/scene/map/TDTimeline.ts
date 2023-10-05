@@ -145,7 +145,6 @@ export function buildSummary(scene: Scene, x: number, y: number, w: number, h: n
     for (let i = 0; i < group.count; i++) {
       const pos = last.spacing + group.offset + group.spacing * i
       const f = 1.0 - (pos) / span
-      console.log("Group Key:", group.key)
       const sprite = scene.add.image(x + w * f, h / 2, group.key)
       container.add(sprite)
     }

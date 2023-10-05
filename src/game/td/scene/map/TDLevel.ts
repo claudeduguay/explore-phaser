@@ -15,7 +15,6 @@ export default function generateMap(scene: Scene, active: IActiveValues, enemyGr
   const { path, maze } = generatePath(config.rows, config.cols, prunePath)
 
   const model = prunePath ? asPathModel(path) : asPathModel(maze.grid.array)
-  console.log("Path cells:", path.length)
   if (showMaze) {
     makeTileMap(scene, origin.x, origin.y, model, config)
   }
