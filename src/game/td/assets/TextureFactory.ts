@@ -152,7 +152,7 @@ export function makeEllipse(scene: Scene, key: string, w: number, h: number,
 
 export interface ITextureConfig<T> {
   size: { x: number, y: number },
-  options: T
+  options: Partial<T>
 }
 
 export function makeTowerPlatform(scene: Scene, key: string, config: ITextureConfig<Partial<IPlatformOptions>>) {

@@ -10,6 +10,5 @@ export default function useCaptureEnemy(enemy: TDEnemy, angle = 0): string {
     }
   }
   const key = `enemy-${enemy.model.meta.body}`
-  const imageSrc = useCapture(enemy.scene, 20, 20, render, key)
-  return imageSrc
+  return useCapture(enemy.scene, 20, 20, render, key)
 }

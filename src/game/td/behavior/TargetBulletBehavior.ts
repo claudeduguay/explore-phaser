@@ -13,7 +13,9 @@ export default class TargetBulletBehavior extends BaseTargetBehavior<GameObjects
     if (show) {
       const angle = PMath.Angle.BetweenPoints(target, tower) + Math.PI / 2
       const emitter = tower.scene.add.sprite(x, y, "muzzle")
+      emitter.setOrigin(0.5, 0.8)
       emitter.setScale(0.075)
+      emitter.alpha = 0.75
       emitter.rotation = angle - Math.PI
       this.emitters?.push(emitter)
     }
