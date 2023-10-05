@@ -232,7 +232,6 @@ export default class TDPlayScene extends Scene {
         this.addingTower.preview = true
         this.addingTower.showRange.visible = true
         this.towerGroup.select(undefined)
-        // this.towerGroup.add(this.addingTower)
         const towerPoints = collectTowerPoints(this.addingTower)
         this.towerColliders.push(new PointCollider(towerPoints))
         this.towerColliders.push(new PointCollider(this.pathPoints))
@@ -253,7 +252,7 @@ export default class TDPlayScene extends Scene {
     this.scene.add("tower_preview", this.towerPreview, true)
     this.scene.sleep("tower_preview")
 
-    testPlasmaPath(this)
+    // testPlasmaPath(this)
     // TDPlayScene.createExplosionSprite(this, 550, 400)
   }
 
