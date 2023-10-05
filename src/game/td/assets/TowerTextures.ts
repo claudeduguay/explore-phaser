@@ -65,6 +65,7 @@ export function platformConfig(type: IPlatformType, color: IColoring, divisions:
   }
 }
 
+
 // ------------------------------------------------------------------
 // TURRET STYLES
 // ------------------------------------------------------------------
@@ -97,6 +98,7 @@ export function roundBackTurret(color: IColoring) {
     options: { ratio: 0.66, topSeg: 3, botSeg: 10, color }
   }
 }
+
 
 // ------------------------------------------------------------------
 // PROJECTOR STYLES
@@ -135,6 +137,7 @@ export function funnelInProjector(color: IColoring, ball = true): ITextureConfig
     }
   }
 }
+
 
 // ------------------------------------------------------------------
 // TEXTURE CONFIGURATIONS
