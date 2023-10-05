@@ -13,7 +13,7 @@ export type IEmitterRandomeZoneConfig = Types.GameObjects.Particles.ParticleEmit
 export type IEmitterEdgeZoneConfig = Types.GameObjects.Particles.ParticleEmitterEdgeZoneConfig
 
 // ------------------------------------------------------------------
-// CLOUD EMITTERS
+// EMIT AND DEATH ZONES
 // ------------------------------------------------------------------
 
 export const circleEmitZone =
@@ -31,6 +31,50 @@ export const circleEmitZone =
     }
   }
 
+// Upper arc of tower's range
+export const edgeEmitZone =
+  (range: number, pos: IPointLike): IEmitterEdgeZoneConfig => {
+    return {
+      type: 'edge',
+      quantity: 200,
+      source: {
+        getPoints: (quantity: number) => {
+          const points = []
+          for (let i = 0; i < quantity; i++) {
+            const a = lerp(Math.PI, Math.PI * 2, Math.random())
+            const x = Math.cos(a) * range
+            const y = Math.sin(a) * range
+            points.push(new Point(x, y))
+          }
+          return points
+        }
+      }
+    }
+  }
+
+// Points appear to be relative to the scene, not the emitter, so this is a problem w/o access to the emitter position
+// Reported at: https://github.com/photonstorm/phaser/issues/6371
+export const rangeDeathZone =
+  (range: number, pos: IPointLike): IEmitterDeathZoneConfig => {
+    return {
+      type: 'onLeave',
+      source: new Geom.Circle(pos.x, pos.y, range)
+      // source: {
+      //   contains: (x: number, y: number) => {
+      //     const point = new Point(x - cx, y - cy)
+      //     const radius = point.length()
+      //     console.log("Point radius:", point, radius)
+      //     return radius < range
+      //   }
+      // }
+    }
+  }
+
+
+// ------------------------------------------------------------------
+// CLOUD EMITTERS
+// ------------------------------------------------------------------
+
 export const commonCloud: IEmitterConfigBuilder =
   (range: number = 100, pos: IPointLike): IEmitterConfig => {
     return {
@@ -41,7 +85,8 @@ export const commonCloud: IEmitterConfigBuilder =
       rotate: { min: 0, max: 360 },
       speed: 0.1,
       blendMode: 'NORMAL',
-      emitZone: circleEmitZone(range, pos)
+      emitZone: circleEmitZone(range, pos),
+      deathZone: rangeDeathZone(range, pos)
     }
   }
 
@@ -110,45 +155,6 @@ export const sleepEmitter: IEmitterConfigBuilder =
 // ------------------------------------------------------------------
 // DROP (GRAVITY) EMITTERS
 // ------------------------------------------------------------------
-
-// Upper arc of tower's range
-export const edgeEmitZone =
-  (range: number, pos: IPointLike): IEmitterEdgeZoneConfig => {
-    return {
-      type: 'edge',
-      quantity: 200,
-      source: {
-        getPoints: (quantity: number) => {
-          const points = []
-          for (let i = 0; i < quantity; i++) {
-            const a = lerp(Math.PI, Math.PI * 2, Math.random())
-            const x = Math.cos(a) * range
-            const y = Math.sin(a) * range
-            points.push(new Point(x, y))
-          }
-          return points
-        }
-      }
-    }
-  }
-
-// Points appear to be relative to the scene, not the emitter, so this is a problem w/o access to the emitter position
-// Reported at: https://github.com/photonstorm/phaser/issues/6371
-export const rangeDeathZone =
-  (range: number, pos: IPointLike): IEmitterDeathZoneConfig => {
-    return {
-      type: 'onLeave',
-      source: new Geom.Circle(pos.x, pos.y, range)
-      // source: {
-      //   contains: (x: number, y: number) => {
-      //     const point = new Point(x - cx, y - cy)
-      //     const radius = point.length()
-      //     console.log("Point radius:", point, radius)
-      //     return radius < range
-      //   }
-      // }
-    }
-  }
 
 export const commonFall: IEmitterConfigBuilder =
   (range: number = 100, pos: IPointLike): IEmitterConfig => {
@@ -262,6 +268,7 @@ export const bulletEmitter: IEmitterConfigBuilder =
       blendMode: 'ADD',
     }
   }
+
 
 // ------------------------------------------------------------------
 // EMITTER SAMPLES
