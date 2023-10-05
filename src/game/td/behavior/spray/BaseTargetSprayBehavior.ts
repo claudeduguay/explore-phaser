@@ -1,12 +1,10 @@
-import { GameObjects, Types, Math as PMath } from "phaser"
+import { GameObjects, Math as PMath } from "phaser"
 import BaseTargetBehavior, { ITarget, ITower } from "../BaseTargetBehavior"
-import { IPointLike } from "../../../../util/Point"
-
-export type IEmitterConfigurator = (range: number, pos?: IPointLike) => Types.GameObjects.Particles.ParticleEmitterConfig
+import { IEmitterConfigBuilder } from "../../emitter/ParticleConfig"
 
 export default class BaseTargetSprayBehavior extends BaseTargetBehavior<GameObjects.Particles.ParticleEmitter> {
 
-  constructor(public key: string, public emitter: IEmitterConfigurator) {
+  constructor(public key: string, public emitter: IEmitterConfigBuilder) {
     super(false)
   }
 

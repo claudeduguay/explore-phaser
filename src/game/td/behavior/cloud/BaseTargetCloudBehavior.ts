@@ -1,13 +1,11 @@
-import { GameObjects, Types } from "phaser"
+import { GameObjects } from "phaser"
 import IBehavior from "../IBehavior"
 import { ITower, applyDamage } from "../BaseTargetBehavior"
-import { IPointLike } from "../../../../util/Point"
-
-export type IEmitterConfigurator = (range: number, pos: IPointLike) => Types.GameObjects.Particles.ParticleEmitterConfig
+import { IEmitterConfigBuilder } from "../../emitter/ParticleConfig"
 
 export default class BaseTargeCloudBehavior implements IBehavior<ITower> {
 
-  constructor(public key: string, public emitter: IEmitterConfigurator) {
+  constructor(public key: string, public emitter: IEmitterConfigBuilder) {
   }
 
   cloud?: GameObjects.Particles.ParticleEmitter
