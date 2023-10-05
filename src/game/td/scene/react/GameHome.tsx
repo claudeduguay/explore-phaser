@@ -12,7 +12,7 @@ export default function GameHeader({ navigator }: IGameHomeProps) {
   const onPlay = () => {
     navigator.transitionTo("play", "home")
   }
-  const onMaps = () => {
+  const onLevels = () => {
     navigator.transitionTo("maps", "home")
   }
   const onOptions = () => {
@@ -25,7 +25,7 @@ export default function GameHeader({ navigator }: IGameHomeProps) {
         <p className="p-2">Welcome to my first Phaser 3 project. This is a basic Tower Defense game.</p>
       </div>
       <div className="p-2">
-        <ClickButton navigator={navigator} className="btn btn-primary col-4" onClick={onMaps}>Maps</ClickButton>
+        <ClickButton navigator={navigator} className="btn btn-primary col-4" onClick={onLevels}>Levels</ClickButton>
       </div>
       <div className="p-2">
         <ClickButton navigator={navigator} className="btn btn-primary col-4" onClick={onPlay}>Play</ClickButton>

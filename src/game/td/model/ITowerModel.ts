@@ -37,7 +37,7 @@ export default ITowerModel
 export const DEFAULT_STATS: ITowerStatistics = {
   level: 3,
   cost: 100,
-  range: 150,
+  range: 100,
 }
 
 

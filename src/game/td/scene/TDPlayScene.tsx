@@ -251,6 +251,7 @@ export default class TDPlayScene extends Scene {
 
     this.towerPreview = new TowerPreview(this, 50, 58)
     this.scene.add("tower_preview", this.towerPreview, true)
+    this.scene.sleep("tower_preview")
 
     testPlasmaPath(this)
     // TDPlayScene.createExplosionSprite(this, 550, 400)

@@ -32,8 +32,8 @@ export default class TargetLightningBehavior extends BaseTargetBehavior<GameObje
     for (let i = 1; i < divisions; i++) {
       const mid = source.lerp(target, i / divisions + (0.1 - Math.random() * 0.2))
       const p = perpendicular(mid, angle, deviation * Math.random(), i % 2 === 0)
-      const back = source.lerp(target, i / divisions + 0.05)
-      path.lineTo(back.x, back.y)
+      // const back = source.lerp(target, i / divisions + 0.05)
+      // path.lineTo(back.x, back.y)
       path.lineTo(p.x, p.y)
     }
     path.lineTo(target.x, target.y)
