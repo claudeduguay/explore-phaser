@@ -9,8 +9,8 @@ import { DEFAULT_WAVES, IWaveGroup } from "./IWaveModel"
 export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction: number, suffixFraction: number) {
   const radius = 39
   const top = 27
-  const width = 600
-  const left = 220
+  const width = 500
+  const left = 270
   const insetStart = left + width * prefixFraction
   const insetWidth = width * (1.0 - (prefixFraction + suffixFraction))
 

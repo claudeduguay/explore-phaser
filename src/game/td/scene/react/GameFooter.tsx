@@ -20,7 +20,7 @@ export default function GameFooter({ scene, onAddTower }: IGameFooterProps) {
     <div className="btn-group">
       {ALL_TOWERS.map((model, i) => {
         const tower = new TDTower(scene, 32, 32, model)
-        return <TowerButton key={i} tower={tower} onClick={() => handleAddTower(model)} />
+        return <TowerButton key={i} scene={scene} tower={tower} onClick={() => handleAddTower(model)} />
       })}
     </div>
   </div>

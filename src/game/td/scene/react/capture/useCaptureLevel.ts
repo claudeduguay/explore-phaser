@@ -16,5 +16,5 @@ export default function useCaptureLevel(scene: Scene, level: ILevelModel, scale:
     summary.scale = scale * 2
     texture.draw(summary)
   }
-  return useCapture(w * scale, (h + 50) * scale, render, scene)
+  return useCapture(scene, w * scale, (h + 50) * scale, render)
 }

@@ -39,7 +39,7 @@ export default class SelectableGroup<T extends ISelectable> extends Physics.Arca
 
   // >>> Use a lambda expression to capture context during event-handling <<<
   select = (selection?: T) => {
-    console.log("Select:", selection)
+    // console.log("Select:", selection)
     this.selected.value = selection
     // Clear other selections
     this.children.entries.forEach((item: any) => {

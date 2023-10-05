@@ -166,7 +166,7 @@ export default class TDPlayScene extends Scene {
     const onCloseTowerInfo = () => this.towerGroup.infoVisible.value = false
     // @ts-ignore
     this.physics.add.existing(this.towerGroup)
-    addReactNode(this, 25, 75, <TowerInfo tower={this.towerGroup.selected} onClose={onCloseTowerInfo} />,
+    addReactNode(this, 25, 75, <TowerInfo scene={this} tower={this.towerGroup.selected} onClose={onCloseTowerInfo} />,
       this.towerGroup.infoVisible, true)
 
     // Enemy Info

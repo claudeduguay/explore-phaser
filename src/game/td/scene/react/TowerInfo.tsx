@@ -6,16 +6,18 @@ import CloseButton from "./CloseButton"
 import ObservableValue, { useObservableValue } from "../../value/ObservableValue"
 import { entitle } from "../../../../util/TextUtil"
 import { IUpgrade } from "./PropsTable"
+import { Scene } from "phaser"
 
 export interface ITowerInfoProps {
+  scene: Scene
   tower: ObservableValue<TDTower | undefined>
   onClose?: () => void
 }
 
-export default function TowerInfo({ tower: towerObservable, onClose }: ITowerInfoProps) {
+export default function TowerInfo({ scene, tower: towerObservable, onClose }: ITowerInfoProps) {
   const tower = useObservableValue(towerObservable)
   const model = tower?.model
-  const imageSrc = useCaptureTower(tower)
+  const imageSrc = useCaptureTower(scene, tower)
   const style: CSSProperties = {
     width: 350,
     backgroundColor: "rgba(64, 64, 64, 0.75)"
