@@ -4,6 +4,7 @@ export interface IEnemyMeta {
 }
 
 export interface IEnemyStatistics {
+  level: number
   health: number
   shield: number
   speed: number
@@ -31,6 +32,7 @@ export const WEAK_ENEMY: IEnemyModel = {
     body: "path-green"
   },
   stats: {
+    level: 1,
     health: 50,
     shield: 100,
     speed: 100,
@@ -47,6 +49,7 @@ export const MODERATE_ENEMY: IEnemyModel = {
     body: "path-blue"
   },
   stats: {
+    level: 2,
     health: 100,
     shield: 100,
     speed: 100,
@@ -63,6 +66,7 @@ export const STRONG_ENEMY: IEnemyModel = {
     body: "path-red"
   },
   stats: {
+    level: 3,
     health: 200,
     shield: 100,
     speed: 100,
