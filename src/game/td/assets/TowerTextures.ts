@@ -163,7 +163,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
   IMPACT: {
     platform: platformConfig(PLATFORM.SPRAY, COLORS.IMPACT),
     turret: roundFrontTurret(COLORS.IMPACT),
-    projector: funnelOutProjector(COLORS.FREEZE)
+    projector: funnelOutProjector(COLORS.IMPACT)
   },
 
   // CLOUD
@@ -237,18 +237,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
   // AREA
   BOOST: {
     platform: platformConfig(PLATFORM.AREA, COLORS.BOOST),
-    turret: {
-      size: {
-        x: 42,
-        y: 42
-      },
-      options: {
-        ratio: 0.5,
-        topSeg: 10,
-        botSeg: 10,
-        color: COLORS.BOOST
-      }
-    },
+    turret: roundTurret(COLORS.BOOST),
     projector: {
       size: {
         x: 7,
@@ -266,18 +255,7 @@ const TOWERS: Record<string, ITextureConfigs> = {
   },
   SLOW: {
     platform: platformConfig(PLATFORM.AREA, COLORS.SLOW),
-    turret: {
-      size: {
-        x: 42,
-        y: 42
-      },
-      options: {
-        ratio: 0.5,
-        topSeg: 10,
-        botSeg: 10,
-        color: COLORS.SLOW
-      }
-    },
+    turret: roundTurret(COLORS.SLOW),
     projector: {
       size: {
         x: 7,
