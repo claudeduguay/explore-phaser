@@ -6,14 +6,10 @@ export interface IWaveGroup {
   spacing: number                  // Enemy spacing time within group
 }
 
-export interface IWaveModel {
-  groups: IWaveGroup[]
-}
+export type IWaveModel = IWaveGroup[]
 
-export const DEFAULT_WAVES: IWaveModel = {
-  groups: [
-    { key: "path-green", count: 3, offset: 0, spacing: 250 },
-    { key: "path-blue", count: 3, offset: 1500, spacing: 250 },
-    { key: "path-red", count: 3, offset: 3000, spacing: 250 }
-  ]
-}
+export const DEFAULT_WAVES: IWaveModel = [
+  { key: "path-green", count: 3, offset: 0, spacing: 250 },
+  { key: "path-blue", count: 3, offset: 1500, spacing: 250 },
+  { key: "path-red", count: 3, offset: 3000, spacing: 250 }
+]

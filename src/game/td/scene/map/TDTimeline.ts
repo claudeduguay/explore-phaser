@@ -120,9 +120,9 @@ export function makeTimeline(scene: Scene, active: IActiveValues, enemyGroup: Ga
   }
 
   const config: Phaser.Types.Time.TimelineEventConfig[] = []
-  const waveModel = DEFAULT_WAVES
-  waveModel.groups.forEach((group: IWaveGroup, index: number) => {
-    const lastGroup = index === waveModel.groups.length - 1
+  const waves = DEFAULT_WAVES
+  waves.forEach((group: IWaveGroup, index: number) => {
+    const lastGroup = index === waves.length - 1
     for (let i = 0; i < group.count; i++) {
       const lastEntry = i === group.count - 1
       config.push({ at: group.offset + group.spacing * i, run: run(group.key, lastGroup && lastEntry) })
@@ -133,15 +133,15 @@ export function makeTimeline(scene: Scene, active: IActiveValues, enemyGroup: Ga
   timeline.play()
 }
 
-export function buildSummary(scene: Scene, x: number, y: number, w: number, h: number, waveModel = DEFAULT_WAVES) {
+export function buildSummary(scene: Scene, x: number, y: number, w: number, h: number, waves = DEFAULT_WAVES) {
   const container = scene.add.container(x, y)
   const g = scene.add.graphics()
   g.fillStyle(0x222222, 0.75)
   g.fillRect(0, 0, w, h)
   container.add(g)
-  const last = waveModel.groups[waveModel.groups.length - 1]
+  const last = waves[waves.length - 1]
   const span = last.offset + (last.count + 1) * last.spacing
-  waveModel.groups.forEach((group: IWaveGroup, index: number) => {
+  waves.forEach((group: IWaveGroup, index: number) => {
     for (let i = 0; i < group.count; i++) {
       const pos = last.spacing + group.offset + group.spacing * i
       const f = 1.0 - (pos) / span

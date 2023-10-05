@@ -41,7 +41,7 @@ export default function GameLevels({ navigator }: IGameHomeProps) {
   // The difficulty of a wave is the total of levels for all enemies 
   const evaluateWaveDifficulty = (waves: IWaveModel): number => {
     let accumulator = 0
-    waves.groups.forEach(group => {
+    waves.forEach(group => {
       const model = ALL_ENEMIES.find(m => m.meta.body === group.key)
       accumulator += (model?.stats.level || 0) * group.count
     })
