@@ -12,8 +12,8 @@ export default class TargetSlowBehavior implements IBehavior<ITower> {
     }
     if (tower.targets.length > 0) {
       this.g = tower.scene.add.graphics({
-        fillStyle: { color: 0xff0000, alpha: 0.2 },
-        lineStyle: { color: 0xff0000, alpha: 0.75, width: 2 }
+        fillStyle: { color: 0xff6600, alpha: 0.05 },
+        lineStyle: { color: 0xff6600, alpha: 0.2, width: 2 }
       })
       const f = time % 1000 / 1000
       const r1 = tower.model.stats.range * f

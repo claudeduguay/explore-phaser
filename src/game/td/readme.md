@@ -53,8 +53,7 @@ There are two ways to upgrade:
 
 # Towers to add:
 
-  NEW - Grenade throw a projectile that explodes after a second or so.
-* ADD - Impact: Spray effect with expanding wave/curve sprite
+* NEW - Grenade throw a projectile that explodes after a second or so.
 * ADD - Sleep: Put enemies in range to sleep for a given amount of time
 
 Major categories:

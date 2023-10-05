@@ -238,6 +238,22 @@ export const impactEmitter: IEmitterConfigBuilder =
   (range: number = 100, pos: IPointLike): IEmitterConfig => {
     return {
       ...commonSpray(range, pos),
+      speed: 300,
+      alpha: 1.0, // { start: 0.75, end: 0.25 },
+      color: [0xffffff],
+      angle: { min: -2, max: 2 },
+      rotate: 0,
+      scale: { start: 0.01, end: 0.5, ease: 'sine.out' },
+      blendMode: 'NORMAL',
+    }
+  }
+
+// Considering the use of an emitter for bullet trails
+export const bulletEmitter: IEmitterConfigBuilder =
+  (range: number = 100, pos: IPointLike): IEmitterConfig => {
+    return {
+      ...commonSpray(range, pos),
+      speed: 400,
       alpha: 1.0, // { start: 0.75, end: 0.25 },
       color: [0x00ffff, 0x009999, 0x003333],
       angle: 0,
@@ -246,7 +262,6 @@ export const impactEmitter: IEmitterConfigBuilder =
       blendMode: 'ADD',
     }
   }
-
 
 // ------------------------------------------------------------------
 // EMITTER SAMPLES
