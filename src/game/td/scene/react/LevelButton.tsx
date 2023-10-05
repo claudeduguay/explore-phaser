@@ -2,7 +2,7 @@ import { Scene } from "phaser";
 import useCaptureMap from "./capture/useCaptureLevel";
 import ClickButton from "./buttons/ClickButton";
 import INavigator from "./INavigator";
-import { ILevelModel } from "./GameMaps";
+import { ILevelModel } from "./GameLevels";
 
 export interface IMapButtonProps {
   scene: Scene
@@ -20,7 +20,7 @@ export default function LevelButton({ scene, navigator, model, title, onClick }:
     }
   }
   return <ClickButton navigator={navigator} className="btn btn-outline-primary py-1 m-2" onClick={handleClick}>
-    {title && <div className="text-white">{title}</div>}
+    {title && <div className="text-white pb-1">{title}</div>}
     <img src={imageSrc} alt="Map" />
   </ClickButton>
 }

@@ -15,7 +15,7 @@ export interface IGameHomeProps {
   navigator: INavigator
 }
 
-export default function GameMaps({ navigator }: IGameHomeProps) {
+export default function GameLevels({ navigator }: IGameHomeProps) {
   const { w, h } = canvasSize(navigator)
   const config: IMapConfig = DEFAULT_CONFIG
   const count = 20

@@ -2,7 +2,7 @@
 import { Scene } from "phaser"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDGameScene from "./TDGameScene"
-import GameMaps from "./react/GameMaps"
+import GameLevels from "./react/GameLevels"
 
 // @ts-ignore
 export default class TDMapsScene extends Scene {
@@ -11,6 +11,6 @@ export default class TDMapsScene extends Scene {
   }
 
   create() {
-    addReactNode(this, 0, 0, <GameMaps navigator={this.main} />)
+    addReactNode(this, 0, 0, <GameLevels navigator={this.main} />)
   }
 }

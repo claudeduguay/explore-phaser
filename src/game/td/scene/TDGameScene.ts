@@ -5,7 +5,7 @@ import TDPlayScene from "./TDPlayScene"
 import TDWinScene from "./TDWinScene"
 import TDLoseScene from "./TDLoseScene"
 import INavigator from "./react/INavigator"
-import TDMapsScene from "./TDMapsScene"
+import TDMapsScene from "./TDLevelScene"
 import { makeEllipse, makePathTiles } from "../assets/TextureFactory"
 import TDOptionsScene from "./TDOptionsScene"
 
