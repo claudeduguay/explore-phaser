@@ -6,7 +6,7 @@ import TDWinScene from "./TDWinScene"
 import TDLoseScene from "./TDLoseScene"
 import INavigator from "./react/INavigator"
 import TDMapsScene from "./TDMapsScene"
-import { makePathTiles } from "../assets/TextureFactory"
+import { makeEllipse, makePathTiles } from "../assets/TextureFactory"
 import TDOptionsScene from "./TDOptionsScene"
 
 export default class TDGameScene extends Scene implements INavigator {
@@ -28,6 +28,12 @@ export default class TDGameScene extends Scene implements INavigator {
     this.scene.add("play", new TDPlayScene(this))
     this.scene.add("win", new TDWinScene(this))
     this.scene.add("lose", new TDLoseScene(this))
+
+    // ENEMY TEXTURES
+    makeEllipse(this, "path-green", 20, 20, { color: "#66FF66" })
+    makeEllipse(this, "path-blue", 20, 20, { color: "#6666FF" })
+    makeEllipse(this, "path-red", 20, 20, { color: "#FF6666" })
+
   }
 
   play(key: string) {

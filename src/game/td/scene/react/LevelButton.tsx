@@ -1,18 +1,18 @@
 import { Scene } from "phaser";
-import useCaptureMap from "./capture/useCaptureMap";
-import IMapModel from "../map/IMapModel";
+import useCaptureMap from "./capture/useCaptureLevel";
 import ClickButton from "./buttons/ClickButton";
 import INavigator from "./INavigator";
+import { ILevelModel } from "./GameMaps";
 
 export interface IMapButtonProps {
   scene: Scene
   navigator: INavigator
-  model: IMapModel
+  model: ILevelModel
   title?: string
-  onClick?: (model: IMapModel) => void
+  onClick?: (model: ILevelModel) => void
 }
 
-export default function MapButton({ scene, navigator, model, title, onClick }: IMapButtonProps) {
+export default function LevelButton({ scene, navigator, model, title, onClick }: IMapButtonProps) {
   const imageSrc = useCaptureMap(scene, model)
   const handleClick = () => {
     if (onClick) {

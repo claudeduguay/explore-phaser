@@ -74,11 +74,6 @@ export default class TDPlayScene extends Scene {
 
     registerTowerTextures(this)
 
-    // ENEMY TEXTURES
-    makeEllipse(this, "path-green", 20, 20, { color: "#66FF66" })
-    makeEllipse(this, "path-blue", 20, 20, { color: "#6666FF" })
-    makeEllipse(this, "path-red", 20, 20, { color: "#FF6666" })
-
     for (let i = 0; i < 8; i++) {
       // First Explosion image size: 583x536, but they are not all the same size
       const key = `explosion0${i}`

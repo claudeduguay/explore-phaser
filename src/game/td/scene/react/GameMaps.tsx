@@ -1,9 +1,15 @@
 import INavigator from "./INavigator"
-import MapButton from "./MapButton"
+import MapButton from "./LevelButton"
 import { DEFAULT_CONFIG, IMapConfig } from "../map/TDTileMap"
 import { generatePath } from "../map/TDPath"
 import IMapModel, { asMapModel } from "../map/IMapModel"
 import { canvasSize } from "../../../../util/SceneUtil"
+import { DEFAULT_WAVES, IWaveModel } from "../map/IWaveConfig"
+
+export interface ILevelModel {
+  map: IMapModel,
+  waves: IWaveModel
+}
 
 export interface IGameHomeProps {
   navigator: INavigator
@@ -13,14 +19,14 @@ export default function GameMaps({ navigator }: IGameHomeProps) {
   const { w, h } = canvasSize(navigator)
   const config: IMapConfig = DEFAULT_CONFIG
   const count = 20
-  const models: IMapModel[] = []
+  const models: ILevelModel[] = []
   for (let i = 0; i < count; i++) {
     const { path } = generatePath(config.rows, config.cols)
-    models.push(asMapModel(path))
+    models.push({ map: asMapModel(path), waves: DEFAULT_WAVES })
   }
   // Sort by longest path first (shortest paths are hardest)
-  models.sort((a: IMapModel, b: IMapModel): number => {
-    return b.path.length - a.path.length
+  models.sort((a: ILevelModel, b: ILevelModel): number => {
+    return b.map.path.length - a.map.path.length
   })
 
   const onPlay = () => {
