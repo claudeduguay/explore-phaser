@@ -20,7 +20,7 @@ import { testPlasmaPath } from "../behavior/TargetPlasmaBehavior"
 import { canvasSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../enemy/TDEnemy"
-import { WEAK_ENEMY } from "../model/IEnemyModel"
+import { ENEMY_MODELS } from "../model/IEnemyModel"
 
 export interface IActiveValues {
   health: ActiveValue,
@@ -176,7 +176,7 @@ export default class TDPlayScene extends Scene {
     // @ts-ignore
     this.physics.add.existing(this.enemyGroup)
     // Enemies are created as the timeline moves, so we can't take the first entry of the group
-    this.enemyGroup.select(new TDEnemy(this, 0, 0, WEAK_ENEMY))
+    this.enemyGroup.select(new TDEnemy(this, 0, 0, ENEMY_MODELS.WEAK))
     this.enemyGroup.infoVisible.value = false
     addReactNode(this, w - 350 - 25, 75, <EnemyInfo enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
       this.enemyGroup.infoVisible, true)
