@@ -16,7 +16,6 @@ import TowerInfo from "./react/TowerInfo"
 import registerTowerTextures from "../assets/TowerTextures"
 import ActiveValue from "../value/ActiveValue"
 import { shuffle } from "../../../util/ArrayUtil"
-import { testPlasmaPath } from "../behavior/TargetPlasmaBehavior"
 import { canvasSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../enemy/TDEnemy"
@@ -238,22 +237,20 @@ export default class TDPlayScene extends Scene {
       }
     }
 
+    const onToggleTowerPreview = () => {
+      if (this.scene.isActive("tower_preview")) {
+        this.scene.sleep("tower_preview")
+      } else {
+        this.scene.wake("tower_preview")
+      }
+    }
     addReactNode(this, 0, 0, <GameHeader scene={this} active={this.active}
-      navigator={this.parent} onToggleTowerPreview={() => {
-        if (this.scene.isActive("tower_preview")) {
-          this.scene.sleep("tower_preview")
-        } else {
-          this.scene.wake("tower_preview")
-        }
-      }} />)
+      navigator={this.parent} onToggleTowerPreview={onToggleTowerPreview} />)
     addReactNode(this, 0, this.game.canvas.height - 62, <GameFooter scene={this} onAddTower={onAddTower} />)
 
     this.towerPreview = new TowerPreview(this, 50, 58)
     this.scene.add("tower_preview", this.towerPreview, true)
     this.scene.sleep("tower_preview")
-
-    // testPlasmaPath(this)
-    // TDPlayScene.createExplosionSprite(this, 550, 400)
   }
 
   createMap() {
