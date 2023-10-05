@@ -1,5 +1,5 @@
 import { canvasSize } from "../../../../util/SceneUtil"
-import ClickButton from "./ClickButton"
+import ClickButton from "./buttons/ClickButton"
 import INavigator from "./INavigator"
 
 export interface IGameHomeProps {

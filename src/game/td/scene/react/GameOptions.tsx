@@ -1,5 +1,5 @@
 import { useState } from "react"
-import ClickButton from "./ClickButton"
+import ClickButton from "./buttons/ClickButton"
 import INavigator from "./INavigator"
 import { canvasSize } from "../../../../util/SceneUtil"
 

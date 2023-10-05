@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import useCaptureMap from "./capture/useCaptureMap";
 import IMapModel from "../map/IMapModel";
-import ClickButton from "./ClickButton";
+import ClickButton from "./buttons/ClickButton";
 import INavigator from "./INavigator";
 
 export interface IMapButtonProps {

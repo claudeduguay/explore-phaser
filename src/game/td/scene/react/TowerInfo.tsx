@@ -5,6 +5,7 @@ import TDTower from "../../tower/TDTower"
 import CloseButton from "./CloseButton"
 import ObservableValue, { useObservableValue } from "../../value/ObservableValue"
 import { entitle } from "../../../../util/TextUtil"
+import { IUpgrade } from "./PropsTable"
 
 export interface ITowerInfoProps {
   tower: ObservableValue<TDTower | undefined>
@@ -23,6 +24,11 @@ export default function TowerInfo({ tower: towerObservable, onClose }: ITowerInf
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
   }
+  const upgrade: IUpgrade = {
+    level: { text: "+1", cost: 200 },
+    cost: { text: "-10%", cost: 100 },
+    range: { text: "+10%", cost: 50 },
+  }
   return <div className="position-reattive text-white bg-overlay border-gold glow -p-3"
     style={style} data-bs-theme="dark" onMouseDown={onMouseDown}>
     <CloseButton onClick={onClose} />
@@ -31,7 +37,7 @@ export default function TowerInfo({ tower: towerObservable, onClose }: ITowerInf
       <h4 className="fs-4 border-top p-1 m-0">{model.name}</h4>
       <p className="mb-4">({entitle(model.group)})</p>
       <div><img src={imageSrc} alt="Tower" /></div>
-      <PropsInfo title="General" model={model.stats} />
+      <PropsInfo title="General" model={model.stats} upgrade={upgrade} />
       <PropsInfo title="Damage (dps per level)" model={model.damage} />
     </>}
   </div>

@@ -4,7 +4,7 @@ import { useActiveValue } from "../../value/ActiveValue"
 import { IActiveValues } from "../TDPlayScene"
 import INavigator from "./INavigator"
 import Icon from "./Icon"
-import IconButton from "./IconButton"
+import IconButton from "./buttons/IconButton"
 import SpeedControl from "./SpeedControl"
 
 export interface IGameHeaderProps {

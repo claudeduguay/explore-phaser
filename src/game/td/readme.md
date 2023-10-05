@@ -60,7 +60,7 @@ There are two ways to upgrade:
 Major categories:
 
 * **Beam** weapons, like Lazer and Plasma
-* **Throw** weapons that projectile, like Bullet and Missile (note that Bullet is not a guided projectile)
+* **Throw** projectile weapons, like Bullet, Missile, Grenade (note that Bullet is not currently a guided projectile)
 * **Cloud**, like Poison, Smoke, Freeze, Shock
 * **Spray**, like Fire and Ice
 * **Area**, buff/debuff like Boost, Slow, Cold, Wet, etc

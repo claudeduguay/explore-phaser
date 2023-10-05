@@ -1,7 +1,7 @@
 import { Scene } from "phaser"
 import { useEffect, useState } from "react"
 import { timeScale } from "../../../../util/TimeUtil"
-import IconButton from "./IconButton"
+import IconButton from "./buttons/IconButton"
 
 export interface ISpeedControlProps {
   scene: Scene

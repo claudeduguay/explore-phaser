@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import INavigator from "./INavigator";
+import INavigator from "../INavigator";
 
 export interface IClickButtonProps {
   className?: string
