@@ -2,7 +2,7 @@ import { Scene } from "phaser";
 import useCaptureMap from "./capture/useCaptureLevel";
 import ClickButton from "./buttons/ClickButton";
 import INavigator from "./INavigator";
-import { ILevelModel } from "./GameLevels";
+import { ILevelModel } from "../map/ILevelModel";
 
 export interface IMapButtonProps {
   scene: Scene

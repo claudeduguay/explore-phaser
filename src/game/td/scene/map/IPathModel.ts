@@ -9,13 +9,8 @@ export interface IMapCell {
   pos: Point
 }
 
-export type IMapPath = Array<IMapCell>
-
-export interface IMapModel {
-  path: IMapPath
-}
-
-export default IMapModel
+export type IPathModel = Array<IMapCell>
+export default IPathModel
 
 // Todo: We will use this to construct the mapped model path
 export function interpolateMidPoints(cells: IMapCell[]): IMapCell[] {
@@ -34,9 +29,7 @@ export function interpolateMidPoints(cells: IMapCell[]): IMapCell[] {
 }
 
 // Convert cell array intp an IMapModel
-export function asMapModel(cells: Cell[]): IMapModel {
-  return {
-    path: interpolateMidPoints(
-      cells.map((cell: Cell) => ({ bits: cell.connectionsBits(), pos: cell.pos.times(Point.TWO) })))
-  }
+export function asPathModel(cells: Cell[]): IPathModel {
+  return interpolateMidPoints(
+    cells.map((cell: Cell) => ({ bits: cell.connectionsBits(), pos: cell.pos.times(Point.TWO) })))
 }

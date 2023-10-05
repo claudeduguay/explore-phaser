@@ -1,6 +1,6 @@
 import { Scene, Tilemaps } from "phaser"
 import Point from "../../../../util/Point";
-import IMapModel from "./IMapModel";
+import IPathModel from "./IPathModel";
 import BehaviorContainer from "../../behavior/BehaviorContainer";
 
 export interface IMapConfig {
@@ -15,7 +15,7 @@ export const DEFAULT_CONFIG = {
   cols: 9
 }
 
-export default function makeTileMap(scene: Scene, x: number, y: number, model: IMapModel, config: IMapConfig = DEFAULT_CONFIG) {
+export default function makeTileMap(scene: Scene, x: number, y: number, model: IPathModel, config: IMapConfig = DEFAULT_CONFIG) {
   const map = new TDTileMap(scene, x, y, config)
   map.setModel(model)
   scene.add.existing(map)
@@ -51,9 +51,9 @@ export class TDTileMap extends BehaviorContainer {
     this.add(layer)
   }
 
-  setModel(model: IMapModel) {
+  setModel(path: IPathModel) {
     this.layer.fill(0x1111 + 1)  // Fill with black tiles
-    model.path.forEach(cell => {
+    path.forEach(cell => {
       this.map.putTileAt(cell.bits, cell.pos.x, cell.pos.y)
     })
   }

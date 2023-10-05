@@ -3,7 +3,7 @@ import Point from "../../../../util/Point"
 import TDEnemy from "../../enemy/TDEnemy"
 import { ALL_ENEMIES } from "../../model/IEnemyModel"
 import TDPlayScene, { IActiveValues } from "../TDPlayScene"
-import { DEFAULT_WAVES, IWaveGroup } from "./IWaveConfig"
+import { DEFAULT_WAVES, IWaveGroup } from "./IWaveModel"
 
 // Create a graphics background and a line-based curve for the preview path
 export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction: number, suffixFraction: number) {

@@ -2,7 +2,7 @@ import { Curves, Scene } from "phaser"
 import Cell from "../../../../maze/Cell"
 import Maze from "../../../../maze/Maze"
 import Point from "../../../../util/Point"
-import IMapModel from "./IMapModel"
+import IPathModel from "./IPathModel"
 
 // Generate a maze, add entry/exit cells and, optionally, Prune unused cells
 export function generatePath(rows: number, cols: number, prunePath: boolean = true) {
@@ -35,9 +35,9 @@ export function generatePath(rows: number, cols: number, prunePath: boolean = tr
 }
 
 // Create a curve with scaled points that follow the path
-export function renderPath(scene: Scene, model: IMapModel, origin: Point, cellSize: Point) {
+export function renderPath(scene: Scene, path: IPathModel, origin: Point, cellSize: Point) {
   const centering = new Point(32, 32)
-  const points = model.path.map(cell => cell.pos.times(cellSize).plus(origin).plus(centering))
+  const points = path.map(cell => cell.pos.times(cellSize).plus(origin).plus(centering))
   const curve = new Curves.Path()
   for (let i = 0; i < points.length; i++) {
     const p = points[i]
