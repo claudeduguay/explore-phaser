@@ -54,7 +54,7 @@ const PLATFORM: Record<string, IPlatformType> = {
   CLOUD: "curve-o",
   FALL: "ntagon",
   BEAM: "curve-i",
-  THROW: "box-i",
+  THROW: "curve-i",
   AREA: "box-o"
 }
 
