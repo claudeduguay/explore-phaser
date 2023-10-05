@@ -4,6 +4,7 @@ import { DEFAULT_CONFIG, IMapConfig } from "../map/TDTileMap"
 import { canvasSize } from "../../../../util/SceneUtil"
 import { evaluateWaveDifficulty } from "../map/IWaveModel"
 import { ILevelModel, computeHardestWave, computeLongestMap, generateLevel } from "../map/ILevelModel"
+import CloseButton from "./CloseButton"
 
 export interface IGameHomeProps {
   navigator: INavigator
@@ -35,7 +36,11 @@ export default function GameLevels({ navigator }: IGameHomeProps) {
   const onPlay = () => {
     navigator.transitionTo("play", "maps")
   }
-  return <div className="p-1" style={{ width: w, height: h, background: "black" }}>
+  const onHome = () => {
+    navigator.transitionTo("home", "maps")
+  }
+  return <div className="p-1" style={{ width: w, height: h, background: "black" }} data-bs-theme="dark" >
+    <CloseButton onClick={onHome} />
     <h1 className="text-white">Maps by Level</h1>
     <div className="p-2 text-white text-center">
       {levels.map((model, i) =>
