@@ -1,5 +1,5 @@
 import { Types, Math as PMath, Geom } from "phaser"
-import Point from "../../../util/Point"
+import Point, { IPointLike } from "../../../util/Point"
 import { lerp } from "../../../util/MathUtil"
 
 // Best docs: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/particles/
@@ -121,10 +121,10 @@ export function edgeEmitZone(range: number): Types.GameObjects.Particles.Particl
 
 // Points appear to be relative to the scene, not the emitter, so this is a problem w/o access to the emitter position
 // Reported at: https://github.com/photonstorm/phaser/issues/6371
-export function edgeDeathZone(range: number, cx: number = 0, cy: number = 0): Types.GameObjects.Particles.ParticleEmitterDeathZoneConfig {
+export function edgeDeathZone(range: number, pos: IPointLike): Types.GameObjects.Particles.ParticleEmitterDeathZoneConfig {
   return {
     type: 'onLeave',
-    source: new Geom.Circle(cx, cy, range)
+    source: new Geom.Circle(pos.x, pos.y, range)
     // source: {
     //   contains: (x: number, y: number) => {
     //     const point = new Point(x - cx, y - cy)
@@ -136,7 +136,7 @@ export function edgeDeathZone(range: number, cx: number = 0, cy: number = 0): Ty
   }
 }
 
-export function commonFall(range: number = 100): Partial<EmitterConfig> {
+export function commonFall(range: number = 100, pos: IPointLike): Partial<EmitterConfig> {
   return {
     colorEase: PMath.Easing.Linear.name,
     advance: 0,
@@ -146,39 +146,32 @@ export function commonFall(range: number = 100): Partial<EmitterConfig> {
     speed: 100,
     blendMode: 'NORMAL',
     emitZone: edgeEmitZone(range),
+    deathZone: edgeDeathZone(range, pos)
   }
 }
 
 
-export function rainEmitter(range: number = 100): EmitterConfig {
+export function rainEmitter(range: number = 100, pos: IPointLike): EmitterConfig {
   const speed = 100
-  const travelPerSecond = speed / 1000
-  const lifespan = range / travelPerSecond
   return {
-    ...commonFall(range),
+    ...commonFall(range, pos),
     alpha: 1.0,
     color: [0x6666ff],
-    lifespan,
     speed,
     scale: 0.075,
     blendMode: 'ADD',
-    // deathZone: edgeDeathZone(range, 135, 648)
   }
 }
 
-export function snowEmitter(range: number = 100): EmitterConfig {
+export function snowEmitter(range: number = 100, pos: IPointLike): EmitterConfig {
   const speed = 100
-  const travelPerSecond = speed / 1000
-  const lifespan = range / travelPerSecond
   return {
-    ...commonFall(range),
+    ...commonFall(range, pos),
     alpha: 1.0,
     color: [0xffffff],
-    lifespan,
     speed,
     scale: 0.05,
     blendMode: 'ADD',
-    // deathZone: edgeDeathZone(range, 305, 648)
   }
 }
 

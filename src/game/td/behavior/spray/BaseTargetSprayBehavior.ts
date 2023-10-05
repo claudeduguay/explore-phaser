@@ -1,7 +1,8 @@
 import { GameObjects, Types, Math as PMath } from "phaser"
 import BaseTargetBehavior, { ITarget, ITower } from "../BaseTargetBehavior"
+import { IPointLike } from "../../../../util/Point"
 
-export type IEmitterConfigurator = (range: number) => Types.GameObjects.Particles.ParticleEmitterConfig
+export type IEmitterConfigurator = (range: number, pos?: IPointLike) => Types.GameObjects.Particles.ParticleEmitterConfig
 
 export default class BaseTargetSprayBehavior extends BaseTargetBehavior<GameObjects.Particles.ParticleEmitter> {
 
@@ -11,7 +12,7 @@ export default class BaseTargetSprayBehavior extends BaseTargetBehavior<GameObje
 
   addEmitter(i: number, { x, y }: ITarget, tower: ITower, time: number): void {
     if (this.emitters.length < i + 1) {
-      const emitter = tower.scene.add.particles(x, y, this.key, this.emitter(tower.model.stats.range))
+      const emitter = tower.scene.add.particles(x, y, this.key, this.emitter(tower.model.stats.range, tower))
       emitter.stop()
       this.emitters.push(emitter)
     }
