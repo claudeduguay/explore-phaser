@@ -1,3 +1,4 @@
+import { lerp } from "../../../../util/MathUtil"
 import { ALL_ENEMIES } from "../../model/IEnemyModel"
 
 export interface IWaveGroup {
@@ -24,4 +25,16 @@ export function evaluateWaveDifficulty(waves: IWaveModel): number {
     accumulator += (model?.stats.level || 0) * group.count
   })
   return accumulator
+}
+
+export function generateWaves(count: number = 5) {
+  const waveSpacing = 1500
+  const waves: IWaveModel = []
+  const keys = ALL_ENEMIES.map(m => m.meta.body)
+  for (let i = 0; i < count; i++) {
+    const unitCount = Math.floor(lerp(2, 4, Math.random()))
+    const key = keys[Math.floor(Math.random() * (keys.length - 1))]
+    waves.push({ key, count: unitCount, offset: waveSpacing * i, spacing: 250 })
+  }
+  return waves
 }

@@ -1,5 +1,5 @@
 import IPathModel, { asPathModel } from "./IPathModel"
-import IWaveModel, { DEFAULT_WAVES, evaluateWaveDifficulty } from "./IWaveModel"
+import IWaveModel, { generateWaves, evaluateWaveDifficulty } from "./IWaveModel"
 import { generatePath } from "./TDPath"
 
 export interface ILevelModel {
@@ -9,7 +9,8 @@ export interface ILevelModel {
 
 export function generateLevel(rows: number, cols: number) {
   const { path } = generatePath(rows, cols)
-  return { path: asPathModel(path), waves: DEFAULT_WAVES }
+  const waves = generateWaves()
+  return { path: asPathModel(path), waves }
 }
 
 // Find longest map for map difficulty evaluation
