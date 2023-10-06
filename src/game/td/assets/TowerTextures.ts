@@ -104,21 +104,24 @@ export function roundBackTurret(color: IColoring) {
 // PROJECTOR STYLES
 // ------------------------------------------------------------------
 
-export function funnelShortProjector(color: IColoring): ITextureConfig<IProjectorOptions> {
+export function pointProjector(color: IColoring, ball = true): ITextureConfig<IProjectorOptions> {
   return {
-    size: { x: 7, y: 22 },
-    options: { type: "point", margin: 0, inset: 0.0, line: "white", color }
+    size: { x: 7, y: 32 },
+    options: {
+      type: "point", margin: 0, inset: 0.4, line: "white", color,
+      balls: ball ? { count: 1, color, start: 0 } : undefined
+    }
   }
 }
 
-export function funnelOutProjector(color: IColoring): ITextureConfig<IProjectorOptions> {
+export function funnelProjector(color: IColoring): ITextureConfig<IProjectorOptions> {
   return {
     size: { x: 7, y: 32 },
     options: { type: "funnel", margin: 0, inset: 0.33, line: "white", color }
   }
 }
 
-export function gunProjector(color: IColoring, ribs = true): ITextureConfig<IProjectorOptions> {
+export function rectProjector(color: IColoring, ribs = true): ITextureConfig<IProjectorOptions> {
   return {
     size: { x: 7, y: 32 },
     options: {
@@ -128,12 +131,29 @@ export function gunProjector(color: IColoring, ribs = true): ITextureConfig<IPro
   }
 }
 
-export function funnelInProjector(color: IColoring, ball = true): ITextureConfig<IProjectorOptions> {
+export function pointInsideProjector(color: IColoring): ITextureConfig<IProjectorOptions> {
   return {
-    size: { x: 7, y: 32 },
+    size: { x: 7, y: 18 },
+    options: { type: "point", margin: 0, inset: 0.0, line: "white", color }
+  }
+}
+
+export function funnelInsideProjector(color: IColoring, ball = true): ITextureConfig<IProjectorOptions> {
+  return {
+    size: { x: 7, y: 18 },
     options: {
-      type: "point", margin: 0, inset: 0.4, line: "white", color,
-      balls: ball ? { count: 1, color, start: 0 } : undefined
+      type: "funnel", margin: 0, inset: 0.8, line: "white", color,
+      balls: ball ? { count: 1, color: "#FCF", start: 0.7 } : undefined
+    }
+  }
+}
+
+export function rectInsideProjector(color: IColoring, ball = true): ITextureConfig<IProjectorOptions> {
+  return {
+    size: { x: 7, y: 18 },
+    options: {
+      type: "rect", margin: 0, inset: 0.4, line: "white", color,
+      balls: ball ? { count: 1, color: ["#FCF"], start: 0 } : undefined
     }
   }
 }
@@ -156,125 +176,98 @@ const TOWERS: Record<string, ITextureConfigs> = {
   FLAME: {
     platform: platformConfig(PLATFORM.SPRAY, COLORS.FLAME),
     turret: roundFrontTurret(COLORS.FLAME),
-    projector: funnelOutProjector(COLORS.FLAME)
+    projector: funnelProjector(COLORS.FLAME)
   },
   FREEZE: {
     platform: platformConfig(PLATFORM.SPRAY, COLORS.FREEZE),
     turret: roundFrontTurret(COLORS.FREEZE),
-    projector: funnelOutProjector(COLORS.FREEZE)
+    projector: funnelProjector(COLORS.FREEZE)
   },
   IMPACT: {
     platform: platformConfig(PLATFORM.SPRAY, COLORS.IMPACT),
     turret: roundFrontTurret(COLORS.IMPACT),
-    projector: funnelOutProjector(COLORS.IMPACT)
+    projector: funnelProjector(COLORS.IMPACT)
   },
 
   // CLOUD
   FIRE: {
     platform: platformConfig(PLATFORM.CLOUD, COLORS.FIRE),
     turret: roundTurret(COLORS.FIRE),
-    projector: funnelShortProjector(COLORS.FIRE)
+    projector: pointInsideProjector(COLORS.FIRE)
   },
   POISON: {
     platform: platformConfig(PLATFORM.CLOUD, COLORS.POISON),
     turret: roundTurret(COLORS.POISON),
-    projector: funnelShortProjector(COLORS.POISON)
+    projector: pointInsideProjector(COLORS.POISON)
   },
   SMOKE: {
     platform: platformConfig(PLATFORM.CLOUD, COLORS.SMOKE),
     turret: roundTurret(COLORS.SMOKE),
-    projector: funnelShortProjector(COLORS.SMOKE)
+    projector: pointInsideProjector(COLORS.SMOKE)
   },
   SHOCK: {
     platform: platformConfig(PLATFORM.CLOUD, COLORS.SHOCK),
     turret: roundTurret(COLORS.SHOCK),
-    projector: funnelShortProjector(COLORS.SHOCK)
+    projector: pointInsideProjector(COLORS.SHOCK)
   },
   ICE: {
     platform: platformConfig(PLATFORM.CLOUD, COLORS.ICE),
     turret: roundTurret(COLORS.ICE),
-    projector: funnelShortProjector(COLORS.ICE)
+    projector: pointInsideProjector(COLORS.ICE)
   },
 
   // FALL
   RAIN: {
     platform: platformConfig(PLATFORM.FALL, COLORS.RAIN),
     turret: roundTurret(COLORS.RAIN),
-    projector: funnelShortProjector(COLORS.RAIN)
+    projector: pointInsideProjector(COLORS.RAIN)
   },
   SNOW: {
     platform: platformConfig(PLATFORM.FALL, COLORS.SNOW),
     turret: roundTurret(COLORS.SNOW),
-    projector: funnelShortProjector(COLORS.SNOW)
+    projector: pointInsideProjector(COLORS.SNOW)
   },
 
   // BEAM
   LAZER: {
     platform: platformConfig(PLATFORM.BEAM, COLORS.LAZER),
     turret: smallTurret(COLORS.LAZER),
-    projector: gunProjector(COLORS.LAZER)
+    projector: rectProjector(COLORS.LAZER)
   },
   PLASMA: {
     platform: platformConfig(PLATFORM.BEAM, COLORS.PLASMA),
     turret: smallTurret(COLORS.PLASMA),
-    projector: funnelInProjector(COLORS.PLASMA)
+    projector: pointProjector(COLORS.PLASMA)
   },
   LIGHTNING: {
     platform: platformConfig(PLATFORM.BEAM, COLORS.LIGHTNING),
     turret: smallTurret(COLORS.LIGHTNING),
-    projector: funnelInProjector(COLORS.LIGHTNING)
+    projector: pointProjector(COLORS.LIGHTNING)
   },
 
   // THROW
   BULLET: {
     platform: platformConfig(PLATFORM.THROW, COLORS.BULLET),
     turret: roundBackTurret(COLORS.BULLET),
-    projector: gunProjector(COLORS.BULLET)
+    projector: rectProjector(COLORS.BULLET)
   },
   MISSILE: {
     platform: platformConfig(PLATFORM.THROW, COLORS.MISSILE),
     turret: roundBackTurret(COLORS.MISSILE),
-    projector: gunProjector(COLORS.MISSILE, false)
+    projector: rectProjector(COLORS.MISSILE, false)
   },
 
   // AREA
   BOOST: {
     platform: platformConfig(PLATFORM.AREA, COLORS.BOOST),
     turret: roundTurret(COLORS.BOOST),
-    projector: {
-      size: {
-        x: 7,
-        y: 18
-      },
-      options: {
-        type: "funnel",
-        margin: 0,
-        inset: 0.8,
-        color: COLORS.BOOST,
-        balls: { count: 1, color: ["#FCF"], start: 0.7 },
-        line: "white"
-      },
-    }
+    projector: funnelInsideProjector(COLORS.BOOST)
   },
   SLOW: {
     platform: platformConfig(PLATFORM.AREA, COLORS.SLOW),
     turret: roundTurret(COLORS.SLOW),
-    projector: {
-      size: {
-        x: 7,
-        y: 18
-      },
-      options: {
-        type: "rect",
-        margin: 0,
-        inset: 0.4,
-        color: COLORS.SLOW,
-        balls: { count: 1, color: ["#FCF"], start: 0 },
-        line: "white"
-      }
-    }
+    projector: rectInsideProjector(COLORS.SLOW)
   }
-
 }
 
 export default function registerTowerTextures(scene: Scene) {
