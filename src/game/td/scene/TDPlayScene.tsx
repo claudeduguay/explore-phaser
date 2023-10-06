@@ -1,6 +1,6 @@
 
 import { Scene, GameObjects, Types, Utils, Math as PMath, Input } from "phaser"
-import { makeHeightRects } from "../assets/TextureFactory"
+import { makeHeightRects, makeLandscapeTile } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../tower/TDTower"
 import TDGameScene from "./TDGameScene"
@@ -70,6 +70,7 @@ export default class TDPlayScene extends Scene {
     this.load.image('muzzle', 'assets/particles/muzzle_01.png')
 
     makeHeightRects(this, "height_cells", 64, 64, 10)
+    makeLandscapeTile(this, "grass", { size: { x: 64, y: 64 }, options: { type: "grass" } })
 
     registerTowerTextures(this)
 
@@ -251,6 +252,8 @@ export default class TDPlayScene extends Scene {
     this.towerPreview = new TowerPreview(this, 50, 58)
     this.scene.add("tower_preview", this.towerPreview, true)
     this.scene.sleep("tower_preview")
+
+    // this.add.image(50, 700, "grass")
   }
 
   createMap() {

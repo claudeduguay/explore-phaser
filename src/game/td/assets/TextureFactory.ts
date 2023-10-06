@@ -7,6 +7,7 @@ import { drawEllipse, rotated } from "../../../util/DrawUtil"
 import { ITurretOptions, turretRendererFunctionFactory } from "./TurretFactory"
 import { IProjectorOptions, projectorRendererFunctionFactory } from "./ProjectorFactory"
 import { pathRendererFunctionFactory } from "./PathFactory"
+import { ILandscapeOptions, landscapeRendererFunctionFactory } from "./LandscapeFactory"
 
 // Render to a TextureCanvas using ...renderers
 export function renderCanvas(scene: Scene, key: string, w: number, h: number, ...renderers: IRenderFunction[]) {
@@ -167,5 +168,10 @@ export function makeTowerTurret(scene: Scene, key: string, config: ITextureConfi
 
 export function makeTowerProjector(scene: Scene, key: string, config: ITextureConfig<Partial<IProjectorOptions>>) {
   const render: IRenderFunction = projectorRendererFunctionFactory(0, config.options)
+  renderCanvas(scene, key, config.size.x, config.size.y, render)
+}
+
+export function makeLandscapeTile(scene: Scene, key: string, config: ITextureConfig<Partial<ILandscapeOptions>>) {
+  const render: IRenderFunction = landscapeRendererFunctionFactory(0, config.options)
   renderCanvas(scene, key, config.size.x, config.size.y, render)
 }
