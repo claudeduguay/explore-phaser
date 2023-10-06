@@ -9,6 +9,6 @@ export default function useCaptureEnemy(enemy: TDEnemy, angle = 0): string {
       texture.draw(copy)
     }
   }
-  const key = `enemy-${enemy.model.meta.body}`
+  const key = `enemy-${enemy.model.meta.key}`
   return useCapture(enemy.scene, 20, 20, render, key)
 }

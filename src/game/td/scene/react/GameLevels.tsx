@@ -18,6 +18,7 @@ export default function GameLevels({ navigator }: IGameHomeProps) {
   for (let i = 0; i < count; i++) {
     levels.push(generateLevel(config.rows, config.cols))
   }
+  // console.log(JSON.stringify(levels[0], null, 2))
 
   // Get max boundaries
   const longestMap = computeLongestMap(levels)

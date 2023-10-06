@@ -1,4 +1,4 @@
-import { lerp } from "../../../../util/MathUtil"
+import { lerpInt } from "../../../../util/MathUtil"
 import { ALL_ENEMIES } from "../../model/IEnemyModel"
 
 export interface IWaveGroup {
@@ -17,22 +17,25 @@ export const DEFAULT_WAVES: IWaveModel = [
   { key: "path-red", count: 3, offset: 3000, spacing: 250 }
 ]
 
-// The difficulty of a wave is the total of levels for all enemies 
+// The difficulty of a wave is the total of levels for all enemies
+// Note: Should also take spacing into account as closr enemies are harder
 export function evaluateWaveDifficulty(waves: IWaveModel): number {
   let accumulator = 0
   waves.forEach(group => {
-    const model = ALL_ENEMIES.find(m => m.meta.body === group.key)
+    const model = ALL_ENEMIES.find(m => m.meta.key === group.key)
     accumulator += (model?.stats.level || 0) * group.count
   })
   return accumulator
 }
 
+// Note: Enemy count for a given wave should increment over time
+// Note: Enemy spacing withing a given wave can vary
 export function generateWaves(count: number = 5) {
-  const waveSpacing = 1500
+  const keys = ALL_ENEMIES.map(m => m.meta.key)
+  const waveSpacing = lerpInt(1200, 1800, Math.random())
   const waves: IWaveModel = []
-  const keys = ALL_ENEMIES.map(m => m.meta.body)
   for (let i = 0; i < count; i++) {
-    const unitCount = Math.floor(lerp(2, 4, Math.random()))
+    const unitCount = lerpInt(2, 4, Math.random())
     const key = keys[Math.floor(Math.random() * (keys.length - 1))]
     waves.push({ key, count: unitCount, offset: waveSpacing * i, spacing: 250 })
   }

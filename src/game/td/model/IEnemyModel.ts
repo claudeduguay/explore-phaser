@@ -1,6 +1,6 @@
 
 export interface IEnemyMeta {
-  body: string
+  key: string
 }
 
 export interface IEnemyStatistics {
@@ -30,7 +30,7 @@ export const ENEMY_MODELS: Record<string, IEnemyModel> = {
   WEAK: {
     name: "Weak Enemy",
     meta: {
-      body: "path-green"
+      key: "path-green"
     },
     stats: {
       level: 1,
@@ -46,7 +46,7 @@ export const ENEMY_MODELS: Record<string, IEnemyModel> = {
   MODERATE: {
     name: "Moderate Enemy",
     meta: {
-      body: "path-blue"
+      key: "path-blue"
     },
     stats: {
       level: 2,
@@ -62,7 +62,7 @@ export const ENEMY_MODELS: Record<string, IEnemyModel> = {
   STRONG: {
     name: "Strong Enemy",
     meta: {
-      body: "path-red"
+      key: "path-red"
     },
     stats: {
       level: 3,

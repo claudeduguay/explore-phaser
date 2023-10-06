@@ -53,6 +53,10 @@ export function lerp(min: number, max: number, f: number) {
   return min + (max - min) * f
 }
 
+export function lerpInt(min: number, max: number, f: number) {
+  return Math.floor(lerp(min, max, f))
+}
+
 
 // Minics Phaser angle (radians)
 export function rotation(cx: number, cy: number, rx: number, ry: number, rotation: number): Point {
