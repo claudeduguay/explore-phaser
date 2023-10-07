@@ -167,6 +167,8 @@ export default class TDPlayScene extends Scene {
   create() {
     const { w } = canvasSize(this)
 
+    // this.lights.addLight(0, 0, w, 0xffffff, 1)
+
     // Tower Info
     this.towerGroup = new SelectableGroup(this, "towerGroup")
     const onCloseTowerInfo = () => this.towerGroup.infoVisible.value = false

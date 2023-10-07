@@ -77,12 +77,14 @@ function drawHead(
   if (type === "east") {
     x += (3.5 * xf)
   }
+  g.save()
   g.fillStyle = headColor
   g.strokeStyle = headStroke
   g.lineWidth = 1
   drawEllipse(g, x, (8 + 1 + bob) * xf, headWidth * xf, headHeight * yf)
   g.fill()
   g.stroke()
+  g.restore()
 }
 
 function drawBody(
@@ -93,12 +95,14 @@ function drawBody(
   const xf = w / 32
   const yf = h / 32
   const bob = Math.sin(frameIndexFraction * Math.PI) * 6
+  g.save()
   g.fillStyle = bodyColor
   g.strokeStyle = bodyStroke
   g.lineWidth = 1
   drawEllipse(g, 16 * xf, ((14 + bodyHeight / 2 + bob) * yf), bodyWidth * xf, bodyHeight * yf)
   g.fill()
   g.stroke()
+  g.restore()
 }
 
 export function peepRendererFunctionFactory(
