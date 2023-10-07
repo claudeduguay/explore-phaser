@@ -13,10 +13,10 @@ export const SKIN_LIST: string[] = [
 
 export const TYPE_LIST = ["north", "south", "east", "west"]
 
-export const HEAD_WIDTH_RANGE: IRange = [4, 6, 0.5]
-export const HEAD_HEIGHT_RANGE: IRange = [4, 7, 0.5]
+export const HEAD_WIDTH_RANGE: IRange = [4.5, 6, 0.5]
+export const HEAD_HEIGHT_RANGE: IRange = [4.5, 6.5, 0.5]
 export const BODY_WIDTH_RANGE: IRange = [6, 11, 0.5]
-export const BODY_HEIGHT_RANGE: IRange = [10, 15]
+export const BODY_HEIGHT_RANGE: IRange = [10, 12]
 
 
 export type IPeepType = "north" | "south" | "east" | "west";

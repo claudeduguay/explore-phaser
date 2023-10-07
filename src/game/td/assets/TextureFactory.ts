@@ -1,5 +1,5 @@
 
-import { Scene, Textures } from "phaser"
+import { Scene } from "phaser"
 import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal"
 import IRenderFunction from "../../../util/IRenderFunction"
 import { IPlatformOptions, platformRendererFunctionFactory } from "./PlatformFactory"

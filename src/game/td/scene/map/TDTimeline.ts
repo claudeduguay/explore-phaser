@@ -16,9 +16,9 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction:
 
   // Note: Could be converted into a generated texture
   const g = scene.add.graphics()
-  g.fillStyle(0x996666, 1.0)
+  g.fillStyle(0x993333, 1.0)
   g.fillRoundedRect(left, top - radius / 2, width, radius, 10)
-  g.fillStyle(0x666699, 1.0)
+  g.fillStyle(0x339933, 1.0)
   g.fillRoundedRect(insetStart, top - radius / 2, insetWidth, radius, 10)
 
   // Generate path curve

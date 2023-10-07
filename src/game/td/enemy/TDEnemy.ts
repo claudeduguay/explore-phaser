@@ -19,6 +19,7 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     public showStatusBars: boolean = false) {
 
     super(scene, path, x, y, model.meta.key)
+    this.postFX.addShadow(0.2, 1.2, 0.2, 1, 0x000000, 3, 0.5)
     this.anims.create({
       key: 'east',
       frameRate: 20,
