@@ -89,7 +89,7 @@ export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path,
     to: 1.0,
     yoyo: false,
     repeat: 0,
-    rotateToPath: true,
+    rotateToPath: false,
     onComplete: () => {
       follower.destroy()
       if (isLast) {

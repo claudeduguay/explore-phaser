@@ -20,7 +20,7 @@ import { canvasSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../enemy/TDEnemy"
 import { ENEMY_MODELS } from "../model/IEnemyModel"
-import { DEFAULT_PEEP_OPTIONS } from "../assets/PeepFactory"
+import { DEFAULT_PEEP_OPTIONS, randomPeepOptions } from "../assets/PeepFactory"
 
 export interface IActiveValues {
   health: ActiveValue,
@@ -83,11 +83,9 @@ export default class TDPlayScene extends Scene {
       // Sprite has a setTexture(key, [frame]) function
     }
 
-    makePeep(this, "peep_weak", 32, 32, DEFAULT_PEEP_OPTIONS)
-    makePeep(this, "peep_moderate", 32, 32, DEFAULT_PEEP_OPTIONS)
-    makePeep(this, "peep_strong", 32, 32, DEFAULT_PEEP_OPTIONS)
-
-
+    makePeep(this, "peep_weak", 32, 32, randomPeepOptions("east"))
+    makePeep(this, "peep_moderate", 32, 32, randomPeepOptions("east"))
+    makePeep(this, "peep_strong", 32, 32, randomPeepOptions("east"))
   }
 
   static createExplosionSprite(scene: Scene, x: number, y: number) {
@@ -260,17 +258,9 @@ export default class TDPlayScene extends Scene {
     this.scene.add("tower_preview", this.towerPreview, true)
     this.scene.sleep("tower_preview")
 
+    // Show spritesheet canvas
+    // this.add.sprite(50, 600, "peep_weak_canvas").setOrigin(0)
 
-    const peep = this.add.sprite(50, 700, "peep_weak").setOrigin(0)
-    // See: https://www.thepolyglotdeveloper.com/2020/07/animate-spritesheets-phaser-game/
-    peep.anims.create({
-      key: 'east',
-      frameRate: 20,
-      frames: this.anims.generateFrameNumbers('peep_weak', { start: 0, end: 15 }),
-      repeat: -1,
-    })
-
-    peep.anims.play("east", true)
   }
 
   createMap() {

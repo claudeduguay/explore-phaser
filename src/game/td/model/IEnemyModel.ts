@@ -30,7 +30,7 @@ export const ENEMY_MODELS: Record<string, IEnemyModel> = {
   WEAK: {
     name: "Weak Enemy",
     meta: {
-      key: "peep_weak"
+      key: "peep_weak",
     },
     stats: {
       level: 1,

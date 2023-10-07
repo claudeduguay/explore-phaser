@@ -1,5 +1,5 @@
 import { drawEllipse } from "../../../util/DrawUtil";
-import { IRange } from "../../../util/Random";
+import { IRange, randomChoice, randomColor, randomRange } from "../../../util/Random";
 import { canvasSize } from "../../../util/RenderUtil";
 
 
@@ -44,6 +44,19 @@ export const DEFAULT_PEEP_OPTIONS: IPeepOptions = {
   bodyStroke: "#666666",
 }
 
+export function randomPeepOptions(type: IPeepType): IPeepOptions {
+  return {
+    type,
+    headWidth: randomRange(HEAD_WIDTH_RANGE),
+    headHeight: randomRange(HEAD_HEIGHT_RANGE),
+    bodyWidth: randomRange(BODY_WIDTH_RANGE),
+    bodyHeight: randomRange(BODY_HEIGHT_RANGE),
+    headColor: randomChoice(SKIN_LIST),
+    headStroke: randomColor(),
+    bodyColor: randomColor(),
+    bodyStroke: randomColor(),
+  }
+}
 
 function drawHead(
   g: CanvasRenderingContext2D,

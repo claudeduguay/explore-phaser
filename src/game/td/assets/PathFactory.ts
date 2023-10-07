@@ -27,7 +27,6 @@ export const DEFAULT_PATH_OPTIONS: IPathOptions = {
   edgeInset: EDGE_INSET
 }
 
-
 export function straightPathRendererFunctionFactory(
   frameIndexFraction: number, options: IPathOptions
 ) {

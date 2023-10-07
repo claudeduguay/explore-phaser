@@ -19,12 +19,23 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     public showStatusBars: boolean = false) {
 
     super(scene, path, x, y, model.meta.key)
-    this.setRotateToPath(false)  // Not working
     this.anims.create({
       key: 'east',
       frameRate: 20,
       frames: this.anims.generateFrameNumbers(model.meta.key, { start: 0, end: 15 }),
       repeat: -1,
+    })
+    this.anims.create({
+      key: 'south', frameRate: 20, repeat: -1,
+      frames: this.anims.generateFrameNumbers(model.meta.key, { start: 16, end: 31 }),
+    })
+    this.anims.create({
+      key: 'west', frameRate: 20, repeat: -1,
+      frames: this.anims.generateFrameNumbers(model.meta.key, { start: 32, end: 47 }),
+    })
+    this.anims.create({
+      key: 'north', frameRate: 20, repeat: -1,
+      frames: this.anims.generateFrameNumbers(model.meta.key, { start: 48, end: 63 }),
     })
     this.anims.play("east")
     this.setInteractive()
@@ -66,8 +77,37 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     this.postFX.clear()
   }
 
+  detectDirectionChange() {
+    const current = this.anims.currentAnim
+    switch (this.angle) {
+      case -90:
+        if (current?.key !== "north") {
+          this.anims.play("north")
+        }
+        break
+      case 0:
+        if (current?.key !== "east") {
+          this.anims.play("east")
+        }
+        break
+      case 90:
+        if (current?.key !== "south") {
+          this.anims.play("south")
+        }
+        break
+      case 180:
+        if (current?.key !== "west") {
+          this.anims.play("west")
+        }
+        break
+    }
+    this.angle = 0
+  }
+
   preUpdate(time: number, delta: number): void {
     super.preUpdate(time, delta)
+    this.detectDirectionChange()
+
     if (this.showStatusBars) {
       const health_fraction = this.health.compute() / this.health.baseValue
       const shield_fraction = this.shield.compute() / this.shield.baseValue

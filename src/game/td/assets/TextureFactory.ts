@@ -210,10 +210,16 @@ export function makePeep(scene: Scene, key: string, w: number, h: number, option
   const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
     for (let i = 0; i < count; i++) {
       const frameIndexFraction = i / count
-      const renterPeep: IRenderFunction = peepRendererFunctionFactory(frameIndexFraction, options)
-      renderImage(g, renterPeep, w * i, 0, w, h)
+      const renderPeepEast: IRenderFunction = peepRendererFunctionFactory(frameIndexFraction, { ...options, type: "east" })
+      renderImage(g, renderPeepEast, w * i, 0, w, h)
+      const renderPeepSouth: IRenderFunction = peepRendererFunctionFactory(frameIndexFraction, { ...options, type: "south" })
+      renderImage(g, renderPeepSouth, w * i, h, w, h)
+      const renderPeepWest: IRenderFunction = peepRendererFunctionFactory(frameIndexFraction, { ...options, type: "west" })
+      renderImage(g, renderPeepWest, w * i, h * 2, w, h)
+      const renderPeepNorth: IRenderFunction = peepRendererFunctionFactory(frameIndexFraction, { ...options, type: "north" })
+      renderImage(g, renderPeepNorth, w * i, h * 3, w, h)
     }
   }
-  renderSpritesheet(scene, key, w * count, h, 32, render)
+  renderSpritesheet(scene, key, w * count, h * 4, 32, render)
   // renderCanvas(scene, key, w * count, h, render)
 }
