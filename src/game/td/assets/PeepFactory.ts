@@ -1,5 +1,6 @@
+import { Display } from "phaser";
 import { drawEllipse } from "../../../util/DrawUtil";
-import { IRange, randomChoice, randomColor, randomRange } from "../../../util/Random";
+import { IRange, randomChoice, randomRange } from "../../../util/Random";
 import { canvasSize } from "../../../util/RenderUtil";
 
 
@@ -44,17 +45,19 @@ export const DEFAULT_PEEP_OPTIONS: IPeepOptions = {
   bodyStroke: "#666666",
 }
 
-export function randomPeepOptions(type: IPeepType): IPeepOptions {
+export function randomBodyColor() {
+  return Display.Color.HSLToColor(Math.random(), 1, 0.33).rgba
+}
+
+export function randomPeepOptions(type: IPeepType): Partial<IPeepOptions> {
   return {
-    type,
+    // type,
     headWidth: randomRange(HEAD_WIDTH_RANGE),
     headHeight: randomRange(HEAD_HEIGHT_RANGE),
     bodyWidth: randomRange(BODY_WIDTH_RANGE),
     bodyHeight: randomRange(BODY_HEIGHT_RANGE),
     headColor: randomChoice(SKIN_LIST),
-    headStroke: randomColor(),
-    bodyColor: randomColor(),
-    bodyStroke: randomColor(),
+    bodyColor: randomBodyColor(),
   }
 }
 
@@ -76,7 +79,7 @@ function drawHead(
   }
   g.fillStyle = headColor
   g.strokeStyle = headStroke
-  g.lineWidth = 2
+  g.lineWidth = 1
   drawEllipse(g, x, (8 + 1 + bob) * xf, headWidth * xf, headHeight * yf)
   g.fill()
   g.stroke()
@@ -92,7 +95,7 @@ function drawBody(
   const bob = Math.sin(frameIndexFraction * Math.PI) * 6
   g.fillStyle = bodyColor
   g.strokeStyle = bodyStroke
-  g.lineWidth = 2
+  g.lineWidth = 1
   drawEllipse(g, 16 * xf, ((14 + bodyHeight / 2 + bob) * yf), bodyWidth * xf, bodyHeight * yf)
   g.fill()
   g.stroke()

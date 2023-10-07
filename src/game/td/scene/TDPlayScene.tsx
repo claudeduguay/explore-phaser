@@ -20,7 +20,7 @@ import { canvasSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../enemy/TDEnemy"
 import { ENEMY_MODELS } from "../model/IEnemyModel"
-import { DEFAULT_PEEP_OPTIONS, randomPeepOptions } from "../assets/PeepFactory"
+import { randomPeepOptions } from "../assets/PeepFactory"
 
 export interface IActiveValues {
   health: ActiveValue,
