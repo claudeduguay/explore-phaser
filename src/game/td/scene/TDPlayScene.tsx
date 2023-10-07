@@ -83,15 +83,10 @@ export default class TDPlayScene extends Scene {
       // Sprite has a setTexture(key, [frame]) function
     }
 
-    makePeep(this, "peep", 32, 32, DEFAULT_PEEP_OPTIONS)
+    makePeep(this, "peep_weak", 32, 32, DEFAULT_PEEP_OPTIONS)
+    makePeep(this, "peep_moderate", 32, 32, DEFAULT_PEEP_OPTIONS)
+    makePeep(this, "peep_strong", 32, 32, DEFAULT_PEEP_OPTIONS)
 
-    // See: https://www.thepolyglotdeveloper.com/2020/07/animate-spritesheets-phaser-game/
-    this.anims.create({
-      key: 'east',
-      frameRate: 20,
-      frames: this.anims.generateFrameNumbers('peep', { start: 0, end: 15 }),
-      repeat: -1,
-    })
 
   }
 
@@ -266,8 +261,16 @@ export default class TDPlayScene extends Scene {
     this.scene.sleep("tower_preview")
 
 
-    const peep = this.add.sprite(50, 700, "peep").setOrigin(0)
-    peep.play("east", true)
+    const peep = this.add.sprite(50, 700, "peep_weak").setOrigin(0)
+    // See: https://www.thepolyglotdeveloper.com/2020/07/animate-spritesheets-phaser-game/
+    peep.anims.create({
+      key: 'east',
+      frameRate: 20,
+      frames: this.anims.generateFrameNumbers('peep_weak', { start: 0, end: 15 }),
+      repeat: -1,
+    })
+
+    peep.anims.play("east", true)
   }
 
   createMap() {

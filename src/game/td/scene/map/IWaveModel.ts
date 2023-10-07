@@ -1,5 +1,5 @@
 import { lerpInt } from "../../../../util/MathUtil"
-import { ALL_ENEMIES } from "../../model/IEnemyModel"
+import { ALL_ENEMIES, ENEMY_MODELS } from "../../model/IEnemyModel"
 
 export interface IWaveGroup {
   key: string                      // Texture key to use for this group
@@ -12,9 +12,9 @@ export type IWaveModel = IWaveGroup[]
 export default IWaveModel
 
 export const DEFAULT_WAVES: IWaveModel = [
-  { key: "path-green", count: 3, offset: 0, spacing: 250 },
-  { key: "path-blue", count: 3, offset: 1500, spacing: 250 },
-  { key: "path-red", count: 3, offset: 3000, spacing: 250 }
+  { key: ENEMY_MODELS.WEAK.meta.key, count: 3, offset: 0, spacing: 250 },
+  { key: ENEMY_MODELS.MODERATE.meta.key, count: 3, offset: 1500, spacing: 250 },
+  { key: ENEMY_MODELS.STRONG.meta.key, count: 3, offset: 3000, spacing: 250 }
 ]
 
 // The difficulty of a wave is the total of levels for all enemies

@@ -19,6 +19,14 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     public showStatusBars: boolean = false) {
 
     super(scene, path, x, y, model.meta.key)
+    this.setRotateToPath(false)  // Not working
+    this.anims.create({
+      key: 'east',
+      frameRate: 20,
+      frames: this.anims.generateFrameNumbers(model.meta.key, { start: 0, end: 15 }),
+      repeat: -1,
+    })
+    this.anims.play("east")
     this.setInteractive()
 
     this.health = new ActiveValue(model.stats.health || 0)

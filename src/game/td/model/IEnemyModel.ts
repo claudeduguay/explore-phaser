@@ -30,7 +30,7 @@ export const ENEMY_MODELS: Record<string, IEnemyModel> = {
   WEAK: {
     name: "Weak Enemy",
     meta: {
-      key: "path-green"
+      key: "peep_weak"
     },
     stats: {
       level: 1,
@@ -46,7 +46,7 @@ export const ENEMY_MODELS: Record<string, IEnemyModel> = {
   MODERATE: {
     name: "Moderate Enemy",
     meta: {
-      key: "path-blue"
+      key: "peep_moderate"
     },
     stats: {
       level: 2,
@@ -62,7 +62,7 @@ export const ENEMY_MODELS: Record<string, IEnemyModel> = {
   STRONG: {
     name: "Strong Enemy",
     meta: {
-      key: "path-red"
+      key: "peep_strong"
     },
     stats: {
       level: 3,
