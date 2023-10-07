@@ -1,5 +1,5 @@
 
-import { Scene } from "phaser"
+import { Scene, Textures } from "phaser"
 import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal"
 import IRenderFunction from "../../../util/IRenderFunction"
 import { IPlatformOptions, platformRendererFunctionFactory } from "./PlatformFactory"
@@ -8,6 +8,7 @@ import { ITurretOptions, turretRendererFunctionFactory } from "./TurretFactory"
 import { IProjectorOptions, projectorRendererFunctionFactory } from "./ProjectorFactory"
 import { pathRendererFunctionFactory } from "./PathFactory"
 import { ILandscapeOptions, landscapeRendererFunctionFactory } from "./LandscapeFactory"
+import { IPeepOptions, peepRendererFunctionFactory } from "./PeepFactory"
 
 // Render to a TextureCanvas using ...renderers
 export function renderCanvas(scene: Scene, key: string, w: number, h: number, ...renderers: IRenderFunction[]) {
@@ -17,8 +18,37 @@ export function renderCanvas(scene: Scene, key: string, w: number, h: number, ..
     renderers.forEach(renderer => renderer(g))
   }
   canvas?.refresh()
+  return canvas
 }
 
+/*
+// BUG IN PHASER 3 addSprite function
+addSpriteSheet: function (key, source, config, dataSource)
+{
+    var texture = null;
+
+    if (source instanceof Texture)
+    {
+        key = texture.key;   // <<< texture is always null (initialized right above), should be "key = source.key")
+        texture = source;
+    }
+*/
+export function renderSpritesheet(scene: Scene, key: string, w: number, h: number, frameSize: number = 15, ...renderers: IRenderFunction[]) {
+  const canvas = renderCanvas(scene, `${key}_canvas`, w, h, ...renderers)
+  if (canvas) {
+    // Note: Functional workaround for now is to use "canvas.canvas as any"
+    // Function accepts HTMLCanvasElement despite HTMLImageElement type def.
+    scene.textures.addSpriteSheet(key, canvas.canvas as any, {
+      frameWidth: frameSize,
+      frameHeight: frameSize,
+      startFrame: 0,
+      endFrame: -1,
+      margin: 0,
+      spacing: 0
+    })
+  }
+  return canvas
+}
 export function renderImage(g: CanvasRenderingContext2D, renderer: IRenderFunction,
   x: number, y: number, w: number, h: number, a: number = 0) {
   const cellRenderCanvas = document.createElement("canvas") as HTMLCanvasElement
@@ -174,4 +204,16 @@ export function makeTowerProjector(scene: Scene, key: string, config: ITextureCo
 export function makeLandscapeTile(scene: Scene, key: string, config: ITextureConfig<Partial<ILandscapeOptions>>) {
   const render: IRenderFunction = landscapeRendererFunctionFactory(0, config.options)
   renderCanvas(scene, key, config.size.x, config.size.y, render)
+}
+
+export function makePeep(scene: Scene, key: string, w: number, h: number, options: Partial<IPeepOptions>, count: number = 16) {
+  const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
+    for (let i = 0; i < count; i++) {
+      const frameIndexFraction = i / count
+      const renterPeep: IRenderFunction = peepRendererFunctionFactory(frameIndexFraction, options)
+      renderImage(g, renterPeep, w * i, 0, w, h)
+    }
+  }
+  renderSpritesheet(scene, key, w * count, h, 32, render)
+  // renderCanvas(scene, key, w * count, h, render)
 }

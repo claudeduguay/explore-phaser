@@ -17,8 +17,8 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     public x: number, public y: number,
     public model: IEnemyModel, public path: Curves.Path = new Curves.Path(),
     public showStatusBars: boolean = false) {
-    super(scene, path, x, y, model.meta.key)
 
+    super(scene, path, x, y, model.meta.key)
     this.setInteractive()
 
     this.health = new ActiveValue(model.stats.health || 0)
