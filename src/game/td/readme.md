@@ -19,8 +19,7 @@ corners an beam towers use squared corners?
 * Need to figure out leveling
 * Develop an EFFECT System to add/remove a modifier with time exiry (or none)
 * Add slow support using stopFollow and resumeFollow to slow and sleep
-* BUG: Need to debug Enemy image capture
-* BUG: Cloud towres don't aways emmit if dropped by mouse
+* BUG: Cloud towers don't aways emmit if dropped by mouse
 * BUG: Fails on iPad Safari, related to sound files not loading
 
 ### Effect/Afliction Design Notes

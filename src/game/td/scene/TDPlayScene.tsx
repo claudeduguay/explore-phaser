@@ -191,7 +191,7 @@ export default class TDPlayScene extends Scene {
     // Clear selections when clicked outside info panel
     this.input.on(Input.Events.POINTER_DOWN, () => {
       this.towerGroup.select(undefined)
-      // this.enemyGroup.select(undefined)
+      this.enemyGroup.select(undefined)
       this.towerGroup.infoVisible.value = false
       this.enemyGroup.infoVisible.value = false
     })

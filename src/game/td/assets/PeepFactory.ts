@@ -40,9 +40,9 @@ export const DEFAULT_PEEP_OPTIONS: IPeepOptions = {
   bodyWidth: 9,
   bodyHeight: 14,
   headColor: "#eebb99",
-  headStroke: "#666666",
+  headStroke: "#000000",
   bodyColor: "#ffaa00",
-  bodyStroke: "#666666",
+  bodyStroke: "#000000",
 }
 
 export function randomBodyColor() {
