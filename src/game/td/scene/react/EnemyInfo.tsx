@@ -29,7 +29,7 @@ export default function EnemyInfo({ enemy: enemyObservable, onClose }: IEnemyInf
     {model && <>
       <h4 className="fs-4 border-top p-1 pt-2">{model.name}</h4>
       <PropsInfo title="General" model={model.stats} />
-      <PropsInfo title="Resistance (dps multiplier)" model={model.resistance} valueFormatter={percentFormatter} />
+      <PropsInfo title="Resistance (dps multiplier)" model={model.vulnerability} valueFormatter={percentFormatter} />
     </>}
   </div>
 }

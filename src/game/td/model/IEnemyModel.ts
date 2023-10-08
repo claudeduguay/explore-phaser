@@ -11,7 +11,7 @@ export interface IEnemyStatistics {
   value: number
 }
 
-export interface IEnemyResistance {
+export interface IEnemyVulnerability {
   default: number
   [key: string]: number
 }
@@ -20,11 +20,33 @@ export interface IEnemyModel {
   name: string
   meta: IEnemyMeta
   stats: IEnemyStatistics
-  resistance: IEnemyResistance
+  vulnerability: IEnemyVulnerability
 }
 
 export default IEnemyModel
 
+export function generateEnemies(count: number = 5): IEnemyModel[] {
+  const enemies: IEnemyModel[] = []
+  for (let i = 1; i <= count; i++) {
+    enemies.push({
+      name: `Level ${i} Enemy`,
+      meta: {
+        key: `peep_${i}`,
+      },
+      stats: {
+        level: i,
+        health: 50 * i,
+        shield: 50 * i,
+        speed: 100,
+        value: 10 * i
+      },
+      vulnerability: {
+        default: 1
+      }
+    })
+  }
+  return enemies
+}
 
 export const ENEMY_MODELS: Record<string, IEnemyModel> = {
   WEAK: {
@@ -39,8 +61,8 @@ export const ENEMY_MODELS: Record<string, IEnemyModel> = {
       speed: 100,
       value: 10
     },
-    resistance: {
-      default: 0
+    vulnerability: {
+      default: 1
     }
   },
   MODERATE: {
@@ -55,8 +77,8 @@ export const ENEMY_MODELS: Record<string, IEnemyModel> = {
       speed: 100,
       value: 15
     },
-    resistance: {
-      default: 0
+    vulnerability: {
+      default: 1
     }
   },
   STRONG: {
@@ -71,8 +93,8 @@ export const ENEMY_MODELS: Record<string, IEnemyModel> = {
       speed: 100,
       value: 20
     },
-    resistance: {
-      default: 0
+    vulnerability: {
+      default: 1
     }
   }
 }

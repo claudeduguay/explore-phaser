@@ -34,9 +34,8 @@ export function applyDamage(tower: ITower, delta: number, singleTarget: boolean 
     if (target instanceof TDEnemy) {  // Ensure acces by type
       Object.entries(tower.model.damage).forEach(([key, value]) => {
         const dps = (value * delta / 1000 * tower.scene.time.timeScale)
-        const resistance = (target.model?.resistance[key] || target.model?.resistance.default)
-        const multiplier = 1.0 - resistance
-        damage += (dps * multiplier)
+        const vulnerability = (target.model?.vulnerability[key] || target.model?.vulnerability.default)
+        damage += (dps * vulnerability)
         // console.log(`${value}, (per update: ${dps}) ${key} damage from ${tower.model.name} (resistance: ${resistance})`)
       })
       target.health.adjust(-damage)
