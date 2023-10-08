@@ -3,16 +3,19 @@ import PropsInfo from "./PropsInfo"
 import CloseButton from "./CloseButton"
 import ObservableValue, { useObservableValue } from "../../value/ObservableValue"
 import TDEnemy from "../../enemy/TDEnemy"
+import useCaptureEnemy from "./capture/useCaptureEnemy"
+import { Scene } from "phaser"
 
 export interface IEnemyInfoProps {
+  scene: Scene
   enemy: ObservableValue<TDEnemy | undefined>
   onClose?: () => void
 }
 
-export default function EnemyInfo({ enemy: enemyObservable, onClose }: IEnemyInfoProps) {
+export default function EnemyInfo({ scene, enemy: enemyObservable, onClose }: IEnemyInfoProps) {
   const enemy = useObservableValue(enemyObservable)
   const model = enemy?.model
-  // const imageSrc = useCaptureEnemy(enemy)
+  const imageSrc = useCaptureEnemy(scene, enemy)
 
   const style: CSSProperties = {
     width: 350
@@ -28,8 +31,9 @@ export default function EnemyInfo({ enemy: enemyObservable, onClose }: IEnemyInf
     <h1 className="fs-2 p-1 text-title">Enemy Info</h1>
     {model && <>
       <h4 className="fs-4 border-top p-1 pt-2">{model.name}</h4>
+      <div><img src={imageSrc} alt="Enemy" /></div>
       <PropsInfo title="General" model={model.stats} />
-      <PropsInfo title="Resistance (dps multiplier)" model={model.vulnerability} valueFormatter={percentFormatter} />
+      <PropsInfo title="Vulnerability (dps multiplier)" model={model.vulnerability} valueFormatter={percentFormatter} />
     </>}
   </div>
 }

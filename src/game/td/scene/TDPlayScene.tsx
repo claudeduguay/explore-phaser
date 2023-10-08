@@ -185,7 +185,7 @@ export default class TDPlayScene extends Scene {
     // Enemies are created as the timeline moves, so we can't take the first entry of the group
     this.enemyGroup.select(new TDEnemy(this, 0, 0, ENEMY_MODELS.WEAK))
     this.enemyGroup.infoVisible.value = false
-    addReactNode(this, w - 350 - 25, 75, <EnemyInfo enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
+    addReactNode(this, w - 350 - 25, 75, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
       this.enemyGroup.infoVisible, true)
 
     // Clear selections when clicked outside info panel
