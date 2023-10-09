@@ -11,8 +11,10 @@ export interface ITowerStatistics {
   range: number
 }
 
+// Need a mechanism to defined timeout effect periods
+// Support for literal or random range damage values
 export interface ITowerDamage {
-  [key: string]: number
+  [key: string]: number | [mind: number, max: number]
 }
 
 export interface ITowerModel {
