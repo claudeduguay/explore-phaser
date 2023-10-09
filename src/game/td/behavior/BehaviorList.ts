@@ -5,6 +5,14 @@ import IBehavior from "./IBehavior"
 export default class BehaviorList<T> extends Array<IBehavior<T>> implements IBehavior<T> {
 
   update(obj: T, time: number, delta: number) {
-    this.forEach(behavior => behavior.update(obj, time, delta))
+    const list = [...this] // We clone to avoid problems with any mutations
+    list.forEach(behavior => behavior.update(obj, time, delta, this))
+  }
+
+  remove(behavior: IBehavior<T>) {
+    const index = this.indexOf(behavior)
+    if (index >= 0) {
+      this.splice(index, 1)
+    }
   }
 }

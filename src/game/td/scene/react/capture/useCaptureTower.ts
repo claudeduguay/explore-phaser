@@ -1,4 +1,4 @@
-import TDTower from "../../../tower/TDTower";
+import TDTower from "../../../entity/tower/TDTower";
 import { GameObjects, Scene } from "phaser";
 import useCapture from "./useCapture";
 

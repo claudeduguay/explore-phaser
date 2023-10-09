@@ -1,5 +1,5 @@
 import { lerpInt } from "../../../../util/MathUtil"
-import { ALL_ENEMIES, ENEMY_MODELS } from "../../model/IEnemyModel"
+import { ALL_ENEMIES, ENEMY_MODELS } from "../../entity/model/IEnemyModel"
 
 export interface IWaveGroup {
   key: string                      // Texture key to use for this group

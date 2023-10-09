@@ -1,6 +1,6 @@
-import ITowerModel from "../../model/ITowerModel";
+import ITowerModel from "../../entity/model/ITowerModel";
 import useCaptureTower from "./capture/useCaptureTower";
-import TDTower from "../../tower/TDTower";
+import TDTower from "../../entity/tower/TDTower";
 import { Scene } from "phaser";
 
 export interface ITowerButtonProps {

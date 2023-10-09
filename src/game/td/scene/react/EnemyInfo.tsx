@@ -2,7 +2,7 @@ import { CSSProperties } from "react"
 import PropsInfo from "./PropsInfo"
 import CloseButton from "./CloseButton"
 import ObservableValue, { useObservableValue } from "../../value/ObservableValue"
-import TDEnemy from "../../enemy/TDEnemy"
+import TDEnemy from "../../entity/enemy/TDEnemy"
 import useCaptureEnemy from "./capture/useCaptureEnemy"
 import { Scene } from "phaser"
 

@@ -1,7 +1,7 @@
 import { Curves, GameObjects, Scene, Time } from "phaser"
 import Point from "../../../../util/Point"
-import TDEnemy from "../../enemy/TDEnemy"
-import { ALL_ENEMIES } from "../../model/IEnemyModel"
+import TDEnemy from "../../entity/enemy/TDEnemy"
+import { ALL_ENEMIES } from "../../entity/model/IEnemyModel"
 import TDPlayScene, { IActiveValues } from "../TDPlayScene"
 import { DEFAULT_WAVES, IWaveGroup } from "./IWaveModel"
 

@@ -2,9 +2,9 @@
 import { Scene, GameObjects } from "phaser"
 import BehaviorList from "./BehaviorList"
 
-export default class BehaviorContainer extends GameObjects.Container {
+export default class BehaviorContainer<T> extends GameObjects.Container {
 
-  public readonly behavior = new BehaviorList()
+  public readonly behavior = new BehaviorList<T>()
 
   constructor(public scene: Scene, x?: number, y?: number) {
     super(scene, x, y)
@@ -12,6 +12,6 @@ export default class BehaviorContainer extends GameObjects.Container {
   }
 
   preUpdate(time: number, delta: number): void {
-    this.behavior.update(this, time, delta)
+    this.behavior.update(this as any, time, delta)
   }
 }

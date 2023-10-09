@@ -1,6 +1,6 @@
 import { GameObjects, Scene, Textures } from "phaser";
 import useCapture from "./useCapture";
-import TDEnemy from "../../../enemy/TDEnemy";
+import TDEnemy from "../../../entity/enemy/TDEnemy";
 
 // Capture the first frame of an enemy
 export default function useCaptureEnemy(scene: Scene, enemy?: TDEnemy, angle = 0): string {

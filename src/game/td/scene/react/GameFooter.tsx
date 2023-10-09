@@ -1,7 +1,7 @@
 import { Scene } from "phaser"
-import ITowerModel, { ALL_TOWERS } from "../../model/ITowerModel"
+import ITowerModel, { ALL_TOWERS } from "../../entity/model/ITowerModel"
 import TowerButton from "./TowerButton"
-import TDTower from "../../tower/TDTower"
+import TDTower from "../../entity/tower/TDTower"
 import { canvasSize } from "../../../../util/SceneUtil"
 
 export interface IGameFooterProps {
