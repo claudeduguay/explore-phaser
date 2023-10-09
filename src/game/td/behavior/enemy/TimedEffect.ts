@@ -12,7 +12,6 @@ export default abstract class TimedEffect implements IBehavior<TDEnemy> {
   update(enemy: TDEnemy, time: number, delta: number, list: BehaviorList<TDEnemy>): void {
     if (!this.mark) {
       this.mark = time + this.timeout
-      console.log(`Mark time out at: ${this.mark}`)
     }
     if (time >= this.mark) {
       console.log(`Effect timed out after: ${this.timeout}ms`)

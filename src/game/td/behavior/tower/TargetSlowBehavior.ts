@@ -25,7 +25,10 @@ export default class TargetSlowBehavior implements IBehavior<TDTower> {
       this.g.strokeCircle(tower.x, tower.y, r2)
 
       for (let target of tower.targets) {
-        target.effects.push(new TimedSlowEffect(3000))
+        const SLOW_EFFECT = new TimedSlowEffect(2000)
+        if (!target.effects.includes(SLOW_EFFECT)) {
+          target.effects.push(SLOW_EFFECT)
+        }
       }
     }
   }

@@ -1,5 +1,5 @@
 
-import { Scene, GameObjects, Types, Utils, Math as PMath, Input } from "phaser"
+import { Scene, Types, Utils, Math as PMath, Input } from "phaser"
 import { makeHeightRects, makeLandscapeTile, makePeep } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../entity/tower/TDTower"

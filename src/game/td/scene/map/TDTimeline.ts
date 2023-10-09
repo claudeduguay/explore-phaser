@@ -60,15 +60,6 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
         scene.sound.play("woe")
       }
     },
-    // Test if we can change the speed of a follower on the fly
-    // See: https://phaser.discourse.group/t/change-path-duration-speed-while-its-playing/9712
-    onUpdate: () => {
-      if (follower.health.compute() < 0.8) { // If health is getting low
-        follower.pathTween.timeScale = 5
-        // scene.tweens.timeScale = 5.0 // Global to all tweens
-        console.log("Speed up:", follower.pathTween.timeScale)
-      }
-    }
   })
   enemyGroup.add(follower)
   return follower

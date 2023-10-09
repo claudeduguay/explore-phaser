@@ -8,6 +8,7 @@ import BehaviorList from "../../behavior/core/BehaviorList";
 export default class TDEnemy extends GameObjects.PathFollower implements ISelectable {
 
   effects = new BehaviorList<TDEnemy>()
+  frameCount: number = 0
   container!: GameObjects.Container
   shieldBar!: HealthBar
   healthBar!: HealthBar
@@ -107,13 +108,7 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     this.angle = 0
   }
 
-  preUpdate(time: number, delta: number): void {
-    if (this.isFollowing()) {
-      super.preUpdate(time, delta)
-    }
-    this.effects.update(this, time, delta)
-    this.detectDirectionChange()
-
+  handleStatusBars() {
     if (this.showStatusBars) {
       const health_fraction = this.health.compute() / this.health.baseValue
       const shield_fraction = this.shield.compute() / this.shield.baseValue
@@ -130,6 +125,16 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
       const y = this.pathVector.y - bounds.height - this.healthBar.h * 2
       this.container.setPosition(x, y)
     }
+  }
+
+  preUpdate(time: number, delta: number): void {
+    this.frameCount += 1
+    if (this.isFollowing()) {
+      super.preUpdate(time, delta)
+    }
+    this.effects.update(this, time, delta)
+    this.detectDirectionChange()
+    this.handleStatusBars()
   }
 
 }

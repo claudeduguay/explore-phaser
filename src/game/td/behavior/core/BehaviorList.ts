@@ -11,7 +11,7 @@ export default class BehaviorList<T> extends Array<IBehavior<T>> implements IBeh
 
   remove(behavior: IBehavior<T>) {
     const index = this.indexOf(behavior)
-    if (index >= 0) {
+    if (index > -1) {
       this.splice(index, 1)
     }
   }
