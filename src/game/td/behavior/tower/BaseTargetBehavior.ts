@@ -1,27 +1,7 @@
-import { Scene } from "phaser"
 import IBehavior from "../IBehavior"
-import ITowerModel from "../../entity/model/ITowerModel"
-import ActiveValue from "../../value/ActiveValue"
 import TDEnemy from "../../entity/enemy/TDEnemy"
 import TDTower from "../../entity/tower/TDTower"
 import Point from "../../../../util/Point"
-
-export interface ITarget {
-  x: number
-  y: number
-  health: ActiveValue
-}
-
-export interface ITower {
-  preview: boolean
-  x: number
-  y: number
-  scene: Scene
-  model: ITowerModel
-  emissionPoints: () => ITarget[]
-  turret: { angle: number, rotation: number }
-  targets: ITarget[]
-}
 
 export interface IEmitter {
   destroy: () => void
