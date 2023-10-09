@@ -11,10 +11,15 @@ export interface ITowerStatistics {
   range: number
 }
 
+export interface IDamageSpec {
+  dps: number | [min: number, max: number]
+  duration?: number
+}
+
 // Need a mechanism to define timeout effect periods
 // Support for literal or random range damage values
 export interface ITowerDamage {
-  [key: string]: number | [mind: number, max: number]
+  [key: string]: IDamageSpec
 }
 
 export interface ITowerModel {
@@ -54,7 +59,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      lazer: 10
+      lazer: { dps: 10 }
     }
   },
   PLASMA: {
@@ -68,7 +73,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      plasma: 10
+      plasma: { dps: 10 }
     }
   },
   LIGHTNING: {
@@ -82,7 +87,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      lightning: 10
+      lightning: { dps: 10 }
     }
   },
   // SPRAY
@@ -97,7 +102,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      fire: 10
+      fire: { dps: 10 }
     }
   },
   FREEZE: {
@@ -111,7 +116,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      ice: 10
+      ice: { dps: 10 }
     }
   },
   IMPACT: {
@@ -125,7 +130,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      ice: 10
+      ice: { dps: 10 }
     }
   },
   // CLOUD
@@ -140,7 +145,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      posion: 10
+      posion: { dps: 10 }
     }
   },
   FIRE: {
@@ -154,7 +159,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      posion: 10
+      posion: { dps: 10 }
     }
   }, SMOKE: {
     name: "Smoke Tower",
@@ -167,7 +172,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      smoke: 10
+      smoke: { dps: 10 }
     }
   },
   SHOCK: {
@@ -181,7 +186,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      shock: 10
+      shock: { dps: 10 }
     }
   },
   ICE: {
@@ -195,7 +200,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      freeze: 10
+      freeze: { dps: 10 }
     }
   },
   // FALL
@@ -210,7 +215,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      rain: 10
+      rain: { dps: 10 }
     }
   },
   SNOW: {
@@ -224,7 +229,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      rain: 10
+      rain: { dps: 10 }
     }
   },
   // THROW
@@ -239,7 +244,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      bullet: 10
+      bullet: { dps: 10 }
     }
   },
   MISSILE: {
@@ -253,7 +258,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      missile: 10
+      missile: { dps: 10 }
     }
   },
   // AREA
@@ -268,7 +273,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      boost: 10
+      boost: { dps: 10 }
     }
   },
   SLOW: {
@@ -282,7 +287,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     },
     stats: DEFAULT_STATS,
     damage: {
-      slow: 10
+      slow: { dps: 10 }
     }
   }
 }

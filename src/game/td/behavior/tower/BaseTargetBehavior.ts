@@ -12,7 +12,7 @@ export interface IEmitter {
 export function computeTargetDamage(tower: TDTower, target: TDEnemy, delta: number) {
   let damage = 0
   Object.entries(tower.model.damage).forEach(([key, value]) => {
-    const val = Array.isArray(value) ? randomRange(value) : value
+    const val = Array.isArray(value.dps) ? randomRange(value.dps) : value.dps
     const dps = (val * delta / 1000 * tower.scene.time.timeScale)
     const vulnerability = (target.model?.vulnerability[key] || target.model?.vulnerability.default)
     damage += (dps * vulnerability)
