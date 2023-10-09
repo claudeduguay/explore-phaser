@@ -31,18 +31,18 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction:
 // Add an enemy to the main path (add/remove in group)
 export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, duration: number, delay: number) {
   const model = ALL_ENEMIES.find(m => m.meta.key === key)
-  const follower = scene.add.enemy(origin.x, origin.y, model, path, true)
-  follower.addListener("died", ({ x, y, model }: TDEnemy) => {
-    follower.destroy()
-    enemyGroup.remove(follower)
+  const enemy = scene.add.enemy(origin.x, origin.y, model, path, true)
+  enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
+    enemy.destroy()
+    enemyGroup.remove(enemy)
     if (model) {
       active.credits.adjust(model.stats.value || 0)
       TDPlayScene.createExplosionSprite(scene, x, y)
       scene.sound.play("cash")
     }
-    follower.removeListener("died")
+    enemy.removeListener("died")
   })
-  follower.startFollow({
+  enemy.startFollow({
     duration,
     delay,
     positionOnPath: true,
@@ -51,29 +51,30 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
     yoyo: false,
     repeat: 0,
     rotateToPath: true,
-    onStart: () => enemyGroup.add(follower),
+    onStart: () => enemyGroup.add(enemy),
     onComplete: () => {
-      if (follower.health.compute() > 0) {
-        follower.destroy()
-        enemyGroup.remove(follower)
+      if (enemy.health.compute() > 0) {
+        enemy.destroy()
+        enemyGroup.remove(enemy)
         active.health.adjust(-1)
         scene.sound.play("woe")
       }
     },
   })
-  enemyGroup.add(follower)
-  return follower
+  enemyGroup.add(enemy)
+  return enemy
 }
 
 // Add preview follower to the proview path, reset timeline after last is finished
 export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path, timeline: Time.Timeline, duration: number, isLast: boolean, twin: TDEnemy) {
   const model = ALL_ENEMIES.find(m => m.meta.key === key)
-  const follower = scene.add.enemy(0, 0, model, path, false)
+  const enemy = scene.add.enemy(0, 0, model, path, false)
+  twin.twin = enemy // Track this enemy from it's twin
   twin.addListener("died", ({ x, y, model }: TDEnemy) => {
-    follower.destroy()
-    follower.removeListener("died")
+    enemy.destroy()
+    enemy.removeListener("died")
   })
-  follower.startFollow({
+  enemy.startFollow({
     duration,
     positionOnPath: true,
     from: 0.0,
@@ -82,7 +83,7 @@ export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path,
     repeat: 0,
     rotateToPath: false,
     onComplete: () => {
-      follower.destroy()
+      enemy.destroy()
       if (isLast) {
         setTimeout(() => timeline.reset(), 1000)
       }

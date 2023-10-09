@@ -7,6 +7,7 @@ import BehaviorList from "../../behavior/core/BehaviorList";
 
 export default class TDEnemy extends GameObjects.PathFollower implements ISelectable {
 
+  twin?: TDEnemy   // Used in path preview (needed to match slow effect when applied)
   effects = new BehaviorList<TDEnemy>()
   frameCount: number = 0
   container!: GameObjects.Container

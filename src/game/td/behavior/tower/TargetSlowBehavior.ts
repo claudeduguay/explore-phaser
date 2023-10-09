@@ -28,6 +28,10 @@ export default class TargetSlowBehavior implements IBehavior<TDTower> {
         const SLOW_EFFECT = new TimedSlowEffect(2000)
         if (!target.effects.includes(SLOW_EFFECT)) {
           target.effects.push(SLOW_EFFECT)
+          if (target.twin) {
+            // Handle preview twin speed
+            target.twin.effects.push(SLOW_EFFECT)
+          }
         }
       }
     }
