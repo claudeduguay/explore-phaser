@@ -215,7 +215,7 @@ export default class TDPlayScene extends Scene {
       this.towerGroup.add(tower)
     }
 
-    this.physics.add.overlap(this.towerGroup, this.enemyGroup, this.onEnemyOverlap)
+    this.physics.add.overlap(this.towerGroup, this.enemyGroup, this.onEnemyOverlap, this.onEnemyInRange)
 
     // const fireRange = 220
     // this.add.particles(10, 765, 'fire', fireEmitter(fireRange))
@@ -278,20 +278,24 @@ export default class TDPlayScene extends Scene {
     }
   }
 
-  // Note: Addition order appears to depend on enemyGroup order
+  // Check if enemy is within range radius
+  onEnemyInRange(tower: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
+    enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
+    if (tower instanceof TDTower && enemy instanceof TDEnemy) {
+      if (tower.preview) {
+        return false
+      }
+      const distance = PMath.Distance.BetweenPoints(enemy, tower)
+      return distance <= tower.model.stats.range
+    }
+  }
+
+  // If we are within range (radius checked by onEnemyInRange), add target
   onEnemyOverlap(
     tower: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
     enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
-    if (tower instanceof TDTower && enemy instanceof GameObjects.PathFollower) {
-      if (tower.preview) {
-        return
-      }
-      const distance = PMath.Distance.BetweenPoints(enemy, tower)
-      if (distance <= tower.model.stats.range) { // >>> Note: Distance check could be part of a collideCallback 
-        if (enemy instanceof TDEnemy) {
-          tower.targets.unshift(enemy)
-        }
-      }
+    if (tower instanceof TDTower && enemy instanceof TDEnemy) {
+      tower.targets.unshift(enemy)
     }
   }
 
