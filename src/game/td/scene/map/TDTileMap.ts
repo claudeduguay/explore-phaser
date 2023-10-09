@@ -1,7 +1,7 @@
 import { Scene, Tilemaps } from "phaser"
 import Point from "../../../../util/Point";
 import IPathModel from "./IPathModel";
-import BehaviorContainer from "../../behavior/BehaviorContainer";
+import BehaviorContainer from "../../behavior/core/BehaviorContainer";
 
 export interface IMapConfig {
   cellSize: Point

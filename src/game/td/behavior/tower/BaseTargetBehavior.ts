@@ -1,4 +1,4 @@
-import IBehavior from "../IBehavior"
+import IBehavior from "../core/IBehavior"
 import TDEnemy from "../../entity/enemy/TDEnemy"
 import TDTower from "../../entity/tower/TDTower"
 import Point from "../../../../util/Point"

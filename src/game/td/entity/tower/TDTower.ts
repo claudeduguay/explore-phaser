@@ -1,7 +1,7 @@
 
 import { GameObjects, Input, Scene } from "phaser"
 import TDTurret from "./TDTurret"
-import BehaviorContainer from "../../behavior/BehaviorContainer"
+import BehaviorContainer from "../../behavior/core/BehaviorContainer"
 import TargetAimBehavior from "../../behavior/tower/TargetAimBehavior"
 import ClearTargetsBehavior from "../../behavior/tower/TargetsClearBehavior"
 import TargetLaserBehavior from "../../behavior/tower/TargetLazerBehavior"
@@ -29,12 +29,13 @@ import TargetRainBehavior from "../../behavior/tower/cloud/TargetRainBehavior"
 import TargetSnowBehavior from "../../behavior/tower/cloud/TargetSnowBehavior"
 import TargetImpactBehavior from "../../behavior/tower/spray/TargetImpactBehavior"
 import TargetMissileBehavior from "../../behavior/tower/TargetMissileBehavior"
+import TDEnemy from "../enemy/TDEnemy"
 
 export default class TDTower extends BehaviorContainer<TDTower> implements ISelectable {
 
   tower_base: GameObjects.Sprite
   turret: TDTurret
-  targets: GameObjects.PathFollower[] = []
+  targets: TDEnemy[] = []
   showRange: GameObjects.Container
   preview: boolean = false
 

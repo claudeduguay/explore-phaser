@@ -1,5 +1,5 @@
 import { GameObjects } from "phaser"
-import IBehavior from "../IBehavior"
+import IBehavior from "../core/IBehavior"
 import { toRadians } from "../../../../util/MathUtil"
 import TDTower from "../../entity/tower/TDTower"
 

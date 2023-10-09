@@ -1,5 +1,5 @@
 import { GameObjects } from "phaser"
-import IBehavior from "../../IBehavior"
+import IBehavior from "../../core/IBehavior"
 import { applyDamage } from "../BaseTargetBehavior"
 import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"

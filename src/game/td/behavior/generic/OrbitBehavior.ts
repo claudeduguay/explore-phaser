@@ -1,5 +1,5 @@
 import { Math as PMath } from "phaser"
-import IBehavior from "../IBehavior"
+import IBehavior from "../core/IBehavior"
 
 export interface IHasPosition {
   x: number

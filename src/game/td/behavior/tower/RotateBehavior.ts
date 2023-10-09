@@ -1,5 +1,5 @@
 import TDTower from "../../entity/tower/TDTower"
-import IBehavior from "../IBehavior"
+import IBehavior from "../core/IBehavior"
 
 export interface IHasAngle {
   angle: number

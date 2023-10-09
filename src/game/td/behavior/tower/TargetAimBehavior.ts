@@ -1,5 +1,5 @@
 import { GameObjects, Math as PMath } from "phaser"
-import IBehavior from "../IBehavior"
+import IBehavior from "../core/IBehavior"
 import TDTower from "../../entity/tower/TDTower"
 
 export default class TargetAimBehavior implements IBehavior<TDTower> {

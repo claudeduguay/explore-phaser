@@ -3,9 +3,11 @@ import IEnemyModel from "../model/IEnemyModel";
 import HealthBar from "./HealthBar";
 import ActiveValue from "../../value/ActiveValue";
 import { ISelectable } from "../../scene/SelectableGroup";
+import BehaviorList from "../../behavior/core/BehaviorList";
 
 export default class TDEnemy extends GameObjects.PathFollower implements ISelectable {
 
+  effects = new BehaviorList<TDEnemy>()
   container!: GameObjects.Container
   shieldBar!: HealthBar
   healthBar!: HealthBar
@@ -106,7 +108,10 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
   }
 
   preUpdate(time: number, delta: number): void {
-    super.preUpdate(time, delta)
+    if (this.isFollowing()) {
+      super.preUpdate(time, delta)
+    }
+    this.effects.update(this, time, delta)
     this.detectDirectionChange()
 
     if (this.showStatusBars) {

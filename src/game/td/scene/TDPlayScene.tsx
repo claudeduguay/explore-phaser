@@ -287,8 +287,10 @@ export default class TDPlayScene extends Scene {
         return
       }
       const distance = PMath.Distance.BetweenPoints(enemy, tower)
-      if (distance <= tower.model.stats.range) {
-        tower.targets.unshift(enemy)
+      if (distance <= tower.model.stats.range) { // >>> Note: Distance check could be part of a collideCallback 
+        if (enemy instanceof TDEnemy) {
+          tower.targets.unshift(enemy)
+        }
       }
     }
   }

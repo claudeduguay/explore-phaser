@@ -1,6 +1,7 @@
 import { GameObjects } from "phaser"
-import IBehavior from "../IBehavior"
+import IBehavior from "../core/IBehavior"
 import TDTower from "../../entity/tower/TDTower"
+import TimedSlowEffect from "../enemy/TimedSlowEffect"
 
 export default class TargetSlowBehavior implements IBehavior<TDTower> {
 
@@ -22,6 +23,10 @@ export default class TargetSlowBehavior implements IBehavior<TDTower> {
       this.g.fillCircle(tower.x, tower.y, r2)
       this.g.strokeCircle(tower.x, tower.y, r1)
       this.g.strokeCircle(tower.x, tower.y, r2)
+
+      for (let target of tower.targets) {
+        target.effects.push(new TimedSlowEffect(3000))
+      }
     }
   }
 }
