@@ -3,13 +3,17 @@ import IBehavior from "../../core/IBehavior"
 import { applyDamage } from "../BaseTargetBehavior"
 import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
+import TDEnemy from "../../../entity/enemy/TDEnemy"
+
+export type IDamageEffectBuilder = (tower: TDTower) => IBehavior<TDEnemy>
 
 export default class BaseTargeCloudBehavior implements IBehavior<TDTower> {
 
-  constructor(public key: string, public emitter: IEmitterConfigBuilder) {
-  }
-
   cloud?: GameObjects.Particles.ParticleEmitter
+  effectInstance?: IBehavior<TDEnemy>
+
+  constructor(public key: string, public emitter: IEmitterConfigBuilder, public effect?: IDamageEffectBuilder) {
+  }
 
   update(tower: TDTower, time: number, delta: number) {
     if (!this.cloud) {
@@ -23,8 +27,22 @@ export default class BaseTargeCloudBehavior implements IBehavior<TDTower> {
     }
     if (tower.targets.length) {
       this.cloud?.start()
-      applyDamage(tower, delta)
+      if (this.effect) {
+        // If the effect function is defnined, use that instead of applyDamage computation directly
+        for (let target of tower.targets) {
+          if (!this.effectInstance) {
+            // Cache instance so the same one is used on multiple updates
+            this.effectInstance = this.effect(tower)
+          }
+          if (!target.effects.includes(this.effectInstance)) {
+            target.effects.push(this.effectInstance)
+          }
+        }
+      } else {
+        applyDamage(tower, delta)
+      }
     } else { // No target
+      this.effectInstance = undefined
       this.cloud?.stop()
     }
   }

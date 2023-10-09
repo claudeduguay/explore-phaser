@@ -8,18 +8,23 @@ export interface IEmitter {
   stop?: () => void
 }
 
+export function computeTargetDamage(tower: TDTower, target: TDEnemy, delta: number) {
+  let damage = 0
+  Object.entries(tower.model.damage).forEach(([key, value]) => {
+    const dps = (value * delta / 1000 * tower.scene.time.timeScale)
+    const vulnerability = (target.model?.vulnerability[key] || target.model?.vulnerability.default)
+    damage += (dps * vulnerability)
+    // console.log(`${value}, (per update: ${dps}) ${key} damage from ${tower.model.name} (resistance: ${resistance})`)
+  })
+  return damage
+}
+
 export function applyDamage(tower: TDTower, delta: number, singleTarget: boolean = true) {
   // console.log("Delta:", delta)
-  let damage = 0
   const targets = singleTarget ? [tower.targets[0]] : tower.targets
   targets.forEach(target => {
     if (target instanceof TDEnemy) {  // Ensure acces by type
-      Object.entries(tower.model.damage).forEach(([key, value]) => {
-        const dps = (value * delta / 1000 * tower.scene.time.timeScale)
-        const vulnerability = (target.model?.vulnerability[key] || target.model?.vulnerability.default)
-        damage += (dps * vulnerability)
-        // console.log(`${value}, (per update: ${dps}) ${key} damage from ${tower.model.name} (resistance: ${resistance})`)
-      })
+      let damage = computeTargetDamage(tower, target, delta)
       target.health.adjust(-damage)
     }
   })
