@@ -1,35 +1,35 @@
 import { IColoring, colorStyle, drawEllipse, drawPolygon } from "../../../util/DrawUtil";
 import { canvasSize, canvasDimensions } from "../../../util/RenderUtil";
 
-export type IProjectorType = "rect" | "point" | "funnel"
-export interface IProjectorDecorator {
+export type IWeaponType = "rect" | "point" | "funnel"
+export interface IWeaponDecorator {
   count: number
   color: IColoring
   start: number
   step?: number
 }
 
-export interface IProjectorOptions {
-  type: IProjectorType;
+export interface IWeaponOptions {
+  type: IWeaponType;
   margin: number;
   inset: number;
-  ribs?: IProjectorDecorator;
-  balls?: IProjectorDecorator;
+  ribs?: IWeaponDecorator;
+  balls?: IWeaponDecorator;
   supressor?: { pos: number, len: number, color: IColoring };
   color: IColoring
   line?: string;
 }
 
-export const DEFAULT_PROJECTOR_OPTIONS: IProjectorOptions = {
+export const DEFAULT_WEAPON_OPTIONS: IWeaponOptions = {
   type: "point",
   margin: 0,
   inset: 0.3,
   color: ["#00F"],
 }
 
-export function projectorRenderer(g: CanvasRenderingContext2D,
+export function weaponRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
-  options: IProjectorOptions) {
+  options: IWeaponOptions) {
   const { type, margin, inset, ribs, balls, supressor, color: gradient, line } = options
   const { w, h } = canvasDimensions(g, options)
   const x = w * margin
@@ -87,15 +87,15 @@ export function projectorRenderer(g: CanvasRenderingContext2D,
   }
 }
 
-export function projectorRendererFunctionFactory(
+export function weaponRendererFunctionFactory(
   frameIndexFraction: number,
-  options: Partial<IProjectorOptions> = DEFAULT_PROJECTOR_OPTIONS
+  options: Partial<IWeaponOptions> = DEFAULT_WEAPON_OPTIONS
 ) {
-  const merged = { ...DEFAULT_PROJECTOR_OPTIONS, ...options }
+  const merged = { ...DEFAULT_WEAPON_OPTIONS, ...options }
   return (g: CanvasRenderingContext2D) => {
     const { w, h } = canvasSize(g)
     g.rect(0, 0, w, h)
     g.clip()
-    projectorRenderer(g, frameIndexFraction, merged)
+    weaponRenderer(g, frameIndexFraction, merged)
   };
 }

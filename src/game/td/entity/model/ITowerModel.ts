@@ -1,18 +1,13 @@
 
-export interface ITowerProjector {
-  sprite: string  // Gun or radar, etc. sprite
-  emitter: string // Emitter effect type
-}
-
 export interface ITowerMeta {
-  key: string                     // Tower key
-  distribution: "linear" | "radial"
-  rotation: "target" | number
+  key: string                        // Tower key
+  distribution: "linear" | "radial"  // Weapon distribution
+  rotation: "target" | number        // Rotation type
 }
 
 export interface ITowerStatistics {
-  cost: number
   level: number
+  cost: number
   range: number
 }
 

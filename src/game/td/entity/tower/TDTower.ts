@@ -139,16 +139,16 @@ export default class TDTower extends BehaviorContainer<TDTower> implements ISele
 
   // This could start to get expensive on each frame
   emissionPoints() {
-    return this.turret.projectors.map((p, i) => this.emissionPoint(i))
+    return this.turret.weapon.map((p, i) => this.emissionPoint(i))
   }
 
   // May be useful to studdy: https://www.html5gamedevs.com/topic/24535-how-to-calculate-absolute-world-xy-without-using-world-xy-property/
   emissionPoint(index: number = 1) {
     if (this.model.meta.rotation === "target") {
-      const i = clamp(index, 0, this.turret.projectors.length - 1)
-      const projector = this.turret.projectors[i]
-      const size = projector.getSize()
-      const p = new Point(projector.x, projector.y - size.y / 2)
+      const i = clamp(index, 0, this.turret.weapon.length - 1)
+      const weapon = this.turret.weapon[i]
+      const size = weapon.getSize()
+      const p = new Point(weapon.x, weapon.y - size.y / 2)
       const r = p.length()
       const a = this.turret.rotation
       const adjust = Math.atan2(p.y, p.x) + Math.PI / 2

@@ -2,7 +2,7 @@
 import { GameObjects, Scene } from "phaser"
 import Point from "../../../../util/Point"
 
-export default class TDProjector extends GameObjects.Container {
+export default class TDWeapon extends GameObjects.Container {
 
   sprite!: GameObjects.Sprite
 

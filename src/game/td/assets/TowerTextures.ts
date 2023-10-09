@@ -1,9 +1,9 @@
 import { Display, Scene } from "phaser"
 import { IColoring } from "../../../util/DrawUtil"
 import { IPlatformOptions, IPlatformType } from "./PlatformFactory"
-import { IProjectorOptions } from "./ProjectorFactory"
+import { IWeaponOptions } from "./WeaponFactory"
 import { ITurretOptions } from "./TurretFactory"
-import { ITextureConfig, makeTowerPlatform, makeTowerProjector, makeTowerTurret } from "./TextureFactory"
+import { ITextureConfig, makeTowerPlatform, makeTowerWeapon, makeTowerTurret } from "./TextureFactory"
 
 // ------------------------------------------------------------------
 // COLOR STYLES
@@ -101,10 +101,10 @@ export function roundBackTurret(color: IColoring) {
 
 
 // ------------------------------------------------------------------
-// PROJECTOR STYLES
+// WEAPON STYLES
 // ------------------------------------------------------------------
 
-export function pointProjector(color: IColoring, ball = true): ITextureConfig<IProjectorOptions> {
+export function pointWeapon(color: IColoring, ball = true): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 32 },
     options: {
@@ -114,14 +114,14 @@ export function pointProjector(color: IColoring, ball = true): ITextureConfig<IP
   }
 }
 
-export function funnelProjector(color: IColoring): ITextureConfig<IProjectorOptions> {
+export function funnelWeapon(color: IColoring): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 32 },
     options: { type: "funnel", margin: 0, inset: 0.33, line: "white", color }
   }
 }
 
-export function rectProjector(color: IColoring, ribs = true): ITextureConfig<IProjectorOptions> {
+export function rectWeapon(color: IColoring, ribs = true): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 32 },
     options: {
@@ -131,14 +131,14 @@ export function rectProjector(color: IColoring, ribs = true): ITextureConfig<IPr
   }
 }
 
-export function pointInsideProjector(color: IColoring): ITextureConfig<IProjectorOptions> {
+export function pointInsideWeapon(color: IColoring): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 18 },
     options: { type: "point", margin: 0, inset: 0.0, line: "white", color }
   }
 }
 
-export function funnelInsideProjector(color: IColoring, ball = true): ITextureConfig<IProjectorOptions> {
+export function funnelInsideWeapon(color: IColoring, ball = true): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 18 },
     options: {
@@ -148,7 +148,7 @@ export function funnelInsideProjector(color: IColoring, ball = true): ITextureCo
   }
 }
 
-export function rectInsideProjector(color: IColoring, ball = true): ITextureConfig<IProjectorOptions> {
+export function rectInsideWeapon(color: IColoring, ball = true): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 18 },
     options: {
@@ -166,7 +166,7 @@ export function rectInsideProjector(color: IColoring, ball = true): ITextureConf
 export interface ITextureConfigs {
   platform: ITextureConfig<IPlatformOptions>
   turret: ITextureConfig<ITurretOptions>
-  projector: ITextureConfig<IProjectorOptions>
+  weapon: ITextureConfig<IWeaponOptions>
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -176,105 +176,105 @@ const TOWERS: Record<string, ITextureConfigs> = {
   FLAME: {
     platform: platformConfig(PLATFORM.SPRAY, COLORS.FLAME),
     turret: roundFrontTurret(COLORS.FLAME),
-    projector: funnelProjector(COLORS.FLAME)
+    weapon: funnelWeapon(COLORS.FLAME)
   },
   FREEZE: {
     platform: platformConfig(PLATFORM.SPRAY, COLORS.FREEZE),
     turret: roundFrontTurret(COLORS.FREEZE),
-    projector: funnelProjector(COLORS.FREEZE)
+    weapon: funnelWeapon(COLORS.FREEZE)
   },
   IMPACT: {
     platform: platformConfig(PLATFORM.SPRAY, COLORS.IMPACT),
     turret: roundFrontTurret(COLORS.IMPACT),
-    projector: funnelProjector(COLORS.IMPACT)
+    weapon: funnelWeapon(COLORS.IMPACT)
   },
 
   // CLOUD
   FIRE: {
     platform: platformConfig(PLATFORM.CLOUD, COLORS.FIRE),
     turret: roundTurret(COLORS.FIRE),
-    projector: pointInsideProjector(COLORS.FIRE)
+    weapon: pointInsideWeapon(COLORS.FIRE)
   },
   POISON: {
     platform: platformConfig(PLATFORM.CLOUD, COLORS.POISON),
     turret: roundTurret(COLORS.POISON),
-    projector: pointInsideProjector(COLORS.POISON)
+    weapon: pointInsideWeapon(COLORS.POISON)
   },
   SMOKE: {
     platform: platformConfig(PLATFORM.CLOUD, COLORS.SMOKE),
     turret: roundTurret(COLORS.SMOKE),
-    projector: pointInsideProjector(COLORS.SMOKE)
+    weapon: pointInsideWeapon(COLORS.SMOKE)
   },
   SHOCK: {
     platform: platformConfig(PLATFORM.CLOUD, COLORS.SHOCK),
     turret: roundTurret(COLORS.SHOCK),
-    projector: pointInsideProjector(COLORS.SHOCK)
+    weapon: pointInsideWeapon(COLORS.SHOCK)
   },
   ICE: {
     platform: platformConfig(PLATFORM.CLOUD, COLORS.ICE),
     turret: roundTurret(COLORS.ICE),
-    projector: pointInsideProjector(COLORS.ICE)
+    weapon: pointInsideWeapon(COLORS.ICE)
   },
 
   // FALL
   RAIN: {
     platform: platformConfig(PLATFORM.FALL, COLORS.RAIN),
     turret: roundTurret(COLORS.RAIN),
-    projector: pointInsideProjector(COLORS.RAIN)
+    weapon: pointInsideWeapon(COLORS.RAIN)
   },
   SNOW: {
     platform: platformConfig(PLATFORM.FALL, COLORS.SNOW),
     turret: roundTurret(COLORS.SNOW),
-    projector: pointInsideProjector(COLORS.SNOW)
+    weapon: pointInsideWeapon(COLORS.SNOW)
   },
 
   // BEAM
   LAZER: {
     platform: platformConfig(PLATFORM.BEAM, COLORS.LAZER),
     turret: smallTurret(COLORS.LAZER),
-    projector: rectProjector(COLORS.LAZER)
+    weapon: rectWeapon(COLORS.LAZER)
   },
   PLASMA: {
     platform: platformConfig(PLATFORM.BEAM, COLORS.PLASMA),
     turret: smallTurret(COLORS.PLASMA),
-    projector: pointProjector(COLORS.PLASMA)
+    weapon: pointWeapon(COLORS.PLASMA)
   },
   LIGHTNING: {
     platform: platformConfig(PLATFORM.BEAM, COLORS.LIGHTNING),
     turret: smallTurret(COLORS.LIGHTNING),
-    projector: pointProjector(COLORS.LIGHTNING)
+    weapon: pointWeapon(COLORS.LIGHTNING)
   },
 
   // THROW
   BULLET: {
     platform: platformConfig(PLATFORM.THROW, COLORS.BULLET),
     turret: roundBackTurret(COLORS.BULLET),
-    projector: rectProjector(COLORS.BULLET)
+    weapon: rectWeapon(COLORS.BULLET)
   },
   MISSILE: {
     platform: platformConfig(PLATFORM.THROW, COLORS.MISSILE),
     turret: roundBackTurret(COLORS.MISSILE),
-    projector: rectProjector(COLORS.MISSILE, false)
+    weapon: rectWeapon(COLORS.MISSILE, false)
   },
 
   // AREA
   BOOST: {
     platform: platformConfig(PLATFORM.AREA, COLORS.BOOST),
     turret: roundTurret(COLORS.BOOST),
-    projector: funnelInsideProjector(COLORS.BOOST)
+    weapon: funnelInsideWeapon(COLORS.BOOST)
   },
   SLOW: {
     platform: platformConfig(PLATFORM.AREA, COLORS.SLOW),
     turret: roundTurret(COLORS.SLOW),
-    projector: rectInsideProjector(COLORS.SLOW)
+    weapon: rectInsideWeapon(COLORS.SLOW)
   }
 }
 
 export default function registerTowerTextures(scene: Scene) {
-  for (let [key, { platform, turret, projector }] of Object.entries(TOWERS)) {
+  for (let [key, { platform, turret, weapon }] of Object.entries(TOWERS)) {
     key = key.toLowerCase()
     makeTowerPlatform(scene, `${key}-platform`, platform)
     makeTowerTurret(scene, `${key}-turret`, turret)
-    makeTowerProjector(scene, `${key}-projector`, projector)
+    makeTowerWeapon(scene, `${key}-weapon`, weapon)
   }
 }

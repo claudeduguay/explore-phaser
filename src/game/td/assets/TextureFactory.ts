@@ -5,7 +5,7 @@ import IRenderFunction from "../../../util/IRenderFunction"
 import { IPlatformOptions, platformRendererFunctionFactory } from "./PlatformFactory"
 import { drawEllipse, rotated } from "../../../util/DrawUtil"
 import { ITurretOptions, turretRendererFunctionFactory } from "./TurretFactory"
-import { IProjectorOptions, projectorRendererFunctionFactory } from "./ProjectorFactory"
+import { IWeaponOptions, weaponRendererFunctionFactory } from "./WeaponFactory"
 import { pathRendererFunctionFactory } from "./PathFactory"
 import { ILandscapeOptions, landscapeRendererFunctionFactory } from "./LandscapeFactory"
 import { IPeepOptions, peepRendererFunctionFactory } from "./PeepFactory"
@@ -196,8 +196,8 @@ export function makeTowerTurret(scene: Scene, key: string, config: ITextureConfi
   renderCanvas(scene, key, config.size.x, config.size.y, render)
 }
 
-export function makeTowerProjector(scene: Scene, key: string, config: ITextureConfig<Partial<IProjectorOptions>>) {
-  const render: IRenderFunction = projectorRendererFunctionFactory(0, config.options)
+export function makeTowerWeapon(scene: Scene, key: string, config: ITextureConfig<Partial<IWeaponOptions>>) {
+  const render: IRenderFunction = weaponRendererFunctionFactory(0, config.options)
   renderCanvas(scene, key, config.size.x, config.size.y, render)
 }
 
