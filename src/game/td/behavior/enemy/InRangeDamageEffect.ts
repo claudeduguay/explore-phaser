@@ -5,8 +5,8 @@ import InRangeEffect from "./InRangeEffect";
 
 export default class InRangeDamageEffect extends InRangeEffect {
 
-  constructor(enemy: TDEnemy, tower: TDTower, public name: string) {
-    super(enemy, tower)
+  constructor(tower: TDTower, enemy: TDEnemy, public name: string) {
+    super(tower, enemy)
   }
 
   updateEffect(time: number, delta: number): void {

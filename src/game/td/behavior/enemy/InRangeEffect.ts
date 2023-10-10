@@ -6,7 +6,7 @@ import IBehavior from "../core/IBehavior"
 export default abstract class InRangeEffect implements IBehavior {
   mark?: number
 
-  constructor(public enemy: TDEnemy, public tower: TDTower) {
+  constructor(public tower: TDTower, public enemy: TDEnemy) {
   }
 
   update(time: number, delta: number): void {
