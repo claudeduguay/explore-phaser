@@ -38,17 +38,27 @@ export interface INode {
 }
 
 export interface IDrawSurface {
-  draw_line(source: Point, target: Point): void
-  draw_poly(points: Point[]): void
+  drawLine(source: Point, target: Point): void
+  drawPoly(points: Point[]): void
 }
 
 export interface ILayoutTarget {
+  setNodePosition(node: INode, x: number, y: number, w: number, h: number): void
+}
 
+export class DefaultLayoutTarget {
+  setNodePosition(node: INode, x: number, y: number, w: number, h: number): void {
+    node.position.x = x
+    node.position.y = y
+    node.size.x = w
+    node.size.y = h
+  }
 }
 
 export default class TreeLayout {
 
-  constructor(public tree: ITree, public readonly draw_surface: IDrawSurface) {
+  constructor(public tree: ITree, public readonly drawSurface: IDrawSurface,
+    public layoutTarget: ILayoutTarget = new DefaultLayoutTarget()) {
   }
 
   // Adapted from my own work in Widget Factory Article: JComponentTree
@@ -221,13 +231,6 @@ export default class TreeLayout {
     }
   }
 
-  setPosition(node: INode, x: number, y: number, w: number, h: number) {
-    node.position.x = x
-    node.position.y = y
-    node.size.x = w
-    node.size.y = h
-  }
-
   layout(node: INode, x: number, y: number) {
     if (!node.visible) {
       return
@@ -242,11 +245,11 @@ export default class TreeLayout {
         aligned_y += computed_size.y - node.size.y
       }
       if (this.isEast()) {
-        this.setPosition(node, x, aligned_y, node.size.x, node.size.y)
+        this.layoutTarget.setNodePosition(node, x, aligned_y, node.size.x, node.size.y)
         x += node.size.x + this.gap.x
       }
       else {
-        this.setPosition(node, x - node.size.x, aligned_y, node.size.x, node.size.y)
+        this.layoutTarget.setNodePosition(node, x - node.size.x, aligned_y, node.size.x, node.size.y)
         x -= node.size.x + this.gap.x
       }
 
@@ -265,11 +268,11 @@ export default class TreeLayout {
           aligned_x += computed_size.x - node.size.x
         }
         if (this.isSouth()) {
-          this.setPosition(node, aligned_x, y, node.size.x, node.size.y)
+          this.layoutTarget.setNodePosition(node, aligned_x, y, node.size.x, node.size.y)
           y += node.size.y + this.gap.y
         }
         else {
-          this.setPosition(node, aligned_x, y - node.size.y, node.size.x, node.size.y)
+          this.layoutTarget.setNodePosition(node, aligned_x, y - node.size.y, node.size.x, node.size.y)
           y -= node.size.y + this.gap.y
         }
         for (let child of this.children(node)) {
@@ -312,17 +315,17 @@ export default class TreeLayout {
     if (this.isHorizontal()) {
       var mid = new Point(lerp(source.x, target.x, 0.5), source.y)
 
-      this.draw_surface.draw_line(source, mid)
-      this.draw_surface.draw_line(new Point(mid.x, target.y), target)
+      this.drawSurface.drawLine(source, mid)
+      this.drawSurface.drawLine(new Point(mid.x, target.y), target)
       if (mid.y !== target.y) {
-        this.draw_surface.draw_line(mid, new Point(mid.x, target.y))
+        this.drawSurface.drawLine(mid, new Point(mid.x, target.y))
       }
       else {
         const mid = new Point(source.x, lerp(source.y, target.y, 0.5))
-        this.draw_surface.draw_line(source, mid)
-        this.draw_surface.draw_line(new Point(target.x, mid.y), target)
+        this.drawSurface.drawLine(source, mid)
+        this.drawSurface.drawLine(new Point(target.x, mid.y), target)
         if (mid.x !== target.x) {
-          this.draw_surface.draw_line(mid, new Point(target.x, mid.y))
+          this.drawSurface.drawLine(mid, new Point(target.x, mid.y))
         }
       }
     }
@@ -363,7 +366,7 @@ export default class TreeLayout {
               this.drawSquare(source, target)
             }
             else {
-              this.draw_surface.draw_line(new Point(source.x, mid.y), target)
+              this.drawSurface.drawLine(new Point(source.x, mid.y), target)
             }
             this.drawLines(child)
           }
@@ -399,7 +402,7 @@ export default class TreeLayout {
               this.drawSquare(source, target)
             }
             else {
-              this.draw_surface.draw_line(source, target)
+              this.drawSurface.drawLine(source, target)
               this.drawLines(child)
             }
           }

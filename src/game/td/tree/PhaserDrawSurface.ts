@@ -6,11 +6,11 @@ export class PhaserDrawSurface implements IDrawSurface {
   constructor(public readonly g: GameObjects.Graphics) {
   }
 
-  draw_line(source: Point, target: Point): void {
+  drawLine(source: Point, target: Point): void {
 
   }
 
-  draw_poly(points: Point[]) {
+  drawPoly(points: Point[]) {
 
   }
 }
