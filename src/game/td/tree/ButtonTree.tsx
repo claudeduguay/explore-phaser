@@ -1,5 +1,5 @@
 import { CSSProperties, ReactNode, useEffect, useRef } from "react";
-import TreeLayout, { ILayoutTarget, INodeKey, ITree, IBounds } from "./TreeLayout";
+import TreeLayout, { ILayoutTarget, INodeKey, ITree, IBounds, TreeDirection, TreeAlignment, TreeLineType } from "./TreeLayout";
 import { HTMLDrawSurface } from "./HTMLDrawSurface";
 import ObservableValue, { useObservableValue } from "../value/ObservableValue";
 
@@ -55,7 +55,10 @@ export default function ButtonTree({ width, height, tree, layoutTarget, children
     if (ref.current) {
       const drawSurface = new HTMLDrawSurface(ref.current)
       const layout = new TreeLayout(tree, drawSurface, layoutTarget)
-      layout.fullLayout()
+      layout.direction = TreeDirection.EAST // NORTH/SOUTH incorrect
+      layout.alignment = TreeAlignment.CENTER
+      layout.lineType = TreeLineType.SQUARE
+      layout.doLayout()
     }
   }, [ref, tree, layoutTarget, children])
   return <div style={{ width, height, position: "relative" }}>

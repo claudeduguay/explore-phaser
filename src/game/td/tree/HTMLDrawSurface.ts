@@ -9,6 +9,11 @@ export class HTMLDrawSurface implements IDrawSurface {
     this.g = e.getContext("2d") as CanvasRenderingContext2D
   }
 
+  clear(): void {
+    this.g.fillStyle = "#9999CC"
+    this.g.fillRect(0, 0, this.g.canvas.width, this.g.canvas.height)
+  }
+
   drawLine(source: Point, target: Point, color: string, width: number) {
     this.g.strokeStyle = color
     this.g.lineWidth = width

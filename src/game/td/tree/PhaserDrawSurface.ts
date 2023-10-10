@@ -6,6 +6,9 @@ export class PhaserDrawSurface implements IDrawSurface {
   constructor(public readonly g: GameObjects.Graphics) {
   }
 
+  clear(): void {
+  }
+
   drawLine(source: Point, target: Point): void {
 
   }

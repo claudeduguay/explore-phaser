@@ -34,6 +34,7 @@ export interface IDefaultNode {
 }
 
 export interface IDrawSurface {
+  clear(): void
   drawLine(source: Point, target: Point, color: string, width: number): void
   drawPoly(points: Point[], color: string, width: number): void
 }
@@ -147,6 +148,10 @@ export default class TreeLayout {
   // DRAW SURFACE UTILITIES
   // -------------------------------------------------------------------
 
+  clear() {
+    this.drawSurface.clear()
+  }
+
   drawLine(source: Point, target: Point) {
     this.drawSurface.drawLine(source, target, this.lineColor, this.lineWidth)
   }
@@ -177,19 +182,12 @@ export default class TreeLayout {
   // MAIN CONTAINER TRIGGER
   // -------------------------------------------------------------------
 
-  // _notification(what: any) {
-  // 	if what == NOTIFICATION_SORT_CHILDREN {
-  // 		full_layout()
-  //   }
-  // }
-
-  fullLayout() {
+  doLayout() {
     if (this.tree.root) {
-      // const custom_minimum_size = this.compute_size(this.root)
       this.size = this.computeSize(this.tree.root)
-      console.log("Computed size:", this.size)
-      this.drawLines(this.tree.root)
+      this.clear()
       this.layoutTree(this.tree.root)
+      this.drawLines(this.tree.root)
     }
   }
 
@@ -382,8 +380,6 @@ export default class TreeLayout {
           } else {
             target.x = childBounds.x + childBounds.w
           }
-          //		console.log(`Vertical source: ${source}, mid: ${mid}, target: ${target}`)
-          console.log("Draw horz lines:", source, target)
           if (this.isCurve()) {
             this.drawCurve(source, target)
           } else if (this.isSquare()) {
@@ -416,8 +412,6 @@ export default class TreeLayout {
             } else {
               target.y = childBounds.y + childBounds.h
             }
-            console.log("Draw vert lines:", source, target)
-
             if (this.isCurve()) {
               this.drawCurve(source, target)
             } else if (this.isSquare()) {
@@ -433,25 +427,4 @@ export default class TreeLayout {
       }
     }
   }
-
-
-  // -------------------------------------------------------------------
-  // Collect flatened TreeContainerNode(s) from a Control node root
-  // -------------------------------------------------------------------
-
-  // // Alternative, which collects and disconnects nodes and produces an edges array
-  // static from_tree(node: INode, nodes: Array<any> = [], edges: Map<any, any>) {
-  //   TreeLayout.from_node(node, nodes, edges)
-  //   return { "nodes": nodes, "edges": edges }
-  // }
-
-  // static from_node(node: INode, nodes: Array<INode> = [], edges: Map<any, any> = new Map<any, any>()) {
-  //   nodes.push(node)
-  //   edges.set(node, [])
-  //   for (let child of this.children(node)) {
-  //     edges.get(node).push(child)
-  //     TreeLayout.from_node(child, nodes, edges)
-  //   }
-  // }
-
 }
