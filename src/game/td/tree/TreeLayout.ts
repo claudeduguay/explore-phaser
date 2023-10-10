@@ -20,11 +20,6 @@ export enum TreeLineType {
   CURVE = 3
 }
 
-export interface IComponent {
-  position: Point
-  size: Point
-}
-
 export interface ITree {
   root: INode
   edges: Map<INode, INode[]>
@@ -34,7 +29,6 @@ export interface INode {
   visible?: boolean
   position: Point
   size: Point
-  component: IComponent
 }
 
 export interface IDrawSurface {
