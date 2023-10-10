@@ -8,11 +8,14 @@ export interface IPointLike {
 
 export default class Point {
 
+  static ZERO = new Point(0, 0)
+  static ONE = new Point(1, 1)
+  static TWO = new Point(2, 2)
+
   static NORTH = new Point(0, -1)
   static SOUTH = new Point(0, 1)
   static WEST = new Point(-1, 0)
   static EAST = new Point(1, 0)
-  static TWO = new Point(2, 2)
 
   constructor(public x: number = 0, public y: number = 0) {
   }
