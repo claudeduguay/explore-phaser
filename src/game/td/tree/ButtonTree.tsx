@@ -1,12 +1,7 @@
 import { CSSProperties, ReactNode, useEffect, useRef } from "react";
-import TreeLayout, { ILayoutTarget, IKey, ITree } from "./TreeLayout";
+import TreeLayout, { ILayoutTarget, IKey, ITree, IBounds } from "./TreeLayout";
 import { HTMLDrawSurface } from "./HTMLDrawSurface";
 import ObservableValue, { useObservableValue } from "../value/ObservableValue";
-import Point from "../../../util/Point";
-
-export const TREE = {
-
-}
 
 export function ExampleButton({ title, styling }: { title: string, styling: ObservableValue<CSSProperties> }) {
   const style = useObservableValue<CSSProperties>(styling)
@@ -14,34 +9,33 @@ export function ExampleButton({ title, styling }: { title: string, styling: Obse
 }
 
 export class ExampleLayoutTarget extends Map<IKey, ObservableValue<CSSProperties>> implements ILayoutTarget {
+
   isVisible(key: IKey): boolean | undefined {
     return true
   }
-  getSize(key: IKey): Point {
+
+  getBounds(key: IKey): IBounds {
     const observable = this.get(key)
     if (observable) {
-      return new Point(observable.value.width as number, observable.value.height as number)
+      return {
+        x: observable.value.left as number,
+        y: observable.value.top as number,
+        w: observable.value.width as number,
+        h: observable.value.height as number
+      }
     }
-    return new Point()
+    return { x: 0, y: 0, w: 0, h: 0 }
   }
 
-  getPosition(key: IKey): Point {
-    const observable = this.get(key)
-    if (observable) {
-      return new Point(observable.value.left as number, observable.value.top as number)
-    }
-    return new Point()
-  }
-
-  setBounds(key: IKey, x: number, y: number, w: number, h: number): void {
+  setBounds(key: IKey, bounds: IBounds): void {
     const observable = this.get(key)
     if (observable) {
       observable.value = {
         position: "absolute",
-        left: x,
-        top: y,
-        width: w,
-        height: h
+        left: bounds.x,
+        top: bounds.y,
+        width: bounds.w,
+        height: bounds.h
       }
     }
   }
@@ -70,18 +64,18 @@ export default function ButtonTree({ width, height, tree, children }: IButtonTre
 }
 
 export function ButtonTreeExample({ width, height }: IButtonTreeProps) {
-  const tree: ITree = {
+  const sampleTree: ITree = {
     root: "root",
     edges: new Map<IKey, IKey[]>()
   }
-  tree.edges.set("root", ["left", "right"])
-  tree.edges.set("left", [])
-  tree.edges.set("right", [])
-  const observables = [...tree.edges.keys()].map(key => new ObservableValue<CSSProperties>({
+  sampleTree.edges.set("root", ["left", "right"])
+  sampleTree.edges.set("left", [])
+  sampleTree.edges.set("right", [])
+  const observables = [...sampleTree.edges.keys()].map(key => new ObservableValue<CSSProperties>({
     position: "absolute", left: 0, top: 0, width: 0, height: 0
   }))
   const children = observables.map((o, i) => <ExampleButton title={`Button ${i + 1}`} styling={o} />)
-  return <ButtonTree width={width} height={height} tree={tree}>
+  return <ButtonTree width={width} height={height} tree={sampleTree}>
     {children}
   </ButtonTree>
 }
