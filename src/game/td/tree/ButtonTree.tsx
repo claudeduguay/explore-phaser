@@ -1,5 +1,5 @@
 import { CSSProperties, ReactNode, useEffect, useRef } from "react";
-import TreeLayout, { ILayoutTarget, IKey, ITree, IBounds } from "./TreeLayout";
+import TreeLayout, { ILayoutTarget, INodeKey, ITree, IBounds } from "./TreeLayout";
 import { HTMLDrawSurface } from "./HTMLDrawSurface";
 import ObservableValue, { useObservableValue } from "../value/ObservableValue";
 
@@ -8,13 +8,13 @@ export function ExampleButton({ title, styling }: { title: string, styling: Obse
   return <button className="btn btn-primary" style={style}>{title}</button>
 }
 
-export class ExampleLayoutTarget extends Map<IKey, ObservableValue<CSSProperties>> implements ILayoutTarget {
+export class ExampleLayoutTarget extends Map<INodeKey, ObservableValue<CSSProperties>> implements ILayoutTarget {
 
-  isVisible(key: IKey): boolean | undefined {
+  isVisible(key: INodeKey): boolean | undefined {
     return true
   }
 
-  getBounds(key: IKey): IBounds {
+  getBounds(key: INodeKey): IBounds {
     const observable = this.get(key)
     if (observable) {
       return {
@@ -27,7 +27,7 @@ export class ExampleLayoutTarget extends Map<IKey, ObservableValue<CSSProperties
     return { x: 0, y: 0, w: 0, h: 0 }
   }
 
-  setBounds(key: IKey, bounds: IBounds): void {
+  setBounds(key: INodeKey, bounds: IBounds): void {
     const observable = this.get(key)
     if (observable) {
       observable.value = {
@@ -66,7 +66,7 @@ export default function ButtonTree({ width, height, tree, children }: IButtonTre
 export function ButtonTreeExample({ width, height }: IButtonTreeProps) {
   const sampleTree: ITree = {
     root: "root",
-    edges: new Map<IKey, IKey[]>()
+    edges: new Map<INodeKey, INodeKey[]>()
   }
   sampleTree.edges.set("root", ["left", "right"])
   sampleTree.edges.set("left", [])

@@ -21,11 +21,11 @@ export enum TreeLineType {
 }
 
 export interface ITree {
-  root: IKey
-  edges: Map<IKey, IKey[]>
+  root: INodeKey
+  edges: Map<INodeKey, INodeKey[]>
 }
 
-export type IKey = string
+export type INodeKey = string
 
 export interface IDefaultNode {
   visible?: boolean
@@ -49,9 +49,9 @@ export interface IBounds extends ISize {
 }
 
 export interface ILayoutTarget {
-  isVisible(node: IKey): boolean | undefined
-  getBounds(node: IKey): IBounds
-  setBounds(node: IKey, bounds: IBounds): void
+  isVisible(node: INodeKey): boolean | undefined
+  getBounds(node: INodeKey): IBounds
+  setBounds(node: INodeKey, bounds: IBounds): void
 }
 
 export default class TreeLayout {
@@ -134,29 +134,28 @@ export default class TreeLayout {
   // CHILDREN UTILITY
   // -------------------------------------------------------------------
 
-  children(node: IKey) {
+  children(node: INodeKey) {
     return this.tree.edges.get(node) || []
   }
 
-  isLeaf(node: IKey) {
+  isLeaf(node: INodeKey) {
     return this.children(node).length === 0
   }
-
 
 
   // -------------------------------------------------------------------
   // LAYOUT TARGET UTILITIES
   // -------------------------------------------------------------------
 
-  isVisible(node: IKey): boolean | undefined {
+  isVisible(node: INodeKey): boolean | undefined {
     return this.layoutTarget.isVisible(node)
   }
 
-  getBounds(node: IKey): IBounds {
+  getBounds(node: INodeKey): IBounds {
     return this.layoutTarget.getBounds(node)
   }
 
-  setBounds(node: IKey, x: number, y: number, w: number, h: number): void {
+  setBounds(node: INodeKey, x: number, y: number, w: number, h: number): void {
     this.layoutTarget.setBounds(node, { x, y, w, h })
   }
 
@@ -185,7 +184,7 @@ export default class TreeLayout {
   // COMPUTE NODE(AND CHILDREN) SIZE
   // -------------------------------------------------------------------
 
-  computeSize(node: IKey): ISize {
+  computeSize(node: INodeKey): ISize {
     if (!this.isVisible(node)) {
       return { w: 0, h: 0 }
     }
@@ -233,7 +232,7 @@ export default class TreeLayout {
   // EXECUTE LAYOUT
   // -------------------------------------------------------------------
 
-  layoutTree(node: IKey) {
+  layoutTree(node: INodeKey) {
     switch (this.direction) {
       case TreeDirection.WEST:
         this.layout(node, this.size.w, 0)
@@ -250,25 +249,25 @@ export default class TreeLayout {
     }
   }
 
-  layout(node: IKey, x: number, y: number) {
+  layout(node: INodeKey, x: number, y: number) {
     if (!this.isVisible(node)) {
       return
     }
-    const computed_size = this.computeSize(node)
+    const computedSize = this.computeSize(node)
     const bounds = this.getBounds(node)
     if (this.isHorizontal()) {
-      let aligned_y = y
+      let yAligned = y
       if (this.isCenter()) {
-        aligned_y += (computed_size.h - bounds.h) / 2
+        yAligned += (computedSize.h - bounds.h) / 2
       }
       if (this.isEnd()) {
-        aligned_y += computed_size.h - bounds.h
+        yAligned += computedSize.h - bounds.h
       }
       if (this.isEast()) {
-        this.layoutTarget.setBounds(node, { x, y: aligned_y, w: bounds.w, h: bounds.h })
+        this.layoutTarget.setBounds(node, { x, y: yAligned, w: bounds.w, h: bounds.h })
         x += bounds.w + this.gap.x
       } else {
-        this.layoutTarget.setBounds(node, { x: x - bounds.w, y: aligned_y, w: bounds.w, h: bounds.h })
+        this.layoutTarget.setBounds(node, { x: x - bounds.w, y: yAligned, w: bounds.w, h: bounds.h })
         x -= bounds.w + this.gap.x
       }
 
@@ -279,18 +278,18 @@ export default class TreeLayout {
         }
       }
       if (this.isVertical()) {
-        var aligned_x = x
+        var xAligned = x
         if (this.isCenter()) {
-          aligned_x += (computed_size.w - bounds.w) / 2
+          xAligned += (computedSize.w - bounds.w) / 2
         }
         if (this.isEnd()) {
-          aligned_x += computed_size.w - bounds.w
+          xAligned += computedSize.w - bounds.w
         }
         if (this.isSouth()) {
-          this.layoutTarget.setBounds(node, { x: aligned_x, y, w: bounds.w, h: bounds.w })
+          this.layoutTarget.setBounds(node, { x: xAligned, y, w: bounds.w, h: bounds.w })
           y += bounds.h + this.gap.y
         } else {
-          this.layoutTarget.setBounds(node, { x: aligned_x, y: y - bounds.h, h: bounds.h, w: bounds.w })
+          this.layoutTarget.setBounds(node, { x: xAligned, y: y - bounds.h, h: bounds.h, w: bounds.w })
           y -= bounds.h + this.gap.y
         }
         for (let child of this.children(node)) {
@@ -313,7 +312,7 @@ export default class TreeLayout {
     this.drawLines(this.tree.root)
   }
 
-  drawCurve(source: Point, target: Point, point_count: number = 20) {
+  drawCurve(source: Point, target: Point, pointCount: number = 20) {
     // const mid = source.lerp(target, 0.5)
     // let control1 = new Point(mid.x, source.y)
     // let control2 = new Point(mid.x, target.y)
@@ -322,8 +321,8 @@ export default class TreeLayout {
     //   control2 = new Point(target.x, mid.y)
     // }
     // const points = []
-    // for (let i = 0; i < point_count + 1; i++) {
-    //   let f = i / point_count
+    // for (let i = 0; i < pointCount + 1; i++) {
+    //   let f = i / pointCount
     //   points.push(source.bezier_interpolate(control1, control2, target, f))
     //   this.draw_surface.draw_poly(points)
     // }
@@ -349,7 +348,7 @@ export default class TreeLayout {
     }
   }
 
-  drawLines(node: IKey) {
+  drawLines(node: INodeKey) {
     if (!this.isVisible(node)) {
       return
     }
