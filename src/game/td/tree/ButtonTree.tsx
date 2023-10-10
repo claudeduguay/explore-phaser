@@ -45,19 +45,19 @@ export interface IButtonTreeProps {
   width: number
   height: number
   tree: ITree
+  layoutTarget: ILayoutTarget
   children: ReactNode
 }
 
-export default function ButtonTree({ width, height, tree, children }: IButtonTreeProps) {
+export default function ButtonTree({ width, height, tree, layoutTarget, children }: IButtonTreeProps) {
   const ref = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
     if (ref.current) {
       const drawSurface = new HTMLDrawSurface(ref.current)
-      const layoutTarget = new ExampleLayoutTarget()
       const layout = new TreeLayout(tree, drawSurface, layoutTarget)
       layout.fullLayout()
     }
-  }, [ref, tree, children])
+  }, [ref, tree, layoutTarget, children])
   return <canvas ref={ref} width={width} height={height}>
     {children}
   </canvas>
@@ -71,11 +71,14 @@ export function ButtonTreeExample({ width, height }: IButtonTreeProps) {
   sampleTree.edges.set("root", ["left", "right"])
   sampleTree.edges.set("left", [])
   sampleTree.edges.set("right", [])
-  const observables = [...sampleTree.edges.keys()].map(key => new ObservableValue<CSSProperties>({
-    position: "absolute", left: 0, top: 0, width: 0, height: 0
-  }))
-  const children = observables.map((o, i) => <ExampleButton title={`Button ${i + 1}`} styling={o} />)
-  return <ButtonTree width={width} height={height} tree={sampleTree}>
+  const layoutTarget = new ExampleLayoutTarget()
+  const styles = [...sampleTree.edges.keys()].map(key => {
+    const style = new ObservableValue<CSSProperties>({ position: "absolute", left: 0, top: 0, width: 0, height: 0 })
+    layoutTarget.set(key, style)
+    return style
+  })
+  const children = styles.map((style, i) => <ExampleButton title={`Button ${i + 1}`} styling={style} />)
+  return <ButtonTree width={width} height={height} tree={sampleTree} layoutTarget={layoutTarget}>
     {children}
   </ButtonTree>
 }
