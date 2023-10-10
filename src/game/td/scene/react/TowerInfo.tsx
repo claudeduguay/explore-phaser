@@ -7,6 +7,7 @@ import ObservableValue, { useObservableValue } from "../../value/ObservableValue
 import { entitle } from "../../../../util/TextUtil"
 import { IUpgrade } from "./PropsTable"
 import { Scene } from "phaser"
+import { IDamageSpec } from "../../entity/model/ITowerModel"
 
 export interface ITowerInfoProps {
   scene: Scene
@@ -31,6 +32,11 @@ export default function TowerInfo({ scene, tower: towerObservable, onClose }: IT
     cost: { text: "-10%", cost: 100 },
     range: { text: "+10%", cost: 50 },
   }
+  const damageFormatter = (damage: IDamageSpec) => {
+    const dps = damage.dps.toString()
+    const duration = damage.duration !== undefined ? `${damage.duration}ms` : "in-range"
+    return `${dps} (${duration})`
+  }
   return <div className="position-reattive text-white bg-overlay border-gold glow -p-3"
     style={style} data-bs-theme="dark" onMouseDown={onMouseDown}>
     <CloseButton onClick={onClose} />
@@ -41,7 +47,7 @@ export default function TowerInfo({ scene, tower: towerObservable, onClose }: IT
       <p className="text-start py-0 px-3">{model.description}</p>
       <div><img src={imageSrc} alt="Tower" /></div>
       <PropsInfo title="General" model={model.stats} upgrade={upgrade} />
-      <PropsInfo title="Damage (dps per level)" model={model.damage} />
+      <PropsInfo title="Damage (dps per level)" model={model.damage} valueFormatter={damageFormatter} />
     </>}
   </div>
 }
