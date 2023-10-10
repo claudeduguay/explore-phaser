@@ -5,7 +5,7 @@ import ITowerModel from "../model/ITowerModel"
 import Point from "../../../../util/Point"
 import BehaviorContainer from "../../behavior/core/BehaviorContainer"
 
-export default class TDTurret extends BehaviorContainer<TDTurret> {
+export default class TDTurret extends BehaviorContainer {
 
   weapon: TDWeapon[] = []
 

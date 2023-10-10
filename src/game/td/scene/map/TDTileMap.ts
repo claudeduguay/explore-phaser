@@ -22,7 +22,7 @@ export default function makeTileMap(scene: Scene, x: number, y: number, model: I
 }
 
 
-export class TDTileMap extends BehaviorContainer<TDTileMap> {
+export class TDTileMap extends BehaviorContainer {
 
   map!: Tilemaps.Tilemap
   layer!: Tilemaps.TilemapLayer

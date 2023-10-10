@@ -31,7 +31,7 @@ import TargetImpactBehavior from "../../behavior/tower/spray/TargetImpactBehavio
 import TargetMissileBehavior from "../../behavior/tower/TargetMissileBehavior"
 import TDEnemy from "../enemy/TDEnemy"
 
-export default class TDTower extends BehaviorContainer<TDTower> implements ISelectable {
+export default class TDTower extends BehaviorContainer implements ISelectable {
 
   tower_base: GameObjects.Sprite
   turret: TDTurret

@@ -9,12 +9,12 @@ export default class TimedDamageEffect extends TimedEffect {
     super(enemy, timeout)
   }
 
-  updateEffect(target: TDEnemy, time: number, delta: number): void {
-    let damage = computeTargetDamage(this.tower, target, delta)
-    target.health.adjust(-damage)
+  updateEffect(time: number, delta: number): void {
+    let damage = computeTargetDamage(this.tower, this.enemy, delta)
+    this.enemy.health.adjust(-damage)
   }
 
-  endEffect(enemy: TDEnemy, time: number, delta: number): void {
+  endEffect(time: number, delta: number): void {
   }
 
 }

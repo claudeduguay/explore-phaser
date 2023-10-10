@@ -2,20 +2,20 @@ import { GameObjects, Math as PMath } from "phaser"
 import IBehavior from "../core/IBehavior"
 import TDTower from "../../entity/tower/TDTower"
 
-export default class TargetAimBehavior implements IBehavior<TDTower> {
+export default class TargetAimBehavior implements IBehavior {
 
   g!: GameObjects.Graphics
 
   constructor(public tower: TDTower) {
   }
 
-  update(obj: TDTower, time: number, delta: number) {
+  update(time: number, delta: number) {
     if (this.g) {
       this.g.destroy()
     }
-    if (obj.targets.length > 0) {
-      const target = obj.targets[0]
-      obj.turret.rotation = PMath.Angle.BetweenPoints(target, obj) - Math.PI / 2
+    if (this.tower.targets.length > 0) {
+      const target = this.tower.targets[0]
+      this.tower.turret.rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI / 2
 
       // Test rotation util
       // const p = rotation(obj.x, obj.y, 64, 64, obj.turret.rotation)

@@ -5,31 +5,31 @@ import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 
-export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior<TDEnemy>
+export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
-export default class BaseTargeCloudBehavior implements IBehavior<TDTower> {
+export default class BaseTargeCloudBehavior implements IBehavior {
 
   cloud?: GameObjects.Particles.ParticleEmitter
-  effectInstance?: IBehavior<TDEnemy>
+  effectInstance?: IBehavior
 
   constructor(public tower: TDTower, public key: string, public emitter: IEmitterConfigBuilder, public effect?: IDamageEffectBuilder) {
   }
 
-  update(tower: TDTower, time: number, delta: number) {
+  update(time: number, delta: number) {
     if (!this.cloud) {
-      this.cloud = tower.scene.add.particles(0, 0, this.key, this.emitter(tower.model.stats.range, tower))
+      this.cloud = this.tower.scene.add.particles(0, 0, this.key, this.emitter(this.tower.model.stats.range, this.tower))
       this.cloud.stop()
       // Push effect behind the tower
-      if (tower instanceof GameObjects.Container) {
-        tower.add(this.cloud)
-        tower.sendToBack(this.cloud)
+      if (this.tower instanceof GameObjects.Container) {
+        this.tower.add(this.cloud)
+        this.tower.sendToBack(this.cloud)
       }
     }
-    if (tower.targets.length) {
+    if (this.tower.targets.length) {
       this.cloud?.start()
       if (this.effect) {
         // If the effect function is defnined, use that instead of applyDamage computation directly
-        for (let target of tower.targets) {
+        for (let target of this.tower.targets) {
           if (!this.effectInstance) {
             // Cache instance so the same one is used on multiple updates
             this.effectInstance = this.effect(target)
@@ -39,7 +39,7 @@ export default class BaseTargeCloudBehavior implements IBehavior<TDTower> {
           }
         }
       } else {
-        applyDamage(tower, delta)
+        applyDamage(this.tower, delta)
       }
     } else { // No target
       this.effectInstance = undefined

@@ -33,29 +33,29 @@ export function applyDamage(tower: TDTower, delta: number, singleTarget: boolean
 }
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
-export default abstract class BaseTargetBehavior<T, E extends IEmitter> implements IBehavior<TDTower> {
+export default abstract class BaseTargetBehavior<T extends IEmitter> implements IBehavior {
 
-  emitters: E[] = []
+  emitters: T[] = []
 
-  constructor(public tower: T, public destroyEachFrame: boolean = true, public singleTarget: boolean = true) {
+  constructor(public tower: TDTower, public destroyEachFrame: boolean = true, public singleTarget: boolean = true) {
   }
 
-  update(tower: TDTower, time: number, delta: number) {
+  update(time: number, delta: number) {
     if (this.destroyEachFrame && this.emitters?.length) {
       for (let emitter of this.emitters) {
         emitter.destroy()
       }
       this.emitters = []
     }
-    if (tower.targets.length > 0) {
-      tower.emissionPoints().forEach((point, i) => this.addEmitter(i, point, tower, time))
-      applyDamage(tower, delta, this.singleTarget)
+    if (this.tower.targets.length > 0) {
+      this.tower.emissionPoints().forEach((point, i) => this.addEmitter(i, point, time))
+      applyDamage(this.tower, delta, this.singleTarget)
     } else {
       this.removeOrStopEmitters()
     }
   }
 
-  abstract addEmitter(index: number, emissionPoint: Point, obj: TDTower, time: number): void
+  abstract addEmitter(index: number, emissionPoint: Point, time: number): void
 
   removeOrStopEmitters(): void {
     if (this.emitters?.length) {

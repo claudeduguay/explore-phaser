@@ -1,21 +1,20 @@
-import TDEnemy from "../../entity/enemy/TDEnemy";
 import TimedEffect from "./TimedEffect";
 
 export default class TimeSlowEffect extends TimedEffect {
 
-  updateEffect(enemy: TDEnemy, time: number, delta: number): void {
-    if (enemy.frameCount % 2 > 0) {
-      if (enemy.isFollowing()) {
-        enemy.pauseFollow()
+  updateEffect(time: number, delta: number): void {
+    if (this.enemy.frameCount % 2 > 0) {
+      if (this.enemy.isFollowing()) {
+        this.enemy.pauseFollow()
       }
-    } else if (!enemy.isFollowing()) {
-      enemy.resumeFollow()
+    } else if (!this.enemy.isFollowing()) {
+      this.enemy.resumeFollow()
     }
   }
 
-  endEffect(enemy: TDEnemy, time: number, delta: number): void {
-    if (!enemy.isFollowing()) {
-      enemy.resumeFollow()
+  endEffect(time: number, delta: number): void {
+    if (!this.enemy.isFollowing()) {
+      this.enemy.resumeFollow()
     }
   }
 

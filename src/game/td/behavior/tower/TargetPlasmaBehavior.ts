@@ -8,16 +8,16 @@ function perpendicular({ x, y }: Point, angle: number, r: number, pos: boolean =
   return rotation(x, y, r, r, angle + (pos ? 0 : -Math.PI))
 }
 
-export default class TargetPlasmaBehavior extends BaseTargetBehavior<TDTower, GameObjects.Graphics> {
+export default class TargetPlasmaBehavior extends BaseTargetBehavior<GameObjects.Graphics> {
 
   constructor(tower: TDTower) {
     super(tower, true)
   }
 
-  addEmitter(i: number, { x, y }: Point, obj: TDTower, time: number): void {
-    const target = obj.targets[0]
+  addEmitter(i: number, { x, y }: Point, time: number): void {
+    const target = this.tower.targets[0]
     if (target) {
-      const emitter = obj.scene.add.graphics()
+      const emitter = this.tower.scene.add.graphics()
       this.draw(emitter, new Point(x, y), new Point(target.x, target.y))
       this.emitters?.push(emitter)
     }

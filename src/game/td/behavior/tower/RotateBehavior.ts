@@ -5,14 +5,14 @@ export interface IHasAngle {
   angle: number
 }
 
-export default class RotateBehavior implements IBehavior<TDTower> {
+export default class RotateBehavior implements IBehavior {
 
   constructor(public tower: TDTower, public step: number = 1) {
 
   }
 
-  update(tower: TDTower, time: number, delta: number) {
-    tower.turret.angle += this.step
+  update(time: number, delta: number) {
+    this.tower.turret.angle += this.step
   }
 
 }

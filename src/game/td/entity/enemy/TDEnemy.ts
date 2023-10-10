@@ -8,7 +8,7 @@ import BehaviorList from "../../behavior/core/BehaviorList";
 export default class TDEnemy extends GameObjects.PathFollower implements ISelectable {
 
   twin?: TDEnemy   // Used in path preview (needed to match slow effect when applied)
-  effects = new BehaviorList<TDEnemy>()
+  effects = new BehaviorList()
   frameCount: number = 0
   container!: GameObjects.Container
   shieldBar!: HealthBar
@@ -133,7 +133,7 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     if (this.isFollowing()) {
       super.preUpdate(time, delta)
     }
-    this.effects.update(this, time, delta)
+    this.effects.update(time, delta)
     this.detectDirectionChange()
     this.handleStatusBars()
   }

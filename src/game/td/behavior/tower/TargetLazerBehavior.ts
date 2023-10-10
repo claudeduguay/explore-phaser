@@ -3,19 +3,19 @@ import BaseTargetBehavior from "./BaseTargetBehavior"
 import Point from "../../../../util/Point"
 import TDTower from "../../entity/tower/TDTower"
 
-export default class TargetLaserBehavior extends BaseTargetBehavior<TDTower, GameObjects.Graphics> {
+export default class TargetLaserBehavior extends BaseTargetBehavior<GameObjects.Graphics> {
 
   constructor(tower: TDTower) {
     super(tower, true)
   }
 
-  addEmitter(i: number, { x, y }: Point, tower: TDTower, time: number): void {
+  addEmitter(i: number, { x, y }: Point, time: number): void {
     // For lazer we may not need to flash
     const show = time % 3000 <= 2500 // Visible 2500 of every 3000ms
     if (show) {
-      const target = tower.targets[0]
+      const target = this.tower.targets[0]
       if (target) {
-        const emitter = tower.scene.add.graphics()
+        const emitter = this.tower.scene.add.graphics()
         this.draw(emitter, new Point(x, y), new Point(target.x, target.y))
         this.emitters?.push(emitter)
       }

@@ -6,9 +6,10 @@ export interface IHasPosition {
   y: number
 }
 
-export default class OrbitBehavior implements IBehavior<IHasPosition> {
+export default class OrbitBehavior implements IBehavior {
 
   constructor(
+    public target: IHasPosition,
     public cx: number,
     public cy: number,
     public rx: number,
@@ -17,11 +18,11 @@ export default class OrbitBehavior implements IBehavior<IHasPosition> {
     public step: number = 1) {
   }
 
-  update(obj: IHasPosition, time: number, delta: number) {
+  update(time: number, delta: number) {
     const a = PMath.DegToRad(this.angle)
     // console.log("Angle, Radians:", this.angle, a)
-    obj.x = this.cx + Math.sin(a) * this.rx
-    obj.y = this.cy + Math.cos(a) * this.ry
+    this.target.x = this.cx + Math.sin(a) * this.rx
+    this.target.y = this.cy + Math.cos(a) * this.ry
     this.angle += this.step
   }
 

@@ -3,7 +3,7 @@ import BaseTargetBehavior from "./BaseTargetBehavior"
 import Point from "../../../../util/Point"
 import TDTower from "../../entity/tower/TDTower"
 
-export default class TargetMissileBehavior extends BaseTargetBehavior<TDTower, GameObjects.Graphics> {
+export default class TargetMissileBehavior extends BaseTargetBehavior<GameObjects.Graphics> {
 
   fraction?: number
 
@@ -11,10 +11,10 @@ export default class TargetMissileBehavior extends BaseTargetBehavior<TDTower, G
     super(tower, true)
   }
 
-  addEmitter(i: number, { x, y }: Point, tower: TDTower, time: number): void {
-    const target = tower.targets[0]
+  addEmitter(i: number, { x, y }: Point, time: number): void {
+    const target = this.tower.targets[0]
     if (target) {
-      const emitter = tower.scene.add.graphics()
+      const emitter = this.tower.scene.add.graphics()
       this.draw(emitter, new Point(x, y), new Point(target.x, target.y), time)
       this.emitters?.push(emitter)
     }
