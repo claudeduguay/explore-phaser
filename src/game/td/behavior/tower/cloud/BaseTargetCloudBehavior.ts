@@ -25,11 +25,11 @@ export default class BaseTargeCloudBehavior implements IBehavior {
         this.tower.sendToBack(this.cloud)
       }
     }
-    if (this.tower.targets.length) {
+    if (this.tower.targeting.current.length) {
       this.cloud?.start()
       if (this.effect) {
         // If the effect function is defnined, use that instead of applyDamage computation directly
-        for (let target of this.tower.targets) {
+        for (let target of this.tower.targeting.current) {
           if (!this.effectInstance) {
             // Cache instance so the same one is used on multiple updates
             this.effectInstance = this.effect(target)

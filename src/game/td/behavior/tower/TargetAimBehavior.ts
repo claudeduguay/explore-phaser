@@ -13,8 +13,8 @@ export default class TargetAimBehavior implements IBehavior {
     if (this.g) {
       this.g.destroy()
     }
-    if (this.tower.targets.length > 0) {
-      const target = this.tower.targets[0]
+    if (this.tower.targeting.current.length > 0) {
+      const target = this.tower.targeting.current[0]
       this.tower.turret.rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI / 2
 
       // Test rotation util

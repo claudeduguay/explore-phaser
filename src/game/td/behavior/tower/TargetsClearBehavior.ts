@@ -8,7 +8,7 @@ export default class TargetsClearBehavior implements IBehavior {
 
   update(time: number, delta: number) {
     if (!this.tower.preview) {
-      this.tower.targets = []
+      this.tower.targeting.current = []
     }
   }
 }

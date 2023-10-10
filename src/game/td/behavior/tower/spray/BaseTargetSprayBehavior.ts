@@ -16,8 +16,8 @@ export default class BaseTargetSprayBehavior extends BaseTargetBehavior<GameObje
       emitter.stop()
       this.emitters.push(emitter)
     }
-    if (this.tower.targets.length) {
-      const target = this.tower.targets[0]
+    if (this.tower.targeting.current.length) {
+      const target = this.tower.targeting.current[0]
       this.emitters[i].setPosition(x, y)
       this.emitters[i].rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI
       this.emitters[i].start()

@@ -23,7 +23,7 @@ export function computeTargetDamage(tower: TDTower, target: TDEnemy, delta: numb
 
 export function applyDamage(tower: TDTower, delta: number, singleTarget: boolean = true) {
   // console.log("Delta:", delta)
-  const targets = singleTarget ? [tower.targets[0]] : tower.targets
+  const targets = singleTarget ? [tower.targeting.current[0]] : tower.targeting.current
   targets.forEach(target => {
     if (target instanceof TDEnemy) {  // Ensure acces by type
       let damage = computeTargetDamage(tower, target, delta)
@@ -47,7 +47,7 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
       }
       this.emitters = []
     }
-    if (this.tower.targets.length > 0) {
+    if (this.tower.targeting.current.length > 0) {
       this.tower.emissionPoints().forEach((point, i) => this.addEmitter(i, point, time))
       applyDamage(this.tower, delta, this.singleTarget)
     } else {

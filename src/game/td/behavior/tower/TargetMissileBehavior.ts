@@ -12,7 +12,7 @@ export default class TargetMissileBehavior extends BaseTargetBehavior<GameObject
   }
 
   addEmitter(i: number, { x, y }: Point, time: number): void {
-    const target = this.tower.targets[0]
+    const target = this.tower.targeting.current[0]
     if (target) {
       const emitter = this.tower.scene.add.graphics()
       this.draw(emitter, new Point(x, y), new Point(target.x, target.y), time)

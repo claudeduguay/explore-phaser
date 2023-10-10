@@ -295,7 +295,7 @@ export default class TDPlayScene extends Scene {
     tower: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
     enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
     if (tower instanceof TDTower && enemy instanceof TDEnemy) {
-      tower.targets.unshift(enemy)
+      tower.targeting.current.unshift(enemy)
     }
   }
 

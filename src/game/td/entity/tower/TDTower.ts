@@ -29,13 +29,13 @@ import TargetRainBehavior from "../../behavior/tower/cloud/TargetRainBehavior"
 import TargetSnowBehavior from "../../behavior/tower/cloud/TargetSnowBehavior"
 import TargetImpactBehavior from "../../behavior/tower/spray/TargetImpactBehavior"
 import TargetMissileBehavior from "../../behavior/tower/TargetMissileBehavior"
-import TDEnemy from "../enemy/TDEnemy"
+import Targeting from "./Targeting"
 
 export default class TDTower extends BehaviorContainer implements ISelectable {
 
   tower_base: GameObjects.Sprite
   turret: TDTurret
-  targets: TDEnemy[] = []
+  targeting = new Targeting()
   showRange: GameObjects.Container
   preview: boolean = false
 

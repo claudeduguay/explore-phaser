@@ -32,7 +32,7 @@ export default class TowerPreview extends Scene {
       this.add.existing(t)
       addLabel(this, x, y + 40, model.name.split(" ")[0], "center")
       const e = new TDEnemy(this, x, y - 100, ENEMY_MODELS.WEAK)
-      t.targets = [e]
+      t.targeting.current = [e]
     })
   }
 

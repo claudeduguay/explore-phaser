@@ -10,7 +10,7 @@ export default class TargetBulletBehavior extends BaseTargetBehavior<GameObjects
   }
 
   addEmitter(i: number, { x, y }: Point, time: number): void {
-    const target = this.tower.targets[0]
+    const target = this.tower.targeting.current[0]
     const show = time % 150 > 75 //  Visible half of every 150ms
     if (show) {
       const angle = PMath.Angle.BetweenPoints(target, this.tower) + Math.PI / 2

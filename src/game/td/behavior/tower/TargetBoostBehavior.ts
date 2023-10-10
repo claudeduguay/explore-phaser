@@ -14,7 +14,7 @@ export default class TargetBoostBehavior implements IBehavior {
     if (this.g) {
       this.g.destroy()
     }
-    if (this.tower.targets.length > 0) {
+    if (this.tower.targeting.current.length > 0) {
       const slice = 20
       this.g = this.tower.scene.add.graphics({ fillStyle: { color: 0x00ff00, alpha: 0.1 } })
       for (let a = 0; a < 360; a += slice * 2) {

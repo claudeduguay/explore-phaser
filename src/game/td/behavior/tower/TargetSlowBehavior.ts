@@ -14,7 +14,7 @@ export default class TargetSlowBehavior implements IBehavior {
     if (this.g) {
       this.g.destroy()
     }
-    if (this.tower.targets.length > 0) {
+    if (this.tower.targeting.current.length > 0) {
       this.g = this.tower.scene.add.graphics({
         fillStyle: { color: 0xff6600, alpha: 0.05 },
         lineStyle: { color: 0xff6600, alpha: 0.2, width: 2 }
@@ -27,7 +27,7 @@ export default class TargetSlowBehavior implements IBehavior {
       this.g.strokeCircle(this.tower.x, this.tower.y, r1)
       this.g.strokeCircle(this.tower.x, this.tower.y, r2)
 
-      for (let target of this.tower.targets) {
+      for (let target of this.tower.targeting.current) {
         const SLOW_EFFECT = new TimedSlowEffect(target, 2000)
         if (!target.effects.includes(SLOW_EFFECT)) {
           target.effects.push(SLOW_EFFECT)
