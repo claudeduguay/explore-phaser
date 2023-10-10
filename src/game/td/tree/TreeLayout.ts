@@ -68,12 +68,12 @@ export default class TreeLayout {
 
   direction: TreeDirection = TreeDirection.EAST
   alignment: TreeAlignment = TreeAlignment.CENTER
-  line_type: TreeLineType = TreeLineType.SQUARE
-  line_color: number = 0xFF9900
-  line_width: number = 1.0
+  lineType: TreeLineType = TreeLineType.SQUARE
+  lineColor: number = 0xFF9900
+  lineWidth: number = 1.0
   gap: Point = new Point(50, 15)
 
-  // Note: We need to be affecting the container size, not this value
+  // Note: We need to be affecting the container size, not necessarily this value
   size: ISize = { w: 0, h: 0 }
 
 
@@ -118,15 +118,15 @@ export default class TreeLayout {
   }
 
   isCurve() {
-    return this.line_type === TreeLineType.CURVE
+    return this.lineType === TreeLineType.CURVE
   }
 
   isSquare() {
-    return this.line_type === TreeLineType.SQUARE
+    return this.lineType === TreeLineType.SQUARE
   }
 
   isStraight() {
-    return this.line_type === TreeLineType.STRAIGHT
+    return this.lineType === TreeLineType.STRAIGHT
   }
 
 
