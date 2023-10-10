@@ -1,9 +1,9 @@
 import { Curves, GameObjects, Scene, Time } from "phaser"
 import Point from "../../../../util/Point"
 import TDEnemy from "../../entity/enemy/TDEnemy"
-import { ALL_ENEMIES } from "../../entity/model/IEnemyModel"
+import { ENEMIES } from "../../entity/model/IEnemyModel"
 import TDPlayScene, { IActiveValues } from "../TDPlayScene"
-import { DEFAULT_WAVES, IWaveGroup } from "./IWaveModel"
+import { defaultWaveModel, IWaveGroup } from "./IWaveModel"
 
 // Create a graphics background and a line-based curve for the preview path
 export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction: number, suffixFraction: number) {
@@ -30,7 +30,7 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction:
 
 // Add an enemy to the main path (add/remove in group)
 export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, duration: number, delay: number) {
-  const model = ALL_ENEMIES.find(m => m.meta.key === key)
+  const model = ENEMIES.find(m => m.meta.key === key)
   const enemy = scene.add.enemy(origin.x, origin.y, model, path, true)
   enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
     enemy.destroy()
@@ -67,7 +67,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
 
 // Add preview follower to the proview path, reset timeline after last is finished
 export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path, timeline: Time.Timeline, duration: number, isLast: boolean, twin: TDEnemy) {
-  const model = ALL_ENEMIES.find(m => m.meta.key === key)
+  const model = ENEMIES.find(m => m.meta.key === key)
   const enemy = scene.add.enemy(0, 0, model, path, false)
   twin.twin = enemy // Track this enemy from it's twin
   twin.addListener("died", ({ x, y, model }: TDEnemy) => {
@@ -112,7 +112,7 @@ export function makeTimeline(scene: Scene, active: IActiveValues, enemyGroup: Ga
   }
 
   const config: Phaser.Types.Time.TimelineEventConfig[] = []
-  const waves = DEFAULT_WAVES
+  const waves = defaultWaveModel()
   waves.forEach((group: IWaveGroup, index: number) => {
     const lastGroup = index === waves.length - 1
     for (let i = 0; i < group.count; i++) {
@@ -125,7 +125,7 @@ export function makeTimeline(scene: Scene, active: IActiveValues, enemyGroup: Ga
   timeline.play()
 }
 
-export function buildSummary(scene: Scene, x: number, y: number, w: number, h: number, waves = DEFAULT_WAVES) {
+export function buildSummary(scene: Scene, x: number, y: number, w: number, h: number, waves = defaultWaveModel()) {
   const container = scene.add.container(x, y)
   const g = scene.add.graphics()
   g.fillStyle(0x222222, 0.75)

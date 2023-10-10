@@ -19,8 +19,7 @@ import { shuffle } from "../../../util/ArrayUtil"
 import { canvasSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../entity/enemy/TDEnemy"
-import { ENEMY_MODELS } from "../entity/model/IEnemyModel"
-import { randomPeepOptions } from "../assets/PeepFactory"
+import { ENEMIES, generateEnemies } from "../entity/model/IEnemyModel"
 
 export interface IActiveValues {
   health: ActiveValue,
@@ -83,9 +82,7 @@ export default class TDPlayScene extends Scene {
       // Sprite has a setTexture(key, [frame]) function
     }
 
-    makePeep(this, "peep_weak", 32, 32, randomPeepOptions("east"))
-    makePeep(this, "peep_moderate", 32, 32, randomPeepOptions("east"))
-    makePeep(this, "peep_strong", 32, 32, randomPeepOptions("east"))
+    generateEnemies(this)
   }
 
   static createExplosionSprite(scene: Scene, x: number, y: number) {
@@ -183,7 +180,7 @@ export default class TDPlayScene extends Scene {
     // @ts-ignore
     this.physics.add.existing(this.enemyGroup)
     // Enemies are created as the timeline moves, so we can't take the first entry of the group
-    this.enemyGroup.select(new TDEnemy(this, 0, 0, ENEMY_MODELS.WEAK))
+    this.enemyGroup.select(new TDEnemy(this, 0, 0, ENEMIES[0]))
     this.enemyGroup.infoVisible.value = false
     addReactNode(this, w - 350 - 25, 75, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
       this.enemyGroup.infoVisible, true)

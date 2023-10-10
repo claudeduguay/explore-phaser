@@ -1,5 +1,6 @@
 import { lerpInt } from "../../../../util/MathUtil"
-import { ALL_ENEMIES, ENEMY_MODELS } from "../../entity/model/IEnemyModel"
+import { randomChoice } from "../../../../util/Random"
+import { ENEMIES } from "../../entity/model/IEnemyModel"
 
 export interface IWaveGroup {
   key: string                      // Texture key to use for this group
@@ -11,10 +12,12 @@ export interface IWaveGroup {
 export type IWaveModel = IWaveGroup[]
 export default IWaveModel
 
-export const DEFAULT_WAVES: IWaveModel = [
-  { key: ENEMY_MODELS.WEAK.meta.key, count: 3, offset: 0, spacing: 250 },
-  { key: ENEMY_MODELS.MODERATE.meta.key, count: 3, offset: 1500, spacing: 250 },
-  { key: ENEMY_MODELS.STRONG.meta.key, count: 3, offset: 3000, spacing: 250 }
+export const defaultWaveModel = (): IWaveModel => [
+  { key: ENEMIES[0].meta.key, count: 3, offset: 0, spacing: 250 },
+  { key: ENEMIES[1].meta.key, count: 3, offset: 1500, spacing: 250 },
+  { key: ENEMIES[2].meta.key, count: 3, offset: 3000, spacing: 250 },
+  { key: ENEMIES[3].meta.key, count: 3, offset: 4500, spacing: 250 },
+  { key: ENEMIES[4].meta.key, count: 3, offset: 6000, spacing: 250 }
 ]
 
 // The difficulty of a wave is the total of levels for all enemies
@@ -22,7 +25,7 @@ export const DEFAULT_WAVES: IWaveModel = [
 export function evaluateWaveDifficulty(waves: IWaveModel): number {
   let accumulator = 0
   waves.forEach(group => {
-    const model = ALL_ENEMIES.find(m => m.meta.key === group.key)
+    const model = ENEMIES.find(m => m.meta.key === group.key)
     accumulator += (model?.stats.level || 0) * group.count
   })
   return accumulator
@@ -31,12 +34,12 @@ export function evaluateWaveDifficulty(waves: IWaveModel): number {
 // Note: Enemy count for a given wave should increment over time
 // Note: Enemy spacing withing a given wave can vary
 export function generateWaves(count: number = 5) {
-  const keys = ALL_ENEMIES.map(m => m.meta.key)
+  const keys = ENEMIES.map(m => m.meta.key)
   const waveSpacing = lerpInt(1200, 1800, Math.random())
   const waves: IWaveModel = []
   for (let i = 0; i < count; i++) {
     const unitCount = lerpInt(2, 4, Math.random())
-    const key = keys[Math.floor(Math.random() * (keys.length - 1))]
+    const key = randomChoice(keys)
     waves.push({ key, count: unitCount, offset: waveSpacing * i, spacing: 250 })
   }
   return waves

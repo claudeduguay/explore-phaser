@@ -49,7 +49,7 @@ export function randomBodyColor() {
   return Display.Color.HSLToColor(Math.random(), 1, 0.33).rgba
 }
 
-export function randomPeepOptions(type: IPeepType): Partial<IPeepOptions> {
+export function randomPeepOptions(): Partial<IPeepOptions> {
   return {
     // type,
     headWidth: randomRange(HEAD_WIDTH_RANGE),

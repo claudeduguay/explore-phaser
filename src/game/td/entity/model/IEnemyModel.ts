@@ -1,3 +1,6 @@
+import { Scene } from "phaser"
+import { randomPeepOptions } from "../../assets/PeepFactory"
+import { makePeep } from "../../assets/TextureFactory"
 
 export interface IEnemyMeta {
   key: string
@@ -25,10 +28,13 @@ export interface IEnemyModel {
 
 export default IEnemyModel
 
-export function generateEnemies(count: number = 5): IEnemyModel[] {
-  const enemies: IEnemyModel[] = []
+export const ENEMIES: IEnemyModel[] = []
+
+export function generateEnemies(scene: Scene, count: number = 5) {
   for (let i = 1; i <= count; i++) {
-    enemies.push({
+    // Register assets
+    makePeep(scene, `peep_${i}`, 32, 32, randomPeepOptions())
+    ENEMIES.push({
       name: `Level ${i} Enemy`,
       meta: {
         key: `peep_${i}`,
@@ -45,58 +51,57 @@ export function generateEnemies(count: number = 5): IEnemyModel[] {
       }
     })
   }
-  return enemies
 }
 
-export const ENEMY_MODELS: Record<string, IEnemyModel> = {
-  WEAK: {
-    name: "Weak Enemy",
-    meta: {
-      key: "peep_weak",
-    },
-    stats: {
-      level: 1,
-      health: 50,
-      shield: 100,
-      speed: 100,
-      value: 10
-    },
-    vulnerability: {
-      default: 1
-    }
-  },
-  MODERATE: {
-    name: "Moderate Enemy",
-    meta: {
-      key: "peep_moderate"
-    },
-    stats: {
-      level: 2,
-      health: 100,
-      shield: 100,
-      speed: 100,
-      value: 15
-    },
-    vulnerability: {
-      default: 1
-    }
-  },
-  STRONG: {
-    name: "Strong Enemy",
-    meta: {
-      key: "peep_strong"
-    },
-    stats: {
-      level: 3,
-      health: 200,
-      shield: 100,
-      speed: 100,
-      value: 20
-    },
-    vulnerability: {
-      default: 1
-    }
-  }
-}
+// export const ENEMY_MODELS: Record<string, IEnemyModel> = {
+//   WEAK: {
+//     name: "Weak Enemy",
+//     meta: {
+//       key: "peep_weak",
+//     },
+//     stats: {
+//       level: 1,
+//       health: 50,
+//       shield: 100,
+//       speed: 100,
+//       value: 10
+//     },
+//     vulnerability: {
+//       default: 1
+//     }
+//   },
+//   MODERATE: {
+//     name: "Moderate Enemy",
+//     meta: {
+//       key: "peep_moderate"
+//     },
+//     stats: {
+//       level: 2,
+//       health: 100,
+//       shield: 100,
+//       speed: 100,
+//       value: 15
+//     },
+//     vulnerability: {
+//       default: 1
+//     }
+//   },
+//   STRONG: {
+//     name: "Strong Enemy",
+//     meta: {
+//       key: "peep_strong"
+//     },
+//     stats: {
+//       level: 3,
+//       health: 200,
+//       shield: 100,
+//       speed: 100,
+//       value: 20
+//     },
+//     vulnerability: {
+//       default: 1
+//     }
+//   }
+// }
 
-export const ALL_ENEMIES: IEnemyModel[] = Object.values(ENEMY_MODELS)
+// export const ALL_ENEMIES: IEnemyModel[] = Object.values(ENEMY_MODELS)

@@ -3,7 +3,7 @@ import { ALL_TOWERS } from "../model/ITowerModel";
 import TDTower from "./TDTower";
 import { addLabel } from "../../../../util/TextUtil";
 import TDEnemy from "../enemy/TDEnemy";
-import { ENEMY_MODELS } from "../model/IEnemyModel";
+import { ENEMIES } from "../model/IEnemyModel";
 
 // Note: May need to make this a scene to manage the fact that 
 // behaviors add elements relative to the tower position in the scene
@@ -31,7 +31,7 @@ export default class TowerPreview extends Scene {
       t.preview = true
       this.add.existing(t)
       addLabel(this, x, y + 40, model.name.split(" ")[0], "center")
-      const e = new TDEnemy(this, x, y - 100, ENEMY_MODELS.WEAK)
+      const e = new TDEnemy(this, x, y - 100, ENEMIES[0])
       t.targeting.current = [e]
     })
   }
