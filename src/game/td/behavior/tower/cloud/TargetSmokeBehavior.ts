@@ -1,10 +1,11 @@
 import { smokeEmitter } from "../../../emitter/ParticleConfig"
+import TDEnemy from "../../../entity/enemy/TDEnemy"
 import TDTower from "../../../entity/tower/TDTower"
 import TimedDamageEffect from "../../enemy/TimedDamageEffect"
 import BaseTargeCloudBehavior from "./BaseTargetCloudBehavior"
 
 export default class TargeSmokeBehavior extends BaseTargeCloudBehavior {
-  constructor() {
-    super("smoke", smokeEmitter, (tower: TDTower) => new TimedDamageEffect(3000, "Blinded", tower))
+  constructor(tower: TDTower) {
+    super(tower, "smoke", smokeEmitter, (enemy: TDEnemy) => new TimedDamageEffect(enemy, 3000, "Blinded", tower))
   }
 }

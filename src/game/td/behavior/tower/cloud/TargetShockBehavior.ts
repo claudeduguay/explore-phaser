@@ -1,10 +1,11 @@
 import { shockEmitter } from "../../../emitter/ParticleConfig"
+import TDEnemy from "../../../entity/enemy/TDEnemy"
 import TDTower from "../../../entity/tower/TDTower"
 import TimedDamageEffect from "../../enemy/TimedDamageEffect"
 import BaseTargeCloudBehavior from "./BaseTargetCloudBehavior"
 
 export default class TargeShockBehavior extends BaseTargeCloudBehavior {
-  constructor() {
-    super("spark", shockEmitter, (tower: TDTower) => new TimedDamageEffect(3000, "Electrified", tower))
+  constructor(tower: TDTower) {
+    super(tower, "spark", shockEmitter, (enemy: TDEnemy) => new TimedDamageEffect(enemy, 3000, "Electrified", tower))
   }
 }

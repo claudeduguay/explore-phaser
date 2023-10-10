@@ -5,14 +5,14 @@ import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 
-export type IDamageEffectBuilder = (tower: TDTower) => IBehavior<TDEnemy>
+export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior<TDEnemy>
 
 export default class BaseTargeCloudBehavior implements IBehavior<TDTower> {
 
   cloud?: GameObjects.Particles.ParticleEmitter
   effectInstance?: IBehavior<TDEnemy>
 
-  constructor(public key: string, public emitter: IEmitterConfigBuilder, public effect?: IDamageEffectBuilder) {
+  constructor(public tower: TDTower, public key: string, public emitter: IEmitterConfigBuilder, public effect?: IDamageEffectBuilder) {
   }
 
   update(tower: TDTower, time: number, delta: number) {
@@ -32,7 +32,7 @@ export default class BaseTargeCloudBehavior implements IBehavior<TDTower> {
         for (let target of tower.targets) {
           if (!this.effectInstance) {
             // Cache instance so the same one is used on multiple updates
-            this.effectInstance = this.effect(tower)
+            this.effectInstance = this.effect(target)
           }
           if (!target.effects.includes(this.effectInstance)) {
             target.effects.push(this.effectInstance)

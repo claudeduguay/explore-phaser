@@ -3,10 +3,10 @@ import BaseTargetBehavior from "./BaseTargetBehavior"
 import TDTower from "../../entity/tower/TDTower"
 import Point from "../../../../util/Point"
 
-export default class TargetBulletBehavior extends BaseTargetBehavior<GameObjects.Sprite> {
+export default class TargetBulletBehavior extends BaseTargetBehavior<TDTower, GameObjects.Sprite> {
 
-  constructor() {
-    super(true)
+  constructor(tower: TDTower) {
+    super(tower, true)
   }
 
   addEmitter(i: number, { x, y }: Point, tower: TDTower, time: number): void {

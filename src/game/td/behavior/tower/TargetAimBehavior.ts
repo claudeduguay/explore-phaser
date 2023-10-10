@@ -6,6 +6,9 @@ export default class TargetAimBehavior implements IBehavior<TDTower> {
 
   g!: GameObjects.Graphics
 
+  constructor(public tower: TDTower) {
+  }
+
   update(obj: TDTower, time: number, delta: number) {
     if (this.g) {
       this.g.destroy()

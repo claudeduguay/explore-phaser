@@ -7,7 +7,7 @@ export interface IHasAngle {
 
 export default class RotateBehavior implements IBehavior<TDTower> {
 
-  constructor(public step: number = 1) {
+  constructor(public tower: TDTower, public step: number = 1) {
 
   }
 

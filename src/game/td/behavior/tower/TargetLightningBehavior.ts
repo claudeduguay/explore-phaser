@@ -1,4 +1,4 @@
-import { Scene, GameObjects, Curves, Math as PMath } from "phaser"
+import { GameObjects, Curves, Math as PMath } from "phaser"
 import Point from "../../../../util/Point"
 import { rotation } from "../../../../util/MathUtil"
 import BaseTargetBehavior from "./BaseTargetBehavior"
@@ -8,10 +8,10 @@ function perpendicular({ x, y }: Point, angle: number, r: number, pos: boolean =
   return rotation(x, y, r, r, angle + (pos ? 0 : -Math.PI))
 }
 
-export default class TargetLightningBehavior extends BaseTargetBehavior<GameObjects.Graphics> {
+export default class TargetLightningBehavior extends BaseTargetBehavior<TDTower, GameObjects.Graphics> {
 
-  constructor() {
-    super(true)
+  constructor(tower: TDTower) {
+    super(tower, true)
   }
 
   addEmitter(i: number, { x, y }: Point, obj: TDTower, time: number): void {
@@ -42,8 +42,8 @@ export default class TargetLightningBehavior extends BaseTargetBehavior<GameObje
   }
 }
 
-export function testLightiningPath(scene: Scene, source = new Point(50, 760), target = new Point(250, 760)) {
-  const g = scene.add.graphics()
-  const b = new TargetLightningBehavior()
-  b.draw(g, source, target)
-}
+// export function testLightiningPath(scene: Scene, source = new Point(50, 760), target = new Point(250, 760)) {
+//   const g = scene.add.graphics()
+//   const b = new TargetLightningBehavior()
+//   b.draw(g, source, target)
+// }

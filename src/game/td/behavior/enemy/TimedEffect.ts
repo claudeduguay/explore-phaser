@@ -1,22 +1,21 @@
 import TDEnemy from "../../entity/enemy/TDEnemy"
-import BehaviorList from "../core/BehaviorList"
 import IBehavior from "../core/IBehavior"
 
 export default abstract class TimedEffect implements IBehavior<TDEnemy> {
 
   mark?: number
 
-  constructor(public readonly timeout: number) {
+  constructor(public enemy: TDEnemy, public readonly timeout: number) {
   }
 
-  update(enemy: TDEnemy, time: number, delta: number, list: BehaviorList<TDEnemy>): void {
+  update(enemy: TDEnemy, time: number, delta: number): void {
     if (!this.mark) {
       this.mark = time + this.timeout
     }
     if (time >= this.mark) {
       console.log(`Effect timed out after: ${this.timeout}ms`)
       this.endEffect(enemy, time, delta)
-      list.remove(this)
+      enemy.effects.remove(this)
       this.mark = undefined
     } else {
       this.updateEffect(enemy, time, delta)

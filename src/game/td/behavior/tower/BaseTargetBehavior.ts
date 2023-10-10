@@ -33,11 +33,11 @@ export function applyDamage(tower: TDTower, delta: number, singleTarget: boolean
 }
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
-export default abstract class BaseTargetBehavior<T extends IEmitter> implements IBehavior<TDTower> {
+export default abstract class BaseTargetBehavior<T, E extends IEmitter> implements IBehavior<TDTower> {
 
-  emitters: T[] = []
+  emitters: E[] = []
 
-  constructor(public destroyEachFrame: boolean = true, public singleTarget: boolean = true) {
+  constructor(public tower: T, public destroyEachFrame: boolean = true, public singleTarget: boolean = true) {
   }
 
   update(tower: TDTower, time: number, delta: number) {

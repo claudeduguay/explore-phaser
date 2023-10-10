@@ -7,6 +7,9 @@ export default class TargetSlowBehavior implements IBehavior<TDTower> {
 
   g?: GameObjects.Graphics
 
+  constructor(public tower: TDTower) {
+  }
+
   update(tower: TDTower, time: number, delta: number) {
     if (this.g) {
       this.g.destroy()
@@ -25,7 +28,7 @@ export default class TargetSlowBehavior implements IBehavior<TDTower> {
       this.g.strokeCircle(tower.x, tower.y, r2)
 
       for (let target of tower.targets) {
-        const SLOW_EFFECT = new TimedSlowEffect(2000)
+        const SLOW_EFFECT = new TimedSlowEffect(target, 2000)
         if (!target.effects.includes(SLOW_EFFECT)) {
           target.effects.push(SLOW_EFFECT)
           if (target.twin) {

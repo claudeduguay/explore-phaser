@@ -3,12 +3,12 @@ import BaseTargetBehavior from "./BaseTargetBehavior"
 import Point from "../../../../util/Point"
 import TDTower from "../../entity/tower/TDTower"
 
-export default class TargetMissileBehavior extends BaseTargetBehavior<GameObjects.Graphics> {
+export default class TargetMissileBehavior extends BaseTargetBehavior<TDTower, GameObjects.Graphics> {
 
   fraction?: number
 
-  constructor() {
-    super(true)
+  constructor(tower: TDTower) {
+    super(tower, true)
   }
 
   addEmitter(i: number, { x, y }: Point, tower: TDTower, time: number): void {

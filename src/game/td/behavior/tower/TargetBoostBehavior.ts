@@ -7,6 +7,9 @@ export default class TargetBoostBehavior implements IBehavior<TDTower> {
 
   g?: GameObjects.Graphics
 
+  constructor(public tower: TDTower) {
+  }
+
   update(tower: TDTower, time: number, delta: number) {
     if (this.g) {
       this.g.destroy()

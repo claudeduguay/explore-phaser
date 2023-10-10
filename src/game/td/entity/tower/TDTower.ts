@@ -50,7 +50,7 @@ export default class TDTower extends BehaviorContainer<TDTower> implements ISele
 
     this.turret = new TDTurret(scene, 0, 0, model)
     if (model.meta.rotation !== "target") {
-      this.behavior.push(new RotateBehavior(model.meta.rotation))
+      this.behavior.push(new RotateBehavior(this, model.meta.rotation))
     }
     this.add(this.turret)
 
@@ -61,61 +61,61 @@ export default class TDTower extends BehaviorContainer<TDTower> implements ISele
     this.setSize(range * 2, range * 2) // Sets bounding box
 
     if (model.meta.rotation === "target") {
-      this.behavior.push(new TargetAimBehavior())
+      this.behavior.push(new TargetAimBehavior(this))
     }
     switch (model.meta.key) {
       case "plasma":
-        this.behavior.push(new TargetPlasmaBehavior())
+        this.behavior.push(new TargetPlasmaBehavior(this))
         break
       case "lightning":
-        this.behavior.push(new TargetLightningBehavior())
+        this.behavior.push(new TargetLightningBehavior(this))
         break
       case "flame":
-        this.behavior.push(new TargetFlameBehavior())
+        this.behavior.push(new TargetFlameBehavior(this))
         break
       case "freeze":
-        this.behavior.push(new TargetFreezeBehavior())
+        this.behavior.push(new TargetFreezeBehavior(this))
         break
       case "impact":
-        this.behavior.push(new TargetImpactBehavior())
+        this.behavior.push(new TargetImpactBehavior(this))
         break
       case "poison":
-        this.behavior.push(new TargePoisonBehavior())
+        this.behavior.push(new TargePoisonBehavior(this))
         break
       case "fire":
-        this.behavior.push(new TargetFireBehavior())
+        this.behavior.push(new TargetFireBehavior(this))
         break
       case "smoke":
-        this.behavior.push(new TargetSmokeBehavior())
+        this.behavior.push(new TargetSmokeBehavior(this))
         break
       case "shock":
-        this.behavior.push(new TargetShockBehavior())
+        this.behavior.push(new TargetShockBehavior(this))
         break
       case "ice":
-        this.behavior.push(new TargetIceBehavior())
+        this.behavior.push(new TargetIceBehavior(this))
         break
       case "rain":
-        this.behavior.push(new TargetRainBehavior())
+        this.behavior.push(new TargetRainBehavior(this))
         break
       case "snow":
-        this.behavior.push(new TargetSnowBehavior())
+        this.behavior.push(new TargetSnowBehavior(this))
         break
       case "bullet":
-        this.behavior.push(new TargetBulletBehavior())
+        this.behavior.push(new TargetBulletBehavior(this))
         break
       case "missile":
-        this.behavior.push(new TargetMissileBehavior())
+        this.behavior.push(new TargetMissileBehavior(this))
         break
       case "boost":
-        this.behavior.push(new TargetBoostBehavior())
+        this.behavior.push(new TargetBoostBehavior(this))
         break
       case "slow":
-        this.behavior.push(new TargetSlowBehavior())
+        this.behavior.push(new TargetSlowBehavior(this))
         break
       default:
-        this.behavior.push(new TargetLaserBehavior())
+        this.behavior.push(new TargetLaserBehavior(this))
     }
-    this.behavior.push(new ClearTargetsBehavior())
+    this.behavior.push(new ClearTargetsBehavior(this))
   }
 
   addSelectHandler(select: (selection?: TDTower) => void) {

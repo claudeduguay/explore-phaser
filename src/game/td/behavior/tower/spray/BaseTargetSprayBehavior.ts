@@ -4,10 +4,10 @@ import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
 import Point from "../../../../../util/Point"
 
-export default class BaseTargetSprayBehavior extends BaseTargetBehavior<GameObjects.Particles.ParticleEmitter> {
+export default class BaseTargetSprayBehavior extends BaseTargetBehavior<TDTower, GameObjects.Particles.ParticleEmitter> {
 
-  constructor(public key: string, public emitter: IEmitterConfigBuilder) {
-    super(false)
+  constructor(tower: TDTower, public key: string, public emitter: IEmitterConfigBuilder) {
+    super(tower, false)
   }
 
   addEmitter(i: number, { x, y }: Point, tower: TDTower, time: number): void {
