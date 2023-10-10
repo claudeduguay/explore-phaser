@@ -9,6 +9,14 @@ export default class BehaviorList extends Array<IBehavior> implements IBehavior 
     list.forEach(behavior => behavior.update(time, delta))
   }
 
+  push(...behavior: IBehavior[]): number {
+    throw new Error("Should use add instead")
+  }
+
+  add(...behaviors: IBehavior[]): number {
+    return super.push(...behaviors)
+  }
+
   remove(behavior: IBehavior) {
     const index = this.indexOf(behavior)
     if (index > -1) {

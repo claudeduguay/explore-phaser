@@ -30,10 +30,10 @@ export default class TargetSlowBehavior implements IBehavior {
       for (let target of this.tower.targeting.current) {
         const SLOW_EFFECT = new TimedSlowEffect(target, 2000)
         if (!target.effects.includes(SLOW_EFFECT)) {
-          target.effects.push(SLOW_EFFECT)
+          target.effects.add(SLOW_EFFECT)
           if (target.twin) {
             // Handle preview twin speed
-            target.twin.effects.push(SLOW_EFFECT)
+            target.twin.effects.add(SLOW_EFFECT)
           }
         }
       }

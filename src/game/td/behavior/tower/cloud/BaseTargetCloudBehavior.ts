@@ -35,7 +35,7 @@ export default class BaseTargeCloudBehavior implements IBehavior {
             this.effectInstance = this.effect(target)
           }
           if (!target.effects.includes(this.effectInstance)) {
-            target.effects.push(this.effectInstance)
+            target.effects.add(this.effectInstance)
           }
         }
       } else {
