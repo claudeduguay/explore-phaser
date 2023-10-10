@@ -21,11 +21,13 @@ export enum TreeLineType {
 }
 
 export interface ITree {
-  root: INode
-  edges: Map<INode, INode[]>
+  root: IKey
+  edges: Map<IKey, IKey[]>
 }
 
-export interface INode {
+export type IKey = string
+
+export interface IDefaultNode {
   visible?: boolean
   position: Point
   size: Point
@@ -37,22 +39,16 @@ export interface IDrawSurface {
 }
 
 export interface ILayoutTarget {
-  setNodePosition(node: INode, x: number, y: number, w: number, h: number): void
-}
-
-export class DefaultLayoutTarget {
-  setNodePosition(node: INode, x: number, y: number, w: number, h: number): void {
-    node.position.x = x
-    node.position.y = y
-    node.size.x = w
-    node.size.y = h
-  }
+  isVisible(node: IKey): boolean | undefined
+  getSize(node: IKey): Point
+  getPosition(node: IKey): Point
+  setBounds(node: IKey, x: number, y: number, w: number, h: number): void
 }
 
 export default class TreeLayout {
 
   constructor(public tree: ITree, public readonly drawSurface: IDrawSurface,
-    public layoutTarget: ILayoutTarget = new DefaultLayoutTarget()) {
+    public layoutTarget: ILayoutTarget) {
   }
 
   // Adapted from my own work in Widget Factory Article: JComponentTree
@@ -127,12 +123,33 @@ export default class TreeLayout {
   // CHILDREN UTILITY
   // -------------------------------------------------------------------
 
-  children(node: INode) {
+  children(node: IKey) {
     return this.tree.edges.get(node) || []
   }
 
-  isLeaf(node: INode) {
+  isLeaf(node: IKey) {
     return this.children(node).length === 0
+  }
+
+
+
+  // -------------------------------------------------------------------
+  // LAYOUT TARGET UTILITIES
+  // -------------------------------------------------------------------
+
+  isVisible(node: IKey): boolean | undefined {
+    return this.layoutTarget.isVisible(node)
+  }
+
+  getSize(node: IKey): Point {
+    return this.layoutTarget.getSize(node)
+  }
+  getPosition(node: IKey): Point {
+    return this.layoutTarget.getPosition(node)
+  }
+
+  setNodePosition(node: IKey, x: number, y: number, w: number, h: number): void {
+    this.layoutTarget.setBounds(node, x, y, w, h)
   }
 
 
@@ -160,12 +177,12 @@ export default class TreeLayout {
   // COMPUTE NODE(AND CHILDREN) SIZE
   // -------------------------------------------------------------------
 
-  computeSize(node: INode): Point {
-    if (!node.visible) {
+  computeSize(node: IKey): Point {
+    if (!this.isVisible(node)) {
       return new Point()
     }
 
-    const node_size = node.size
+    const node_size = this.getSize(node)
     if (this.isLeaf(node)) {
       return node_size
     }
@@ -173,7 +190,7 @@ export default class TreeLayout {
     if (this.isHorizontal()) {
       const accumulator = new Point()
       for (let child of this.children(node)) {
-        if (child.visible) {
+        if (this.isVisible(child)) {
           const child_size = this.computeSize(child)
           accumulator.y += child_size.y + this.gap.y
           accumulator.x = Math.max(accumulator.x, child_size.x)
@@ -188,7 +205,7 @@ export default class TreeLayout {
     if (this.isVertical()) {
       const accumulator = new Point()
       for (let child of this.children(node)) {
-        if (child.visible) {
+        if (this.isVisible(child)) {
           const child_size = this.computeSize(child)
           accumulator.x += child_size.x + this.gap.x
           accumulator.y = Math.max(accumulator.y, child_size.y)
@@ -208,7 +225,7 @@ export default class TreeLayout {
   // EXECUTE LAYOUT
   // -------------------------------------------------------------------
 
-  layoutTree(node: INode) {
+  layoutTree(node: IKey) {
     switch (this.direction) {
       case TreeDirection.WEST:
         this.layout(node, this.size.x, 0)
@@ -225,30 +242,31 @@ export default class TreeLayout {
     }
   }
 
-  layout(node: INode, x: number, y: number) {
-    if (!node.visible) {
+  layout(node: IKey, x: number, y: number) {
+    if (!this.isVisible(node)) {
       return
     }
     const computed_size = this.computeSize(node)
+    const size = this.getSize(node)
     if (this.isHorizontal()) {
       let aligned_y = y
       if (this.isCenter()) {
-        aligned_y += (computed_size.y - node.size.y) / 2
+        aligned_y += (computed_size.y - size.y) / 2
       }
       if (this.isEnd()) {
-        aligned_y += computed_size.y - node.size.y
+        aligned_y += computed_size.y - size.y
       }
       if (this.isEast()) {
-        this.layoutTarget.setNodePosition(node, x, aligned_y, node.size.x, node.size.y)
-        x += node.size.x + this.gap.x
+        this.layoutTarget.setBounds(node, x, aligned_y, size.x, size.y)
+        x += size.x + this.gap.x
       }
       else {
-        this.layoutTarget.setNodePosition(node, x - node.size.x, aligned_y, node.size.x, node.size.y)
-        x -= node.size.x + this.gap.x
+        this.layoutTarget.setBounds(node, x - size.x, aligned_y, size.x, size.y)
+        x -= size.x + this.gap.x
       }
 
       for (let child of this.children(node)) {
-        if (child.visible) {
+        if (this.isVisible(child)) {
           this.layout(child, x, y)
           y += this.computeSize(child).y + this.gap.y
         }
@@ -256,21 +274,21 @@ export default class TreeLayout {
       if (this.isVertical()) {
         var aligned_x = x
         if (this.isCenter()) {
-          aligned_x += (computed_size.x - node.size.x) / 2
+          aligned_x += (computed_size.x - size.x) / 2
         }
         if (this.isEnd()) {
-          aligned_x += computed_size.x - node.size.x
+          aligned_x += computed_size.x - size.x
         }
         if (this.isSouth()) {
-          this.layoutTarget.setNodePosition(node, aligned_x, y, node.size.x, node.size.y)
-          y += node.size.y + this.gap.y
+          this.layoutTarget.setBounds(node, aligned_x, y, size.x, size.y)
+          y += size.y + this.gap.y
         }
         else {
-          this.layoutTarget.setNodePosition(node, aligned_x, y - node.size.y, node.size.x, node.size.y)
-          y -= node.size.y + this.gap.y
+          this.layoutTarget.setBounds(node, aligned_x, y - size.y, size.x, size.y)
+          y -= size.y + this.gap.y
         }
         for (let child of this.children(node)) {
-          if (child.visible) {
+          if (this.isVisible(child)) {
             this.layout(child, x, y)
             x += this.computeSize(child).x + this.gap.x
           }
@@ -325,32 +343,36 @@ export default class TreeLayout {
     }
   }
 
-  drawLines(node: INode) {
-    if (!node.visible) {
+  drawLines(node: IKey) {
+    if (!this.isVisible(node)) {
       return
     }
 
+    const size = this.getSize(node)
+    const position = this.getPosition(node)
     if (this.isHorizontal()) {
       const source = new Point()
 
       if (this.isEast()) {
-        source.x = node.position.x + node.size.x
+        source.x = position.x + size.x
       }
       else {
-        source.x = node.position.x
-        source.y = node.position.y + node.size.y / 2
+        source.x = position.x
+        source.y = position.y + size.y / 2
       }
 
       for (let child of this.children(node)) {
-        if (child.visible) {
+        if (this.isVisible(child)) {
           const target = new Point()
+          const childSize = this.getSize(child)
+          const childPosition = this.getPosition(child)
 
-          target.y = child.position.y + child.size.y / 2
+          target.y = position.y + childSize.y / 2
           if (this.isEast()) {
-            target.x = child.position.x
+            target.x = childPosition.x
           }
           else {
-            target.x = child.position.x + child.size.x
+            target.x = childPosition.x + childSize.x
             var mid = new Point(lerp(source.x, target.x, 0.5), source.y)
 
             if (this.isCurve()) {
@@ -369,24 +391,26 @@ export default class TreeLayout {
 
       if (this.isVertical()) {
         const source = new Point()
-        source.x = node.position.x + node.size.x / 2
+        source.x = position.x + size.x / 2
         if (this.isSouth()) {
-          source.y = node.position.y + node.size.y
+          source.y = position.y + size.y
         }
         else {
-          source.y = node.position.y
+          source.y = position.y
           //		print("Vertical source: %s, mid: %s, target: %s" % [str(source), str(mid), str(target)])
         }
 
         for (let child of this.children(node)) {
-          if (child.visible) {
+          if (this.isVisible(child)) {
+            const childSize = this.getSize(child)
+            const childPosition = this.getPosition(child)
             const target = new Point()
-            target.x = child.position.x + child.size.x / 2
+            target.x = childPosition.x + childSize.x / 2
             if (this.isSouth()) {
-              target.y = child.position.y
+              target.y = childPosition.y
             }
             else {
-              target.y = child.position.y + child.size.y
+              target.y = childPosition.y + childSize.y
             }
 
             if (this.isCurve()) {
