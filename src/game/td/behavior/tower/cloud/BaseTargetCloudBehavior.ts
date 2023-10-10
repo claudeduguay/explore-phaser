@@ -3,7 +3,7 @@ import IBehavior from "../../core/IBehavior"
 import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
-import { applyDamage } from "../ComputeDamage"
+import InRangeDamageEffect from "../../enemy/InRangeDamageEffect"
 
 export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
@@ -27,20 +27,16 @@ export default class BaseTargeCloudBehavior implements IBehavior {
     }
     if (this.tower.targeting.current.length) {
       this.cloud?.start()
-      if (this.effect) {
-        // If the effect function is defined, use that instead of applyDamage computation directly
-        for (let target of this.tower.targeting.current) {
-          if (!this.effectInstance) {
-            // Cache instance so the same one is used on multiple updates
-            this.effectInstance = this.effect(target)
-          }
-          if (!target.effects.includes(this.effectInstance)) {
-            target.effects.add(this.effectInstance)
-          }
+      const defaultBuilder: IDamageEffectBuilder = (enemy: TDEnemy) => new InRangeDamageEffect(enemy, this.tower, "")
+      const effectBuilder: IDamageEffectBuilder = this.effect || defaultBuilder
+      for (let target of this.tower.targeting.current) {
+        if (!this.effectInstance) {
+          // Cache instance so the same one is used on multiple updates
+          this.effectInstance = effectBuilder(target)
         }
-      } else {
-        // Todo: Need to replace with InRangeDamageEffect
-        applyDamage(this.tower, delta)
+        if (!target.effects.includes(this.effectInstance)) {
+          target.effects.add(this.effectInstance)
+        }
       }
     } else { // No target
       this.effectInstance = undefined
