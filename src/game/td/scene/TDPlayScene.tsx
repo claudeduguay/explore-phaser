@@ -20,6 +20,7 @@ import { canvasSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../entity/enemy/TDEnemy"
 import { ENEMIES, generateEnemies } from "../entity/model/IEnemyModel"
+import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
   health: ActiveValue,
@@ -162,7 +163,7 @@ export default class TDPlayScene extends Scene {
   }
 
   create() {
-    const { w } = canvasSize(this)
+    const { w, h } = canvasSize(this)
 
     // this.lights.addLight(0, 0, w, 0xffffff, 1)
 
@@ -252,6 +253,7 @@ export default class TDPlayScene extends Scene {
     addReactNode(this, 0, 0, <GameHeader scene={this} active={this.active}
       navigator={this.parent} onToggleTowerPreview={onToggleTowerPreview} />)
     addReactNode(this, 0, this.game.canvas.height - 62, <GameFooter scene={this} onAddTower={onAddTower} />)
+    addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
 
     this.towerPreview = new TowerPreview(this, 50, 58)
     this.scene.add("tower_preview", this.towerPreview, true)

@@ -34,8 +34,8 @@ export interface IDefaultNode {
 }
 
 export interface IDrawSurface {
-  drawLine(source: Point, target: Point): void
-  drawPoly(points: Point[]): void
+  drawLine(source: Point, target: Point, color: string, width: number): void
+  drawPoly(points: Point[], color: string, width: number): void
 }
 
 export interface ISize {
@@ -69,8 +69,8 @@ export default class TreeLayout {
   direction: TreeDirection = TreeDirection.EAST
   alignment: TreeAlignment = TreeAlignment.CENTER
   lineType: TreeLineType = TreeLineType.SQUARE
-  lineColor: number = 0xFF9900
-  lineWidth: number = 1.0
+  lineColor: string = "#FFFFFF"
+  lineWidth: number = 2.0
   gap: Point = new Point(50, 15)
 
   // Note: We need to be affecting the container size, not necessarily this value
@@ -144,6 +144,19 @@ export default class TreeLayout {
 
 
   // -------------------------------------------------------------------
+  // DRAW SURFACE UTILITIES
+  // -------------------------------------------------------------------
+
+  drawLine(source: Point, target: Point) {
+    this.drawSurface.drawLine(source, target, this.lineColor, this.lineWidth)
+  }
+
+  drawPoly(points: Point[]) {
+    this.drawSurface.drawPoly(points, this.lineColor, this.lineWidth)
+  }
+
+
+  // -------------------------------------------------------------------
   // LAYOUT TARGET UTILITIES
   // -------------------------------------------------------------------
 
@@ -155,8 +168,8 @@ export default class TreeLayout {
     return this.layoutTarget.getBounds(node)
   }
 
-  setBounds(node: INodeKey, x: number, y: number, w: number, h: number): void {
-    this.layoutTarget.setBounds(node, { x, y, w, h })
+  setBounds(node: INodeKey, bounds: IBounds): void {
+    this.layoutTarget.setBounds(node, bounds)
   }
 
 
@@ -174,8 +187,9 @@ export default class TreeLayout {
     if (this.tree.root) {
       // const custom_minimum_size = this.compute_size(this.root)
       this.size = this.computeSize(this.tree.root)
+      console.log("Computed size:", this.size)
+      this.drawLines(this.tree.root)
       this.layoutTree(this.tree.root)
-      // this.queue_redraw()
     }
   }
 
@@ -201,11 +215,11 @@ export default class TreeLayout {
           const childSize = this.computeSize(child)
           accumulator.y += childSize.h + this.gap.y
           accumulator.x = Math.max(accumulator.x, childSize.w)
-          return {
-            w: bounds.w + accumulator.x + this.gap.x,
-            h: Math.max(bounds.h, accumulator.y - this.gap.y)
-          }
         }
+      }
+      return {
+        w: bounds.w + accumulator.x + this.gap.x,
+        h: Math.max(bounds.h, accumulator.y - this.gap.y)
       }
     }
 
@@ -216,11 +230,11 @@ export default class TreeLayout {
           const childSize = this.computeSize(child)
           accumulator.x += childSize.w + this.gap.x
           accumulator.y = Math.max(accumulator.y, childSize.h)
-          return {
-            w: Math.max(bounds.w, accumulator.x - this.gap.x),
-            h: bounds.h + accumulator.y + this.gap.y
-          }
         }
+      }
+      return {
+        w: Math.max(bounds.w, accumulator.x - this.gap.x),
+        h: bounds.h + accumulator.y + this.gap.y
       }
     }
 
@@ -264,10 +278,10 @@ export default class TreeLayout {
         yAligned += computedSize.h - bounds.h
       }
       if (this.isEast()) {
-        this.layoutTarget.setBounds(node, { x, y: yAligned, w: bounds.w, h: bounds.h })
+        this.setBounds(node, { x, y: yAligned, w: bounds.w, h: bounds.h })
         x += bounds.w + this.gap.x
       } else {
-        this.layoutTarget.setBounds(node, { x: x - bounds.w, y: yAligned, w: bounds.w, h: bounds.h })
+        this.setBounds(node, { x: x - bounds.w, y: yAligned, w: bounds.w, h: bounds.h })
         x -= bounds.w + this.gap.x
       }
 
@@ -286,10 +300,10 @@ export default class TreeLayout {
           xAligned += computedSize.w - bounds.w
         }
         if (this.isSouth()) {
-          this.layoutTarget.setBounds(node, { x: xAligned, y, w: bounds.w, h: bounds.w })
+          this.setBounds(node, { x: xAligned, y, w: bounds.w, h: bounds.w })
           y += bounds.h + this.gap.y
         } else {
-          this.layoutTarget.setBounds(node, { x: xAligned, y: y - bounds.h, h: bounds.h, w: bounds.w })
+          this.setBounds(node, { x: xAligned, y: y - bounds.h, h: bounds.h, w: bounds.w })
           y -= bounds.h + this.gap.y
         }
         for (let child of this.children(node)) {
@@ -306,11 +320,6 @@ export default class TreeLayout {
   // -------------------------------------------------------------------
   // DRAW CONNECTIONS
   // -------------------------------------------------------------------
-
-  _draw() {
-    //	draw_rect(Rect2(Vector2.ZERO, size), Color.DARK_SLATE_GRAY, false, 2)
-    this.drawLines(this.tree.root)
-  }
 
   drawCurve(source: Point, target: Point, pointCount: number = 20) {
     // const mid = source.lerp(target, 0.5)
@@ -332,17 +341,17 @@ export default class TreeLayout {
     if (this.isHorizontal()) {
       var mid = new Point(lerp(source.x, target.x, 0.5), source.y)
 
-      this.drawSurface.drawLine(source, mid)
-      this.drawSurface.drawLine(new Point(mid.x, target.y), target)
+      this.drawLine(source, mid)
+      this.drawLine(new Point(mid.x, target.y), target)
       if (mid.y !== target.y) {
-        this.drawSurface.drawLine(mid, new Point(mid.x, target.y))
+        this.drawLine(mid, new Point(mid.x, target.y))
       }
       else {
         const mid = new Point(source.x, lerp(source.y, target.y, 0.5))
-        this.drawSurface.drawLine(source, mid)
-        this.drawSurface.drawLine(new Point(target.x, mid.y), target)
+        this.drawLine(source, mid)
+        this.drawLine(new Point(target.x, mid.y), target)
         if (mid.x !== target.x) {
-          this.drawSurface.drawLine(mid, new Point(target.x, mid.y))
+          this.drawLine(mid, new Point(target.x, mid.y))
         }
       }
     }
@@ -356,39 +365,35 @@ export default class TreeLayout {
     const bounds = this.getBounds(node)
     if (this.isHorizontal()) {
       const source = new Point()
-
+      source.y = bounds.y + bounds.h / 2
       if (this.isEast()) {
         source.x = bounds.x + bounds.w
-      }
-      else {
+      } else {
         source.x = bounds.x
-        source.y = bounds.y + bounds.h / 2
       }
 
       for (let child of this.children(node)) {
         if (this.isVisible(child)) {
           const target = new Point()
           const childBounds = this.getBounds(child)
-
-          target.y = bounds.y + childBounds.h / 2
+          target.y = childBounds.y + childBounds.h / 2
           if (this.isEast()) {
             target.x = childBounds.x
-          }
-          else {
+          } else {
             target.x = childBounds.x + childBounds.w
-            var mid = new Point(lerp(source.x, target.x, 0.5), source.y)
-
-            if (this.isCurve()) {
-              this.drawCurve(source, target)
-            }
-            else if (this.isSquare()) {
-              this.drawSquare(source, target)
-            }
-            else {
-              this.drawSurface.drawLine(new Point(source.x, mid.y), target)
-            }
-            this.drawLines(child)
           }
+          //		console.log(`Vertical source: ${source}, mid: ${mid}, target: ${target}`)
+          console.log("Draw horz lines:", source, target)
+          if (this.isCurve()) {
+            this.drawCurve(source, target)
+          } else if (this.isSquare()) {
+            this.drawSquare(source, target)
+          } else {
+            // const mid = new Point(lerp(source.x, target.x, 0.5), source.y)
+            // this.drawLine(new Point(source.x, mid.y), target)
+            this.drawLine(source, target)
+          }
+          this.drawLines(child)
         }
       }
 
@@ -397,10 +402,8 @@ export default class TreeLayout {
         source.x = bounds.x + bounds.w / 2
         if (this.isSouth()) {
           source.y = bounds.y + bounds.h
-        }
-        else {
+        } else {
           source.y = bounds.y
-          //		print("Vertical source: %s, mid: %s, target: %s" % [str(source), str(mid), str(target)])
         }
 
         for (let child of this.children(node)) {
@@ -410,22 +413,22 @@ export default class TreeLayout {
             target.x = childBounds.x + childBounds.w / 2
             if (this.isSouth()) {
               target.y = childBounds.y
-            }
-            else {
+            } else {
               target.y = childBounds.y + childBounds.h
             }
+            console.log("Draw vert lines:", source, target)
 
             if (this.isCurve()) {
               this.drawCurve(source, target)
-            }
-            else if (this.isSquare()) {
+            } else if (this.isSquare()) {
               this.drawSquare(source, target)
-            }
-            else {
-              this.drawSurface.drawLine(source, target)
-              this.drawLines(child)
+            } else {
+              // const mid = new Point(source.x, lerp(source.y, target.y, 0.5))
+              // this.drawLine(new Point(mid.x, source.y), target)
+              this.drawLine(source, target)
             }
           }
+          this.drawLines(child)
         }
       }
     }

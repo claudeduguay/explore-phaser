@@ -13,7 +13,7 @@ export default abstract class TimedEffect implements IBehavior {
       this.mark = time + this.timeout
     }
     if (time >= this.mark) {
-      console.log(`Effect timed out after: ${this.timeout}ms`)
+      // console.log(`Effect timed out after: ${this.timeout}ms`)
       this.endEffect(time, delta)
       this.enemy.effects.remove(this)
       this.mark = undefined

@@ -9,12 +9,17 @@ export class HTMLDrawSurface implements IDrawSurface {
     this.g = e.getContext("2d") as CanvasRenderingContext2D
   }
 
-  drawLine(source: Point, target: Point) {
+  drawLine(source: Point, target: Point, color: string, width: number) {
+    this.g.strokeStyle = color
+    this.g.lineWidth = width
     this.g.moveTo(source.x, source.y)
     this.g.lineTo(target.x, target.y)
+    this.g.stroke()
   }
 
-  drawPoly(points: Point[]) {
+  drawPoly(points: Point[], color: string, width: number) {
+    this.g.strokeStyle = color
+    this.g.lineWidth = width
     for (let i = 0; i < points.length; i++) {
       const point = points[i]
       if (i === 0) {
@@ -23,6 +28,7 @@ export class HTMLDrawSurface implements IDrawSurface {
         this.g.lineTo(point.x, point.y)
       }
     }
+    this.g.stroke()
   }
 
 }
