@@ -56,8 +56,10 @@ export interface ILayoutTarget {
 
 export default class TreeLayout {
 
-  constructor(public tree: ITree, public readonly drawSurface: IDrawSurface,
-    public layoutTarget: ILayoutTarget) {
+  constructor(
+    public readonly tree: ITree,
+    public readonly drawSurface: IDrawSurface,
+    public readonly layoutTarget: ILayoutTarget) {
   }
 
   // Adapted from my own work in Widget Factory Article: JComponentTree
