@@ -10,7 +10,7 @@ export function ExampleButton({ title, styling }: { title: string, styling: Obse
 
 export class ExampleLayoutTarget extends Map<INodeKey, ObservableValue<CSSProperties>> implements ILayoutTarget {
 
-  isVisible(key: INodeKey): boolean | undefined {
+  isVisible(key: INodeKey): boolean {
     return true
   }
 

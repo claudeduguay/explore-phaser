@@ -49,7 +49,7 @@ export interface IBounds extends ISize {
 }
 
 export interface ILayoutTarget {
-  isVisible(node: INodeKey): boolean | undefined
+  isVisible(node: INodeKey): boolean
   getBounds(node: INodeKey): IBounds
   setBounds(node: INodeKey, bounds: IBounds): void
 }
