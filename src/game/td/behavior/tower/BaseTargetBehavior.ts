@@ -1,35 +1,11 @@
 import IBehavior from "../core/IBehavior"
-import TDEnemy from "../../entity/enemy/TDEnemy"
 import TDTower from "../../entity/tower/TDTower"
 import Point from "../../../../util/Point"
-import { randomRange } from "../../../../util/Random"
+import { applyDamage } from "./ComputeDamage"
 
 export interface IEmitter {
   destroy: () => void
   stop?: () => void
-}
-
-export function computeTargetDamage(tower: TDTower, target: TDEnemy, delta: number) {
-  let damage = 0
-  Object.entries(tower.model.damage).forEach(([key, value]) => {
-    const val = Array.isArray(value.dps) ? randomRange(value.dps) : value.dps
-    const dps = (val * delta / 1000 * tower.scene.time.timeScale)
-    const vulnerability = (target.model?.vulnerability[key] || target.model?.vulnerability.default)
-    damage += (dps * vulnerability)
-    // console.log(`${value}, (per update: ${dps}) ${key} damage from ${tower.model.name} (resistance: ${resistance})`)
-  })
-  return damage
-}
-
-export function applyDamage(tower: TDTower, delta: number, singleTarget: boolean = true) {
-  // console.log("Delta:", delta)
-  const targets = singleTarget ? [tower.targeting.current[0]] : tower.targeting.current
-  targets.forEach(target => {
-    if (target instanceof TDEnemy) {  // Ensure acces by type
-      let damage = computeTargetDamage(tower, target, delta)
-      target.health.adjust(-damage)
-    }
-  })
 }
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation

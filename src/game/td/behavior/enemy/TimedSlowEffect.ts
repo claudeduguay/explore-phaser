@@ -1,6 +1,6 @@
 import TimedEffect from "./TimedEffect";
 
-export default class TimeSlowEffect extends TimedEffect {
+export default class TimedSlowEffect extends TimedEffect {
 
   updateEffect(time: number, delta: number): void {
     if (this.enemy.frameCount % 2 > 0) {

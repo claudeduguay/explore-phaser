@@ -1,9 +1,9 @@
 import { GameObjects } from "phaser"
 import IBehavior from "../../core/IBehavior"
-import { applyDamage } from "../BaseTargetBehavior"
 import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
+import { applyDamage } from "../ComputeDamage"
 
 export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
@@ -28,7 +28,7 @@ export default class BaseTargeCloudBehavior implements IBehavior {
     if (this.tower.targeting.current.length) {
       this.cloud?.start()
       if (this.effect) {
-        // If the effect function is defnined, use that instead of applyDamage computation directly
+        // If the effect function is defined, use that instead of applyDamage computation directly
         for (let target of this.tower.targeting.current) {
           if (!this.effectInstance) {
             // Cache instance so the same one is used on multiple updates
@@ -39,6 +39,7 @@ export default class BaseTargeCloudBehavior implements IBehavior {
           }
         }
       } else {
+        // Todo: Need to replace with InRangeDamageEffect
         applyDamage(this.tower, delta)
       }
     } else { // No target

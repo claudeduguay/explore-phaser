@@ -1,12 +1,12 @@
 import TDEnemy from "../../entity/enemy/TDEnemy";
 import TDTower from "../../entity/tower/TDTower";
 import { computeTargetDamage } from "../tower/ComputeDamage";
-import TimedEffect from "./TimedEffect";
+import InRangeEffect from "./InRangeEffect";
 
-export default class TimedDamageEffect extends TimedEffect {
+export default class InRangeDamageEffect extends InRangeEffect {
 
-  constructor(enemy: TDEnemy, timeout: number, public name: string, public readonly tower: TDTower) {
-    super(enemy, timeout)
+  constructor(enemy: TDEnemy, tower: TDTower, public name: string) {
+    super(enemy, tower)
   }
 
   updateEffect(time: number, delta: number): void {
