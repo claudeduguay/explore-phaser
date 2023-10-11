@@ -20,28 +20,33 @@ export default class TreePreview extends Scene {
     g.strokeRoundedRect(this.x, this.y, hBox * 6, vBox * 3 + 20)
     this.add.existing(g)
 
+    const root = "bullet"
     const sampleTree: ITree = {
-      root: "lazer",
+      root,
       edges: new Map<INodeKey, INodeKey[]>()
     }
-    // const [beamHead, ...beamTail] = ALL_TOWERS.filter(t => t.group === "beam")
-    // const [sprayHead, ...sprayTail] = ALL_TOWERS.filter(t => t.group === "spray")
-    // const [cloudHead, ...cloudTail] = ALL_TOWERS.filter(t => t.group === "cloud")
-    // const [fallHead, ...fallTail] = ALL_TOWERS.filter(t => t.group === "fall")
-    // const [throwHead, ...throwTail] = ALL_TOWERS.filter(t => t.group === "fall")
-    // const [areaHead, ...areaTail] = ALL_TOWERS.filter(t => t.group === "fall")
-    sampleTree.edges.set("lazer", ["plasma", "lightning"])
-    sampleTree.edges.set("plasma", ["bullet"])
-    sampleTree.edges.set("bullet", ["missile"])
-    sampleTree.edges.set("missile", ["rain"])
-    sampleTree.edges.set("rain", ["snow"])
-    sampleTree.edges.set("lightning", ["flame", "freeze"])
-    sampleTree.edges.set("flame", ["fire", "ice"])
-    sampleTree.edges.set("fire", ["poison"])
-    sampleTree.edges.set("poison", ["boost"])
-    sampleTree.edges.set("ice", ["impact"])
-    sampleTree.edges.set("impact", ["slow"])
-    sampleTree.edges.set("freeze", ["smoke", "shock"])
+    const beams = ALL_TOWERS.filter(t => t.group === "beam").map(t => t.meta.key).filter(k => k !== root)
+    const thrown = ALL_TOWERS.filter(t => t.group === "throw").map(t => t.meta.key).filter(k => k !== root)
+    const spray = ALL_TOWERS.filter(t => t.group === "spray").map(t => t.meta.key).filter(k => k !== root)
+    const cloud = ALL_TOWERS.filter(t => t.group === "cloud").map(t => t.meta.key).filter(k => k !== root)
+    const fall = ALL_TOWERS.filter(t => t.group === "fall").map(t => t.meta.key).filter(k => k !== root)
+    const area = ALL_TOWERS.filter(t => t.group === "area").map(t => t.meta.key).filter(k => k !== root)
+    console.log("Beams:", beams)
+    function sequenceFor(node: string, children: string[]) {
+      if (children.length > 0) {
+        const [head, ...tail] = children
+        if (!sampleTree.edges.has(node)) {
+          sampleTree.edges.set(node, [])
+        }
+        sampleTree.edges.get(node)?.push(head)
+        sequenceFor(head, tail)
+      }
+    }
+    sequenceFor(root, [...beams, ...thrown])
+    sequenceFor(root, spray)
+    sequenceFor(root, cloud)
+    sequenceFor(root, fall)
+    sequenceFor(root, area)
 
     const nodeKeySet = [...sampleTree.edges.entries()].reduce((prev, [node, children]) => {
       prev.add(node)
