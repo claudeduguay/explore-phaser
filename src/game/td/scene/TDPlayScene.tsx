@@ -20,7 +20,8 @@ import { canvasSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../entity/enemy/TDEnemy"
 import { ENEMIES, generateEnemies } from "../entity/model/IEnemyModel"
-import { ButtonTreeExample } from "../tree/ButtonTree"
+import { onEnemyOverlap } from "../entity/tower/Targeting"
+// import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
   health: ActiveValue,
@@ -213,7 +214,7 @@ export default class TDPlayScene extends Scene {
       this.towerGroup.add(tower)
     }
 
-    this.physics.add.overlap(this.towerGroup, this.enemyGroup, this.onEnemyOverlap, this.onEnemyInRange)
+    this.physics.add.overlap(this.towerGroup, this.enemyGroup, onEnemyOverlap, this.onEnemyInRange)
 
     // const fireRange = 220
     // this.add.particles(10, 765, 'fire', fireEmitter(fireRange))
@@ -253,7 +254,7 @@ export default class TDPlayScene extends Scene {
     addReactNode(this, 0, 0, <GameHeader scene={this} active={this.active}
       navigator={this.parent} onToggleTowerPreview={onToggleTowerPreview} />)
     addReactNode(this, 0, this.game.canvas.height - 62, <GameFooter scene={this} onAddTower={onAddTower} />)
-    addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
+    // addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
 
     this.towerPreview = new TowerPreview(this, 50, 58)
     this.scene.add("tower_preview", this.towerPreview, true)
@@ -289,25 +290,7 @@ export default class TDPlayScene extends Scene {
     }
   }
 
-  // If we are within range (radius checked by onEnemyInRange), add target
-  onEnemyOverlap(
-    tower: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
-    enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
-    if (tower instanceof TDTower && enemy instanceof TDEnemy) {
-      tower.targeting.current.unshift(enemy)
-    }
-  }
 
-  checkPointCollision(points: Point[], pos: Point, tolerance: number = 32,) {
-    let collision = false
-    points?.forEach(point => {
-      const diff = point.diff(pos)
-      if (diff.x < tolerance && diff.y < tolerance) {
-        collision = true
-      }
-    })
-    return collision
-  }
 
   update(time: number, delta: number): void {
     if (this.addingTower) {
@@ -329,8 +312,8 @@ export default class TDPlayScene extends Scene {
           this.addingTower.destroy()
           this.sound.play("fail")
         } else {
-          this.addingTower.preview = false
           this.towerGroup.add(this.addingTower)
+          this.addingTower.preview = false
           this.sound.play("plop")
         }
         this.addingTower.showRange.visible = false

@@ -31,8 +31,7 @@ export default class TowerPreview extends Scene {
       t.preview = true
       this.add.existing(t)
       addLabel(this, x, y + 40, model.name.split(" ")[0], "center")
-      const e = new TDEnemy(this, x, y - 100, ENEMIES[0])
-      t.targeting.current = [e]
+      t.targeting.current = [new TDEnemy(this, x, y - 100, ENEMIES[0])]
     })
   }
 
