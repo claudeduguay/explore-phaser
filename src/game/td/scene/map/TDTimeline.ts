@@ -38,7 +38,9 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
     if (model) {
       active.credits.adjust(model.stats.value || 0)
       TDPlayScene.createExplosionSprite(scene, x, y)
-      scene.sound.play("cash")
+      if (scene.sound.get("cash")) {
+        scene.sound.play("cash")
+      }
     }
     enemy.removeListener("died")
   })
@@ -57,7 +59,9 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
         enemy.destroy()
         enemyGroup.remove(enemy)
         active.health.adjust(-1)
-        scene.sound.play("woe")
+        if (scene.sound.get("woe")) {
+          scene.sound.play("woe")
+        }
       }
     },
   })

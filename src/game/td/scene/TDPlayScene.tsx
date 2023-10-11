@@ -328,11 +328,15 @@ export default class TDPlayScene extends Scene {
         this.input.setDefaultCursor("default")
         if (this.addingTower.platform.isTinted) {
           this.addingTower.destroy()
-          this.sound.play("fail")
+          if (this.sound.get("fail")) {
+            this.sound.play("fail")
+          }
         } else {
           this.towerGroup.add(this.addingTower)
           this.addingTower.preview = false
-          this.sound.play("plop")
+          if (this.sound.get("plop")) {
+            this.sound.play("plop")
+          }
         }
         this.addingTower.showRange.visible = false
         this.addingTower = undefined

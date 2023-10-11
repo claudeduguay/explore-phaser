@@ -37,7 +37,9 @@ export default class TDGameScene extends Scene implements INavigator {
   }
 
   play(key: string) {
-    this.sound.play(key)
+    if (this.sound.get(key)) {
+      this.sound.play(key)
+    }
   }
 
   get mute() {

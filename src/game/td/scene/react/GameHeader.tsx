@@ -22,11 +22,15 @@ export default function GameHeader({ active, navigator, scene, onToggleTowerPrev
   const onHome = () => navigator.transitionTo("home", "game")
   const onWin = () => {
     const scene = navigator.transitionTo("win", "game")
-    scene.sound.play("win")
+    if (scene.sound.get("win")) {
+      scene.sound.play("win")
+    }
   }
   const onLose = () => {
     const scene = navigator.transitionTo("lose", "game")
-    scene.sound.play("lose")
+    if (scene.sound.get("lose")) {
+      scene.sound.play("lose")
+    }
   }
   const health = useActiveValue(activeHealth)
   const credits = useActiveValue(activeCredits)
