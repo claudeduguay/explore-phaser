@@ -320,12 +320,11 @@ export default class TreeLayout {
   // -------------------------------------------------------------------
 
   drawCurve(source: Point, target: Point, pointCount: number = 20) {
-    const mid = source.lerp(target, 0.5)
-    let control1 = new Point(mid.x, source.y)
-    let control2 = new Point(mid.x, target.y)
+    let control1 = new Point(target.x, source.y)
+    let control2 = new Point(source.x, target.y)
     if (this.isVertical()) {
-      control1 = new Point(source.x, mid.y)
-      control2 = new Point(target.x, mid.y)
+      control1 = new Point(source.x, target.y)
+      control2 = new Point(target.x, source.y)
     }
     const points = []
     for (let i = 0; i < pointCount + 1; i++) {
