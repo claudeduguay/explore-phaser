@@ -31,8 +31,10 @@ export default class TreePreview extends Scene {
     sampleTree.edges.set("rain", ["snow"])
     sampleTree.edges.set("lightning", ["flame", "freeze"])
     sampleTree.edges.set("flame", ["fire", "ice"])
-    sampleTree.edges.set("fire", ["boost"])
-    sampleTree.edges.set("ice", ["slow"])
+    sampleTree.edges.set("fire", ["poison"])
+    sampleTree.edges.set("poison", ["boost"])
+    sampleTree.edges.set("ice", ["impact"])
+    sampleTree.edges.set("impact", ["slow"])
     sampleTree.edges.set("freeze", ["smoke", "shock"])
 
     const nodeKeySet = [...sampleTree.edges.entries()].reduce((prev, [node, children]) => {
