@@ -11,10 +11,11 @@ export interface IGameHeaderProps {
   scene: Scene
   navigator: INavigator
   onToggleTowerPreview: () => void
+  onToggleTreePreview: () => void
   active: IActiveValues
 }
 
-export default function GameHeader({ active, navigator, scene, onToggleTowerPreview }: IGameHeaderProps) {
+export default function GameHeader({ active, navigator, scene, onToggleTowerPreview, onToggleTreePreview }: IGameHeaderProps) {
   const { w } = canvasSize(navigator)
 
   const { health: activeHealth, credits: activeCredits } = active
@@ -59,6 +60,7 @@ export default function GameHeader({ active, navigator, scene, onToggleTowerPrev
           <IconButton icon="sentiment_satisfied" onClick={onWin} />
           <IconButton icon="sentiment_very_dissatisfied" onClick={onLose} />
           <IconButton icon="visibility" onClick={onToggleTowerPreview} />
+          <IconButton icon="account_tree" onClick={onToggleTreePreview} />
         </div>
       </div>
     </div>

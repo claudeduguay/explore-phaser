@@ -21,6 +21,7 @@ import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../entity/enemy/TDEnemy"
 import { ENEMIES, generateEnemies } from "../entity/model/IEnemyModel"
 import { onEnemyOverlap } from "../entity/tower/Targeting"
+import TreePreview from "../tree/TreePreview"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -40,6 +41,7 @@ export default class TDPlayScene extends Scene {
   towerColliders = new PointColliders()
   addingTower?: TDTower
   towerPreview!: TowerPreview
+  treePreview!: TreePreview
 
   constructor(public readonly parent: TDGameScene) {
     super({ key: "play" })
@@ -164,7 +166,7 @@ export default class TDPlayScene extends Scene {
   }
 
   create() {
-    const { w, h } = canvasSize(this)
+    const { w } = canvasSize(this)
 
     // this.lights.addLight(0, 0, w, 0xffffff, 1)
 
@@ -251,14 +253,25 @@ export default class TDPlayScene extends Scene {
         this.scene.wake("tower_preview")
       }
     }
-    addReactNode(this, 0, 0, <GameHeader scene={this} active={this.active}
-      navigator={this.parent} onToggleTowerPreview={onToggleTowerPreview} />)
+    const onToggleTreePreview = () => {
+      if (this.scene.isActive("tree_preview")) {
+        this.scene.sleep("tree_preview")
+      } else {
+        this.scene.wake("tree_preview")
+      }
+    }
+    addReactNode(this, 0, 0, <GameHeader scene={this} active={this.active} navigator={this.parent}
+      onToggleTowerPreview={onToggleTowerPreview} onToggleTreePreview={onToggleTreePreview} />)
     addReactNode(this, 0, this.game.canvas.height - 62, <GameFooter scene={this} onAddTower={onAddTower} />)
     // addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
 
     this.towerPreview = new TowerPreview(this, 50, 58)
     this.scene.add("tower_preview", this.towerPreview, true)
     this.scene.sleep("tower_preview")
+
+    this.treePreview = new TreePreview(this, 50, 50)
+    this.scene.add("tree_preview", this.treePreview, true)
+    this.scene.sleep("tree_preview")
 
     // Show spritesheet canvas
     // this.add.sprite(50, 600, "peep_weak_canvas").setOrigin(0)
