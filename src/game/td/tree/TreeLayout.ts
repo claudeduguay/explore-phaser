@@ -15,8 +15,8 @@ export enum TreeAlignment {
 }
 
 export enum TreeLineType {
-  STRAIGHT = 1,
-  SQUARE = 2,
+  LINE = 1,
+  BLOCK = 2,
   CURVE = 3
 }
 
@@ -69,10 +69,11 @@ export default class TreeLayout {
 
   direction: TreeDirection = TreeDirection.EAST
   alignment: TreeAlignment = TreeAlignment.CENTER
-  lineType: TreeLineType = TreeLineType.SQUARE
+  lineType: TreeLineType = TreeLineType.BLOCK
   lineColor: string = "#FFFFFF"
   lineWidth: number = 2.0
-  gap: Point = new Point(50, 15)
+  gap: Point = new Point(50, 50)
+  margin: Point = new Point(50, 50)
 
   // Note: We need to be affecting the container size, not necessarily this value
   size: ISize = { w: 0, h: 0 }
@@ -123,11 +124,11 @@ export default class TreeLayout {
   }
 
   isSquare() {
-    return this.lineType === TreeLineType.SQUARE
+    return this.lineType === TreeLineType.BLOCK
   }
 
   isStraight() {
-    return this.lineType === TreeLineType.STRAIGHT
+    return this.lineType === TreeLineType.LINE
   }
 
 
@@ -185,8 +186,8 @@ export default class TreeLayout {
   doLayout() {
     if (this.tree.root) {
       this.size = this.computeSize(this.tree.root)
-      this.clear()
       this.layoutTree(this.tree.root)
+      this.clear()
       this.drawLines(this.tree.root)
     }
   }
@@ -247,16 +248,16 @@ export default class TreeLayout {
   layoutTree(node: INodeKey) {
     switch (this.direction) {
       case TreeDirection.WEST:
-        this.layout(node, this.size.w, 0)
+        this.layout(node, this.size.w + this.margin.x, this.margin.y)
         break
       case TreeDirection.NORTH:
-        this.layout(node, 0, this.size.h)
+        this.layout(node, this.margin.x, this.size.h + this.margin.y)
         break
       case TreeDirection.EAST:
-        this.layout(node, 0, 0)
+        this.layout(node, this.margin.x, this.margin.y)
         break
       case TreeDirection.SOUTH:
-        this.layout(node, 0, 0)
+        this.layout(node, this.margin.x, this.margin.y)
         break
     }
   }
@@ -282,33 +283,32 @@ export default class TreeLayout {
         this.setBounds(node, { x: x - bounds.w, y: yAligned, w: bounds.w, h: bounds.h })
         x -= bounds.w + this.gap.x
       }
-
       for (let child of this.children(node)) {
         if (this.isVisible(child)) {
           this.layout(child, x, y)
           y += this.computeSize(child).h + this.gap.y
         }
       }
-      if (this.isVertical()) {
-        var xAligned = x
-        if (this.isCenter()) {
-          xAligned += (computedSize.w - bounds.w) / 2
-        }
-        if (this.isEnd()) {
-          xAligned += computedSize.w - bounds.w
-        }
-        if (this.isSouth()) {
-          this.setBounds(node, { x: xAligned, y, w: bounds.w, h: bounds.w })
-          y += bounds.h + this.gap.y
-        } else {
-          this.setBounds(node, { x: xAligned, y: y - bounds.h, h: bounds.h, w: bounds.w })
-          y -= bounds.h + this.gap.y
-        }
-        for (let child of this.children(node)) {
-          if (this.isVisible(child)) {
-            this.layout(child, x, y)
-            x += this.computeSize(child).w + this.gap.x
-          }
+    }
+    if (this.isVertical()) {
+      var xAligned = x
+      if (this.isCenter()) {
+        xAligned += (computedSize.w - bounds.w) / 2
+      }
+      if (this.isEnd()) {
+        xAligned += computedSize.w - bounds.w
+      }
+      if (this.isSouth()) {
+        this.setBounds(node, { x: xAligned, y, w: bounds.w, h: bounds.h })
+        y += bounds.h + this.gap.y
+      } else {
+        this.setBounds(node, { x: xAligned, y: y - bounds.h, w: bounds.w, h: bounds.h })
+        y -= bounds.h + this.gap.y
+      }
+      for (let child of this.children(node)) {
+        if (this.isVisible(child)) {
+          this.layout(child, x, y)
+          x += this.computeSize(child).w + this.gap.x
         }
       }
     }
@@ -337,20 +337,19 @@ export default class TreeLayout {
 
   drawSquare(source: Point, target: Point) {
     if (this.isHorizontal()) {
-      var mid = new Point(lerp(source.x, target.x, 0.5), source.y)
-
+      const mid = new Point(lerp(source.x, target.x, 0.5), source.y)
       this.drawLine(source, mid)
       this.drawLine(new Point(mid.x, target.y), target)
       if (mid.y !== target.y) {
         this.drawLine(mid, new Point(mid.x, target.y))
       }
-      else {
-        const mid = new Point(source.x, lerp(source.y, target.y, 0.5))
-        this.drawLine(source, mid)
-        this.drawLine(new Point(target.x, mid.y), target)
-        if (mid.x !== target.x) {
-          this.drawLine(mid, new Point(target.x, mid.y))
-        }
+    }
+    if (this.isVertical()) {
+      const mid = new Point(source.x, lerp(source.y, target.y, 0.5))
+      this.drawLine(source, mid)
+      this.drawLine(new Point(target.x, mid.y), target)
+      if (mid.x !== target.x) {
+        this.drawLine(mid, new Point(target.x, mid.y))
       }
     }
   }
@@ -380,6 +379,7 @@ export default class TreeLayout {
           } else {
             target.x = childBounds.x + childBounds.w
           }
+          console.log(source, target)
           if (this.isCurve()) {
             this.drawCurve(source, target)
           } else if (this.isSquare()) {
@@ -392,39 +392,42 @@ export default class TreeLayout {
           this.drawLines(child)
         }
       }
+    }
 
-      if (this.isVertical()) {
-        const source = new Point()
-        source.x = bounds.x + bounds.w / 2
-        if (this.isSouth()) {
-          source.y = bounds.y + bounds.h
-        } else {
-          source.y = bounds.y
-        }
+    if (this.isVertical()) {
+      console.log("Vertical")
+      const source = new Point()
+      source.x = bounds.x + bounds.w / 2
+      if (this.isSouth()) {
+        source.y = bounds.y + bounds.h
+      } else {
+        source.y = bounds.y
+      }
 
-        for (let child of this.children(node)) {
-          if (this.isVisible(child)) {
-            const childBounds = this.getBounds(child)
-            const target = new Point()
-            target.x = childBounds.x + childBounds.w / 2
-            if (this.isSouth()) {
-              target.y = childBounds.y
-            } else {
-              target.y = childBounds.y + childBounds.h
-            }
-            if (this.isCurve()) {
-              this.drawCurve(source, target)
-            } else if (this.isSquare()) {
-              this.drawSquare(source, target)
-            } else {
-              // const mid = new Point(source.x, lerp(source.y, target.y, 0.5))
-              // this.drawLine(new Point(mid.x, source.y), target)
-              this.drawLine(source, target)
-            }
+      for (let child of this.children(node)) {
+        if (this.isVisible(child)) {
+          const target = new Point()
+          const childBounds = this.getBounds(child)
+          target.x = childBounds.x + childBounds.w / 2
+          if (this.isSouth()) {
+            target.y = childBounds.y
+          } else {
+            target.y = childBounds.y + childBounds.h
+          }
+          console.log(source, target)
+          if (this.isCurve()) {
+            this.drawCurve(source, target)
+          } else if (this.isSquare()) {
+            this.drawSquare(source, target)
+          } else {
+            // const mid = new Point(source.x, lerp(source.y, target.y, 0.5))
+            // this.drawLine(new Point(mid.x, source.y), target)
+            this.drawLine(source, target)
           }
           this.drawLines(child)
         }
       }
     }
   }
+
 }

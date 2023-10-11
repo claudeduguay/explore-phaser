@@ -55,9 +55,9 @@ export default function ButtonTree({ width, height, tree, layoutTarget, children
     if (ref.current) {
       const drawSurface = new HTMLDrawSurface(ref.current)
       const layout = new TreeLayout(tree, drawSurface, layoutTarget)
-      layout.direction = TreeDirection.EAST // NORTH/SOUTH incorrect
+      layout.direction = TreeDirection.EAST
       layout.alignment = TreeAlignment.CENTER
-      layout.lineType = TreeLineType.SQUARE
+      layout.lineType = TreeLineType.BLOCK
       layout.doLayout()
     }
   }, [ref, tree, layoutTarget, children])
@@ -78,12 +78,16 @@ export function ButtonTreeExample({ width, height }: { width: number, height: nu
   sampleTree.edges.set("root", ["left", "right"])
   sampleTree.edges.set("left", ["left-a", "left-b"])
   sampleTree.edges.set("right", ["right-a", "right-b"])
-  sampleTree.edges.set("left-a", [])
-  sampleTree.edges.set("left-b", [])
-  sampleTree.edges.set("right-a", [])
-  sampleTree.edges.set("right-b", [])
+  sampleTree.edges.set("right-a", ["right-a1", "right-a2"])
+  const nodeKeySet = [...sampleTree.edges.entries()].reduce((prev, [node, children]) => {
+    prev.add(node)
+    for (let child of children) {
+      prev.add(child)
+    }
+    return prev
+  }, new Set<INodeKey>())
   const layoutTarget = new ExampleLayoutTarget()
-  const styles = [...sampleTree.edges.keys()].map(key => {
+  const styles = [...nodeKeySet].map(key => {
     const style = new ObservableValue<CSSProperties>({ position: "absolute", left: 0, top: 0, width: 120, height: 50 })
     layoutTarget.set(key, style)
     return style
