@@ -1,9 +1,31 @@
+import { GameObjects } from "phaser"
 import { bezier, lerp } from "./MathUtil"
 
-
+/*
+>>> Sprite implements
+Phaser.GameObjects.Components.Alpha, 
+Phaser.GameObjects.Components.BlendMode, 
+Phaser.GameObjects.Components.Depth, 
+Phaser.GameObjects.Components.Flip, 
+Phaser.GameObjects.Components.GetBounds, 
+Phaser.GameObjects.Components.Mask, 
+Phaser.GameObjects.Components.Origin, 
+Phaser.GameObjects.Components.Pipeline, 
+Phaser.GameObjects.Components.PostPipeline, 
+Phaser.GameObjects.Components.ScrollFactor, 
+Phaser.GameObjects.Components.Size, 
+Phaser.GameObjects.Components.TextureCrop, 
+Phaser.GameObjects.Components.Tint, 
+Phaser.GameObjects.Components.Transform, 
+Phaser.GameObjects.Components.Visible
+*/
 export interface IPointLike {
   x: number
   y: number
+}
+
+export function getSceneRelativePosition(object: GameObjects.GameObject) {
+  // const parent = object.parentContainer
 }
 
 export default class Point {
@@ -88,4 +110,10 @@ export default class Point {
   toString() {
     return `{ x: ${this.x}, y: ${this.y} }`
   }
+}
+
+export function toWorldCoordinates(obj: GameObjects.Components.Transform): Point {
+  const transform = obj.getWorldTransformMatrix()
+  const transformed = transform.transformPoint(obj.x, obj.y)
+  return new Point(transformed.x, transformed.y)
 }

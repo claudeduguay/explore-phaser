@@ -19,7 +19,7 @@ import TargetFreezeBehavior from "../../behavior/tower/spray/TargetFreezeBehavio
 import TargetBulletBehavior from "../../behavior/tower/TargetBulletBehavior"
 import TargetBoostBehavior from "../../behavior/tower/TargetBoostBehavior"
 import TargetSlowBehavior from "../../behavior/tower/TargetSlowBehavior"
-import Point from "../../../../util/Point"
+import Point, { toWorldCoordinates as toSceneCoordinates } from "../../../../util/Point"
 import { clamp, rotation } from "../../../../util/MathUtil"
 import TargetSmokeBehavior from "../../behavior/tower/cloud/TargetSmokeBehavior"
 import TargetShockBehavior from "../../behavior/tower/cloud/TargetShockBehavior"
@@ -137,26 +137,18 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     this.platform.postFX?.clear()
   }
 
-
-  // This could start to get expensive on each frame
-  emissionPoints() {
-    return this.turret.weapon.map((p, i) => this.emissionPoint(i))
-  }
-
-  // May be useful to studdy: https://www.html5gamedevs.com/topic/24535-how-to-calculate-absolute-world-xy-without-using-world-xy-property/
   emissionPoint(index: number = 1) {
     if (this.model.meta.rotation === "target") {
       const i = clamp(index, 0, this.turret.weapon.length - 1)
       const weapon = this.turret.weapon[i]
-      const size = weapon.getSize()
-      const p = new Point(weapon.x, weapon.y - size.y / 2)
-      const r = p.length()
-      const a = this.turret.rotation
-      const adjust = Math.atan2(p.y, p.x) + Math.PI / 2
-      return rotation(this.x, this.y, r, r, a + adjust * 2)
+      return toSceneCoordinates(weapon)
     } else {
       return new Point(this.x, this.y)
     }
+  }
+
+  emissionPoints() {
+    return this.turret.weapon.map((p, i) => this.emissionPoint(i))
   }
 }
 
@@ -169,4 +161,3 @@ GameObjects.GameObjectFactory.register("tower",
     return tower
   }
 )
-
