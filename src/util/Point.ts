@@ -112,7 +112,7 @@ export default class Point {
   }
 }
 
-export function toWorldCoordinates(obj: GameObjects.Components.Transform): Point {
+export function toSceneCoordinates(obj: GameObjects.Components.Transform): Point {
   const transform = obj.getWorldTransformMatrix()
   const transformed = transform.transformPoint(obj.x, obj.y)
   return new Point(transformed.x, transformed.y)
