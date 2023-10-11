@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import TreeLayout, { INodeKey, ITree } from "./TreeLayout";
 import PhaserLayoutTarget from "./PhaserLayoutTarget";
-import { TOWER_MODELS } from "../entity/model/ITowerModel";
+import { ALL_TOWERS, TOWER_MODELS } from "../entity/model/ITowerModel";
 import PhaserDrawSurface from "./PhaserDrawSurface";
 import Point from "../../../util/Point";
 
@@ -24,6 +24,12 @@ export default class TreePreview extends Scene {
       root: "lazer",
       edges: new Map<INodeKey, INodeKey[]>()
     }
+    // const [beamHead, ...beamTail] = ALL_TOWERS.filter(t => t.group === "beam")
+    // const [sprayHead, ...sprayTail] = ALL_TOWERS.filter(t => t.group === "spray")
+    // const [cloudHead, ...cloudTail] = ALL_TOWERS.filter(t => t.group === "cloud")
+    // const [fallHead, ...fallTail] = ALL_TOWERS.filter(t => t.group === "fall")
+    // const [throwHead, ...throwTail] = ALL_TOWERS.filter(t => t.group === "fall")
+    // const [areaHead, ...areaTail] = ALL_TOWERS.filter(t => t.group === "fall")
     sampleTree.edges.set("lazer", ["plasma", "lightning"])
     sampleTree.edges.set("plasma", ["bullet"])
     sampleTree.edges.set("bullet", ["missile"])
