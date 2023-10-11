@@ -33,7 +33,7 @@ import Targeting from "./Targeting"
 
 export default class TDTower extends BehaviorContainer implements ISelectable {
 
-  tower_base: GameObjects.Sprite
+  platform: GameObjects.Sprite
   turret: TDTurret
   targeting = new Targeting()
   showRange: GameObjects.Container
@@ -43,10 +43,10 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     public model: ITowerModel = TOWER_MODELS.LAZER) {
     super(scene)
     const range = model.stats.range
-    this.tower_base = this.scene.add.sprite(0, 0, `${model.meta.key}-platform`).setInteractive()
+    this.platform = this.scene.add.sprite(0, 0, `${model.meta.key}-platform`).setInteractive()
       .on(Input.Events.POINTER_OVER, () => this.showRange.visible = true, this)
       .on(Input.Events.POINTER_OUT, () => this.showRange.visible = false, this)
-    this.add(this.tower_base)
+    this.add(this.platform)
 
     this.turret = new TDTurret(scene, 0, 0, model)
     if (model.meta.rotation !== "target") {
@@ -119,22 +119,22 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
   }
 
   addSelectHandler(select: (selection?: TDTower) => void) {
-    this.tower_base.on(Input.Events.POINTER_UP, () => {
+    this.platform.on(Input.Events.POINTER_UP, () => {
       select(this)
       this.showSelection()
     }, this)
   }
 
   removeSelectHandler() {
-    this.tower_base.off(Input.Events.POINTER_UP)
+    this.platform.off(Input.Events.POINTER_UP)
   }
 
   showSelection() {
-    this.tower_base.postFX?.addGlow()
+    this.platform.postFX?.addGlow()
   }
 
   hideSelection() {
-    this.tower_base.postFX?.clear()
+    this.platform.postFX?.clear()
   }
 
 

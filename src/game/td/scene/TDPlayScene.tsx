@@ -301,14 +301,14 @@ export default class TDPlayScene extends Scene {
 
         // Highlight invalid positions
         if (!this.towerColliders.collision(new Point(x, y))) {
-          this.addingTower.tower_base.clearTint()
+          this.addingTower.platform.clearTint()
         } else {
-          this.addingTower.tower_base.setTint(0xff0000)
+          this.addingTower.platform.setTint(0xff0000)
         }
         this.addingTower.setPosition(x, y)
       } else {
         this.input.setDefaultCursor("default")
-        if (this.addingTower.tower_base.isTinted) {
+        if (this.addingTower.platform.isTinted) {
           this.addingTower.destroy()
           this.sound.play("fail")
         } else {
