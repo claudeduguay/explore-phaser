@@ -35,8 +35,8 @@ export interface IDefaultNode {
 
 export interface IDrawSurface {
   clear(): void
-  drawLine(source: Point, target: Point, color: string, width: number): void
-  drawPoly(points: Point[], color: string, width: number): void
+  drawLine(source: Point, target: Point, color: string | number, width: number): void
+  drawPoly(points: Point[], color: string | number, width: number): void
 }
 
 export interface ISize {
@@ -70,7 +70,7 @@ export default class TreeLayout {
   direction: TreeDirection = TreeDirection.EAST
   alignment: TreeAlignment = TreeAlignment.CENTER
   lineType: TreeLineType = TreeLineType.BLOCK
-  lineColor: string = "#FFFFFF"
+  lineColor: string | number = "#FFFFFF"
   lineWidth: number = 2.0
   gap: Point = new Point(50, 50)
   margin: Point = new Point(50, 50)

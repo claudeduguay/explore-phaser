@@ -1,7 +1,7 @@
 import Point from "../../../util/Point";
 import { IDrawSurface } from "./TreeLayout";
 
-export class HTMLDrawSurface implements IDrawSurface {
+export default class HTMLDrawSurface implements IDrawSurface {
 
   g: CanvasRenderingContext2D
 
@@ -14,16 +14,20 @@ export class HTMLDrawSurface implements IDrawSurface {
     this.g.fillRect(0, 0, this.g.canvas.width, this.g.canvas.height)
   }
 
-  drawLine(source: Point, target: Point, color: string, width: number) {
-    this.g.strokeStyle = color
+  drawLine(source: Point, target: Point, color: string | number, width: number) {
+    if (typeof color === "string") {
+      this.g.strokeStyle = color
+    }
     this.g.lineWidth = width
     this.g.moveTo(source.x, source.y)
     this.g.lineTo(target.x, target.y)
     this.g.stroke()
   }
 
-  drawPoly(points: Point[], color: string, width: number) {
-    this.g.strokeStyle = color
+  drawPoly(points: Point[], color: string | number, width: number) {
+    if (typeof color === "string") {
+      this.g.strokeStyle = color
+    }
     this.g.lineWidth = width
     for (let i = 0; i < points.length; i++) {
       const point = points[i]

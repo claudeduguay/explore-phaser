@@ -1,44 +1,12 @@
 import { CSSProperties, ReactNode, useEffect, useRef } from "react";
-import TreeLayout, { ILayoutTarget, INodeKey, ITree, IBounds, TreeDirection, TreeAlignment, TreeLineType } from "./TreeLayout";
-import { HTMLDrawSurface } from "./HTMLDrawSurface";
+import TreeLayout, { ILayoutTarget, INodeKey, ITree, TreeDirection, TreeAlignment, TreeLineType } from "./TreeLayout";
 import ObservableValue, { useObservableValue } from "../value/ObservableValue";
+import HTMLLayoutTarget from "./HTMLLayoutTarget";
+import HTMLDrawSurface from "./HTMLDrawSurface";
 
 export function ExampleButton({ title, styling }: { title: string, styling: ObservableValue<CSSProperties> }) {
   const style = useObservableValue<CSSProperties>(styling)
   return <button className="btn btn-primary" style={style}>{title}</button>
-}
-
-export class ExampleLayoutTarget extends Map<INodeKey, ObservableValue<CSSProperties>> implements ILayoutTarget {
-
-  isVisible(key: INodeKey): boolean {
-    return true
-  }
-
-  getBounds(key: INodeKey): IBounds {
-    const observable = this.get(key)
-    if (observable) {
-      return {
-        x: observable.value.left as number,
-        y: observable.value.top as number,
-        w: observable.value.width as number,
-        h: observable.value.height as number
-      }
-    }
-    return { x: 0, y: 0, w: 0, h: 0 }
-  }
-
-  setBounds(key: INodeKey, bounds: IBounds): void {
-    const observable = this.get(key)
-    if (observable) {
-      observable.value = {
-        position: "absolute",
-        left: bounds.x,
-        top: bounds.y,
-        width: bounds.w,
-        height: bounds.h
-      }
-    }
-  }
 }
 
 export interface IButtonTreeProps {
@@ -86,7 +54,7 @@ export function ButtonTreeExample({ width, height }: { width: number, height: nu
     }
     return prev
   }, new Set<INodeKey>())
-  const layoutTarget = new ExampleLayoutTarget()
+  const layoutTarget = new HTMLLayoutTarget()
   const styles = [...nodeKeySet].map(key => {
     const style = new ObservableValue<CSSProperties>({ position: "absolute", left: 0, top: 0, width: 120, height: 50 })
     layoutTarget.set(key, style)

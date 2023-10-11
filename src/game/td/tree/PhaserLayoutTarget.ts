@@ -1,14 +1,10 @@
 import { GameObjects } from "phaser";
 import { IBounds, ILayoutTarget } from "./TreeLayout";
 
-export class PhaserLayoutTarget implements ILayoutTarget {
-
-  constructor(public map: Map<string, GameObjects.Components.GetBounds & GameObjects.Components.Visible & GameObjects.Components.Transform>) {
-
-  }
+export default class PhaserLayoutTarget extends Map<string, GameObjects.Components.GetBounds & GameObjects.Components.Visible & GameObjects.Components.Transform> implements ILayoutTarget {
 
   isVisible(node: string): boolean {
-    const obj = this.map.get(node)
+    const obj = this.get(node)
     if (obj) {
       return obj.visible
     }
@@ -16,7 +12,7 @@ export class PhaserLayoutTarget implements ILayoutTarget {
   }
 
   getBounds(node: string): IBounds {
-    const obj = this.map.get(node)
+    const obj = this.get(node)
     if (obj) {
       const { x, y, width, height } = obj.getBounds()
       return { x, y, w: width, h: height }
@@ -24,7 +20,7 @@ export class PhaserLayoutTarget implements ILayoutTarget {
     return { x: 0, y: 0, w: 0, h: 0 }
   }
   setBounds(node: string, bounds: IBounds): void {
-    const obj = this.map.get(node)
+    const obj = this.get(node)
     if (obj) {
       obj.setPosition(bounds.x, bounds.y)
     }
