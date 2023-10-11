@@ -1,9 +1,10 @@
 import { Scene } from "phaser";
 import TreeLayout, { INodeKey, ITree } from "./TreeLayout";
 import PhaserLayoutTarget from "./PhaserLayoutTarget";
-import { ALL_TOWERS } from "../entity/model/ITowerModel";
+import { ALL_TOWERS, TOWER_MODELS } from "../entity/model/ITowerModel";
 import PhaserDrawSurface from "./PhaserDrawSurface";
 import Point from "../../../util/Point";
+import TDTower from "../entity/tower/TDTower";
 
 export default class TreePreview extends Scene {
   constructor(public main: Scene, public x: number = 0, public y: number = x) {
@@ -21,13 +22,19 @@ export default class TreePreview extends Scene {
     this.add.existing(g)
 
     const sampleTree: ITree = {
-      root: "root",
+      root: "lazer",
       edges: new Map<INodeKey, INodeKey[]>()
     }
-    sampleTree.edges.set("root", ["left", "right"])
-    sampleTree.edges.set("left", ["left-a", "left-b"])
-    sampleTree.edges.set("right", ["right-a", "right-b"])
-    sampleTree.edges.set("right-a", ["right-a1", "right-a2"])
+    sampleTree.edges.set("lazer", ["plasma", "lightning"])
+    sampleTree.edges.set("plasma", ["bullet"])
+    sampleTree.edges.set("bullet", ["missile"])
+    sampleTree.edges.set("missile", ["rain"])
+    sampleTree.edges.set("rain", ["snow"])
+    sampleTree.edges.set("lightning", ["flame", "freeze"])
+    sampleTree.edges.set("flame", ["fire", "ice"])
+    sampleTree.edges.set("fire", ["boost"])
+    sampleTree.edges.set("ice", ["slow"])
+    sampleTree.edges.set("freeze", ["smoke", "shock"])
 
     const nodeKeySet = [...sampleTree.edges.entries()].reduce((prev, [node, children]) => {
       prev.add(node)
@@ -38,11 +45,10 @@ export default class TreePreview extends Scene {
     }, new Set<INodeKey>())
     const keysArray = [...nodeKeySet]
 
-    const layoutTarget = new PhaserLayoutTarget()
+    const layoutTarget = new PhaserLayoutTarget(64, 64)
     keysArray.forEach((key: string, i: number) => {
-      const sprite = this.add.sprite(100, 100, `${ALL_TOWERS[i].meta.key}-platform`)
-      layoutTarget.set(key, sprite)
-      this.add.existing(sprite)
+      const tower = this.add.tower(100, 100, TOWER_MODELS[key])
+      layoutTarget.set(key, tower)
     })
 
     const drawSurface = new PhaserDrawSurface(this)

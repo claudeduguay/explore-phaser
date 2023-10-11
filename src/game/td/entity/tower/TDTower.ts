@@ -54,7 +54,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     }
     this.add(this.turret)
 
-    this.showRange = scene.add.existing(new TDRange(scene, 0, 0, model.stats.range))
+    this.showRange = scene.add.existing(new TDRange(scene, 0, 0, model.name, model.stats.range))
     this.showRange.visible = false
     this.add(this.showRange)
 

@@ -1,10 +1,11 @@
 import { Scene, GameObjects } from "phaser";
 import { makeEllipse } from "../../assets/TextureFactory";
+import { addLabel } from "../../../../util/TextUtil";
 // import GraphicsContainer from "../../../util/GraphicsContainer"
 
 export default class TDRange extends GameObjects.Container {
 
-  constructor(scene: Scene, x: number, y: number, range: number) {
+  constructor(scene: Scene, x: number, y: number, name: string, range: number) {
     super(scene, x, y)
 
     // Cache a texture, based on the range, if not present
@@ -15,6 +16,8 @@ export default class TDRange extends GameObjects.Container {
 
     const shape = scene.add.sprite(0, 0, ellipseKey)
     this.add(shape)
+    const label = addLabel(scene, 0, 38, name, "center")
+    this.add(label)
   }
 
 }

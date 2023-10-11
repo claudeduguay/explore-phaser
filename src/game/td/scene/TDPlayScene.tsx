@@ -22,6 +22,7 @@ import TDEnemy from "../entity/enemy/TDEnemy"
 import { ENEMIES, generateEnemies } from "../entity/model/IEnemyModel"
 import { onEnemyOverlap } from "../entity/tower/Targeting"
 import TreePreview from "../tree/TreePreview"
+import { captureAndCacheTower } from "./react/capture/useCaptureTower"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -77,6 +78,10 @@ export default class TDPlayScene extends Scene {
     makeLandscapeTile(this, "grass", { size: { x: 64, y: 64 }, options: { type: "grass" } })
 
     registerTowerTextures(this)
+
+    for (let model of ALL_TOWERS) {
+      captureAndCacheTower(this, new TDTower(this, 0, 0, model))
+    }
 
     for (let i = 0; i < 8; i++) {
       // First Explosion image size: 583x536, but they are not all the same size

@@ -1,10 +1,9 @@
 import { GameObjects, Scene, Textures } from "phaser";
-import useCapture from "./useCapture";
+import useCapture, { captureAndCacheTexture } from "./useCapture";
 import TDEnemy from "../../../entity/enemy/TDEnemy";
 
-// Capture the first frame of an enemy
-export default function useCaptureEnemy(scene: Scene, enemy?: TDEnemy, angle = 0): string {
-  const render = (texture: GameObjects.RenderTexture) => {
+export function makeEnemyRenderCallback(scene: Scene, enemy?: TDEnemy) {
+  return (texture: GameObjects.RenderTexture) => {
     if (enemy) {
       const canvasKey = `${enemy.model.meta.key}_canvas`
       const image = scene.textures.get(canvasKey)
@@ -14,6 +13,19 @@ export default function useCaptureEnemy(scene: Scene, enemy?: TDEnemy, angle = 0
       texture.draw(copy)
     }
   }
+}
+
+// Capture the first frame of an enemy
+export default function useCaptureEnemy(scene: Scene, enemy?: TDEnemy, angle = 0): string {
+  const render = makeEnemyRenderCallback(scene, enemy)
   const key = `enemy-${enemy?.model.meta.key || "peep_weak"}`
   return useCapture(scene, 32, 32, render, key)
+}
+
+
+export function captureAndCacheEnemy(scene: Scene, enemy?: TDEnemy, angle = 0) {
+  const render = makeEnemyRenderCallback(scene, enemy)
+  if (enemy?.model.meta.key) {
+    captureAndCacheTexture(scene, 32, 32, render, enemy?.model.meta.key)
+  }
 }

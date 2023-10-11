@@ -378,7 +378,6 @@ export default class TreeLayout {
           } else {
             target.x = childBounds.x + childBounds.w
           }
-          console.log(source, target)
           if (this.isCurve()) {
             this.drawCurve(source, target)
           } else if (this.isSquare()) {
@@ -394,7 +393,6 @@ export default class TreeLayout {
     }
 
     if (this.isVertical()) {
-      console.log("Vertical")
       const source = new Point()
       source.x = bounds.x + bounds.w / 2
       if (this.isSouth()) {
@@ -413,7 +411,6 @@ export default class TreeLayout {
           } else {
             target.y = childBounds.y + childBounds.h
           }
-          console.log(source, target)
           if (this.isCurve()) {
             this.drawCurve(source, target)
           } else if (this.isSquare()) {

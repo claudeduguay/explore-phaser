@@ -19,7 +19,7 @@ export interface IDamageSpec {
 // Need a mechanism to define timeout effect periods
 // Support for literal or random range damage values
 export interface ITowerDamage {
-  [key: string]: IDamageSpec
+  [key: string]: { dps: number | [min: number, max: number] }
 }
 
 export interface ITowerModel {
@@ -48,7 +48,7 @@ export const DEFAULT_STATS: ITowerStatistics = {
 export const TOWER_MODELS: Record<string, ITowerModel> = {
 
   // BEAM
-  LAZER: {
+  lazer: {
     name: "Lazer Tower",
     group: "beam",
     description: "Fires a lazer beam at a single enemy within range.",
@@ -62,7 +62,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
       lazer: { dps: 10 }
     }
   },
-  PLASMA: {
+  plasma: {
     name: "Plasma Tower",
     group: "beam",
     description: "Fires a plasma beam at a single enemy within range.",
@@ -76,7 +76,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
       plasma: { dps: 10 }
     }
   },
-  LIGHTNING: {
+  lightning: {
     name: "Lightning Tower",
     group: "beam",
     description: "Fires a lightning bolt at a single enemy within range.",
@@ -91,7 +91,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   // SPRAY
-  FLAME: {
+  flame: {
     name: "Flame Tower",
     group: "spray",
     description: "Targets a single enemy within range with a fire spray.",
@@ -105,7 +105,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
       fire: { dps: 10 }
     }
   },
-  FREEZE: {
+  freeze: {
     name: "Freeze Tower",
     group: "spray",
     description: "Targets a single enemy within range with an ice spray.",
@@ -119,7 +119,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
       ice: { dps: 10 }
     }
   },
-  IMPACT: {
+  impact: {
     name: "Impact Tower",
     group: "spray",
     description: "Targets a single enemy within range with a force spray.",
@@ -134,7 +134,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   // CLOUD
-  POISON_: {
+  poison: {
     name: "Poison Tower",
     group: "spray",
     description: "Targets multiple enemies within range with a cloud of poison.",
@@ -148,7 +148,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
       posion: { dps: 10 }
     }
   },
-  FIRE: {
+  fire: {
     name: "Fire Tower",
     group: "cloud",
     description: "Targets multiple enemies within range with a cloud of fire.",
@@ -161,7 +161,8 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     damage: {
       posion: { dps: 10 }
     }
-  }, SMOKE: {
+  },
+  smoke: {
     name: "Smoke Tower",
     group: "cloud",
     description: "Targets multiple enemies within range with a cloud of smoke.",
@@ -175,7 +176,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
       smoke: { dps: 10 }
     }
   },
-  SHOCK: {
+  shock: {
     name: "Shock Tower",
     group: "cloud",
     description: "Targets multiple enemies within range with a cloud of electricity.",
@@ -189,7 +190,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
       shock: { dps: 10 }
     }
   },
-  ICE: {
+  ice: {
     name: "Ice Tower",
     group: "cloud",
     description: "Targets multiple enemies within range with a cloud of ice.",
@@ -204,7 +205,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   // FALL
-  RAIN: {
+  rain: {
     name: "Rain Tower",
     group: "fall",
     description: "Targets multiple enemies within range with rainfall.",
@@ -218,7 +219,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
       rain: { dps: 10 }
     }
   },
-  SNOW: {
+  snow: {
     name: "Snow Tower",
     group: "fall",
     description: "Targets multiple enemies within range with snowfall.",
@@ -233,7 +234,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   // THROW
-  BULLET: {
+  bullet: {
     name: "Bullet Tower",
     group: "throw",
     description: "Fires bullets at a single enemy within range.",
@@ -247,7 +248,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
       bullet: { dps: 10 }
     }
   },
-  MISSILE: {
+  missile: {
     name: "Missile Tower",
     group: "throw",
     description: "Fires a missile at a single enemy within range.",
@@ -262,7 +263,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   // AREA
-  BOOST: {
+  boost: {
     name: "Boost Tower",
     group: "area",
     description: "Boosts other towers' damage effect, within range.",
@@ -276,7 +277,7 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
       boost: { dps: 10 }
     }
   },
-  SLOW: {
+  slow: {
     name: "Slow Tower",
     group: "area",
     description: "Applies a slow effect on enemies within range",
