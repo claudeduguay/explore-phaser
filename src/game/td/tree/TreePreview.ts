@@ -1,10 +1,9 @@
 import { Scene } from "phaser";
 import TreeLayout, { INodeKey, ITree } from "./TreeLayout";
 import PhaserLayoutTarget from "./PhaserLayoutTarget";
-import { ALL_TOWERS, TOWER_MODELS } from "../entity/model/ITowerModel";
+import { TOWER_MODELS } from "../entity/model/ITowerModel";
 import PhaserDrawSurface from "./PhaserDrawSurface";
 import Point from "../../../util/Point";
-import TDTower from "../entity/tower/TDTower";
 
 export default class TreePreview extends Scene {
   constructor(public main: Scene, public x: number = 0, public y: number = x) {
