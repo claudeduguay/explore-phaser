@@ -1,4 +1,4 @@
-import { lerp } from "./MathUtil"
+import { bezier, lerp } from "./MathUtil"
 
 
 export interface IPointLike {
@@ -71,6 +71,13 @@ export default class Point {
     return new Point(
       lerp(this.x, p.x, f),
       lerp(this.y, p.y, f)
+    )
+  }
+
+  bezier(control1: Point, control2: Point, p: Point, f: number) {
+    return new Point(
+      bezier(this.x, control1.x, control2.x, p.x, f),
+      bezier(this.y, control1.y, control2.y, p.y, f),
     )
   }
 

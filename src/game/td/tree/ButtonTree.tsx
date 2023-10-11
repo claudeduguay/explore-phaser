@@ -55,9 +55,9 @@ export default function ButtonTree({ width, height, tree, layoutTarget, children
     if (ref.current) {
       const drawSurface = new HTMLDrawSurface(ref.current)
       const layout = new TreeLayout(tree, drawSurface, layoutTarget)
-      layout.direction = TreeDirection.EAST
+      layout.direction = TreeDirection.SOUTH
       layout.alignment = TreeAlignment.CENTER
-      layout.lineType = TreeLineType.BLOCK
+      layout.lineType = TreeLineType.CURVE
       layout.doLayout()
     }
   }, [ref, tree, layoutTarget, children])

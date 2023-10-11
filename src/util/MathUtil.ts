@@ -53,6 +53,13 @@ export function lerp(min: number, max: number, f: number) {
   return min + (max - min) * f
 }
 
+export function bezier(source: number, p1: number, p2: number, target: number, f: number) {
+  return (1 - f) * (1 - f) * (1 - f) * source +
+    3 * (1 - f) * (1 - f) * f * p1 +
+    3 * (1 - f) * f * f * p2 +
+    f * f * f * target
+}
+
 export function lerpInt(min: number, max: number, f: number) {
   return Math.floor(lerp(min, max, f))
 }
