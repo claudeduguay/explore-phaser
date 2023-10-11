@@ -4,6 +4,7 @@ import HealthBar from "./HealthBar";
 import ActiveValue from "../../value/ActiveValue";
 import { ISelectable } from "../../scene/SelectableGroup";
 import BehaviorList from "../../behavior/core/BehaviorList";
+import { toSceneCoordinates } from "../../../../util/Point";
 
 export default class TDEnemy extends GameObjects.PathFollower implements ISelectable {
 
@@ -136,6 +137,10 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     this.effects.update(time, delta)
     this.detectDirectionChange()
     this.handleStatusBars()
+  }
+
+  get scenePosition() {
+    return toSceneCoordinates(this)
   }
 
 }

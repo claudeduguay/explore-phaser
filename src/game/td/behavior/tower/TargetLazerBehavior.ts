@@ -1,6 +1,6 @@
 import { GameObjects } from "phaser"
 import BaseTargetBehavior from "./BaseTargetBehavior"
-import Point from "../../../../util/Point"
+import Point, { IPointLike } from "../../../../util/Point"
 import TDTower from "../../entity/tower/TDTower"
 
 export default class TargetLaserBehavior extends BaseTargetBehavior<GameObjects.Graphics> {
@@ -16,13 +16,13 @@ export default class TargetLaserBehavior extends BaseTargetBehavior<GameObjects.
       const target = this.tower.targeting.current[0]
       if (target) {
         const emitter = this.tower.scene.add.graphics()
-        this.draw(emitter, new Point(x, y), new Point(target.x, target.y))
+        this.draw(emitter, new Point(x, y), target)
         this.emitters?.push(emitter)
       }
     }
   }
 
-  draw(g: GameObjects.Graphics, source: Point, target: Point) {
+  draw(g: GameObjects.Graphics, source: Point, target: IPointLike) {
     g.lineStyle(3, 0xFF0000, 1.0)
     g.lineBetween(source.x, source.y, target.x, target.y)
   }

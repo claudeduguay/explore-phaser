@@ -63,8 +63,8 @@ export default function GameHeader({ active, navigator, scene, onToggleTowerPrev
           <IconButton icon="home" onClick={onHome} />
           <IconButton icon="sentiment_satisfied" onClick={onWin} />
           <IconButton icon="sentiment_very_dissatisfied" onClick={onLose} />
-          <IconButton icon="visibility" onClick={onToggleTowerPreview} />
-          <IconButton icon="account_tree" onClick={onToggleTreePreview} />
+          <IconButton icon="verified_user" onClick={onToggleTowerPreview} />
+          <IconButton icon="science" onClick={onToggleTreePreview} />
         </div>
       </div>
     </div>
