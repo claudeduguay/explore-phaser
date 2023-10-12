@@ -45,7 +45,7 @@ export const DEFAULT_STATS: ITowerStatistics = {
 }
 
 
-export const TOWER_MODELS: Record<string, ITowerModel> = {
+export const TOWER_INDEX: Record<string, ITowerModel> = {
 
   // BEAM
   lazer: {
@@ -293,4 +293,4 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
   }
 }
 
-export const ALL_TOWERS = Object.values(TOWER_MODELS)
+export const TOWER_LIST = Object.values(TOWER_INDEX)

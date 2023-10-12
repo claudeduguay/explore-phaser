@@ -1,9 +1,9 @@
 import { Scene } from "phaser";
-import { ALL_TOWERS } from "../model/ITowerModel";
+import { TOWER_LIST } from "../model/ITowerModel";
 import TDTower from "./TDTower";
 import { addLabel } from "../../../../util/TextUtil";
 import TDEnemy from "../enemy/TDEnemy";
-import { ENEMIES } from "../model/IEnemyModel";
+import { ENEMY_LIST } from "../model/IEnemyModel";
 
 // Note: May need to make this a scene to manage the fact that 
 // behaviors add elements relative to the tower position in the scene
@@ -22,7 +22,7 @@ export default class TowerPreview extends Scene {
     g.strokeRoundedRect(this.x, this.y, hBox * 6, vBox * 3 + 20)
     this.add.existing(g)
 
-    ALL_TOWERS.forEach((model, i) => {
+    TOWER_LIST.forEach((model, i) => {
       const row = Math.floor(i / 6)
       const col = i % 6
       const x = this.x + hBox / 2 + hBox * col
@@ -31,7 +31,7 @@ export default class TowerPreview extends Scene {
       tower.preview = true
       this.add.existing(tower)
       addLabel(this, x, y + 40, model.name.split(" ")[0], "center")
-      tower.targeting.current = [new TDEnemy(this, x, y - 100, ENEMIES[0])]
+      tower.targeting.current = [new TDEnemy(this, x, y - 100, ENEMY_LIST[0])]
     })
   }
 

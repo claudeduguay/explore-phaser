@@ -7,7 +7,7 @@ import ClearTargetsBehavior from "../../behavior/tower/TargetsClearBehavior"
 import TargetLaserBehavior from "../../behavior/tower/TargetLazerBehavior"
 import TDRange from "./TDRange"
 import ITowerModel from "../model/ITowerModel"
-import { TOWER_MODELS } from "../model/ITowerModel"
+import { TOWER_INDEX } from "../model/ITowerModel"
 import { ISelectable } from "../../scene/SelectableGroup"
 import { clamp } from "../../../../util/MathUtil"
 
@@ -40,7 +40,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
   preview: boolean = false
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x,
-    public model: ITowerModel = TOWER_MODELS.LAZER) {
+    public model: ITowerModel = TOWER_INDEX.LAZER) {
     super(scene)
     const range = model.stats.range
     this.platform = this.scene.add.sprite(0, 0, `${model.key}-platform`).setInteractive()

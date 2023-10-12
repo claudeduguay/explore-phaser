@@ -8,7 +8,7 @@ import GameFooter from "./react/GameFooter"
 import generateMap from "./map/TDLevel"
 import Point from "../../../util/Point"
 import SelectableGroup from "./SelectableGroup"
-import ITowerModel, { ALL_TOWERS } from "../entity/model/ITowerModel"
+import ITowerModel, { TOWER_LIST } from "../entity/model/ITowerModel"
 import TowerPreview from "../entity/tower/TowerPreview"
 import PointCollider, { PointColliders } from "../../../util/PointCollider"
 import TowerInfo from "./react/TowerInfo"
@@ -18,7 +18,7 @@ import { shuffle } from "../../../util/ArrayUtil"
 import { canvasSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../entity/enemy/TDEnemy"
-import { ENEMIES } from "../entity/model/IEnemyModel"
+import { ENEMY_LIST } from "../entity/model/IEnemyModel"
 import { onEnemyOverlap } from "../entity/tower/Targeting"
 import TreePreview from "../tree/TreePreview"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
@@ -146,7 +146,7 @@ export default class TDPlayScene extends Scene {
     // @ts-ignore
     this.physics.add.existing(this.enemyGroup)
     // Enemies are created as the timeline moves, so we can't take the first entry of the group
-    this.enemyGroup.select(new TDEnemy(this, 0, 0, ENEMIES[0]))
+    this.enemyGroup.select(new TDEnemy(this, 0, 0, ENEMY_LIST[0]))
     this.enemyGroup.infoVisible.value = false
     addReactNode(this, w - 350 - 25, 75, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
       this.enemyGroup.infoVisible, true)
@@ -169,7 +169,7 @@ export default class TDPlayScene extends Scene {
     const towerPositions: Point[] = this.generatePathAdjacentPositions(origin)
     const generateTower = (i: number) => {
       let pos: Point = towerPositions[i]
-      const model = Utils.Array.GetRandom(ALL_TOWERS)
+      const model = Utils.Array.GetRandom(TOWER_LIST)
       return this.add.tower(pos.x, pos.y, model)
     }
     for (let i = 0; i < towerCount; i++) {

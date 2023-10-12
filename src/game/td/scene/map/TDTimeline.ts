@@ -1,7 +1,7 @@
 import { Curves, GameObjects, Scene, Time } from "phaser"
 import Point from "../../../../util/Point"
 import TDEnemy from "../../entity/enemy/TDEnemy"
-import { ENEMIES } from "../../entity/model/IEnemyModel"
+import { ENEMY_INDEX } from "../../entity/model/IEnemyModel"
 import TDPlayScene, { IActiveValues } from "../TDPlayScene"
 import { defaultWaveModel, IWaveGroup } from "./IWaveModel"
 
@@ -30,7 +30,7 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction:
 
 // Add an enemy to the main path (add/remove in group)
 export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, duration: number, delay: number) {
-  const model = ENEMIES.find(m => m.key === key)
+  const model = ENEMY_INDEX[key]
   const enemy = scene.add.enemy(origin.x, origin.y, model, path, true)
   enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
     enemy.destroy()
@@ -71,7 +71,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
 
 // Add preview follower to the proview path, reset timeline after last is finished
 export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path, timeline: Time.Timeline, duration: number, isLast: boolean, twin: TDEnemy) {
-  const model = ENEMIES.find(m => m.key === key)
+  const model = ENEMY_INDEX[key]
   const enemy = scene.add.enemy(0, 0, model, path, false)
   twin.twin = enemy // Track this enemy from it's twin
   twin.addListener("died", ({ x, y, model }: TDEnemy) => {
