@@ -47,14 +47,13 @@ export const DEFAULT_STATS: ITowerStatistics = {
   range: 100,
 }
 
-
 export const TOWER_INDEX: Record<string, ITowerModel> = {
 
   // BEAM
   lazer: {
     key: "lazer",
     group: "beam",
-    name: "Lazer Tower",
+    name: "Lazer",
     description: "Fires a lazer beam at a single enemy within range.",
     meta: {
       distribution: "linear",
@@ -68,7 +67,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   plasma: {
     key: "plasma",
     group: "beam",
-    name: "Plasma Tower",
+    name: "Plasma",
     description: "Fires a plasma beam at a single enemy within range.",
     meta: {
       distribution: "linear",
@@ -82,7 +81,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   lightning: {
     key: "lightning",
     group: "beam",
-    name: "Lightning Tower",
+    name: "Lightning",
     description: "Fires a lightning bolt at a single enemy within range.",
     meta: {
       distribution: "linear",
@@ -93,11 +92,12 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       lightning: { dps: 10 }
     }
   },
+
   // SPRAY
   flame: {
     key: "flame",
     group: "spray",
-    name: "Flame Tower",
+    name: "Flame",
     description: "Targets a single enemy within range with a fire spray.",
     meta: {
       distribution: "linear",
@@ -111,7 +111,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   freeze: {
     key: "freeze",
     group: "spray",
-    name: "Freeze Tower",
+    name: "Freeze",
     description: "Targets a single enemy within range with an ice spray.",
     meta: {
       distribution: "linear",
@@ -125,7 +125,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   impact: {
     key: "impact",
     group: "spray",
-    name: "Impact Tower",
+    name: "Impact",
     description: "Targets a single enemy within range with a force spray.",
     meta: {
       distribution: "linear",
@@ -136,11 +136,12 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       ice: { dps: 10 }
     }
   },
+
   // CLOUD
   poison: {
     key: "poison",
     group: "spray",
-    name: "Poison Tower",
+    name: "Poison",
     description: "Targets multiple enemies within range with a cloud of poison.",
     meta: {
       distribution: "radial",
@@ -154,7 +155,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   fire: {
     key: "fire",
     group: "cloud",
-    name: "Fire Tower",
+    name: "Fire",
     description: "Targets multiple enemies within range with a cloud of fire.",
     meta: {
       distribution: "radial",
@@ -168,7 +169,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   smoke: {
     key: "smoke",
     group: "cloud",
-    name: "Smoke Tower",
+    name: "Smoke",
     description: "Targets multiple enemies within range with a cloud of smoke.",
     meta: {
       distribution: "radial",
@@ -182,7 +183,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   shock: {
     key: "shock",
     group: "cloud",
-    name: "Shock Tower",
+    name: "Shock",
     description: "Targets multiple enemies within range with a cloud of electricity.",
     meta: {
       distribution: "radial",
@@ -196,7 +197,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   ice: {
     key: "ice",
     group: "cloud",
-    name: "Ice Tower",
+    name: "Ice",
     description: "Targets multiple enemies within range with a cloud of ice.",
     meta: {
       distribution: "radial",
@@ -207,11 +208,12 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       freeze: { dps: 10 }
     }
   },
+
   // FALL
   rain: {
     key: "rain",
     group: "fall",
-    name: "Rain Tower",
+    name: "Rain",
     description: "Targets multiple enemies within range with rainfall.",
     meta: {
       distribution: "radial",
@@ -225,7 +227,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   snow: {
     key: "snow",
     group: "fall",
-    name: "Snow Tower",
+    name: "Snow",
     description: "Targets multiple enemies within range with snowfall.",
     meta: {
       distribution: "radial",
@@ -236,11 +238,12 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       rain: { dps: 10 }
     }
   },
+
   // THROW
   bullet: {
     key: "bullet",
     group: "throw",
-    name: "Bullet Tower",
+    name: "Bullet",
     description: "Fires bullets at a single enemy within range.",
     meta: {
       distribution: "linear",
@@ -254,7 +257,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   missile: {
     key: "missile",
     group: "throw",
-    name: "Missile Tower",
+    name: "Missile",
     description: "Fires a missile at a single enemy within range.",
     meta: {
       distribution: "linear",
@@ -265,11 +268,12 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       missile: { dps: 10 }
     }
   },
+
   // AREA
   boost: {
     key: "boost",
     group: "area",
-    name: "Boost Tower",
+    name: "Boost",
     description: "Boosts other towers' damage effect, within range.",
     meta: {
       distribution: "radial",
@@ -283,7 +287,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   slow: {
     key: "slow",
     group: "area",
-    name: "Slow Tower",
+    name: "Slow",
     description: "Applies a slow effect on enemies within range",
     meta: {
       distribution: "radial",
@@ -305,5 +309,3 @@ export const TOWER_GROUPS = TOWER_LIST.reduce((groups: ITowerGroups, tower: ITow
   groups[tower.group].push(tower)
   return groups
 }, {} as ITowerGroups)
-
-console.log("Groups:", TOWER_GROUPS)
