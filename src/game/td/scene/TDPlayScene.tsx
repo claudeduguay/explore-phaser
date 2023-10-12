@@ -1,6 +1,5 @@
 
 import { Scene, Types, Utils, Math as PMath, Input } from "phaser"
-import { makeHeightRects, makeLandscapeTile } from "../assets/TextureFactory"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../entity/tower/TDTower"
 import TDGameScene from "./TDGameScene"
@@ -19,10 +18,9 @@ import { shuffle } from "../../../util/ArrayUtil"
 import { canvasSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../entity/enemy/TDEnemy"
-import { ENEMIES, generateEnemies } from "../entity/model/IEnemyModel"
+import { ENEMIES } from "../entity/model/IEnemyModel"
 import { onEnemyOverlap } from "../entity/tower/Targeting"
 import TreePreview from "../tree/TreePreview"
-import { captureAndCacheTower } from "./react/capture/useCaptureTower"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -49,49 +47,8 @@ export default class TDPlayScene extends Scene {
   }
 
   preload() {
-
-    this.load.audio('boop', "assets/audio/drop_003.ogg")
-    this.load.audio('cash', "assets/audio/dropmetalthing.ogg")
-    this.load.audio('explosion', "assets/audio/explosionCrunch_004.ogg")
-    this.load.audio('gun', "assets/audio/GunShot.wav")
-    this.load.audio('tick', "assets/audio/impactMetal_medium_002.ogg")
-    this.load.audio('woe', "assets/audio/lowDown.ogg")
-    this.load.audio('three', "assets/audio/lowThreeTone.ogg")
-    this.load.audio('beboop', "assets/audio/pepSound1.ogg")
-    this.load.audio('bip', "assets/audio/tone1.ogg")
-    this.load.audio('lose', "assets/audio/you_lose.ogg")
-    this.load.audio('win', "assets/audio/you_win.ogg")
-    this.load.audio('plop', "assets/audio/impactPlate_heavy_004.ogg")
-    this.load.audio('fail', "assets/audio/back_001.ogg")
-
-    this.load.atlas('flares', 'assets/particles/flares.png', 'assets/particles/flares.json')
-    this.load.image('fire', 'assets/particles/fire_01.png')
-    this.load.image('smoke', 'assets/particles/smoke_01.png')
-    this.load.image('ice', 'assets/particles/star_08.png')
-    this.load.image('rain', 'assets/particles/trace_01.png')
-    this.load.image('snow', 'assets/particles/star_05.png')
-    this.load.image('spark', 'assets/particles/spark_04.png')
-    this.load.image('slash', 'assets/particles/slash_03.png')
-    this.load.image('muzzle', 'assets/particles/muzzle_01.png')
-
-    makeHeightRects(this, "height_cells", 64, 64, 10)
-    makeLandscapeTile(this, "grass", { size: { x: 64, y: 64 }, options: { type: "grass" } })
-
+    // Most assets loaded in TDGameScene via preloadAssets function
     registerTowerTextures(this)
-
-    for (let model of ALL_TOWERS) {
-      captureAndCacheTower(this, new TDTower(this, 0, 0, model))
-    }
-
-    for (let i = 0; i < 8; i++) {
-      // First Explosion image size: 583x536, but they are not all the same size
-      const key = `explosion0${i}`
-      const asset = `assets/explosion/${key}.png`
-      this.load.image(key, asset)
-      // Sprite has a setTexture(key, [frame]) function
-    }
-
-    generateEnemies(this)
   }
 
   static createExplosionSprite(scene: Scene, x: number, y: number) {

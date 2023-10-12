@@ -11,7 +11,7 @@ export default class TDTurret extends BehaviorContainer {
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x, public model: ITowerModel) {
     super(scene)
-    const turret = this.scene.add.sprite(0, 0, `${model.meta.key}-turret`)
+    const turret = this.scene.add.sprite(0, 0, `${model.key}-turret`)
     this.add(turret)
 
     const count = model.stats.level
@@ -28,7 +28,7 @@ export default class TDTurret extends BehaviorContainer {
       this.weapon = []
       for (let i = 0; i < model.stats.level; i++) {
         const p = positions[i]
-        const weapon = new TDWeapon(scene, p.x, p.y, `${model.meta.key}-weapon`)
+        const weapon = new TDWeapon(scene, p.x, p.y, `${model.key}-weapon`)
         this.weapon.push(weapon)
         this.add(weapon)
       }
@@ -46,7 +46,7 @@ export default class TDTurret extends BehaviorContainer {
 
       this.weapon = []
       for (let i = 0; i < model.stats.level; i++) {
-        const weapon = new TDWeapon(scene, 0, 0, `${model.meta.key}-weapon`)
+        const weapon = new TDWeapon(scene, 0, 0, `${model.key}-weapon`)
         weapon.angle = angles[i]
         this.weapon.push(weapon)
         this.add(weapon)

@@ -43,7 +43,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     public model: ITowerModel = TOWER_MODELS.LAZER) {
     super(scene)
     const range = model.stats.range
-    this.platform = this.scene.add.sprite(0, 0, `${model.meta.key}-platform`).setInteractive()
+    this.platform = this.scene.add.sprite(0, 0, `${model.key}-platform`).setInteractive()
       .on(Input.Events.POINTER_OVER, () => this.showRange.visible = true, this)
       .on(Input.Events.POINTER_OUT, () => this.showRange.visible = false, this)
     this.add(this.platform)
@@ -63,7 +63,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     if (model.meta.rotation === "target") {
       this.behavior.add(new TargetAimBehavior(this))
     }
-    switch (model.meta.key) {
+    switch (model.key) {
       case "plasma":
         this.behavior.add(new TargetPlasmaBehavior(this))
         break

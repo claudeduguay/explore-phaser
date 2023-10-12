@@ -1,6 +1,5 @@
 
 export interface ITowerMeta {
-  key: string                        // Tower key
   distribution: "linear" | "radial"  // Weapon distribution
   rotation: "target" | number        // Rotation type
 }
@@ -23,6 +22,7 @@ export interface ITowerDamage {
 }
 
 export interface ITowerModel {
+  key: string                        // Tower key
   name: string
   group: string
   description: string
@@ -49,11 +49,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
 
   // BEAM
   lazer: {
-    name: "Lazer Tower",
+    key: "lazer",
     group: "beam",
+    name: "Lazer Tower",
     description: "Fires a lazer beam at a single enemy within range.",
     meta: {
-      key: "lazer",
       distribution: "linear",
       rotation: "target",
     },
@@ -63,11 +63,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   plasma: {
-    name: "Plasma Tower",
+    key: "plasma",
     group: "beam",
+    name: "Plasma Tower",
     description: "Fires a plasma beam at a single enemy within range.",
     meta: {
-      key: "plasma",
       distribution: "linear",
       rotation: "target",
     },
@@ -77,11 +77,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   lightning: {
-    name: "Lightning Tower",
+    key: "lightning",
     group: "beam",
+    name: "Lightning Tower",
     description: "Fires a lightning bolt at a single enemy within range.",
     meta: {
-      key: "lightning",
       distribution: "linear",
       rotation: "target",
     },
@@ -92,11 +92,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
   },
   // SPRAY
   flame: {
-    name: "Flame Tower",
+    key: "flame",
     group: "spray",
+    name: "Flame Tower",
     description: "Targets a single enemy within range with a fire spray.",
     meta: {
-      key: "flame",
       distribution: "linear",
       rotation: "target",
     },
@@ -106,11 +106,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   freeze: {
-    name: "Freeze Tower",
+    key: "freeze",
     group: "spray",
+    name: "Freeze Tower",
     description: "Targets a single enemy within range with an ice spray.",
     meta: {
-      key: "freeze",
       distribution: "linear",
       rotation: "target",
     },
@@ -120,11 +120,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   impact: {
-    name: "Impact Tower",
+    key: "impact",
     group: "spray",
+    name: "Impact Tower",
     description: "Targets a single enemy within range with a force spray.",
     meta: {
-      key: "impact",
       distribution: "linear",
       rotation: "target",
     },
@@ -135,11 +135,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
   },
   // CLOUD
   poison: {
-    name: "Poison Tower",
+    key: "poison",
     group: "spray",
+    name: "Poison Tower",
     description: "Targets multiple enemies within range with a cloud of poison.",
     meta: {
-      key: "poison",
       distribution: "radial",
       rotation: 1,
     },
@@ -149,11 +149,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   fire: {
-    name: "Fire Tower",
+    key: "fire",
     group: "cloud",
+    name: "Fire Tower",
     description: "Targets multiple enemies within range with a cloud of fire.",
     meta: {
-      key: "fire",
       distribution: "radial",
       rotation: 1,
     },
@@ -163,11 +163,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   smoke: {
-    name: "Smoke Tower",
+    key: "smoke",
     group: "cloud",
+    name: "Smoke Tower",
     description: "Targets multiple enemies within range with a cloud of smoke.",
     meta: {
-      key: "smoke",
       distribution: "radial",
       rotation: 1,
     },
@@ -177,11 +177,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   shock: {
-    name: "Shock Tower",
+    key: "shock",
     group: "cloud",
+    name: "Shock Tower",
     description: "Targets multiple enemies within range with a cloud of electricity.",
     meta: {
-      key: "shock",
       distribution: "radial",
       rotation: 1,
     },
@@ -191,11 +191,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   ice: {
-    name: "Ice Tower",
+    key: "ice",
     group: "cloud",
+    name: "Ice Tower",
     description: "Targets multiple enemies within range with a cloud of ice.",
     meta: {
-      key: "ice",
       distribution: "radial",
       rotation: 1,
     },
@@ -206,11 +206,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
   },
   // FALL
   rain: {
-    name: "Rain Tower",
+    key: "rain",
     group: "fall",
+    name: "Rain Tower",
     description: "Targets multiple enemies within range with rainfall.",
     meta: {
-      key: "rain",
       distribution: "radial",
       rotation: 1,
     },
@@ -220,11 +220,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   snow: {
-    name: "Snow Tower",
+    key: "snow",
     group: "fall",
+    name: "Snow Tower",
     description: "Targets multiple enemies within range with snowfall.",
     meta: {
-      key: "snow",
       distribution: "radial",
       rotation: 1,
     },
@@ -235,11 +235,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
   },
   // THROW
   bullet: {
-    name: "Bullet Tower",
+    key: "bullet",
     group: "throw",
+    name: "Bullet Tower",
     description: "Fires bullets at a single enemy within range.",
     meta: {
-      key: "bullet",
       distribution: "linear",
       rotation: "target",
     },
@@ -249,11 +249,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   missile: {
-    name: "Missile Tower",
+    key: "missile",
     group: "throw",
+    name: "Missile Tower",
     description: "Fires a missile at a single enemy within range.",
     meta: {
-      key: "missile",
       distribution: "linear",
       rotation: "target",
     },
@@ -264,11 +264,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
   },
   // AREA
   boost: {
-    name: "Boost Tower",
+    key: "boost",
     group: "area",
+    name: "Boost Tower",
     description: "Boosts other towers' damage effect, within range.",
     meta: {
-      key: "boost",
       distribution: "radial",
       rotation: 4,
     },
@@ -278,11 +278,11 @@ export const TOWER_MODELS: Record<string, ITowerModel> = {
     }
   },
   slow: {
-    name: "Slow Tower",
+    key: "slow",
     group: "area",
+    name: "Slow Tower",
     description: "Applies a slow effect on enemies within range",
     meta: {
-      key: "slow",
       distribution: "radial",
       rotation: -1,
     },

@@ -3,7 +3,6 @@ import { randomPeepOptions } from "../../assets/PeepFactory"
 import { makePeep } from "../../assets/TextureFactory"
 
 export interface IEnemyMeta {
-  key: string
 }
 
 export interface IEnemyStatistics {
@@ -20,6 +19,7 @@ export interface IEnemyVulnerability {
 }
 
 export interface IEnemyModel {
+  key: string
   name: string
   meta: IEnemyMeta
   stats: IEnemyStatistics
@@ -35,9 +35,9 @@ export function generateEnemies(scene: Scene, count: number = 5) {
     // Register assets
     makePeep(scene, `peep_${i}`, 32, 32, randomPeepOptions())
     ENEMIES.push({
+      key: `peep_${i}`,
       name: `Level ${i} Enemy`,
       meta: {
-        key: `peep_${i}`,
       },
       stats: {
         level: i,

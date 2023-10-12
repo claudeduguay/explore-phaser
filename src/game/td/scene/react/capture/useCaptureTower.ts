@@ -14,11 +14,11 @@ export function makeTowerRenderCallback(tower?: TDTower, angle = 0) {
 
 export default function useCaptureTower(scene: Scene, tower?: TDTower, angle = 0): string {
   const render = makeTowerRenderCallback(tower, angle)
-  const key = tower?.model.meta.key ? `tower-${tower?.model.meta.key}` : undefined
+  const key = tower?.model.key ? `tower-${tower?.model.key}` : undefined
   return useCapture(scene, 64, 64, render, key)
 }
 
 export function captureAndCacheTower(scene: Scene, tower: TDTower, angle = 0) {
   const render = makeTowerRenderCallback(tower, angle)
-  captureAndCacheTexture(scene, 64, 64, render, tower.model.meta.key)
+  captureAndCacheTexture(scene, 64, 64, render, tower.model.key)
 }

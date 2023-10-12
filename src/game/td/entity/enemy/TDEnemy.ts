@@ -23,25 +23,25 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     public model: IEnemyModel, public path: Curves.Path = new Curves.Path(),
     public showStatusBars: boolean = false) {
 
-    super(scene, path, x, y, model.meta.key)
+    super(scene, path, x, y, model.key)
     this.postFX.addShadow(0.2, 1.2, 0.2, 1, 0x000000, 3, 0.5)
     this.anims.create({
       key: 'east',
       frameRate: 20,
-      frames: this.anims.generateFrameNumbers(model.meta.key, { start: 0, end: 15 }),
+      frames: this.anims.generateFrameNumbers(model.key, { start: 0, end: 15 }),
       repeat: -1,
     })
     this.anims.create({
       key: 'south', frameRate: 20, repeat: -1,
-      frames: this.anims.generateFrameNumbers(model.meta.key, { start: 16, end: 31 }),
+      frames: this.anims.generateFrameNumbers(model.key, { start: 16, end: 31 }),
     })
     this.anims.create({
       key: 'west', frameRate: 20, repeat: -1,
-      frames: this.anims.generateFrameNumbers(model.meta.key, { start: 32, end: 47 }),
+      frames: this.anims.generateFrameNumbers(model.key, { start: 32, end: 47 }),
     })
     this.anims.create({
       key: 'north', frameRate: 20, repeat: -1,
-      frames: this.anims.generateFrameNumbers(model.meta.key, { start: 48, end: 63 }),
+      frames: this.anims.generateFrameNumbers(model.key, { start: 48, end: 63 }),
     })
     this.anims.play("east")
     this.setInteractive()
