@@ -22,7 +22,7 @@ export interface ITowerDamage {
 }
 
 export interface ITowerModel {
-  key: string                        // Tower key
+  key: string
   name: string
   group: string
   description: string
@@ -41,12 +41,6 @@ export interface ITowerGroups {
 // INSTANCES
 // ------------------------------------------------------------------
 
-export const DEFAULT_STATS: ITowerStatistics = {
-  level: 3,
-  cost: 100,
-  range: 100,
-}
-
 export const TOWER_INDEX: Record<string, ITowerModel> = {
 
   // BEAM
@@ -59,7 +53,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       lazer: { dps: 10 }
     }
@@ -73,7 +71,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       plasma: { dps: 10 }
     }
@@ -87,7 +89,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       lightning: { dps: 10 }
     }
@@ -103,7 +109,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       fire: { dps: 10 }
     }
@@ -117,7 +127,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       ice: { dps: 10 }
     }
@@ -131,7 +145,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       ice: { dps: 10 }
     }
@@ -147,7 +165,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       posion: { dps: 10 }
     }
@@ -161,7 +183,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       posion: { dps: 10 }
     }
@@ -175,7 +201,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       smoke: { dps: 10 }
     }
@@ -189,7 +219,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       shock: { dps: 10 }
     }
@@ -203,7 +237,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       freeze: { dps: 10 }
     }
@@ -219,7 +257,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       rain: { dps: 10 }
     }
@@ -233,7 +275,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       rain: { dps: 10 }
     }
@@ -249,7 +295,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       bullet: { dps: 10 }
     }
@@ -263,7 +313,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       missile: { dps: 10 }
     }
@@ -279,7 +333,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 4,
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       boost: { dps: 10 }
     }
@@ -293,7 +351,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: -1,
     },
-    stats: DEFAULT_STATS,
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
     damage: {
       slow: { dps: 10 }
     }
