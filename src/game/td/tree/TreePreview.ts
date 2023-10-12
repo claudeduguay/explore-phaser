@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import TreeLayout, { INodeKey, ITree } from "./TreeLayout";
 import PhaserLayoutTarget from "./PhaserLayoutTarget";
-import { TOWER_LIST, TOWER_INDEX } from "../entity/model/ITowerModel";
+import { TOWER_INDEX, TOWER_GROUPS } from "../entity/model/ITowerModel";
 import PhaserDrawSurface from "./PhaserDrawSurface";
 import Point from "../../../util/Point";
 
@@ -25,13 +25,12 @@ export default class TreePreview extends Scene {
       root,
       edges: new Map<INodeKey, INodeKey[]>()
     }
-    const beams = TOWER_LIST.filter(t => t.group === "beam").map(t => t.key).filter(k => k !== root)
-    const thrown = TOWER_LIST.filter(t => t.group === "throw").map(t => t.key).filter(k => k !== root)
-    const spray = TOWER_LIST.filter(t => t.group === "spray").map(t => t.key).filter(k => k !== root)
-    const cloud = TOWER_LIST.filter(t => t.group === "cloud").map(t => t.key).filter(k => k !== root)
-    const fall = TOWER_LIST.filter(t => t.group === "fall").map(t => t.key).filter(k => k !== root)
-    const area = TOWER_LIST.filter(t => t.group === "area").map(t => t.key).filter(k => k !== root)
-    console.log("Beams:", beams)
+    const beams = TOWER_GROUPS["beam"].map(t => t.key).filter(k => k !== root)
+    const thrown = TOWER_GROUPS["throw"].map(t => t.key).filter(k => k !== root)
+    const spray = TOWER_GROUPS["spray"].map(t => t.key).filter(k => k !== root)
+    const cloud = TOWER_GROUPS["cloud"].map(t => t.key).filter(k => k !== root)
+    const fall = TOWER_GROUPS["fall"].map(t => t.key).filter(k => k !== root)
+    const area = TOWER_GROUPS["area"].map(t => t.key).filter(k => k !== root)
     function sequenceFor(node: string, children: string[]) {
       if (children.length > 0) {
         const [head, ...tail] = children

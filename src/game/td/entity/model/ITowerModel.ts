@@ -33,6 +33,9 @@ export interface ITowerModel {
 
 export default ITowerModel
 
+export interface ITowerGroups {
+  [key: string]: ITowerModel[]
+}
 
 // ------------------------------------------------------------------
 // INSTANCES
@@ -294,3 +297,13 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
 }
 
 export const TOWER_LIST = Object.values(TOWER_INDEX)
+
+export const TOWER_GROUPS = TOWER_LIST.reduce((groups: ITowerGroups, tower: ITowerModel) => {
+  if (!groups[tower.group]) {
+    groups[tower.group] = []
+  }
+  groups[tower.group].push(tower)
+  return groups
+}, {} as ITowerGroups)
+
+console.log("Groups:", TOWER_GROUPS)
