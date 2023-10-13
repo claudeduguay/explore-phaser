@@ -52,5 +52,5 @@ export function landscapeRendererFunctionFactory(
     g.rect(0, 0, w, h)
     g.clip()
     baseRenderer(g, frameIndexFraction, merged)
-  };
+  }
 }
