@@ -22,7 +22,7 @@ export const COLORS: { [key: string]: IColoring } = {
   // Spray
   FLAME: colors(0.0),
   FREEZE: colors(0.5),
-  IMPACT: colors(0.15),
+  FORCE: colors(0.15),
   // Cloud
   POISON: colors(0.3),
   FIRE: colors(0.95),
@@ -183,10 +183,10 @@ const TOWERS: Record<string, ITextureConfigs> = {
     turret: roundFrontTurret(COLORS.FREEZE),
     weapon: funnelWeapon(COLORS.FREEZE)
   },
-  IMPACT: {
-    platform: platformConfig(PLATFORM.SPRAY, COLORS.IMPACT),
-    turret: roundFrontTurret(COLORS.IMPACT),
-    weapon: funnelWeapon(COLORS.IMPACT)
+  FORCE: {
+    platform: platformConfig(PLATFORM.SPRAY, COLORS.FORCE),
+    turret: roundFrontTurret(COLORS.FORCE),
+    weapon: funnelWeapon(COLORS.FORCE)
   },
 
   // CLOUD

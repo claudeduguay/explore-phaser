@@ -136,10 +136,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       ice: { dps: 10 }
     }
   },
-  impact: {
-    key: "impact",
+  force: {
+    key: "force",
     group: "spray",
-    name: "Impact",
+    name: "Force",
     description: "Targets a single enemy within range with a force spray.",
     meta: {
       distribution: "linear",

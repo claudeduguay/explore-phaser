@@ -240,7 +240,7 @@ export const freezeEmitter: IEmitterConfigBuilder =
     }
   }
 
-export const impactEmitter: IEmitterConfigBuilder =
+export const forceEmitter: IEmitterConfigBuilder =
   (range: number = 100, pos: IPointLike): IEmitterConfig => {
     return {
       ...commonSpray(range, pos),

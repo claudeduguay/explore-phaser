@@ -27,7 +27,7 @@ import TargetIceBehavior from "../../behavior/tower/cloud/TargetIceBehavior"
 import TargetPlasmaBehavior from "../../behavior/tower/TargetPlasmaBehavior"
 import TargetRainBehavior from "../../behavior/tower/cloud/TargetRainBehavior"
 import TargetSnowBehavior from "../../behavior/tower/cloud/TargetSnowBehavior"
-import TargetImpactBehavior from "../../behavior/tower/spray/TargetImpactBehavior"
+import TargeForceBehavior from "../../behavior/tower/spray/TargeForceBehavior"
 import TargetMissileBehavior from "../../behavior/tower/TargetMissileBehavior"
 import Targeting from "./Targeting"
 import { addLabel } from "../../../../util/TextUtil"
@@ -95,8 +95,8 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
       case "freeze":
         this.behavior.add(new TargetFreezeBehavior(this))
         break
-      case "impact":
-        this.behavior.add(new TargetImpactBehavior(this))
+      case "force":
+        this.behavior.add(new TargeForceBehavior(this))
         break
       case "poison":
         this.behavior.add(new TargePoisonBehavior(this))
