@@ -62,7 +62,13 @@ export function renderImage(g: CanvasRenderingContext2D, renderer: IRenderFuncti
   }
 }
 
-export function makePathTiles(scene: Scene, key: string, w: number, h: number, insetRatio = 0.25) {
+// options: { type: "grass" } })
+export function makeLandscapeTile(scene: Scene, key: string, config: ITextureConfig<Partial<ILandscapeOptions>>) {
+  const render: IRenderFunction = landscapeRendererFunctionFactory(0, config.options)
+  renderCanvas(scene, key, config.size.x, config.size.y, render)
+}
+
+export function makePathTiles(scene: Scene, key: string, w: number, h: number, appendLandscape: boolean = true, insetRatio = 0.25) {
   const count = 0b1111
   const straightPathRender: IRenderFunction = pathRendererFunctionFactory(0, { type: "straight", beltInset: insetRatio })
   const endPathRender: IRenderFunction = pathRendererFunctionFactory(0, { type: "end", beltInset: insetRatio })
@@ -70,7 +76,7 @@ export function makePathTiles(scene: Scene, key: string, w: number, h: number, i
   const tPathRender: IRenderFunction = pathRendererFunctionFactory(0, { type: "t", beltInset: insetRatio })
   const xPathRender: IRenderFunction = pathRendererFunctionFactory(0, { type: "x", beltInset: insetRatio })
 
-  const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
+  let render: IRenderFunction = (g: CanvasRenderingContext2D) => {
     for (let i = 0; i <= count; i++) {
       const x = w * i
 
@@ -133,9 +139,14 @@ export function makePathTiles(scene: Scene, key: string, w: number, h: number, i
       // g.lineWidth = 2
       // g.rect(x, 0, w, h)
       // g.stroke()
+
+      if (appendLandscape) {
+        const renderGrass: IRenderFunction = landscapeRendererFunctionFactory(0, { type: "grass" })
+        renderImage(g, renderGrass, 0, h, 64, 64, 1.0)
+      }
     }
   }
-  renderCanvas(scene, key, w * (count + 1), h, render)
+  renderCanvas(scene, key, w * (count + 1), appendLandscape ? h * 2 : h, render)
 }
 
 export function makeHeightRects(scene: Scene, key: string, w: number, h: number, count: number = 16) {
@@ -198,11 +209,6 @@ export function makeTowerTurret(scene: Scene, key: string, config: ITextureConfi
 
 export function makeTowerWeapon(scene: Scene, key: string, config: ITextureConfig<Partial<IWeaponOptions>>) {
   const render: IRenderFunction = weaponRendererFunctionFactory(0, config.options)
-  renderCanvas(scene, key, config.size.x, config.size.y, render)
-}
-
-export function makeLandscapeTile(scene: Scene, key: string, config: ITextureConfig<Partial<ILandscapeOptions>>) {
-  const render: IRenderFunction = landscapeRendererFunctionFactory(0, config.options)
   renderCanvas(scene, key, config.size.x, config.size.y, render)
 }
 

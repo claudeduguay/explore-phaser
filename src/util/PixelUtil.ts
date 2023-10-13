@@ -30,14 +30,23 @@ export function getPixel(imageData: ImageData, x: number, y: number, asRGBA: boo
   return rgbaToColor(rgba)
 }
 
-export function setPixel(imageData: ImageData, x: number, y: number, color: number | IRGBA): void {
+export function setPixel(imageData: ImageData, x: number, y: number, color: number | IRGBA, asFloat: boolean = false): void {
   const { data, width, } = imageData
-  const index = y * width + x * 4
-  const isNumber = typeof color === "number"
-  data[index + 0] = isNumber ? colorToRed(color) : color.r
-  data[index + 1] = isNumber ? colorToGreen(color) : color.g
-  data[index + 2] = isNumber ? colorToBlue(color) : color.b
-  data[index + 3] = isNumber ? colorToAlpha(color) : color.a
+  const index = (y * width + x) * 4
+  if (typeof color === "number") {
+    data[index + 0] = colorToRed(color)
+    data[index + 1] = colorToGreen(color)
+    data[index + 2] = colorToBlue(color)
+    data[index + 3] = colorToAlpha(color)
+  } else {
+    if (asFloat) {
+      color = rgbaFloatToInt(color as IRGBA)
+    }
+    data[index + 0] = color.r
+    data[index + 1] = color.g
+    data[index + 2] = color.b
+    data[index + 3] = color.a
+  }
 }
 
 export function rgbaToColor({ r, g, b, a }: IRGBA, asFloat: boolean = false) {
@@ -74,5 +83,23 @@ export function colorToRGBA(color: number, asFloat: boolean = false): IRGBA {
     g: colorToGreen(color, asFloat),
     b: colorToBlue(color, asFloat),
     a: colorToAlpha(color, asFloat)
+  }
+}
+
+export function rgbaIntToFloat(color: IRGBA): IRGBA {
+  return {
+    r: color.r / 255.0,
+    g: color.g / 255.0,
+    b: color.b / 255.0,
+    a: color.a / 255.0
+  }
+}
+
+export function rgbaFloatToInt(color: IRGBA): IRGBA {
+  return {
+    r: Math.floor(color.r * 255) & 0xFF,
+    g: Math.floor(color.g * 255) & 0xFF,
+    b: Math.floor(color.b * 255) & 0xFF,
+    a: Math.floor(color.a * 255) & 0xFF,
   }
 }

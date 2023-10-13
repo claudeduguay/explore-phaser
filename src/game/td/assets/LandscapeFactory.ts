@@ -1,4 +1,5 @@
-import { lerpInt } from "../../../util/MathUtil";
+import { lerp } from "../../../util/MathUtil";
+import { setPixel } from "../../../util/PixelUtil";
 import { IMarginInsets, canvasSize } from "../../../util/RenderUtil";
 
 export type ILandscapeType = "sand" | "grass" | "hills" | "mountain"
@@ -29,17 +30,16 @@ export function baseRenderer(g: CanvasRenderingContext2D,
 export function grassRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: ILandscapeOptions) {
+  const imageData = g.getImageData(0, 0, g.canvas.width, g.canvas.height)
   const { w, h } = canvasSize(g)
   g.globalAlpha = 1.0
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
-      const green = lerpInt(0x99, 0xFF, Math.random()).toString(16).toUpperCase()
-      const color = `#00${green}00`
-      // console.log("Grass color:", color)
-      g.fillStyle = color
-      g.fillRect(x, y, 1, 1)
+      const green = lerp(0.4, 0.7, Math.random())
+      setPixel(imageData, x, y, { r: 0, g: green, b: 0, a: 1.0 }, true)
     }
   }
+  g.putImageData(imageData, 0, 0)
 }
 
 export function landscapeRendererFunctionFactory(

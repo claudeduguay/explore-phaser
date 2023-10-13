@@ -1,4 +1,4 @@
-import { Types } from "phaser";
+import { Types, Math as PMath } from "phaser";
 import TDEnemy from "../enemy/TDEnemy";
 import TDTower from "./TDTower";
 import Point from "../../../../util/Point";
@@ -32,6 +32,19 @@ export default class Targeting {
       }
     }
     return { same, added, deleted }
+  }
+}
+
+
+// Check if enemy is within range radius
+export function onEnemyInRange(tower: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
+  enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
+  if (tower instanceof TDTower && enemy instanceof TDEnemy) {
+    if (tower.preview) {
+      return false
+    }
+    const distance = PMath.Distance.BetweenPoints(enemy, tower)
+    return distance <= tower.model.stats.range
   }
 }
 

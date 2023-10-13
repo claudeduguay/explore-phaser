@@ -1,5 +1,5 @@
 
-import { Scene, Types, Utils, Math as PMath, Input } from "phaser"
+import { Scene, Utils, Math as PMath, Input } from "phaser"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../entity/tower/TDTower"
 import TDGameScene from "./TDGameScene"
@@ -19,7 +19,7 @@ import { canvasSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../entity/enemy/TDEnemy"
 import { ENEMY_LIST } from "../entity/model/IEnemyModel"
-import { onEnemyOverlap } from "../entity/tower/Targeting"
+import { onEnemyInRange, onEnemyOverlap } from "../entity/tower/Targeting"
 import TreePreview from "../tree/TreePreview"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
@@ -47,7 +47,7 @@ export default class TDPlayScene extends Scene {
   }
 
   preload() {
-    // Most assets loaded in TDGameScene via preloadAssets function
+    // Most assets are loaded in TDGameScene via preloadAssets function
     registerTowerTextures(this)
   }
 
@@ -178,12 +178,16 @@ export default class TDPlayScene extends Scene {
       this.towerGroup.add(tower)
     }
 
-    this.physics.add.overlap(this.towerGroup, this.enemyGroup, onEnemyOverlap, this.onEnemyInRange)
+    this.physics.add.overlap(this.towerGroup, this.enemyGroup, onEnemyOverlap, onEnemyInRange)
 
     // const fireRange = 220
     // this.add.particles(10, 765, 'fire', fireEmitter(fireRange))
     // this.add.rectangle(10, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
     // this.add.particles(950, 795, 'smoke', cloudEmitter())
+
+    // ------------------------------------------------------------------
+    // START ADD TOWER MECHANICS
+    // ------------------------------------------------------------------
 
     const collectTowerPoints = (adding: TDTower) => {
       const towerPoints: Point[] = []
@@ -208,6 +212,11 @@ export default class TDPlayScene extends Scene {
       }
     }
 
+
+    // ------------------------------------------------------------------
+    // TOWER SCENE PREVIEW
+    // ------------------------------------------------------------------
+
     const onToggleTowerPreview = () => {
       if (this.scene.isActive("tower_preview")) {
         this.scene.sleep("tower_preview")
@@ -215,6 +224,14 @@ export default class TDPlayScene extends Scene {
         this.scene.wake("tower_preview")
       }
     }
+    this.towerPreview = new TowerPreview(this, 50, 58)
+    this.scene.add("tower_preview", this.towerPreview, true)
+    this.scene.sleep("tower_preview")
+
+    // ------------------------------------------------------------------
+    // TREE SCENE PREVIEW
+    // ------------------------------------------------------------------
+
     const onToggleTreePreview = () => {
       if (this.scene.isActive("tree_preview")) {
         this.scene.sleep("tree_preview")
@@ -222,22 +239,14 @@ export default class TDPlayScene extends Scene {
         this.scene.wake("tree_preview")
       }
     }
-    addReactNode(this, 0, 0, <GameHeader scene={this} active={this.active} navigator={this.parent}
-      onToggleTowerPreview={onToggleTowerPreview} onToggleTreePreview={onToggleTreePreview} />)
-    addReactNode(this, 0, this.game.canvas.height - 62, <GameFooter scene={this} onAddTower={onAddTower} />)
-    // addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
-
-    this.towerPreview = new TowerPreview(this, 50, 58)
-    this.scene.add("tower_preview", this.towerPreview, true)
-    this.scene.sleep("tower_preview")
-
     this.treePreview = new TreePreview(this, 50, 50)
     this.scene.add("tree_preview", this.treePreview, true)
     this.scene.sleep("tree_preview")
 
-    // Show spritesheet canvas
-    // this.add.sprite(50, 600, "peep_weak_canvas").setOrigin(0)
-
+    addReactNode(this, 0, 0, <GameHeader scene={this} active={this.active} navigator={this.parent}
+      onToggleTowerPreview={onToggleTowerPreview} onToggleTreePreview={onToggleTreePreview} />)
+    addReactNode(this, 0, this.game.canvas.height - 62, <GameFooter scene={this} onAddTower={onAddTower} />)
+    // addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
   }
 
   createMap() {
@@ -248,23 +257,10 @@ export default class TDPlayScene extends Scene {
       const margin = 10
       const x = 38
       g.fillStyle(0xCCCCFF, 1)
-      g.fillRect(x - margin, 650 - margin, 16 * 64 + margin * 2, 64 + margin * 2)
-      this.add.sprite(x, 650, "path_tiles").setOrigin(0, 0)
+      g.fillRect(x - margin, 590 - margin, 16 * 64 + margin * 2, 64 * 2 + margin * 2)
+      this.add.sprite(x, 590, "path_tiles").setOrigin(0, 0)
     }
   }
-
-  // Check if enemy is within range radius
-  onEnemyInRange(tower: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
-    enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
-    if (tower instanceof TDTower && enemy instanceof TDEnemy) {
-      if (tower.preview) {
-        return false
-      }
-      const distance = PMath.Distance.BetweenPoints(enemy, tower)
-      return distance <= tower.model.stats.range
-    }
-  }
-
 
 
   update(time: number, delta: number): void {

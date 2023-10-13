@@ -25,7 +25,8 @@ export default function makeTileMap(scene: Scene, x: number, y: number, model: I
 export class TDTileMap extends BehaviorContainer {
 
   map!: Tilemaps.Tilemap
-  layer!: Tilemaps.TilemapLayer
+  backgroundLayer!: Tilemaps.TilemapLayer
+  mainLayer!: Tilemaps.TilemapLayer
 
   constructor(scene: Scene, x: number, y: number, { cellSize, rows, cols }: IMapConfig) {
     super(scene, x, y)
@@ -42,17 +43,25 @@ export class TDTileMap extends BehaviorContainer {
     if (!tileset) {
       throw new Error("Failed to create tileset")
     }
+    console.log("Tileset index:", map.getTilesetIndex("path_tiles"))
 
-    const layer = map.createBlankLayer('Path Layer', tileset, x, y)
-    if (!layer) {
+    const backgroundLayer = map.createBlankLayer('Background', tileset, x, y)
+    if (!backgroundLayer) {
       throw new Error("Failed to create layer")
     }
-    this.layer = layer
-    this.add(layer)
+    this.backgroundLayer = backgroundLayer
+    this.add(backgroundLayer)
+
+    const mainLayer = map.createBlankLayer('Path Layer', tileset, x, y)
+    if (!mainLayer) {
+      throw new Error("Failed to create layer")
+    }
+    this.mainLayer = mainLayer
+    this.add(mainLayer)
   }
 
   setModel(path: IPathModel) {
-    this.layer.fill(0x1111 + 1)  // Fill with black tiles
+    this.backgroundLayer.fill(0b1111 + 1)
     path.forEach(cell => {
       this.map.putTileAt(cell.bits, cell.pos.x, cell.pos.y)
     })
