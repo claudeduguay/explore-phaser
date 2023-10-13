@@ -14,6 +14,7 @@ Need to account for shields (disabled for now)
 
 * Need for consider whether we can embed a new scene inside and DOM object.
 * Need to figure out leveling
+* Should rename Impact tower as Force tower.
 * Effect System needs to handle all InRange conditions
 * Keep trying to get Tower previews to be in containers
 * BUG: Cloud towers don't aways emmit if dropped by mouse

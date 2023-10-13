@@ -214,7 +214,7 @@ export const commonSpray: IEmitterConfigBuilder =
       speed,
       colorEase: PMath.Easing.Quadratic.Out.name,
       angle: { min: 5, max: -5 },  // 90 +/- 5
-      rotate: { start: 0, end: 360 },
+      rotate: { min: 0, max: 360 },
       blendMode: 'ADD',
       deathZone: rangeDeathZone(range, pos)
     }
@@ -225,7 +225,7 @@ export const flameEmitter: IEmitterConfigBuilder =
     return {
       ...commonSpray(range, pos),
       alpha: { start: 0.75, end: 0.25 },
-      color: [0xfacc22, 0xf89800, 0xf83600, 0x000000],
+      color: [0x0000FF, 0xfacc22, 0xf89800, 0xf83600, 0x000000],
       scale: { start: 0.005, end: 0.15, ease: 'sine.out' },
     }
   }

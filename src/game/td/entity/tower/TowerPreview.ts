@@ -1,7 +1,6 @@
 import { Scene } from "phaser";
 import { TOWER_LIST } from "../model/ITowerModel";
 import TDTower from "./TDTower";
-import { addLabel } from "../../../../util/TextUtil";
 import TDEnemy from "../enemy/TDEnemy";
 import { ENEMY_LIST } from "../model/IEnemyModel";
 
