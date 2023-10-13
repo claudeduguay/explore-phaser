@@ -128,9 +128,9 @@ export default class TDPlayScene extends Scene {
   }
 
   create() {
-    const { w } = canvasSize(this)
-
-    // this.lights.addLight(0, 0, w, 0xffffff, 1)
+    const { w, h } = canvasSize(this)
+    console.log("Default lights:", this.lights.lights)
+    this.lights.addLight(-w / 2, -h / 2, w * 2, 0xffffff, 1).setIntensity(2)
 
     // Tower Info
     this.towerGroup = new SelectableGroup(this, "towerGroup")

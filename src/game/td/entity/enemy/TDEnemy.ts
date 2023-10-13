@@ -24,7 +24,7 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     public showStatusBars: boolean = false) {
 
     super(scene, path, x, y, model.key)
-    this.postFX.addShadow(0.2, 1.2, 0.2, 1, 0x000000, 3, 0.5)
+    this.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
     this.anims.create({
       key: 'east',
       frameRate: 20,
@@ -50,16 +50,16 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     this.shield = new ActiveValue(model.stats.shield || 0)
 
     if (showStatusBars) {
-      // this.shieldBar = new HealthBar(scene, this, 0, 0, 30, 5, 0xffa500)
-      // scene.add.existing(this.shieldBar)
+      this.shieldBar = new HealthBar(scene, this, 0, 0, 30, 5, 0xffa500)
+      scene.add.existing(this.shieldBar)
+      this.shieldBar.visible = false
 
       this.healthBar = new HealthBar(scene, this, 0, 3, 30, 5, 0x00ff00)
       scene.add.existing(this.healthBar)
 
       this.container = scene.add.container()
       this.container.add(this.healthBar)
-      // this.container.add(this.shieldBar)
-      scene.add.existing(this.container)
+      this.container.add(this.shieldBar)
     }
   }
 

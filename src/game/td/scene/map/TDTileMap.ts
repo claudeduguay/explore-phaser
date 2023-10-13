@@ -2,6 +2,7 @@ import { Scene, Tilemaps } from "phaser"
 import Point from "../../../../util/Point";
 import IPathModel from "./IPathModel";
 import BehaviorContainer from "../../behavior/core/BehaviorContainer";
+import { lerpInt } from "../../../../util/MathUtil";
 
 export interface IMapConfig {
   cellSize: Point
@@ -61,7 +62,8 @@ export class TDTileMap extends BehaviorContainer {
   }
 
   setModel(path: IPathModel) {
-    this.backgroundLayer.fill(16)
+    this.backgroundLayer.forEachTile(
+      (tile, i) => tile.index = lerpInt(16, 20, Math.random()))
     path.forEach(cell => {
       this.map.putTileAt(cell.bits, cell.pos.x, cell.pos.y)
     })

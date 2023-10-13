@@ -33,6 +33,12 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
   const model = ENEMY_INDEX[key]
   const enemy = scene.add.enemy(origin.x, origin.y, model, path, true)
   enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
+    if (enemy.shieldBar) {
+      enemy.shieldBar.destroy()
+    }
+    if (enemy.healthBar) {
+      enemy.healthBar.destroy()
+    }
     enemy.destroy()
     enemyGroup.remove(enemy)
     if (model) {

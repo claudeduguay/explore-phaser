@@ -29,8 +29,9 @@ export default class TowerPreview extends Scene {
       const y = this.y + 150 + vBox * row
       const tower = new TDTower(this, x, y, model)
       tower.preview = true
+      tower.showLabel.visible = true
       this.add.existing(tower)
-      addLabel(this, x, y + 40, model.name.split(" ")[0], "center")
+      // addLabel(this, x, y + 40, model.name.split(" ")[0], "center")
       tower.targeting.current = [new TDEnemy(this, x, y - 100, ENEMY_LIST[0])]
     })
   }

@@ -1,7 +1,5 @@
 import { Scene, GameObjects } from "phaser";
 import { makeEllipse } from "../../assets/TextureFactory";
-import { addLabel } from "../../../../util/TextUtil";
-// import GraphicsContainer from "../../../util/GraphicsContainer"
 
 export default class TDRange extends GameObjects.Container {
 
@@ -16,8 +14,6 @@ export default class TDRange extends GameObjects.Container {
 
     const shape = scene.add.sprite(0, 0, ellipseKey)
     this.add(shape)
-    const label = addLabel(scene, 0, 38, name, "center")
-    this.add(label)
   }
 
 }

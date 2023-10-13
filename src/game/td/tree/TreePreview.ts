@@ -59,6 +59,8 @@ export default class TreePreview extends Scene {
     const layoutTarget = new PhaserLayoutTarget(64, 64)
     keysArray.forEach((key: string, i: number) => {
       const tower = this.add.tower(100, 100, TOWER_INDEX[key])
+      tower.preview = true
+      tower.showLabel.visible = true
       layoutTarget.set(key, tower)
     })
 

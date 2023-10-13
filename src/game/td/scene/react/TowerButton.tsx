@@ -16,7 +16,7 @@ export default function TowerButton({ scene, tower, onClick }: ITowerButtonProps
       onClick(tower.model)
     }
   }
-  return <button className="btn rounded p-0 m-0 mx-1" onClick={handleClick} title={tower.model.name}>
+  return <button className="btn btn-primary p-0 m-0 mx-1 border-white" onClick={handleClick} title={tower.model.name}>
     <img src={imageSrc} alt="Tower" width={48} height={48} />
   </button>
 }

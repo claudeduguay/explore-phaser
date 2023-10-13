@@ -143,7 +143,9 @@ export function makePathTiles(scene: Scene, key: string, w: number, h: number, a
       // Note: May not need to use the same tileset
       if (appendLandscape) {
         const renderGrass: IRenderFunction = landscapeRendererFunctionFactory(0, { type: "grass" })
-        renderImage(g, renderGrass, 0, h, 64, 64, 1.0)
+        for (let i = 0; i < 4; i++) {
+          renderImage(g, renderGrass, 64 * i, h, 64, 64, 1.0)
+        }
       }
     }
   }

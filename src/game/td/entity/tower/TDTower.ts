@@ -30,6 +30,7 @@ import TargetSnowBehavior from "../../behavior/tower/cloud/TargetSnowBehavior"
 import TargetImpactBehavior from "../../behavior/tower/spray/TargetImpactBehavior"
 import TargetMissileBehavior from "../../behavior/tower/TargetMissileBehavior"
 import Targeting from "./Targeting"
+import { addLabel } from "../../../../util/TextUtil"
 
 export default class TDTower extends BehaviorContainer implements ISelectable {
 
@@ -37,6 +38,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
   turret: TDTurret
   targeting = new Targeting()
   showRange: GameObjects.Container
+  showLabel: GameObjects.Text
   preview: boolean = false
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x,
@@ -44,8 +46,20 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     super(scene)
     const range = model.stats.range
     this.platform = this.scene.add.sprite(0, 0, `${model.key}-platform`).setInteractive()
-      .on(Input.Events.POINTER_OVER, () => this.showRange.visible = true, this)
-      .on(Input.Events.POINTER_OUT, () => this.showRange.visible = false, this)
+      .on(Input.Events.POINTER_OVER, () => {
+        this.showRange.visible = true
+        if (!this.preview) {
+          this.showLabel.visible = true
+        }
+      }, this)
+      .on(Input.Events.POINTER_OUT, () => {
+        this.showRange.visible = false
+        if (!this.preview) {
+          this.showLabel.visible = false
+        }
+      }, this)
+    // Shadow disapears on mouse events, updating on each frame compounds shadows
+    this.platform.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
     this.add(this.platform)
 
     this.turret = new TDTurret(scene, 0, 0, model)
@@ -57,6 +71,12 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     this.showRange = scene.add.existing(new TDRange(scene, 0, 0, model.name, model.stats.range))
     this.showRange.visible = false
     this.add(this.showRange)
+    this.sendToBack(this.showRange)
+
+    this.showLabel = addLabel(scene, 0, 38, model.name, "center")
+    this.showLabel.visible = false
+    this.add(this.showLabel)
+
 
     this.setSize(range * 2, range * 2) // Sets bounding box
 
@@ -150,8 +170,8 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
   emissionPoints() {
     return this.turret.weapon.map((p, i) => this.emissionPoint(i))
   }
-}
 
+}
 
 GameObjects.GameObjectFactory.register("tower",
   function (this: GameObjects.GameObjectFactory, x: number, y: number, model: ITowerModel) {
