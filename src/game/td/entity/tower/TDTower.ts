@@ -58,7 +58,6 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
           this.showLabel.visible = false
         }
       }, this)
-    // Shadow disapears on mouse events, updating on each frame compounds shadows
     this.platform.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
     this.add(this.platform)
 
@@ -155,6 +154,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
 
   hideSelection() {
     this.platform.postFX?.clear()
+    this.platform.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
   }
 
   emissionPoint(index: number = 1) {
