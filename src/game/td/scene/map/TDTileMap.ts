@@ -43,7 +43,7 @@ export class TDTileMap extends BehaviorContainer {
     if (!tileset) {
       throw new Error("Failed to create tileset")
     }
-    console.log("Tileset index:", map.getTilesetIndex("path_tiles"))
+    // console.log("Tileset index:", map.getTilesetIndex("path_tiles"))
 
     const backgroundLayer = map.createBlankLayer('Background', tileset, x, y)
     if (!backgroundLayer) {
@@ -61,7 +61,7 @@ export class TDTileMap extends BehaviorContainer {
   }
 
   setModel(path: IPathModel) {
-    this.backgroundLayer.fill(0b1111 + 1)
+    this.backgroundLayer.fill(16)
     path.forEach(cell => {
       this.map.putTileAt(cell.bits, cell.pos.x, cell.pos.y)
     })
