@@ -4,33 +4,53 @@ import TDTurret from "./TDTurret"
 import BehaviorContainer from "../../behavior/core/BehaviorContainer"
 import TargetAimBehavior from "../../behavior/tower/TargetAimBehavior"
 import ClearTargetsBehavior from "../../behavior/tower/TargetsClearBehavior"
-import TargetLaserBehavior from "../../behavior/tower/TargetLazerBehavior"
 import TDRange from "./TDRange"
 import ITowerModel from "../model/ITowerModel"
 import { TOWER_INDEX } from "../model/ITowerModel"
 import { ISelectable } from "../../scene/SelectableGroup"
 import { clamp } from "../../../../util/MathUtil"
+import Point, { toSceneCoordinates } from "../../../../util/Point"
+import { addLabel } from "../../../../util/TextUtil"
+import Targeting from "./Targeting"
 
 import RotateBehavior from "../../behavior/tower/RotateBehavior"
+import TargetLaserBehavior from "../../behavior/tower/TargetLazerBehavior"
+import TargetPlasmaBehavior from "../../behavior/tower/TargetPlasmaBehavior"
 import TargetLightningBehavior from "../../behavior/tower/TargetLightningBehavior"
-import TargePoisonBehavior from "../../behavior/tower/cloud/TargetPoisonBehavior"
-import TargetFireBehavior from "../../behavior/tower/cloud/TargetFireBehavior"
 import TargetFlameBehavior from "../../behavior/tower/spray/TargetFlameBehavior"
 import TargetFreezeBehavior from "../../behavior/tower/spray/TargetFreezeBehavior"
-import TargetBulletBehavior from "../../behavior/tower/TargetBulletBehavior"
-import TargetBoostBehavior from "../../behavior/tower/TargetBoostBehavior"
-import TargetSlowBehavior from "../../behavior/tower/TargetSlowBehavior"
-import Point, { toSceneCoordinates } from "../../../../util/Point"
+import TargeForceBehavior from "../../behavior/tower/spray/TargeForceBehavior"
+import TargePoisonBehavior from "../../behavior/tower/cloud/TargetPoisonBehavior"
+import TargetFireBehavior from "../../behavior/tower/cloud/TargetFireBehavior"
 import TargetSmokeBehavior from "../../behavior/tower/cloud/TargetSmokeBehavior"
 import TargetShockBehavior from "../../behavior/tower/cloud/TargetShockBehavior"
 import TargetIceBehavior from "../../behavior/tower/cloud/TargetIceBehavior"
-import TargetPlasmaBehavior from "../../behavior/tower/TargetPlasmaBehavior"
 import TargetRainBehavior from "../../behavior/tower/cloud/TargetRainBehavior"
 import TargetSnowBehavior from "../../behavior/tower/cloud/TargetSnowBehavior"
-import TargeForceBehavior from "../../behavior/tower/spray/TargeForceBehavior"
+import TargetBulletBehavior from "../../behavior/tower/TargetBulletBehavior"
 import TargetMissileBehavior from "../../behavior/tower/TargetMissileBehavior"
-import Targeting from "./Targeting"
-import { addLabel } from "../../../../util/TextUtil"
+import TargetBoostBehavior from "../../behavior/tower/TargetBoostBehavior"
+import TargetSlowBehavior from "../../behavior/tower/TargetSlowBehavior"
+
+const TOWER_BEHAVIORS: Record<string, any> = {
+  lazer: TargetLaserBehavior,
+  plasma: TargetPlasmaBehavior,
+  lightning: TargetLightningBehavior,
+  flame: TargetFlameBehavior,
+  freeze: TargetFreezeBehavior,
+  force: TargeForceBehavior,
+  poison: TargePoisonBehavior,
+  fire: TargetFireBehavior,
+  smoke: TargetSmokeBehavior,
+  shock: TargetShockBehavior,
+  ice: TargetIceBehavior,
+  rain: TargetRainBehavior,
+  snow: TargetSnowBehavior,
+  bullet: TargetBulletBehavior,
+  missile: TargetMissileBehavior,
+  boost: TargetBoostBehavior,
+  slow: TargetSlowBehavior,
+}
 
 export default class TDTower extends BehaviorContainer implements ISelectable {
 
@@ -82,58 +102,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     if (model.meta.rotation === "target") {
       this.behavior.add(new TargetAimBehavior(this))
     }
-    switch (model.key) {
-      case "plasma":
-        this.behavior.add(new TargetPlasmaBehavior(this))
-        break
-      case "lightning":
-        this.behavior.add(new TargetLightningBehavior(this))
-        break
-      case "flame":
-        this.behavior.add(new TargetFlameBehavior(this))
-        break
-      case "freeze":
-        this.behavior.add(new TargetFreezeBehavior(this))
-        break
-      case "force":
-        this.behavior.add(new TargeForceBehavior(this))
-        break
-      case "poison":
-        this.behavior.add(new TargePoisonBehavior(this))
-        break
-      case "fire":
-        this.behavior.add(new TargetFireBehavior(this))
-        break
-      case "smoke":
-        this.behavior.add(new TargetSmokeBehavior(this))
-        break
-      case "shock":
-        this.behavior.add(new TargetShockBehavior(this))
-        break
-      case "ice":
-        this.behavior.add(new TargetIceBehavior(this))
-        break
-      case "rain":
-        this.behavior.add(new TargetRainBehavior(this))
-        break
-      case "snow":
-        this.behavior.add(new TargetSnowBehavior(this))
-        break
-      case "bullet":
-        this.behavior.add(new TargetBulletBehavior(this))
-        break
-      case "missile":
-        this.behavior.add(new TargetMissileBehavior(this))
-        break
-      case "boost":
-        this.behavior.add(new TargetBoostBehavior(this))
-        break
-      case "slow":
-        this.behavior.add(new TargetSlowBehavior(this))
-        break
-      default:
-        this.behavior.add(new TargetLaserBehavior(this))
-    }
+    this.behavior.add(new TOWER_BEHAVIORS[model.key](this))
     this.behavior.add(new ClearTargetsBehavior(this))
   }
 
