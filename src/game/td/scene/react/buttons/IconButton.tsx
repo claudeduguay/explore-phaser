@@ -6,13 +6,13 @@ export interface IIConButtonProps {
   onClick?: () => void
 }
 
-export default function IconButton({ className = "btn btn-primary p-1", icon, onClick }: IIConButtonProps) {
+export default function IconButton({ className = "btn btn-primary", icon, onClick }: IIConButtonProps) {
   const handleClick = () => {
     if (onClick) {
       onClick()
     }
   }
-  return <button className={className} onClick={handleClick}>
+  return <button className={className} style={{ padding: "2px 3px" }} onClick={handleClick}>
     <Icon icon={icon} style={{ color: "white", fontSize: 22 }} />
   </button>
 }

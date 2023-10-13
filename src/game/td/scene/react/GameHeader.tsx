@@ -35,38 +35,38 @@ export default function GameHeader({ active, navigator, scene, onToggleTowerPrev
   const health = useActiveValue(activeHealth)
   const credits = useActiveValue(activeCredits)
 
-  return <>
-    <div className="d-flex p-2" style={{ width: w, height: 45 }}>
-      <div className="flex-fill justify-content-start">
-        <div className="row">
-          <div className="col-auto p-0 ms-2">
-            <div className="input-group">
-              <span className="input-group-text fw-bold">
-                <Icon icon="favorite" style={{ color: "red", fontSize: 22 }} />
-              </span>
-              <span className="btn btn-success">{health}</span>
-            </div>
-          </div>
-          <div className="col-auto p-0 ms-2">
-            <div className="input-group">
-              <span className="input-group-text fw-bold">
-                <Icon icon="attach_money" style={{ color: "green", fontSize: 22 }} />
-              </span>
-              <span className="btn btn-success">{credits}</span>
-            </div>
+  return <div className="d-flex p-1 px-2" style={{ width: w, height: 45 }}>
+    <div className="flex-fill justify-content-start">
+      <div className="row">
+        <div className="col-auto p-0 ms-2">
+          <div className="input-group">
+            <span className="input-group-text fw-bold">
+              <Icon icon="favorite" style={{ color: "red", fontSize: 22 }} />
+            </span>
+            <span className="btn btn-success">{health}</span>
           </div>
         </div>
-      </div>
-      <div className="justify-content-end bg-primary">
-        <div className="btn-group">
-          <SpeedControl scene={scene} />
-          <IconButton icon="home" onClick={onHome} />
-          <IconButton icon="sentiment_satisfied" onClick={onWin} />
-          <IconButton icon="sentiment_very_dissatisfied" onClick={onLose} />
-          <IconButton icon="verified_user" onClick={onToggleTowerPreview} />
-          <IconButton icon="science" onClick={onToggleTreePreview} />
+        <div className="col-auto p-0 ms-2">
+          <div className="input-group">
+            <span className="input-group-text fw-bold">
+              <Icon icon="attach_money" style={{ color: "green", fontSize: 22 }} />
+            </span>
+            <span className="btn btn-success">{credits}</span>
+          </div>
         </div>
       </div>
     </div>
-  </>
+    <div className="justify-content-end">
+      <div className="btn-group me-2">
+        <SpeedControl scene={scene} />
+      </div>
+      <div className="btn-group">
+        <IconButton icon="home" onClick={onHome} />
+        <IconButton icon="sentiment_satisfied" onClick={onWin} />
+        <IconButton icon="sentiment_very_dissatisfied" onClick={onLose} />
+        <IconButton icon="verified_user" onClick={onToggleTowerPreview} />
+        <IconButton icon="science" onClick={onToggleTreePreview} />
+      </div>
+    </div>
+  </div>
 }

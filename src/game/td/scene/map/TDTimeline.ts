@@ -8,7 +8,7 @@ import { defaultWaveModel, IWaveGroup } from "./IWaveModel"
 // Create a graphics background and a line-based curve for the preview path
 export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction: number, suffixFraction: number) {
   const radius = 39
-  const top = 27
+  const top = 23
   const width = 500
   const left = 270
   const insetStart = left + width * prefixFraction
