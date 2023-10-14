@@ -3,6 +3,20 @@ import { canvasSize } from "../../../util/RenderUtil";
 import { IRGBA, colorToRGBA, setPixel } from "../../../util/PixelUtil";
 import { IEasingFunction, IEasingKeyOrFunction, IInterpolationFunction, IInterpolationKeyOrFunction } from "../../../util/Interpolation";
 
+/* 
+
+Notes:
+
+Radial (corner) interpolation means angle between sides interpolation, with inset fraction matching
+since edges may not have the same width. So half way through the angle range will produce a value
+at radius fraction between start and end sides.
+
+4-Way interpolation for the center could be more tricky. It may be OK to interpolate vertically first
+and then horizontally. That is, left and right edges are interpolated first and the horizontal value
+between those.
+
+*/
+
 export interface IMargins {
   north: number
   south: number
@@ -36,8 +50,8 @@ export const DEFAULT_NINE_SLICE_OPTIONS: INineSliceOptions = {
   color: {
     north: [0x666699FF, 0x0000FFFF],
     west: [0x666699FF, 0x0000FFFF],
-    south: [0x000033FF, 0x0000FFFF],
-    east: [0x0000033FF, 0x0000FFFF],
+    south: [0x000033FF, 0x000099FF],
+    east: [0x0000033FF, 0x000099FF],
   },
   easing: "Sine.easeOut",
   interpolation: "linear"
@@ -111,6 +125,11 @@ export function nineSliceRenderer(g: CanvasRenderingContext2D,
   renderEastSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   renderNorthSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   renderSouthSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  renderNorthWestCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  renderNorthEastCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  renderSouthWestCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  renderSouthEastCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  renderCenter(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   g.putImageData(imageData, 0, 0)
 }
 
@@ -150,6 +169,44 @@ export function renderSouthSide(imageData: ImageData, w: number, h: number, marg
     const c = interpolateRGBA(colors.south, f, easingFunction, interpolationFunction)
     for (let x = margins.west; x < w - margins.east; x++) {
       setPixel(imageData, x, h - y, c, true)
+    }
+  }
+}
+
+// Not quite right yet
+export function renderNorthWestCorner(imageData: ImageData, w: number, h: number, margins: IMargins, colors: IColorsRGBA, easingFunction: IEasingFunction, interpolationFunction: IInterpolationFunction) {
+  for (let y = 0; y < margins.north; y++) {
+    const vf = y / margins.north
+    const north = interpolateRGBA(colors.north, vf, easingFunction, interpolationFunction)
+    for (let x = 0; x < margins.west; x++) {
+      const hf = x / margins.west
+      const west = interpolateRGBA(colors.west, hf, easingFunction, interpolationFunction)
+      // const r = Math.sqrt(Math.pow(margins.north, 2) + Math.pow(margins.east, 2))
+      const f = Math.atan2(y, x) % (Math.PI / 2) / (Math.PI / 2)
+      const c = interpolateRGBA([north, west], f, easingFunction, interpolationFunction)
+      setPixel(imageData, x, y, c, true)
+    }
+  }
+}
+
+export function renderNorthEastCorner(imageData: ImageData, w: number, h: number, margins: IMargins, colors: IColorsRGBA, easingFunction: IEasingFunction, interpolationFunction: IInterpolationFunction) {
+}
+
+export function renderSouthWestCorner(imageData: ImageData, w: number, h: number, margins: IMargins, colors: IColorsRGBA, easingFunction: IEasingFunction, interpolationFunction: IInterpolationFunction) {
+}
+
+export function renderSouthEastCorner(imageData: ImageData, w: number, h: number, margins: IMargins, colors: IColorsRGBA, easingFunction: IEasingFunction, interpolationFunction: IInterpolationFunction) {
+}
+
+export function renderCenter(imageData: ImageData, w: number, h: number, margins: IMargins, colors: IColorsRGBA, easingFunction: IEasingFunction, interpolationFunction: IInterpolationFunction) {
+  for (let y = margins.north; y <= h - margins.south; y++) {
+    const vf = y / (w - (margins.north + margins.south))
+    const vert = interpolateRGBA([colors.north[1], colors.south[1]], vf, easingFunction, interpolationFunction)
+    for (let x = margins.west; x <= w - margins.east; x++) {
+      const f = x / (w - (margins.west + margins.east))
+      const horz = interpolateRGBA([colors.west[1], colors.east[1]], f, easingFunction, interpolationFunction)
+      const c = interpolateRGBA([horz, vert], f, easingFunction, interpolationFunction)
+      setPixel(imageData, x, y, c, true)
     }
   }
 }
