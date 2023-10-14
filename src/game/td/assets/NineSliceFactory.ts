@@ -1,7 +1,7 @@
 import { Tweens, Math as PMath } from "phaser";
-import { IColoring } from "../../../util/DrawUtil";
 import { canvasSize } from "../../../util/RenderUtil";
-import { rgbaToColor, setPixel } from "../../../util/PixelUtil";
+import { IRGBA, colorToRGBA, setPixel } from "../../../util/PixelUtil";
+import { IEasingFunction, IEasingKeyOrFunction, IInterpolationFunction, IInterpolationKeyOrFunction } from "../../../util/Interpolation";
 
 export interface IMargins {
   north: number
@@ -10,63 +10,148 @@ export interface IMargins {
   east: number
 }
 
+export interface IColors {
+  north: Array<number | IRGBA>
+  south: Array<number | IRGBA>
+  west: Array<number | IRGBA>
+  east: Array<number | IRGBA>
+}
+
+export interface IColorsRGBA {
+  north: Array<IRGBA>
+  south: Array<IRGBA>
+  west: Array<IRGBA>
+  east: Array<IRGBA>
+}
+
 export interface INineSliceOptions {
   margin: number | IMargins
-  color: IColoring
-  easing: string
+  color: Array<number | IRGBA> | IColors
+  easing: IEasingKeyOrFunction
+  interpolation: IInterpolationKeyOrFunction
 }
 
 export const DEFAULT_NINE_SLICE_OPTIONS: INineSliceOptions = {
   margin: 0.1,
-  color: ["#00F"],
-  easing: PMath.Easing.Quadratic.Out.name // PMath.Easing.Linear.name
+  color: {
+    north: [0x666699FF, 0x0000FFFF],
+    west: [0x666699FF, 0x0000FFFF],
+    south: [0x000033FF, 0x0000FFFF],
+    east: [0x0000033FF, 0x0000FFFF],
+  },
+  easing: "Sine.easeOut",
+  interpolation: "linear"
+}
+
+export function asMargins(m: number | IMargins): IMargins {
+  if (typeof m === "number") {
+    return { north: m, south: m, west: m, east: m }
+  }
+  return m
+}
+
+export function scaleMargins(margins: IMargins, w: number, h: number) {
+  return {
+    north: margins.north * h,
+    south: margins.south * h,
+    west: margins.west * w,
+    east: margins.east * w
+  }
+}
+
+export function asRGBAArray(array: Array<number | IRGBA>, alpha?: number): IRGBA[] {
+  return array.map(v => {
+    if (typeof v === "number") {
+      return colorToRGBA(v, true)
+    }
+    return v
+  })
+}
+
+export function asColors(c: Array<number | IRGBA> | IColors): IColorsRGBA {
+  if (Array.isArray(c)) {
+    return {
+      north: asRGBAArray(c, 1.0),
+      south: asRGBAArray(c, 1.0),
+      west: asRGBAArray(c, 1.0),
+      east: asRGBAArray(c, 1.0)
+    }
+  }
+  return {
+    north: asRGBAArray(c.north, 1.0),
+    south: asRGBAArray(c.south, 1.0),
+    west: asRGBAArray(c.west, 1.0),
+    east: asRGBAArray(c.east, 1.0)
+  }
+}
+
+export function interpolateRGBA(rgba: Array<IRGBA>, f: number, easingFunction: IEasingFunction, interpolationFunction: IInterpolationFunction) {
+  return {
+    r: interpolationFunction(rgba.map(v => v.r), easingFunction(f)),
+    g: interpolationFunction(rgba.map(v => v.g), easingFunction(f)),
+    b: interpolationFunction(rgba.map(v => v.b), easingFunction(f)),
+    a: interpolationFunction(rgba.map(v => v.a), easingFunction(f)),
+  }
 }
 
 export function nineSliceRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: INineSliceOptions) {
-  console.log("Rendering Nine Slice")
-  const { margin, easing } = options
+  const { margin, color, easing, interpolation } = options
   const { w, h } = canvasSize(g)
-  let marginStruct
-  if (typeof margin === "number") {
-    marginStruct = { north: margin, south: margin, west: margin, east: margin }
-  } else {
-    marginStruct = margin
-  }
-  const easingFunction = Tweens.Builders.GetEaseFunction(easing)
+  const margins = scaleMargins(asMargins(margin), w, h)
+  const colors = asColors(color)
+  const easingFunction = Tweens.Builders.GetEaseFunction(easing) as IEasingFunction
+  const interpolationFunction = (Tweens.Builders.GetInterpolationFunction(interpolation) ||
+    PMath.Interpolation.Linear) as IInterpolationFunction
   const value = easingFunction(0.5)
-  console.log("Easing:", easing, easingFunction, value) //  Seems to be lnear
-  const margins = {
-    left: marginStruct.west * w,
-    right: w - marginStruct.east * w,
-    top: marginStruct.north * h,
-    bottom: h - marginStruct.south * h,
-  }
-  console.log("Marings:", margins)
+  console.log("Easing:", easing, easingFunction, value) //  Seems to be lnear  
   const imageData = g.getImageData(0, 0, w, h)
-  // Left/Right sides
-  for (let y = margins.top; y < margins.bottom; y++) {
-    // Left side
-    const westWidth = marginStruct.west * w
-    for (let x = 0; x < westWidth; x++) {
-      const f = x / westWidth
-      const value = easingFunction(f)
-      // console.log("Fraction:", f, value) //  Seems to be lnear
-      const pixel = rgbaToColor({ r: value, g: value, b: value, a: 1.0 }, true)
-      setPixel(imageData, x, y, pixel)
-    }
-    // Right side
-    const eastWidth = marginStruct.east * w
-    for (let x = 0; x < eastWidth; x++) {
-      const f = 1.0 - x / eastWidth
-      const value = easingFunction(f)
-      // console.log("Fraction:", f, value) //  Seems to be lnear
-      const pixel = rgbaToColor({ r: value, g: value, b: value, a: 1.0 }, true)
-      setPixel(imageData, w - x, y, pixel)
+  renderWestSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  renderEastSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  renderNorthSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  renderSouthSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  g.putImageData(imageData, 0, 0)
+}
+
+export function renderWestSide(imageData: ImageData, w: number, h: number, margins: IMargins, colors: IColorsRGBA, easingFunction: IEasingFunction, interpolationFunction: IInterpolationFunction) {
+  for (let x = 0; x < margins.west; x++) {
+    const f = x / margins.west
+    const c = interpolateRGBA(colors.west, f, easingFunction, interpolationFunction)
+    for (let y = margins.north; y < h - margins.south; y++) {
+      setPixel(imageData, x, y, c, true)
     }
   }
-  g.putImageData(imageData, 0, 0)
+}
+
+export function renderEastSide(imageData: ImageData, w: number, h: number, margins: IMargins, colors: IColorsRGBA, easingFunction: IEasingFunction, interpolationFunction: IInterpolationFunction) {
+  for (let x = 0; x < margins.east; x++) {
+    const f = x / margins.east
+    const c = interpolateRGBA(colors.east, f, easingFunction, interpolationFunction)
+    for (let y = margins.north; y < h - margins.south; y++) {
+      setPixel(imageData, w - x, y, c, true)
+    }
+  }
+}
+
+export function renderNorthSide(imageData: ImageData, w: number, h: number, margins: IMargins, colors: IColorsRGBA, easingFunction: IEasingFunction, interpolationFunction: IInterpolationFunction) {
+  for (let y = 0; y < margins.north; y++) {
+    const f = y / margins.north
+    const c = interpolateRGBA(colors.north, f, easingFunction, interpolationFunction)
+    for (let x = margins.west; x < w - margins.east; x++) {
+      setPixel(imageData, x, y, c, true)
+    }
+  }
+}
+
+export function renderSouthSide(imageData: ImageData, w: number, h: number, margins: IMargins, colors: IColorsRGBA, easingFunction: IEasingFunction, interpolationFunction: IInterpolationFunction) {
+  for (let y = 0; y < margins.south; y++) {
+    const f = y / margins.south
+    const c = interpolateRGBA(colors.south, f, easingFunction, interpolationFunction)
+    for (let x = margins.west; x < w - margins.east; x++) {
+      setPixel(imageData, x, h - y, c, true)
+    }
+  }
 }
 
 export function nineSliceRendererFunctionFactory(

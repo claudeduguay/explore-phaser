@@ -103,3 +103,11 @@ export function rgbaFloatToInt(color: IRGBA): IRGBA {
     a: Math.floor(color.a * 255) & 0xFF,
   }
 }
+
+// Utility to return IRGBA from either an existing IRGBA or a byte and (optional) alpha value 
+export function asRGBA(b: number | IRGBA, alpha?: number): IRGBA {
+  if (typeof b === "number") {
+    return { r: b, g: b, b: b, a: alpha || b }
+  }
+  return b
+}
