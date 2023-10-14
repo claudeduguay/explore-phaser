@@ -123,11 +123,11 @@ export function nineSliceRenderer(g: CanvasRenderingContext2D,
   renderEastSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   renderNorthSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   renderSouthSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
-  renderNorthWestCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  // renderNorthWestCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   // renderNorthEastCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   // renderSouthWestCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   // renderSouthEastCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
-  renderCenter(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  // renderCenter(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   g.putImageData(imageData, 0, 0)
 }
 
