@@ -197,14 +197,14 @@ export function renderSouthEastCorner(imageData: ImageData, w: number, h: number
 }
 
 export function renderCenter(imageData: ImageData, w: number, h: number, margins: IMargins, colors: IColorsRGBA, easingFunction: IEasingFunction, interpolationFunction: IInterpolationFunction) {
-  for (let y = margins.north; y <= h - margins.south; y++) {
-    const vf = y / (w - (margins.north + margins.south))
+  for (let y = 0; y <= (h - (margins.north + margins.south)); y++) {
+    const vf = y / (h - (margins.north + margins.south))
     const vert = interpolateRGBA([colors.north[1], colors.south[1]], vf, easingFunction, interpolationFunction)
-    for (let x = margins.west; x <= w - margins.east; x++) {
+    for (let x = 0; x <= (w - (margins.west + margins.east)); x++) {
       const f = x / (w - (margins.west + margins.east))
       const horz = interpolateRGBA([colors.west[1], colors.east[1]], f, easingFunction, interpolationFunction)
       const c = interpolateRGBA([horz, vert], f, easingFunction, interpolationFunction)
-      setPixel(imageData, x, y, c, true)
+      setPixel(imageData, x + margins.west, y + margins.north, c, true)
     }
   }
 }
