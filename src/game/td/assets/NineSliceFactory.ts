@@ -131,11 +131,19 @@ export function nineSliceRenderer(g: CanvasRenderingContext2D,
   g.putImageData(imageData, 0, 0)
 }
 
+// Not widely used yet but shows promise for simplification
+// Using in renderWestSide so far
+export function* range(min: number, max: number) {
+  const range = max - min
+  for (let i = min; i < max; i++) {
+    yield { i, f: i / range }
+  }
+}
+
 export function renderWestSide(imageData: ImageData, w: number, h: number, margins: IMargins, colors: IColorsRGBA, easingFunction: IEasingFunction, interpolationFunction: IInterpolationFunction) {
-  for (let x = 0; x < margins.west; x++) {
-    const f = x / margins.west
+  for (let { i: x, f } of range(0, margins.west)) {
     const c = interpolateRGBA(colors.west, f, easingFunction, interpolationFunction)
-    for (let y = margins.north; y < h - margins.south; y++) {
+    for (let { i: y } of range(margins.north, h - margins.south)) {
       setPixel(imageData, x, y, c, true)
     }
   }
