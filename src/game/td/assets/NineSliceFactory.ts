@@ -123,7 +123,7 @@ export function nineSliceRenderer(g: CanvasRenderingContext2D,
   renderEastSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   renderNorthSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   renderSouthSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
-  // renderNorthWestCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  renderNorthWestCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   // renderNorthEastCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   // renderSouthWestCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   // renderSouthEastCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
@@ -181,7 +181,6 @@ export function renderNorthWestCorner(imageData: ImageData, w: number, h: number
       const west = interpolateRGBA(colors.west, hf, easingFunction, interpolationFunction)
       // const r = Math.sqrt(Math.pow(margins.north, 2) + Math.pow(margins.east, 2))
       const f = Math.atan2(y, x) % (Math.PI / 2) / (Math.PI / 2)
-      // console.log("Angle at:", x, y, f)
       const c = interpolateRGBA([north, west], f, easingFunction, interpolationFunction)
       setPixel(imageData, x, y, c, true)
     }
