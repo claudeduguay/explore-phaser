@@ -48,10 +48,10 @@ export interface INineSliceOptions {
 export const DEFAULT_NINE_SLICE_OPTIONS: INineSliceOptions = {
   margin: 0.1,
   color: {
-    north: [0x666699FF, 0x0000FFFF],
-    west: [0x666699FF, 0x0000FFFF],
-    south: [0x000033FF, 0x000099FF],
-    east: [0x0000033FF, 0x000099FF],
+    north: [0xFFFFFFFFF, 0x0000FFFF],
+    west: [0xFFFFFFFF, 0x00FF00FF],
+    south: [0x000000FF, 0x660000FF],
+    east: [0x0000000FF, 0xFF8800FF],
   },
   easing: "Sine.easeOut",
   interpolation: "linear"
@@ -118,17 +118,15 @@ export function nineSliceRenderer(g: CanvasRenderingContext2D,
   const easingFunction = Tweens.Builders.GetEaseFunction(easing) as IEasingFunction
   const interpolationFunction = (Tweens.Builders.GetInterpolationFunction(interpolation) ||
     PMath.Interpolation.Linear) as IInterpolationFunction
-  const value = easingFunction(0.5)
-  console.log("Easing:", easing, easingFunction, value) //  Seems to be lnear  
   const imageData = g.getImageData(0, 0, w, h)
   renderWestSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   renderEastSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   renderNorthSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   renderSouthSide(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
-  renderNorthWestCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
-  renderNorthEastCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
-  renderSouthWestCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
-  renderSouthEastCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  // renderNorthWestCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  // renderNorthEastCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  // renderSouthWestCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
+  // renderSouthEastCorner(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   renderCenter(imageData, w, h, margins, colors, easingFunction, interpolationFunction)
   g.putImageData(imageData, 0, 0)
 }
@@ -183,6 +181,7 @@ export function renderNorthWestCorner(imageData: ImageData, w: number, h: number
       const west = interpolateRGBA(colors.west, hf, easingFunction, interpolationFunction)
       // const r = Math.sqrt(Math.pow(margins.north, 2) + Math.pow(margins.east, 2))
       const f = Math.atan2(y, x) % (Math.PI / 2) / (Math.PI / 2)
+      // console.log("Angle at:", x, y, f)
       const c = interpolateRGBA([north, west], f, easingFunction, interpolationFunction)
       setPixel(imageData, x, y, c, true)
     }
