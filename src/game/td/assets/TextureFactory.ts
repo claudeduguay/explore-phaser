@@ -9,6 +9,7 @@ import { IWeaponOptions, weaponRendererFunctionFactory } from "./WeaponFactory"
 import { pathRendererFunctionFactory } from "./PathFactory"
 import { ILandscapeOptions, landscapeRendererFunctionFactory } from "./LandscapeFactory"
 import { IPeepOptions, peepRendererFunctionFactory } from "./PeepFactory"
+import { INineSliceOptions, nineSliceRendererFunctionFactory } from "./NineSliceFactory"
 
 // Render to a TextureCanvas using ...renderers
 export function renderCanvas(scene: Scene, key: string, w: number, h: number, ...renderers: IRenderFunction[]) {
@@ -198,6 +199,11 @@ export function makeEllipse(scene: Scene, key: string, w: number, h: number,
 export interface ITextureConfig<T> {
   size: { x: number, y: number },
   options: Partial<T>
+}
+
+export function makeNineSlice(scene: Scene, key: string, config: ITextureConfig<Partial<INineSliceOptions>>) {
+  const render: IRenderFunction = nineSliceRendererFunctionFactory(0, config.options)
+  renderCanvas(scene, key, config.size.x, config.size.y, render)
 }
 
 export function makeTowerPlatform(scene: Scene, key: string, config: ITextureConfig<Partial<IPlatformOptions>>) {

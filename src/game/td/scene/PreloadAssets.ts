@@ -1,5 +1,5 @@
 import { Scene } from "phaser"
-import { makeHeightRects, makeLandscapeTile, makePathTiles } from "../assets/TextureFactory"
+import { makeHeightRects, makeLandscapeTile, makeNineSlice, makePathTiles } from "../assets/TextureFactory"
 import { generateEnemies } from "../entity/model/IEnemyModel"
 
 export default function preloadAssets(scene: Scene) {
@@ -52,4 +52,6 @@ export function preloadTextures(scene: Scene) {
   makeLandscapeTile(scene, "grass", { size: { x: 64, y: 64 }, options: { type: "grass" } })
 
   generateEnemies(scene)
+
+  makeNineSlice(scene, "nine_slice", { size: { x: 100, y: 100 }, options: { margin: 0.2 } })
 }
