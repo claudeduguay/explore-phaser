@@ -3,8 +3,12 @@ import BaseTargetBehavior from "../BaseTargetBehavior"
 import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
 import Point from "../../../../../util/Point"
+import TargetEffectsMap from "../../core/TargetEffectsMap"
+import InRangeDamageEffect from "../../enemy/InRangeDamageEffect"
 
 export default class BaseTargetSprayBehavior extends BaseTargetBehavior<GameObjects.Particles.ParticleEmitter> {
+
+  targetInstanceMap = new TargetEffectsMap()
 
   constructor(tower: TDTower, public key: string, public emitter: IEmitterConfigBuilder) {
     super(tower, false)
@@ -21,6 +25,11 @@ export default class BaseTargetSprayBehavior extends BaseTargetBehavior<GameObje
       this.emitters[i].setPosition(x, y)
       this.emitters[i].rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI
       this.emitters[i].start()
+
+      // Redundant of we inherit from BaseTargetBehavior at the moment
+      // this.targetInstanceMap.apply(target, () => new InRangeDamageEffect(this.tower, target, ""))
+    } else {
+      this.targetInstanceMap.clear()
     }
   }
 }
