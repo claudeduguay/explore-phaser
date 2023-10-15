@@ -6,6 +6,8 @@ import TimedSlowEffect from "../enemy/TimedSlowEffect"
 export default class TargetSlowBehavior implements IBehavior {
 
   g?: GameObjects.Graphics
+  targetEffects: TimedSlowEffect[] = []
+  twinEffects: TimedSlowEffect[] = []
 
   constructor(public tower: TDTower) {
   }
@@ -27,13 +29,21 @@ export default class TargetSlowBehavior implements IBehavior {
       this.g.strokeCircle(this.tower.x, this.tower.y, r1)
       this.g.strokeCircle(this.tower.x, this.tower.y, r2)
 
-      for (let target of this.tower.targeting.current) {
-        const SLOW_EFFECT = new TimedSlowEffect(target, 2000)
-        if (!target.effects.includes(SLOW_EFFECT)) {
-          target.effects.add(SLOW_EFFECT)
-          if (target.twin) {
-            // Handle preview twin speed
-            target.twin.effects.add(SLOW_EFFECT)
+      for (let i = 0; i < this.tower.targeting.current.length; i++) {
+        const target = this.tower.targeting.current[i]
+        if (!this.targetEffects[i]) {
+          this.targetEffects[i] = new TimedSlowEffect(target, 2000)
+        }
+        if (!target.effects.includes(this.targetEffects[i])) {
+          target.effects.add(this.targetEffects[i])
+
+          if (target.twin) { // Handle twin if present
+            if (!this.twinEffects[i]) {
+              this.twinEffects[i] = new TimedSlowEffect(target.twin, 2000)
+            }
+            if (!target.twin.effects.includes(this.twinEffects[i])) {
+              target.twin.effects.add(this.twinEffects[i])
+            }
           }
         }
       }
