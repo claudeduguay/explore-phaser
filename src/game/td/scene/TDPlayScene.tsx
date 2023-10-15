@@ -181,7 +181,7 @@ export default class TDPlayScene extends Scene {
     this.physics.add.overlap(this.towerGroup, this.enemyGroup, onEnemyOverlap, onEnemyInRange)
 
     // Preview NineSlice
-    this.add.sprite(50, 590, "nine_slice").setOrigin(0)
+    // this.add.sprite(50, 590, "nine_slice").setOrigin(0)
 
     // const fireRange = 220
     // this.add.particles(10, 765, 'fire', fireEmitter(fireRange))

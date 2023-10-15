@@ -37,7 +37,7 @@ export function generateEnemies(scene: Scene, count: number = 5) {
     makePeep(scene, `peep_${i}`, 32, 32, randomPeepOptions())
     const peep = {
       key: `peep_${i}`,
-      name: `Level ${i} Enemy`,
+      name: `Level ${i}`,
       meta: {
       },
       stats: {
