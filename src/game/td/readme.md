@@ -12,13 +12,13 @@ Need to account for shields (disabled for now)
 
 ## ToDo Planning
 
-* Need for consider whether we can embed a new scene inside and DOM object.
+* Need for consider whether we can embed a new scene inside DOM objects.
 * Need to figure out leveling
-* Effect System needs to handle all InRange conditions
+* Effect System needs to handle InRange conditions
 * Keep trying to get Tower previews to be in containers
-* BUG: Cloud towers don't aways emmit if dropped by mouse
-* BUG: Fails on iPad Safari, related to sound files not loading
-* BUG: Peeps sometimes stop completely (related to Slow effect)
+* BUG: Canvas size measurment fails on iPad Safari
+* BUG: Plopping tower doesn't aways unstick from mouse
+* BUG: Peeps facing sometimes oscilates (seems more apparent when slowed)
 
 ### Effect/Afliction Design Notes
 
