@@ -18,7 +18,7 @@ export interface ITowerInfoProps {
 export default function TowerInfo({ scene, tower: towerObservable, onClose }: ITowerInfoProps) {
   const tower = useObservableValue(towerObservable)
   const model = tower?.model
-  const imageSrc = useCaptureTower(scene, tower)
+  const imageSrc = useCaptureTower(scene, tower?.model)
   const style: CSSProperties = {
     width: 350,
     backgroundColor: "rgba(64, 64, 64, 0.75)"

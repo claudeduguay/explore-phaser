@@ -1,22 +1,21 @@
 import ITowerModel from "../../entity/model/ITowerModel";
 import useCaptureTower from "./capture/useCaptureTower";
-import TDTower from "../../entity/tower/TDTower";
 import { Scene } from "phaser";
 
 export interface ITowerButtonProps {
   scene: Scene
-  tower: TDTower
+  model: ITowerModel
   onClick?: (model: ITowerModel | undefined) => void
 }
 
-export default function TowerButton({ scene, tower, onClick }: ITowerButtonProps) {
-  const imageSrc = useCaptureTower(scene, tower)
+export default function TowerButton({ scene, model, onClick }: ITowerButtonProps) {
+  const imageSrc = useCaptureTower(scene, model)
   const handleClick = () => {
     if (onClick) {
-      onClick(tower.model)
+      onClick(model)
     }
   }
-  return <button className="btn btn-primary p-0 m-0 mx-1 border-white" onClick={handleClick} title={tower.model.name}>
+  return <button className="btn p-1 m-0" onClick={handleClick} title={model.name}>
     <img src={imageSrc} alt="Tower" width={48} height={48} />
   </button>
 }

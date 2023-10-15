@@ -1,5 +1,6 @@
 import { GameObjects, Physics, Scene } from "phaser";
 import ObservableValue from "../value/ObservableValue";
+import TDTower from "../entity/tower/TDTower";
 
 export interface ISelectable extends GameObjects.GameObject {
   addSelectHandler(select: (selection: any) => void): void

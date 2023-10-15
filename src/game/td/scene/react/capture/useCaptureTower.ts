@@ -1,24 +1,24 @@
 import TDTower from "../../../entity/tower/TDTower";
 import { GameObjects, Scene } from "phaser";
 import useCapture, { captureAndCacheTexture } from "./useCapture";
+import ITowerModel from "../../../entity/model/ITowerModel";
 
-export function makeTowerRenderCallback(tower?: TDTower, angle = 0) {
+export function makeTowerRenderCallback(scene: Scene, model?: ITowerModel, angle = 0) {
   return (texture: GameObjects.RenderTexture) => {
-    if (tower) {
-      const copy = new TDTower(tower.scene, 32, 32, tower.model)
+    if (model) {
+      const copy = new TDTower(scene, 32, 32, model)
       copy.angle = angle
       texture.draw(copy)
     }
   }
 }
 
-export default function useCaptureTower(scene: Scene, tower?: TDTower, angle = 0): string {
-  const render = makeTowerRenderCallback(tower, angle)
-  const key = tower?.model.key ? `tower-${tower?.model.key}` : undefined
-  return useCapture(scene, 64, 64, render, key)
+export default function useCaptureTower(scene: Scene, model?: ITowerModel, angle = 0): string {
+  const render = makeTowerRenderCallback(scene, model, angle)
+  return useCapture(scene, 64, 64, render, `tower-${model?.key}`)
 }
 
-export function captureAndCacheTower(scene: Scene, tower: TDTower, angle = 0) {
-  const render = makeTowerRenderCallback(tower, angle)
-  captureAndCacheTexture(scene, 64, 64, render, tower.model.key)
+export function captureAndCacheTower(scene: Scene, model: ITowerModel, angle = 0) {
+  const render = makeTowerRenderCallback(scene, model, angle)
+  captureAndCacheTexture(scene, 64, 64, render, `tower-${model.key}`)
 }
