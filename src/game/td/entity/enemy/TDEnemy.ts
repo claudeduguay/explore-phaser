@@ -85,12 +85,13 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
   }
 
   showSelection() {
-    console.log("Add glow")
+    this.postFX.clear()
     this.postFX.addGlow()
   }
 
   hideSelection() {
     this.postFX.clear()
+    this.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
   }
 
   detectDirectionChange() {

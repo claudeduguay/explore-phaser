@@ -15,10 +15,10 @@ export function makeTowerRenderCallback(scene: Scene, model?: ITowerModel, angle
 
 export default function useCaptureTower(scene: Scene, model?: ITowerModel, angle = 0): string {
   const render = makeTowerRenderCallback(scene, model, angle)
-  return useCapture(scene, 64, 64, render, `tower-${model?.key}`)
+  return useCapture(scene, 64, 64, render, `${model?.key}-tower`)
 }
 
 export function captureAndCacheTower(scene: Scene, model: ITowerModel, angle = 0) {
   const render = makeTowerRenderCallback(scene, model, angle)
-  captureAndCacheTexture(scene, 64, 64, render, `tower-${model.key}`)
+  captureAndCacheTexture(scene, 64, 64, render, model.key)
 }
