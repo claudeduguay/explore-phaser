@@ -4,7 +4,7 @@ import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
 import Point from "../../../../../util/Point"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
-import InRangeDamageEffect from "../../enemy/InRangeDamageEffect"
+// import InRangeDamageEffect from "../../enemy/InRangeDamageEffect"
 
 export default class BaseTargetSprayBehavior extends BaseTargetBehavior<GameObjects.Particles.ParticleEmitter> {
 
