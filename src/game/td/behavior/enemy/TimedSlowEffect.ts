@@ -7,8 +7,10 @@ export default class TimedSlowEffect extends TimedEffect {
       if (this.enemy.isFollowing()) {
         this.enemy.pauseFollow()
       }
-    } else if (!this.enemy.isFollowing()) {
-      this.enemy.resumeFollow()
+    } else {
+      if (!this.enemy.isFollowing()) {
+        this.enemy.resumeFollow()
+      }
     }
   }
 

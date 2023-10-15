@@ -2,12 +2,13 @@ import { GameObjects } from "phaser"
 import IBehavior from "../core/IBehavior"
 import TDTower from "../../entity/tower/TDTower"
 import TimedSlowEffect from "../enemy/TimedSlowEffect"
+import TargetEffectsMap from "../core/TargetEffectsMap"
 
 export default class TargetSlowBehavior implements IBehavior {
 
   g?: GameObjects.Graphics
-  targetEffects: TimedSlowEffect[] = []
-  twinEffects: TimedSlowEffect[] = []
+  targetInstanceMap = new TargetEffectsMap()
+  twinInstanceMap = new TargetEffectsMap()
 
   constructor(public tower: TDTower) {
   }
@@ -29,24 +30,18 @@ export default class TargetSlowBehavior implements IBehavior {
       this.g.strokeCircle(this.tower.x, this.tower.y, r1)
       this.g.strokeCircle(this.tower.x, this.tower.y, r2)
 
-      for (let i = 0; i < this.tower.targeting.current.length; i++) {
-        const target = this.tower.targeting.current[i]
-        if (!this.targetEffects[i]) {
-          this.targetEffects[i] = new TimedSlowEffect(target, 2000)
-        }
-        if (!target.effects.includes(this.targetEffects[i])) {
-          target.effects.add(this.targetEffects[i])
-
-          if (target.twin) { // Handle twin if present
-            if (!this.twinEffects[i]) {
-              this.twinEffects[i] = new TimedSlowEffect(target.twin, 2000)
-            }
-            if (!target.twin.effects.includes(this.twinEffects[i])) {
-              target.twin.effects.add(this.twinEffects[i])
-            }
-          }
+      for (let target of this.tower.targeting.current) {
+        this.targetInstanceMap.apply(target, () => new TimedSlowEffect(target, 2000))
+        if (target.twin) { // Handle twin if present
+          // Note, event though we checked for existence of target.twin, effectBuilder 
+          // complains it may be undefined (disabled ts-check)
+          // @ts-ignore
+          this.twinInstanceMap.apply(target.twin, () => new TimedSlowEffect(target.twin, 2000))
         }
       }
+    } else {
+      this.targetInstanceMap.clear()
+      this.twinInstanceMap.clear()
     }
   }
 }

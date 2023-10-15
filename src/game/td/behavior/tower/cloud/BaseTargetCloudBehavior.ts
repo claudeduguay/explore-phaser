@@ -4,13 +4,14 @@ import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 import InRangeDamageEffect from "../../enemy/InRangeDamageEffect"
+import TargetEffectsMap from "../../core/TargetEffectsMap"
 
 export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
 export default class BaseTargeCloudBehavior implements IBehavior {
 
   cloud?: GameObjects.Particles.ParticleEmitter
-  effectInstance?: IBehavior
+  targetInstanceMap = new TargetEffectsMap()
 
   constructor(public tower: TDTower, public key: string, public emitter: IEmitterConfigBuilder, public effect?: IDamageEffectBuilder) {
   }
@@ -30,16 +31,10 @@ export default class BaseTargeCloudBehavior implements IBehavior {
       const defaultBuilder: IDamageEffectBuilder = (enemy: TDEnemy) => new InRangeDamageEffect(this.tower, enemy, "")
       const effectBuilder: IDamageEffectBuilder = this.effect || defaultBuilder
       for (let target of this.tower.targeting.current) {
-        if (!this.effectInstance) {
-          // Cache instance so the same one is used on multiple updates
-          this.effectInstance = effectBuilder(target)
-        }
-        if (!target.effects.includes(this.effectInstance)) {
-          target.effects.add(this.effectInstance)
-        }
+        this.targetInstanceMap.apply(target, () => effectBuilder(target))
       }
     } else { // No target
-      this.effectInstance = undefined
+      this.targetInstanceMap.clear()
       this.cloud?.stop()
     }
   }

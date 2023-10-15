@@ -16,7 +16,7 @@ export default abstract class InRangeEffect implements IBehavior {
       this.updateEffect(time, delta)
     } else {
       this.endEffect(time, delta)
-      this.enemy.effects.remove(this)
+      this.enemy.effects.delete(this)
     }
   }
 
