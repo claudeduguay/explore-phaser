@@ -5,8 +5,6 @@ by Claude Duguay
 ## Notes
 
 Each tower and enemy stats need to be refined.
-Added optional duration to ITowerDamage specs, need to connect
-Consider redefining Behaviors to receive main object in their constuctor
 
 Need to account for shields (disabled for now)
 
@@ -22,25 +20,13 @@ Need to account for shields (disabled for now)
 
 ### Effect/Afliction Design Notes
 
-An effect, to be most flexible, is like a modifier with a timeout to reversal.
-The problem with reversal is that we have to compute the value on the fly to
-success. A computed value has to account for a base and active value.
-We can use the AcvtiveValue system and support self-registering modifiers
-with a timeout.
+An effect, to be most flexible, is like a modifier with a timeout.
 
-Aflictions should be shown in the EnemyInfo view (with a timeout counter
-also visible)
-
-So: An AFFLICTION is a Modifier function that is applied to an Enemy (such as
-Slow or Sleep, the latter of which times out) or affects a property like health
-or resistance. After a timeout, it automatically unregisters itself from the 
-property.
-
-A Tween may allow an effect on a named propery.
+Tweens allow an effect to be applied on named properies
 
 ### Leveling Notes
 
-There are two ways to upgrade:
+There are two primary ways to upgrade:
 
 * Tower upgrades
   * Increase level (up to max)
@@ -58,13 +44,12 @@ There are two ways to upgrade:
 
 Major categories:
 
-* **Beam** weapons, like Lazer and Plasma
-* **Throw** projectile weapons, like Bullet, Missile, Grenade (note that Bullet is not currently a guided projectile)
-* **Cloud**, like Poison, Smoke, Freeze, Shock
-* **Spray**, like Fire and Ice
-* **Area**, buff/debuff like Boost, Slow, Cold, Wet, etc
+* **Beam** like Lazer, Plasma, Lightning
+* **Throw** (projectile weapons) like Bullet, Missile, Grenade (not implemented yet)
+* **Cloud**, (area emissions) like Poison, Smoke, Fire, Ice, Shock
+* **Spray**, (spray emissions) like Flame and Freeze
+* **Fall**, (vertical fall) like Rain and Snow
+* **Area**, (buff/debuff) like Boost, Slow
 
 Note that Boost towers affect other Towers and so does't operate on Enemy Targets.
 This is the only major deviation from other Tower models.
-
-### Tower Type Design Language
