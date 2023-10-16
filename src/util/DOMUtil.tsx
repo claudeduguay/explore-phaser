@@ -1,14 +1,19 @@
 
-import { GameObjects, Scene, Scenes } from "phaser"
+import { GameObjects, Scene, Scenes, Tweens } from "phaser"
 import { ReactNode, useState, useEffect, SetStateAction, Dispatch } from 'react'
 import ReactDOM from 'react-dom/client'
 import { v4 as uuid } from 'uuid';
 import ObservableValue, { CHANGED_EVENT } from "../game/td/value/ObservableValue";
 
+export interface ITweens {
+  in?: (onComplete?: () => void) => Tweens.Tween
+  out?: (onComplete?: () => void) => Tweens.Tween
+}
+
 export interface IVisibleProps {
   scene: Scene
   gameElement: GameObjects.DOMElement
-  tweens?: { in: string, out: string }
+  tweens?: ITweens
   children: ReactNode
   visible?: boolean
   observable?: ObservableValue<boolean>
@@ -26,15 +31,26 @@ export type IShowHideVisible = [
   setVisible: Dispatch<SetStateAction<boolean>>
 ]
 
-export function useShowHideVisible(initVisible: boolean = true): IShowHideVisible {
+export function useShowHideVisible(initVisible: boolean = true, tweens?: ITweens): IShowHideVisible {
   const [visible, setVisible] = useState<boolean>(initVisible)
-  const onShow = () => setVisible(true)
-  const onHide = () => setVisible(false)
+  const onShow = () => {
+    setVisible(true)
+  }
+  const onHide = () => {
+    if (tweens?.out) {
+      tweens.out(() => {
+        console.log("Out complete")
+        setVisible(false)
+      })
+    } else {
+      setVisible(false)
+    }
+  }
   return [onShow, onHide, visible, setVisible]
 }
 
-export function useVisible(scene: Scene, initVisible: boolean = true, isVisible?: ObservableValue<boolean>, overlay?: boolean) {
-  const [onShow, onHide, visible] = useShowHideVisible(isVisible ? isVisible.value : initVisible)
+export function useVisible(scene: Scene, initVisible: boolean = true, isVisible?: ObservableValue<boolean>, overlay?: boolean, tweens?: ITweens) {
+  const [onShow, onHide, visible] = useShowHideVisible(isVisible ? isVisible.value : initVisible, tweens)
   useEffect(() => {
     if (isVisible) {
       const onChange = (value: boolean) => value ? onShow() : onHide()
@@ -55,16 +71,45 @@ export function useVisible(scene: Scene, initVisible: boolean = true, isVisible?
   return [onShow, onHide, visible, isVisible]
 }
 
-export function Visible({ scene, gameElement, children, visible: initVisible = true, observable, overlay }: IVisibleProps) {
-  const [, , visible] = useVisible(scene, initVisible, observable, overlay)
+export function Visible({ scene, gameElement, tweens, children, visible: initVisible = true, observable, overlay }: IVisibleProps) {
+  const [, , visible] = useVisible(scene, initVisible, observable, overlay, tweens)
+  useEffect(() => {
+    if (visible && tweens?.in) {
+      tweens.in(() => {
+        console.log("In Complete:", gameElement.x)
+      })
+    }
+  }, [scene, gameElement, tweens, visible])
   return <div>{visible && children}</div>
 }
 
+// Tweening-in works, but twening-out has to delay visibility toggle to off
 export function addReactNode(scene: Scene, x: number = 0, y: number = 0, node: ReactNode, isVisible?: ObservableValue<boolean>, overlay = false): GameObjects.DOMElement {
   const id = uuid()
-  const gameElement = scene.add.dom(x, y).createFromHTML(`<div id="${id}" />`)
+  const tweensBuilder = (element: GameObjects.DOMElement) => ({
+    in: (onComplete?: () => void) => scene.tweens.add({
+      targets: gameElement,
+      x,
+      yoyo: false,
+      repeat: 0,
+      ease: 'Sine.easeInOut',
+      duration: 1000,
+      onComplete
+    }),
+    out: (onComplete?: () => void) => scene.tweens.add({
+      targets: gameElement,
+      x: x - 400,
+      yoyo: false,
+      repeat: 0,
+      ease: 'Sine.easeInOut',
+      duration: 2000,
+      onComplete
+    })
+  })
+  const gameElement = scene.add.dom(x - 400, y).createFromHTML(`<div id="${id}" />`)
+  const tweens = tweensBuilder(gameElement)
   const element = document.getElementById(id) as HTMLElement
   const root = ReactDOM.createRoot(element)
-  root.render(<Visible scene={scene} gameElement={gameElement} overlay={overlay} observable={isVisible}>{node}</Visible>)
+  root.render(<Visible scene={scene} gameElement={gameElement} tweens={tweens} overlay={overlay} observable={isVisible}>{node}</Visible>)
   return gameElement
 }
