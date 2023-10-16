@@ -6,7 +6,9 @@ import { v4 as uuid } from 'uuid';
 import ObservableValue, { CHANGED_EVENT } from "../game/td/value/ObservableValue";
 
 export interface IVisibleProps {
-  scene: Scene,
+  scene: Scene
+  gameElement: GameObjects.DOMElement
+  tweens?: { in: string, out: string }
   children: ReactNode
   visible?: boolean
   observable?: ObservableValue<boolean>
@@ -53,16 +55,16 @@ export function useVisible(scene: Scene, initVisible: boolean = true, isVisible?
   return [onShow, onHide, visible, isVisible]
 }
 
-export function Visible({ scene, children, visible: initVisible = true, observable, overlay }: IVisibleProps) {
+export function Visible({ scene, gameElement, children, visible: initVisible = true, observable, overlay }: IVisibleProps) {
   const [, , visible] = useVisible(scene, initVisible, observable, overlay)
   return <div>{visible && children}</div>
 }
 
 export function addReactNode(scene: Scene, x: number = 0, y: number = 0, node: ReactNode, isVisible?: ObservableValue<boolean>, overlay = false): GameObjects.DOMElement {
   const id = uuid()
-  const gameDOM = scene.add.dom(x, y).createFromHTML(`<div id="${id}" />`)
+  const gameElement = scene.add.dom(x, y).createFromHTML(`<div id="${id}" />`)
   const element = document.getElementById(id) as HTMLElement
   const root = ReactDOM.createRoot(element)
-  root.render(<Visible scene={scene} overlay={overlay} observable={isVisible}>{node}</Visible>)
-  return gameDOM
+  root.render(<Visible scene={scene} gameElement={gameElement} overlay={overlay} observable={isVisible}>{node}</Visible>)
+  return gameElement
 }

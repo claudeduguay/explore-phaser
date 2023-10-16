@@ -60,7 +60,9 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
       if (!wasDestroyed && enemy.health.value > 0) {
         enemy.destroy()
         enemyGroup.remove(enemy)
-        active.health.value -= 1
+        if (active.health.value > 1) {
+          active.health.value -= 1
+        }
         if (scene.sound.get("woe")) {
           scene.sound.play("woe")
         }
