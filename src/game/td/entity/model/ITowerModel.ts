@@ -59,7 +59,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      lazer: { dps: 10 }
+      lazer: { dps: 25 }
     }
   },
   plasma: {
@@ -77,7 +77,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      plasma: { dps: 10 }
+      plasma: { dps: 25 }
     }
   },
   lightning: {
@@ -95,7 +95,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      lightning: { dps: 10 }
+      lightning: { dps: 25 }
     }
   },
 
@@ -115,7 +115,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      fire: { dps: 10 }
+      fire: { dps: 25 }
     }
   },
   freeze: {
@@ -133,7 +133,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      ice: { dps: 10 }
+      ice: { dps: 25 }
     }
   },
   force: {
@@ -151,7 +151,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      ice: { dps: 10 }
+      ice: { dps: 25 }
     }
   },
 
@@ -171,7 +171,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      posion: { dps: 10 }
+      posion: { dps: 25 }
     }
   },
   fire: {
@@ -189,7 +189,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      posion: { dps: 10 }
+      posion: { dps: 25 }
     }
   },
   smoke: {
@@ -207,7 +207,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      smoke: { dps: 10 }
+      smoke: { dps: 25 }
     }
   },
   shock: {
@@ -225,7 +225,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      shock: { dps: 10 }
+      shock: { dps: 25 }
     }
   },
   ice: {
@@ -243,7 +243,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      freeze: { dps: 10 }
+      freeze: { dps: 25 }
     }
   },
 
@@ -263,7 +263,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      rain: { dps: 10 }
+      rain: { dps: 25 }
     }
   },
   snow: {
@@ -281,7 +281,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      rain: { dps: 10 }
+      rain: { dps: 25 }
     }
   },
 
@@ -301,7 +301,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      bullet: { dps: 10 }
+      bullet: { dps: 25 }
     }
   },
   missile: {
@@ -319,7 +319,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      missile: { dps: 10 }
+      missile: { dps: 25 }
     }
   },
 
@@ -339,7 +339,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      boost: { dps: 10 }
+      boost: { dps: 25 }
     }
   },
   slow: {
@@ -357,7 +357,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      slow: { dps: 10 }
+      slow: { dps: 25 }
     }
   }
 }
