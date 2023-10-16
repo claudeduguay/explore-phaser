@@ -1,7 +1,7 @@
 import { Scene, GameObjects, Curves, Input } from "phaser";
 import IEnemyModel from "../model/IEnemyModel";
 import HealthBar from "./HealthBar";
-import ActiveValue from "../../value/ActiveValue";
+import ObservableValue from "../../value/ObservableValue";
 import { ISelectable } from "../../scene/SelectableGroup";
 import BehaviorList from "../../behavior/core/BehaviorList";
 import { toSceneCoordinates } from "../../../../util/Point";
@@ -15,8 +15,8 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
   shieldBar!: HealthBar
   healthBar!: HealthBar
 
-  health!: ActiveValue
-  shield!: ActiveValue
+  health!: ObservableValue<number>
+  shield!: ObservableValue<number>
 
   constructor(scene: Scene,
     public x: number, public y: number,
@@ -46,8 +46,8 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     this.anims.play("east")
     this.setInteractive()
 
-    this.health = new ActiveValue(model.stats.health || 0)
-    this.shield = new ActiveValue(model.stats.shield || 0)
+    this.health = new ObservableValue(model.stats.health || 0)
+    this.shield = new ObservableValue(model.stats.shield || 0)
 
     if (showStatusBars) {
       this.shieldBar = new HealthBar(scene, this, 0, 0, 30, 5, 0xffa500)
@@ -123,14 +123,14 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
 
   handleStatusBars() {
     if (this.showStatusBars) {
-      const healthFraction = this.health.compute() / this.health.baseValue
-      const shieldFraction = this.shield.compute() / this.shield.baseValue
+      const healthFraction = this.health.value / this.model.stats.health
+      const shieldFraction = this.shield.value / this.model.stats.shield
       if (healthFraction < 0.005) {
         this.container.destroy()  // Make sure we don't leave lingering bar parts behind
         this.emit("died", this)
       }
       if (shieldFraction < 0.005) {
-        this.shield.reset()
+        this.shield.value = 100
       }
       // this.shieldBar.fraction = shield_fraction
       this.healthBar.fraction = healthFraction

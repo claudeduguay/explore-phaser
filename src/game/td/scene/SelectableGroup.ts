@@ -49,7 +49,7 @@ export default class SelectableGroup<T extends ISelectable> extends Physics.Arca
       }
     })
     if (selection) {
-      this.infoVisible.adjust(true)
+      this.infoVisible.value = true
     }
   }
 }

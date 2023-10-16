@@ -11,7 +11,7 @@ export default class TimedDamageEffect extends TimedEffect {
 
   updateEffect(time: number, delta: number): void {
     let damage = computeTargetDamage(this.tower, this.enemy, delta)
-    this.enemy.health.adjust(-damage)
+    this.enemy.health.value -= damage
   }
 
   endEffect(time: number, delta: number): void {

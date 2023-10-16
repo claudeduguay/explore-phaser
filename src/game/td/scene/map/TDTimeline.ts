@@ -36,7 +36,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
     enemy.destroy()
     enemyGroup.remove(enemy)
     if (model) {
-      active.credits.adjust(model.stats.value || 0)
+      active.credits.value += (model.stats.value || 0)
       TDPlayScene.createExplosionSprite(scene, x, y)
       if (scene.sound.get("cash")) {
         scene.sound.play("cash")
@@ -55,10 +55,10 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
     rotateToPath: true,
     onStart: () => enemyGroup.add(enemy),
     onComplete: () => {
-      if (enemy.health.compute() > 0) {
+      if (enemy.health.value > 0) {
         enemy.destroy()
         enemyGroup.remove(enemy)
-        active.health.adjust(-1)
+        active.health.value += -1
         if (scene.sound.get("woe")) {
           scene.sound.play("woe")
         }

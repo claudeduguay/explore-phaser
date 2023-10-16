@@ -1,6 +1,6 @@
 import { Scene } from "phaser"
 import { canvasSize } from "../../../../util/SceneUtil"
-import { useActiveValue } from "../../value/ActiveValue"
+import { useObservableValue } from "../../value/ObservableValue"
 import { IActiveValues } from "../TDPlayScene"
 import INavigator from "./INavigator"
 import Icon from "./Icon"
@@ -32,8 +32,8 @@ export default function GameHeader({ active, navigator, scene, onToggleTowerPrev
       scene.sound.play("lose")
     }
   }
-  const health = useActiveValue(activeHealth)
-  const credits = useActiveValue(activeCredits)
+  const health = useObservableValue(activeHealth)
+  const credits = useObservableValue(activeCredits)
 
   return <div className="d-flex p-1 px-2" style={{ width: w, height: 45 }}>
     <div className="flex-fill justify-content-start">

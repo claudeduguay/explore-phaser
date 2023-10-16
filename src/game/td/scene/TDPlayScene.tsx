@@ -13,7 +13,7 @@ import TowerPreview from "../entity/tower/TowerPreview"
 import PointCollider, { PointColliders } from "../../../util/PointCollider"
 import TowerInfo from "./react/TowerInfo"
 import registerTowerTextures from "../assets/TowerTextures"
-import ActiveValue from "../value/ActiveValue"
+import ObservableValue from "../value/ObservableValue"
 import { shuffle } from "../../../util/ArrayUtil"
 import { canvasSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
@@ -24,15 +24,15 @@ import TreePreview from "../tree/TreePreview"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
-  health: ActiveValue,
-  credits: ActiveValue
+  health: ObservableValue<number>,
+  credits: ObservableValue<number>
 }
 
 export default class TDPlayScene extends Scene {
 
   active: IActiveValues = {
-    health: new ActiveValue(100, 0, 1000),
-    credits: new ActiveValue(0, 0, 1000)
+    health: new ObservableValue(100),
+    credits: new ObservableValue(0)
   }
   towerGroup!: SelectableGroup<TDTower>
   enemyGroup!: SelectableGroup<TDEnemy>

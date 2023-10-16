@@ -4,6 +4,12 @@ import IModifyFunction from "./IModifyFunction"
 
 // Observable value system. Sends changed ebent when value is updated
 
+// Builders for common modifier functions
+export const increment: IModifyFunction<number> = (value: number, x: number) => x + value
+export const decrement: IModifyFunction<number> = (value: number, x: number) => x - value
+export const multiply: IModifyFunction<number> = (value: number, x: number) => x * value
+export const divide: IModifyFunction<number> = (value: number, x: number) => x / value
+
 export const CHANGED_EVENT = "changed"
 
 export default class ObservableValue<T> extends Events.EventEmitter {
@@ -25,16 +31,16 @@ export default class ObservableValue<T> extends Events.EventEmitter {
     this.emitChanged()
   }
 
-  adjust(modifier: IModifyFunction<T> | T) {
-    if (modifier instanceof Function) {
-      const adjusted = modifier(this.activeValue)
-      if (adjusted !== this.activeValue) {
-        this.value = adjusted
-      }
-    } else {
-      this.value = modifier
-    }
-  }
+  // adjust(modifier: IModifyFunction<T> | T) {
+  //   if (modifier instanceof Function) {
+  //     const adjusted = modifier(this.value)
+  //     if (adjusted !== this.value) {
+  //       this.value = adjusted
+  //     }
+  //   } else {
+  //     this.value += increment(this.value, modifier)
+  //   }
+  // }
 
 }
 
