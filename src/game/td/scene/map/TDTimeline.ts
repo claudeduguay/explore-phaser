@@ -30,6 +30,7 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction:
 
 // Add an enemy to the main path (add/remove in group)
 export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, duration: number, delay: number) {
+  let wasDestroyed = false // onComplete triggers even if destroyed, track status
   const model = ENEMY_INDEX[key]
   const enemy = scene.add.enemy(origin.x, origin.y, model, path, true)
   enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
@@ -43,6 +44,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
       }
     }
     enemy.removeListener("died")
+    wasDestroyed = true
   })
   enemy.startFollow({
     duration,
@@ -55,10 +57,10 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
     rotateToPath: true,
     onStart: () => enemyGroup.add(enemy),
     onComplete: () => {
-      if (enemy.health.value > 0) {
+      if (!wasDestroyed && enemy.health.value > 0) {
         enemy.destroy()
         enemyGroup.remove(enemy)
-        active.health.value += -1
+        active.health.value -= 1
         if (scene.sound.get("woe")) {
           scene.sound.play("woe")
         }

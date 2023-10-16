@@ -123,16 +123,16 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
 
   handleStatusBars() {
     if (this.showStatusBars) {
-      const healthFraction = this.health.value / this.model.stats.health
-      const shieldFraction = this.shield.value / this.model.stats.shield
-      if (healthFraction < 0.005) {
+      if (this.health.value < 1) {
         this.container.destroy()  // Make sure we don't leave lingering bar parts behind
         this.emit("died", this)
       }
-      if (shieldFraction < 0.005) {
+      if (this.shield.value < 1) {
         this.shield.value = 100
       }
-      // this.shieldBar.fraction = shield_fraction
+      const healthFraction = this.health.value / this.model.stats.health
+      const shieldFraction = this.shield.value / this.model.stats.shield
+      this.shieldBar.fraction = shieldFraction
       this.healthBar.fraction = healthFraction
       const bounds = this.getBounds()
       const x = this.pathVector.x - this.healthBar.w / 2
