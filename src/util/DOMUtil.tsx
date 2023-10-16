@@ -86,6 +86,7 @@ export function Visible({ scene, gameElement, tweens, children, visible: initVis
 // Tweening-in works, but twening-out has to delay visibility toggle to off
 export function addReactNode(scene: Scene, x: number = 0, y: number = 0, node: ReactNode, isVisible?: ObservableValue<boolean>, overlay = false): GameObjects.DOMElement {
   const id = uuid()
+  // We'll pass this in from the outside when it works reliably
   const tweensBuilder = (element: GameObjects.DOMElement) => ({
     in: (onComplete?: () => void) => scene.tweens.add({
       targets: gameElement,
