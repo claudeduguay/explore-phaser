@@ -27,20 +27,11 @@ export default class ObservableValue<T> extends Events.EventEmitter {
   }
 
   set value(value: T) {
-    this.activeValue = value
-    this.emitChanged()
+    if (this.activeValue !== value) {
+      this.activeValue = value
+      this.emitChanged()
+    }
   }
-
-  // adjust(modifier: IModifyFunction<T> | T) {
-  //   if (modifier instanceof Function) {
-  //     const adjusted = modifier(this.value)
-  //     if (adjusted !== this.value) {
-  //       this.value = adjusted
-  //     }
-  //   } else {
-  //     this.value += increment(this.value, modifier)
-  //   }
-  // }
 
 }
 

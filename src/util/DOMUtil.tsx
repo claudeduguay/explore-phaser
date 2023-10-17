@@ -33,9 +33,22 @@ export type IShowHideVisible = [
 
 export function useShowHideVisible(initVisible: boolean = true, tweens?: ITweens): IShowHideVisible {
   const [visible, setVisible] = useState<boolean>(initVisible)
+  // if (initVisible) {
+  //   if (tweens?.in) {
+  //     tweens.in()
+  //   }
+  // } else {
+  //   if (tweens?.out) {
+  //     tweens.out()
+  //   }
+  // }
   const onShow = () => {
     if (!visible) {
       setVisible(true)
+      // if (tweens?.in) {
+      //   console.log("Tween in")
+      //   tweens.in()
+      // }
     }
   }
   const onHide = () => {
