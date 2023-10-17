@@ -17,6 +17,7 @@ Need to account for shields (disabled for now)
 * BUG: Canvas size measurment fails on iPad Safari
 * BUG: Plopping tower doesn't aways unstick from mouse
 * BUG: Peeps facing sometimes oscilates (seems more apparent when slowed)
+* IMPROVEMENT: Towers need to ease into aim position, avoid jump turns, maybe return to zero in the same way afterward
 
 ### Effect/Afliction Design Notes
 
