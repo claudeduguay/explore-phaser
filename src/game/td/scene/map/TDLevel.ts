@@ -6,10 +6,10 @@ import { makeTimeline } from "./TDTimeline";
 import { IActiveValues } from "../TDPlayScene";
 import { asPathModel } from "./IPathModel";
 
-export default function generateMap(scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group,
+export default function generateMap(scene: Scene, active: IActiveValues,
+  enemyGroup: GameObjects.Group, origin: Point,
   prunePath: boolean = true, showMaze: boolean = true) {
 
-  const origin = new Point(0, 46)
   const config: IMapConfig = DEFAULT_CONFIG
 
   const { path, maze } = generatePath(config.rows, config.cols, prunePath)

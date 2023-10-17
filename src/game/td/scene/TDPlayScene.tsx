@@ -42,6 +42,9 @@ export default class TDPlayScene extends Scene {
   towerPreview!: TowerPreview
   treePreview!: TreePreview
 
+  mapOrigin = new Point(0, 56)
+
+
   constructor(public readonly parent: TDGameScene) {
     super({ key: "play" })
   }
@@ -80,7 +83,7 @@ export default class TDPlayScene extends Scene {
     })
   }
 
-  generatePathAdjacentPositions(origin: Point): Point[] {
+  generatePathAdjacentPositions(): Point[] {
     const { w, h } = canvasSize(this)
     const WEST = new Point(-64, 0)
     const EAST = new Point(64, 0)
@@ -161,12 +164,10 @@ export default class TDPlayScene extends Scene {
 
     this.createMap() // Call this before selecting enemy
 
-    const origin = new Point(0, 46)
-
     const towerCount = 5
     const towers: TDTower[] = []
 
-    const towerPositions: Point[] = this.generatePathAdjacentPositions(origin)
+    const towerPositions: Point[] = this.generatePathAdjacentPositions()
     const generateTower = (i: number) => {
       let pos: Point = towerPositions[i]
       const model = Utils.Array.GetRandom(TOWER_LIST)
@@ -231,6 +232,7 @@ export default class TDPlayScene extends Scene {
     this.scene.add("tower_preview", this.towerPreview, true)
     this.scene.sleep("tower_preview")
 
+
     // ------------------------------------------------------------------
     // TREE SCENE PREVIEW
     // ------------------------------------------------------------------
@@ -246,15 +248,17 @@ export default class TDPlayScene extends Scene {
     this.scene.add("tree_preview", this.treePreview, true)
     this.scene.sleep("tree_preview")
 
+
     addReactNode(this, 0, 0, 0, 0, <GameHeader scene={this} active={this.active} navigator={this.parent}
       onToggleTowerPreview={onToggleTowerPreview} onToggleTreePreview={onToggleTreePreview} />)
-    addReactNode(this, 0, this.game.canvas.height - 62, 0, this.game.canvas.height - 62,
+    addReactNode(this, 0, this.game.canvas.height - 48, 0, this.game.canvas.height - 48,
       <GameFooter scene={this} onAddTower={onAddTower} />)
     // addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
   }
 
+
   createMap() {
-    this.pathPoints = generateMap(this, this.active, this.enemyGroup)
+    this.pathPoints = generateMap(this, this.active, this.enemyGroup, this.mapOrigin)
     const showSpriteSheet = false
     if (showSpriteSheet) {
       const g = this.add.graphics()
@@ -271,8 +275,8 @@ export default class TDPlayScene extends Scene {
     if (this.addingTower) {
       if (!this.input.mousePointer.isDown) {
         this.input.setDefaultCursor("none")
-        const x = PMath.Snap.Floor(this.input.x, 64) + 32
-        const y = PMath.Snap.Floor(this.input.y, 64) + 46 - 32
+        const x = PMath.Snap.Floor(this.input.x, 64) + this.mapOrigin.x + 32
+        const y = PMath.Snap.Floor(this.input.y, 64) + this.mapOrigin.y - 32
 
         // Highlight invalid positions
         if (!this.towerColliders.collision(new Point(x, y))) {

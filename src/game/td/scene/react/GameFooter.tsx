@@ -15,7 +15,7 @@ export default function GameFooter({ scene, onAddTower }: IGameFooterProps) {
       onAddTower(model)
     }
   }
-  return <div className="d-flex justify-content-center p-2" style={{ width: w, background: "rgba(255, 255, 255, 0.4)" }}>
+  return <div className="d-flex justify-content-center" style={{ width: w, background: "rgba(255, 255, 255, 0.4)" }}>
     <div className="">
       {TOWER_LIST.map((model, i) => {
         return <TowerButton key={i} scene={scene} model={model} onClick={() => handleAddTower(model)} />
