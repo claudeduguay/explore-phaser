@@ -20,7 +20,7 @@ export function makeEnemyRenderCallback(scene: Scene, enemy?: TDEnemy) {
 export default function useCaptureEnemy(scene: Scene, enemy?: TDEnemy, angle = 0): string {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const render = useCallback(makeEnemyRenderCallback(scene, enemy), [scene, enemy])
-  const key = `enemy-${enemy?.model.key || "peep_weak"}`
+  const key = `enemy-${enemy?.model.key || "generic-enemy"}`
   return useCapture(scene, 32, 32, render, key)
 }
 

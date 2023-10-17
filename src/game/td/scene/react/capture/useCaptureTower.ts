@@ -17,7 +17,7 @@ export function makeTowerRenderCallback(scene: Scene, model?: ITowerModel, angle
 export default function useCaptureTower(scene: Scene, model?: ITowerModel, angle = 0): string {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const render = useCallback(makeTowerRenderCallback(scene, model, angle), [scene, model, angle])
-  return useCapture(scene, 64, 64, render, `${model?.key}-tower`)
+  return useCapture(scene, 64, 64, render, `${model?.key || "generic"}-tower`)
 }
 
 export function captureAndCacheTower(scene: Scene, model: ITowerModel, angle = 0) {
