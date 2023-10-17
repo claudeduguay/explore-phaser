@@ -106,8 +106,6 @@ const slideBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, x
         targets: element,
         x: x2,
         y: y2,
-        yoyo: false,
-        repeat: 0,
         ease: 'Linear',
         duration: 500,
         onComplete
@@ -120,8 +118,6 @@ const slideBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, x
         targets: element,
         x: x1,
         y: y1,
-        yoyo: false,
-        repeat: 0,
         ease: 'Linear',
         duration: 500,
         onComplete
