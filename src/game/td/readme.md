@@ -18,6 +18,7 @@ Need to account for shields (disabled for now)
 * BUG: Plopping tower doesn't aways unstick from mouse
 * BUG: Peeps facing sometimes oscilates (seems more apparent when slowed)
 * BUG: Levels page keeps updating grass backgrounds
+* BUG: There's a dot in the tower capture bottom left 
 * IMPROVEMENT: Towers need to ease into aim position, avoid jump turns, maybe return to zero in the same way afterward
 
 ### Effect/Afliction Design Notes
