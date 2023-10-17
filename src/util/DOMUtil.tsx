@@ -6,8 +6,8 @@ import { v4 as uuid } from 'uuid';
 import ObservableValue, { CHANGED_EVENT } from "../game/td/value/ObservableValue";
 
 export interface ITweens {
-  in?: (onComplete?: () => void) => Tweens.Tween
-  out?: (onComplete?: () => void) => Tweens.Tween
+  in?: (onComplete?: () => void) => void
+  out?: (onComplete?: () => void) => void
 }
 
 export interface IVisibleProps {
@@ -34,10 +34,12 @@ export type IShowHideVisible = [
 export function useShowHideVisible(initVisible: boolean = true, tweens?: ITweens): IShowHideVisible {
   const [visible, setVisible] = useState<boolean>(initVisible)
   const onShow = () => {
-    setVisible(true)
+    if (!visible) {
+      setVisible(true)
+    }
   }
   const onHide = () => {
-    if (tweens?.out) {
+    if (visible && tweens?.out) {
       tweens.out(() => {
         console.log("Out complete")
         setVisible(false)
@@ -83,32 +85,41 @@ export function Visible({ scene, gameElement, tweens, children, visible: initVis
   return <div>{visible && children}</div>
 }
 
+// We'll pass this in from the outside when it works reliably
+const tweensBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, x2: number, y2: number) => ({
+  in: (onComplete?: () => void) => {
+    if (element.x !== x1) {
+      element.scene.tweens.add({
+        targets: element,
+        x: x1,
+        yoyo: false,
+        repeat: 0,
+        ease: 'Sine.easeInOut',
+        duration: 1000,
+        onComplete
+      })
+    }
+  },
+  out: (onComplete?: () => void) => {
+    if (element.x !== x2) {
+      element.scene.tweens.add({
+        targets: element,
+        x: x2,
+        yoyo: false,
+        repeat: 0,
+        ease: 'Sine.easeInOut',
+        duration: 2000,
+        onComplete
+      })
+    }
+  }
+})
+
 // Tweening-in works, but twening-out has to delay visibility toggle to off
 export function addReactNode(scene: Scene, x: number = 0, y: number = 0, node: ReactNode, isVisible?: ObservableValue<boolean>, overlay = false): GameObjects.DOMElement {
   const id = uuid()
-  // We'll pass this in from the outside when it works reliably
-  const tweensBuilder = (element: GameObjects.DOMElement) => ({
-    in: (onComplete?: () => void) => scene.tweens.add({
-      targets: gameElement,
-      x,
-      yoyo: false,
-      repeat: 0,
-      ease: 'Sine.easeInOut',
-      duration: 1000,
-      onComplete
-    }),
-    out: (onComplete?: () => void) => scene.tweens.add({
-      targets: gameElement,
-      x: x - 400,
-      yoyo: false,
-      repeat: 0,
-      ease: 'Sine.easeInOut',
-      duration: 2000,
-      onComplete
-    })
-  })
   const gameElement = scene.add.dom(x - 400, y).createFromHTML(`<div id="${id}" />`)
-  const tweens = tweensBuilder(gameElement)
+  const tweens = tweensBuilder(gameElement, x, y, x - 400, y)
   const element = document.getElementById(id) as HTMLElement
   const root = ReactDOM.createRoot(element)
   root.render(<Visible scene={scene} gameElement={gameElement} tweens={tweens} overlay={overlay} observable={isVisible}>{node}</Visible>)
