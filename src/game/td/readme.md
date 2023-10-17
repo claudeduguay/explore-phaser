@@ -42,8 +42,9 @@ There are two primary ways to upgrade:
 
 # Towers to add:
 
-* NEW - Grenade throw a projectile that explodes after a second or so.
-* ADD - Sleep: Put enemies in range to sleep for a given amount of time
+* ADD - Grenade throw a projectile that explodes after a second or so.
+* ADD - Sleep: Put enemies in range to sleep for a given amount of time.
+* ADD - Saw - Blade rotating around the tower, perhaps growing/shrinking.
 
 Major categories:
 
