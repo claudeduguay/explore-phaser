@@ -62,6 +62,7 @@ export class TDTileMap extends BehaviorContainer {
   }
 
   setModel(path: IPathModel) {
+    // This is non-deterministic and so maybe updates each time?
     this.backgroundLayer.forEachTile(
       (tile, i) => tile.index = lerpInt(16, 20, Math.random()))
     path.forEach(cell => {

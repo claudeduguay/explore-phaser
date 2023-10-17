@@ -1,6 +1,7 @@
 import { GameObjects, Scene, Textures } from "phaser";
 import useCapture, { captureAndCacheTexture } from "./useCapture";
 import TDEnemy from "../../../entity/enemy/TDEnemy";
+import { useCallback } from "react";
 
 export function makeEnemyRenderCallback(scene: Scene, enemy?: TDEnemy) {
   return (texture: GameObjects.RenderTexture) => {
@@ -17,11 +18,11 @@ export function makeEnemyRenderCallback(scene: Scene, enemy?: TDEnemy) {
 
 // Capture the first frame of an enemy
 export default function useCaptureEnemy(scene: Scene, enemy?: TDEnemy, angle = 0): string {
-  const render = makeEnemyRenderCallback(scene, enemy)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const render = useCallback(makeEnemyRenderCallback(scene, enemy), [scene, enemy])
   const key = `enemy-${enemy?.model.key || "peep_weak"}`
   return useCapture(scene, 32, 32, render, key)
 }
-
 
 export function captureAndCacheEnemy(scene: Scene, enemy?: TDEnemy, angle = 0) {
   const render = makeEnemyRenderCallback(scene, enemy)
