@@ -86,12 +86,13 @@ export function Visible({ scene, gameElement, tweens, children, visible: initVis
 }
 
 // We'll pass this in from the outside when it works reliably
-const tweensBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, x2: number, y2: number) => ({
+const slideBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, x2: number, y2: number) => ({
   in: (onComplete?: () => void) => {
-    if (element.x !== x1) {
+    if (element.x !== x1 || element.y !== y1) {
       element.scene.tweens.add({
         targets: element,
         x: x1,
+        y: y1,
         yoyo: false,
         repeat: 0,
         ease: 'Sine.easeInOut',
@@ -101,10 +102,11 @@ const tweensBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, 
     }
   },
   out: (onComplete?: () => void) => {
-    if (element.x !== x2) {
+    if (element.x !== x2 || element.y !== y2) {
       element.scene.tweens.add({
         targets: element,
         x: x2,
+        y: y2,
         yoyo: false,
         repeat: 0,
         ease: 'Sine.easeInOut',
@@ -119,7 +121,7 @@ const tweensBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, 
 export function addReactNode(scene: Scene, x: number = 0, y: number = 0, node: ReactNode, isVisible?: ObservableValue<boolean>, overlay = false): GameObjects.DOMElement {
   const id = uuid()
   const gameElement = scene.add.dom(x - 400, y).createFromHTML(`<div id="${id}" />`)
-  const tweens = tweensBuilder(gameElement, x, y, x - 400, y)
+  const tweens = slideBuilder(gameElement, x, y, x - 400, y)
   const element = document.getElementById(id) as HTMLElement
   const root = ReactDOM.createRoot(element)
   root.render(<Visible scene={scene} gameElement={gameElement} tweens={tweens} overlay={overlay} observable={isVisible}>{node}</Visible>)
