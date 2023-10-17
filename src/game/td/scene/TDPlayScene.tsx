@@ -137,7 +137,7 @@ export default class TDPlayScene extends Scene {
     const onCloseTowerInfo = () => this.towerGroup.infoVisible.value = false
     // @ts-ignore
     this.physics.add.existing(this.towerGroup)
-    addReactNode(this, 25, 75, <TowerInfo scene={this} tower={this.towerGroup.selected} onClose={onCloseTowerInfo} />,
+    addReactNode(this, -400, 75, 25, 75, <TowerInfo scene={this} tower={this.towerGroup.selected} onClose={onCloseTowerInfo} />,
       this.towerGroup.infoVisible, true)
 
     // Enemy Info
@@ -148,7 +148,7 @@ export default class TDPlayScene extends Scene {
     // Enemies are created as the timeline moves, so we can't take the first entry of the group
     this.enemyGroup.select(new TDEnemy(this, 0, 0, ENEMY_LIST[0]))
     this.enemyGroup.infoVisible.value = false
-    addReactNode(this, w - 350 - 25, 75, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
+    addReactNode(this, w + 5, 75, w - 350 - 25, 75, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
       this.enemyGroup.infoVisible, true)
 
     // Clear selections when clicked outside info panel
@@ -246,9 +246,10 @@ export default class TDPlayScene extends Scene {
     this.scene.add("tree_preview", this.treePreview, true)
     this.scene.sleep("tree_preview")
 
-    addReactNode(this, 0, 0, <GameHeader scene={this} active={this.active} navigator={this.parent}
+    addReactNode(this, 0, 0, 0, 0, <GameHeader scene={this} active={this.active} navigator={this.parent}
       onToggleTowerPreview={onToggleTowerPreview} onToggleTreePreview={onToggleTreePreview} />)
-    addReactNode(this, 0, this.game.canvas.height - 62, <GameFooter scene={this} onAddTower={onAddTower} />)
+    addReactNode(this, 0, this.game.canvas.height - 62, 0, this.game.canvas.height - 62,
+      <GameFooter scene={this} onAddTower={onAddTower} />)
     // addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
   }
 

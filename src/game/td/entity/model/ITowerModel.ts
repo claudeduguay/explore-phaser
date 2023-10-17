@@ -18,7 +18,7 @@ export interface IDamageSpec {
 // Need a mechanism to define timeout effect periods
 // Support for literal or random range damage values
 export interface ITowerDamage {
-  [key: string]: { dps: number | [min: number, max: number] }
+  [key: string]: { dps: number | [min: number, max: number], duration?: number }
 }
 
 export interface ITowerModel {
@@ -104,7 +104,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     key: "flame",
     group: "spray",
     name: "Flame",
-    description: "Targets a single enemy within range with a fire spray.",
+    description: "Targets a single enemy within range with a spray of fire.",
     meta: {
       distribution: "linear",
       rotation: "target",
@@ -122,7 +122,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     key: "freeze",
     group: "spray",
     name: "Freeze",
-    description: "Targets a single enemy within range with an ice spray.",
+    description: "Targets a single enemy within range with an spray of ice.",
     meta: {
       distribution: "linear",
       rotation: "target",
@@ -140,7 +140,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     key: "force",
     group: "spray",
     name: "Force",
-    description: "Targets a single enemy within range with a force spray.",
+    description: "Targets a single enemy within range with a spray of force.",
     meta: {
       distribution: "linear",
       rotation: "target",
@@ -171,7 +171,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      posion: { dps: 25 }
+      posion: { dps: 25, duration: 3000 }
     }
   },
   fire: {
@@ -189,7 +189,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      posion: { dps: 25 }
+      posion: { dps: 25, duration: 3000 }
     }
   },
   smoke: {
@@ -207,7 +207,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      smoke: { dps: 25 }
+      smoke: { dps: 25, duration: 3000 }
     }
   },
   shock: {
@@ -225,7 +225,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      shock: { dps: 25 }
+      shock: { dps: 25, duration: 3000 }
     }
   },
   ice: {
@@ -243,7 +243,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      freeze: { dps: 25 }
+      freeze: { dps: 25, duration: 3000 }
     }
   },
 
@@ -308,7 +308,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     key: "missile",
     group: "throw",
     name: "Missile",
-    description: "Fires a missile at a single enemy within range.",
+    description: "Fires missiles at a single enemy within range.",
     meta: {
       distribution: "linear",
       rotation: "target",
@@ -346,7 +346,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     key: "slow",
     group: "area",
     name: "Slow",
-    description: "Applies a slow effect on enemies within range",
+    description: "Applies a timed slowing effect whenever enemies enter the tower's range",
     meta: {
       distribution: "radial",
       rotation: -1,
@@ -357,7 +357,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      slow: { dps: 25 }
+      slow: { dps: 0, duration: 2000 }
     }
   }
 }

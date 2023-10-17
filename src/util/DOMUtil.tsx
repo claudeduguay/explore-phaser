@@ -88,11 +88,11 @@ export function Visible({ scene, gameElement, tweens, children, visible: initVis
 // We'll pass this in from the outside when it works reliably
 const slideBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, x2: number, y2: number) => ({
   in: (onComplete?: () => void) => {
-    if (element.x !== x1 || element.y !== y1) {
+    if (element.x !== x2 || element.y !== y2) {
       element.scene.tweens.add({
         targets: element,
-        x: x1,
-        y: y1,
+        x: x2,
+        y: y2,
         yoyo: false,
         repeat: 0,
         ease: 'Sine.easeInOut',
@@ -102,11 +102,11 @@ const slideBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, x
     }
   },
   out: (onComplete?: () => void) => {
-    if (element.x !== x2 || element.y !== y2) {
+    if (element.x !== x1 || element.y !== y1) {
       element.scene.tweens.add({
         targets: element,
-        x: x2,
-        y: y2,
+        x: x1,
+        y: y1,
         yoyo: false,
         repeat: 0,
         ease: 'Sine.easeInOut',
@@ -118,10 +118,10 @@ const slideBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, x
 })
 
 // Tweening-in works, but twening-out has to delay visibility toggle to off
-export function addReactNode(scene: Scene, x: number = 0, y: number = 0, node: ReactNode, isVisible?: ObservableValue<boolean>, overlay = false): GameObjects.DOMElement {
+export function addReactNode(scene: Scene, x1: number = 0, y1: number = 0, x2: number = 2, y2: number, node: ReactNode, isVisible?: ObservableValue<boolean>, overlay = false): GameObjects.DOMElement {
   const id = uuid()
-  const gameElement = scene.add.dom(x - 400, y).createFromHTML(`<div id="${id}" />`)
-  const tweens = slideBuilder(gameElement, x, y, x - 400, y)
+  const gameElement = scene.add.dom(x1, y1).createFromHTML(`<div id="${id}" />`)
+  const tweens = slideBuilder(gameElement, x1, y1, x2, y2)
   const element = document.getElementById(id) as HTMLElement
   const root = ReactDOM.createRoot(element)
   root.render(<Visible scene={scene} gameElement={gameElement} tweens={tweens} overlay={overlay} observable={isVisible}>{node}</Visible>)

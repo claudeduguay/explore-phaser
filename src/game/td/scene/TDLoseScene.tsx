@@ -10,6 +10,6 @@ export default class TDLoseScene extends Scene {
   }
 
   create() {
-    addReactNode(this, 0, 0, <GameLose navigator={this.main} />)
+    addReactNode(this, 0, -800, 0, 0, <GameLose navigator={this.main} />)
   }
 }
