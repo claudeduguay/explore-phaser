@@ -11,7 +11,7 @@ export default class TargetLaserBehavior extends BaseTargetBehavior<GameObjects.
 
   addEmitter(i: number, { x, y }: Point, time: number): void {
     // For lazer we may not need to flash
-    const show = time % 3000 <= 2500 // Visible 2500 of every 3000ms
+    const show = time % 3000 > 500 // Visible 2500 of every 3000ms
     if (show) {
       const target = this.tower.targeting.current[0]
       if (target) {

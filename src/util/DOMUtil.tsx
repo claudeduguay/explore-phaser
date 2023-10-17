@@ -1,5 +1,5 @@
 
-import { GameObjects, Scene, Scenes, Tweens } from "phaser"
+import { GameObjects, Scene, Scenes } from "phaser"
 import { ReactNode, useState, useEffect, SetStateAction, Dispatch } from 'react'
 import ReactDOM from 'react-dom/client'
 import { v4 as uuid } from 'uuid';
@@ -96,7 +96,7 @@ const slideBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, x
         yoyo: false,
         repeat: 0,
         ease: 'Sine.easeInOut',
-        duration: 1000,
+        duration: 500,
         onComplete
       })
     }
@@ -110,7 +110,7 @@ const slideBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, x
         yoyo: false,
         repeat: 0,
         ease: 'Sine.easeInOut',
-        duration: 2000,
+        duration: 500,
         onComplete
       })
     }

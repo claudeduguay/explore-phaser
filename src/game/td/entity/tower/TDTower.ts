@@ -2,8 +2,8 @@
 import { GameObjects, Input, Scene } from "phaser"
 import TDTurret from "./TDTurret"
 import BehaviorContainer from "../../behavior/core/BehaviorContainer"
-import TargetAimBehavior from "../../behavior/tower/TargetAimBehavior"
-import ClearTargetsBehavior from "../../behavior/tower/TargetsClearBehavior"
+import TargetAimBehavior from "../../behavior/tower/targeting/TargetAimBehavior"
+import ClearTargetsBehavior from "../../behavior/tower/targeting/TargetsClearBehavior"
 import TDRange from "./TDRange"
 import ITowerModel from "../model/ITowerModel"
 import { TOWER_INDEX } from "../model/ITowerModel"
@@ -13,7 +13,7 @@ import Point, { toSceneCoordinates } from "../../../../util/Point"
 import { addLabel } from "../../../../util/TextUtil"
 import Targeting from "./Targeting"
 
-import RotateBehavior from "../../behavior/tower/RotateBehavior"
+import TargetSpinBehavior from "../../behavior/tower/targeting/TargetSpinBehavior"
 import TargetLaserBehavior from "../../behavior/tower/TargetLazerBehavior"
 import TargetPlasmaBehavior from "../../behavior/tower/TargetPlasmaBehavior"
 import TargetLightningBehavior from "../../behavior/tower/TargetLightningBehavior"
@@ -83,7 +83,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
 
     this.turret = new TDTurret(scene, 0, 0, model)
     if (model.meta.rotation !== "target") {
-      this.behavior.add(new RotateBehavior(this, model.meta.rotation))
+      this.behavior.add(new TargetSpinBehavior(this, model.meta.rotation))
     }
     this.add(this.turret)
 

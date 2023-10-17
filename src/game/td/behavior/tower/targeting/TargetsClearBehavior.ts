@@ -1,5 +1,5 @@
-import TDTower from "../../entity/tower/TDTower"
-import IBehavior from "../core/IBehavior"
+import TDTower from "../../../entity/tower/TDTower"
+import IBehavior from "../../core/IBehavior"
 
 export default class TargetsClearBehavior implements IBehavior {
 

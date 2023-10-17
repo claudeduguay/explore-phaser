@@ -1,11 +1,11 @@
-import TDTower from "../../entity/tower/TDTower"
-import IBehavior from "../core/IBehavior"
+import TDTower from "../../../entity/tower/TDTower"
+import IBehavior from "../../core/IBehavior"
 
 export interface IHasAngle {
   angle: number
 }
 
-export default class RotateBehavior implements IBehavior {
+export default class TargetSpinBehavior implements IBehavior {
 
   constructor(public tower: TDTower, public step: number = 1) {
 

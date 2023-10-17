@@ -6,6 +6,7 @@ import BaseTargeCloudBehavior from "./BaseTargetCloudBehavior"
 
 export default class TargeSmokeBehavior extends BaseTargeCloudBehavior {
   constructor(tower: TDTower) {
-    super(tower, "smoke", smokeEmitter, (enemy: TDEnemy) => new TimedDamageEffect(tower, enemy, 3000, "Blinded"))
+    super(tower, "smoke", smokeEmitter, (enemy: TDEnemy) => new TimedDamageEffect(
+      tower, enemy, tower.model.damage.smoke.duration || 0, "Blinded"))
   }
 }
