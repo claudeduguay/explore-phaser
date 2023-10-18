@@ -39,7 +39,7 @@ export function weaponRenderer(g: CanvasRenderingContext2D,
   const cx = ww / 2
   const main = { x: ww / 2 - ww * inset, w: ww * inset * 2 }
 
-  g.fillStyle = colorStyle(g, x, 0, ww, 0, gradient)
+  g.fillStyle = colorStyle(g, { x1: x, y1: 0, x2: ww, y2: 0 }, gradient)
 
   if (type === "rect") {
     const r = main.x + main.w - 1
@@ -60,7 +60,7 @@ export function weaponRenderer(g: CanvasRenderingContext2D,
   }
 
   if (supressor) {
-    g.fillStyle = colorStyle(g, 0, 0, ww, 0, supressor.color)
+    g.fillStyle = colorStyle(g, { x1: 0, y1: 0, x2: ww, y2: 0 }, supressor.color)
     g.rect(x, hh * supressor.pos, ww - 1, hh * supressor.len)
     g.fill()
     g.stroke()
@@ -68,7 +68,7 @@ export function weaponRenderer(g: CanvasRenderingContext2D,
 
   if (ribs) {
     for (let i = 0; i < ribs.count; i++) {
-      g.fillStyle = colorStyle(g, 0, 0, ww, 0, ribs.color)
+      g.fillStyle = colorStyle(g, { x1: 0, y1: 0, x2: ww, y2: 0 }, ribs.color)
       const p = hh * ribs.start + hh * (ribs.step || 0.1) * i
       g.rect(x, p, ww - 1, hh * 0.05 - 1)
       g.fill()
@@ -78,7 +78,7 @@ export function weaponRenderer(g: CanvasRenderingContext2D,
 
   if (balls) {
     for (let i = 0; i < balls.count; i++) {
-      g.fillStyle = colorStyle(g, 0, 0, ww, 0, balls.color)
+      g.fillStyle = colorStyle(g, { x1: 0, y1: 0, x2: ww, y2: 0 }, balls.color)
       const p = hh * balls.start + hh * 0.1 + hh * (balls.step || 0.25) * i
       drawEllipse(g, cx, p, ww / 2, ww / 2)
       g.fill()

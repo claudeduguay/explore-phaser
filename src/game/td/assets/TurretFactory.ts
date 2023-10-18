@@ -65,7 +65,7 @@ export function turretRenderer(g: CanvasRenderingContext2D,
   const tr = hh * ratio - inset
   const br = hh * (1.0 - ratio) - inset
 
-  g.fillStyle = colorStyle(g, x, y, x, hh, color)
+  g.fillStyle = colorStyle(g, { x1: x, y1: y, x2: x, y2: hh }, color)
   g.strokeStyle = line
   g.lineWidth = 0.5
 

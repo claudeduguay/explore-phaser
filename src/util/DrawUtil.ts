@@ -2,6 +2,7 @@ import Vector from "./Vector"
 import { toRadians } from "./MathUtil"
 import Rectangle from "./Rectangle"
 import { Stroke, maybeStroke } from "./StyleUtil";
+import { canvasSize } from "./RenderUtil";
 
 export type Optional<T> = T | null | undefined;
 
@@ -13,6 +14,13 @@ export type Optional<T> = T | null | undefined;
 export interface IColorStop {
   offset: number;
   color: string;
+}
+
+export function isStop(obj: any): obj is IColorStop {
+  return obj !== undefined &&
+    typeof obj !== "string" &&
+    "offset" in obj &&
+    "color" in obj
 }
 
 // Function to create IColorStop using a simple: stop(p, c) syntax
@@ -51,16 +59,56 @@ export function conicGradient(g: CanvasRenderingContext2D,
 
 
 // ----------------------------------------------------------------------------
-// CORLORING (abstracts string | string[] for fill and line styles)
+// BOX DEFINITIONS, ALLOWS SCALING TO COMMON DIRECTIONS, USED BY colorStyle
 // ----------------------------------------------------------------------------
 
-export type IColoring = string | string[]
+export interface IBox {
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+}
+
+export function scaleBox(g: CanvasRenderingContext2D, box: IBox): IBox {
+  const { w, h } = canvasSize(g)
+  return {
+    x1: box.x1 * w,
+    y1: box.y1 * h,
+    x2: box.x2 * w,
+    y2: box.y2 * h
+  }
+}
+
+// Scaleable direction IBox instances
+export const BOX: { [key: string]: IBox } = {
+  TO_SOUTH: { x1: 0, y1: 0, x2: 0, y2: 1 },
+  TO_NORTH: { x1: 0, y1: 1, x2: 0, y2: 0 },
+  TO_EAST: { x1: 0, y1: 0, x2: 1, y2: 0 },
+  TO_WEST: { x1: 1, y1: 0, x2: 0, y2: 0 },
+  TO_SE: { x1: 0, y1: 0, x2: 1, y2: 1 },
+  TO_SW: { x1: 1, y1: 0, x2: 0, y2: 1 },
+  TO_NW: { x1: 1, y1: 1, x2: 0, y2: 0 },
+  TO_NE: { x1: 0, y1: 1, x2: 1, y2: 0 },
+}
+
+
+// ----------------------------------------------------------------------------
+// COLORING (abstracts string | string[] | IColorStop[] for fill/line styles)
+// ----------------------------------------------------------------------------
+
+export type IColoring = string | string[] | IColorStop[]
 
 export function colorStyle(g: CanvasRenderingContext2D,
-  x0: number, y0: number, x1: number, y1: number,
-  coloring: IColoring): string | CanvasGradient {
+  box: IBox, coloring: IColoring): string | CanvasGradient {
+  const scaled = box // scaleBox(box)
+  const { x1, y1, x2, y2 } = scaled
   if (Array.isArray(coloring)) {
-    return linearGradient(g, x0, y0, x1, y1, ...distributedStops(coloring))
+    if (isStop(coloring[0])) {
+      return linearGradient(g, x1, y1, x2, y2, ...coloring as IColorStop[])
+    } else {
+      const stops = distributedStops(coloring as string[])
+      return linearGradient(g, x1, y1, x2, y2, ...stops)
+    }
   }
   return coloring
 }
