@@ -21,6 +21,7 @@ import TDEnemy from "../entity/enemy/TDEnemy"
 import { ENEMY_LIST } from "../entity/model/IEnemyModel"
 import { onEnemyInRange, onEnemyOverlap } from "../entity/tower/Targeting"
 import TreePreview from "../tree/TreePreview"
+import { addIcon } from "../../../util/TextUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -251,9 +252,12 @@ export default class TDPlayScene extends Scene {
 
     addReactNode(this, 0, 0, 0, 0, <GameHeader scene={this} active={this.active} navigator={this.parent}
       onToggleTowerPreview={onToggleTowerPreview} onToggleTreePreview={onToggleTreePreview} />)
-    addReactNode(this, 0, this.game.canvas.height - 48, 0, this.game.canvas.height - 48,
+    addReactNode(this, 0, this.game.canvas.height - 50, 0, this.game.canvas.height - 50,
       <GameFooter scene={this} onAddTower={onAddTower} />)
     // addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
+
+    // addIcon(this, 50, 75, 9733) // Star if no fontFamily defined
+    // addIcon(this, 50, 75, 0xe5c4)
   }
 
 
