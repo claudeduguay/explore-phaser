@@ -34,7 +34,7 @@ export function addLabel(scene: Scene, x: number, y: number, label: string, alig
 }
 
 export function addIcon(scene: Scene, x: number, y: number, code: number) {
-  const text = scene.add.text(x, y, String.fromCodePoint(code), {
+  const text = scene.add.text(x, y, String.fromCharCode(code), {
     fontFamily: "Material Icons Outlined",
     fontSize: '64px',
   })
