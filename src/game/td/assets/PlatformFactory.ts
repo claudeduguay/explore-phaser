@@ -1,13 +1,14 @@
 import { IColoring, colorStyle, drawArc } from "../../../util/DrawUtil";
 import { toRadians } from "../../../util/MathUtil";
 import { canvasSize, dimensions, IMarginInsets } from "../../../util/RenderUtil";
-import { box } from "../../../util/geom/Box";
+import { BOX, IBox, box, scaleBox } from "../../../util/geom/Box";
 
 export type IPlatformType = "angle" | "curve-o" | "curve-i" | "box-o" | "box-i" | "ntagon"
 
 export interface IPlatformOptions extends IMarginInsets {
   type: IPlatformType;
   color: IColoring
+  colorBox: IBox
   divisions?: number
 }
 
@@ -15,17 +16,19 @@ export const DEFAULT_PLATFORM_OPTIONS: IPlatformOptions = {
   type: "curve-o",
   margin: box(0),
   inset: box(0.2),
-  color: ["#CCF", "#336", "#00F"]
+  color: ["#CCF", "#336", "#00F"],
+  colorBox: BOX.TO_SE
 }
 
 function ntagon(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IPlatformOptions) {
-  const { color } = options
-  const { margin } = dimensions(g, options)
+  const { color, colorBox } = options
+  const { w, h, margin } = dimensions(g, options)
   const div = options.divisions || 0
   const slice = 360.0 / div
-  g.fillStyle = colorStyle(g, margin, color)
+  const bounds = scaleBox(colorBox, w, h, false)
+  g.fillStyle = colorStyle(g, bounds, color)
   g.beginPath()
   for (let i = 0; i < div; i++) {
     const a = toRadians(slice * i)
@@ -144,14 +147,15 @@ export function baseRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IPlatformOptions
 ) {
-  const { color } = options
-  const { margin, inset } = dimensions(g, options)
+  const { color, colorBox } = options
+  const { w, h, margin, inset } = dimensions(g, options)
   const x = margin.x1
   const y = margin.y1
   const ww = margin.w
   const hh = margin.h
   const i = inset.x1
-  g.fillStyle = colorStyle(g, margin, color)
+  const bounds = scaleBox(colorBox, w, h, false)
+  g.fillStyle = colorStyle(g, bounds, color)
   g.beginPath()
   g.moveTo(x, y + i)
   nwCorner(g, options)

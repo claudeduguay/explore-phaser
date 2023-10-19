@@ -22,11 +22,12 @@ export function box(a: number, b?: number, c?: number, d?: number): IBox {
   }
 }
 
-export function scaleBox(box: IBox, w: number, h: number): IBox & { w: number, h: number, cx: number, cy: number } {
+// As insets pulls in the righgt/bottom scaling, else we treat coordinates as w/h values
+export function scaleBox(box: IBox, w: number, h: number, asInsets = true): IBox & { w: number, h: number, cx: number, cy: number } {
   const x1 = box.x1 * w
   const y1 = box.y1 * h
-  const x2 = w - box.x2 * w
-  const y2 = h - box.y2 * h
+  const x2 = asInsets ? w - box.x2 * w : box.x2 * w
+  const y2 = asInsets ? h - box.y2 * h : box.y2 * h
   const ww = x2 - x1
   const hh = y2 - y1
   const cx = x1 + ww / 2
@@ -35,7 +36,7 @@ export function scaleBox(box: IBox, w: number, h: number): IBox & { w: number, h
 }
 
 // Scaleable direction IBox instances
-export const BOX: { [key: string]: IBox } = {
+export const BOX = {
   TO_SOUTH: { x1: 0, y1: 0, x2: 0, y2: 1 },
   TO_NORTH: { x1: 0, y1: 1, x2: 0, y2: 0 },
   TO_EAST: { x1: 0, y1: 0, x2: 1, y2: 0 },
