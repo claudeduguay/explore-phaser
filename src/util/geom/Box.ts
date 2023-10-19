@@ -26,6 +26,7 @@ export function box(a: number, b?: number, c?: number, d?: number): IBox {
 export function scaleBox(box: IBox, w: number, h: number, asInsets = true): IBox & { w: number, h: number, cx: number, cy: number } {
   const x1 = box.x1 * w
   const y1 = box.y1 * h
+  // When we scale a colorBox, we need to scale x2, y2 as right, bottom values, not right, bottom insets
   const x2 = asInsets ? w - box.x2 * w : box.x2 * w
   const y2 = asInsets ? h - box.y2 * h : box.y2 * h
   const ww = x2 - x1
