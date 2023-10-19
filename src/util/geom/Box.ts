@@ -23,12 +23,12 @@ export function box(a: number, b?: number, c?: number, d?: number): IBox {
 }
 
 // As insets pulls in the righgt/bottom scaling, else we treat coordinates as w/h values
-export function scaleBox(box: IBox, w: number, h: number, asInsets = true): IBox & { w: number, h: number, cx: number, cy: number } {
+export function scaleBox(box: IBox, w: number, h: number, asRelative = true): IBox & { w: number, h: number, cx: number, cy: number } {
   const x1 = box.x1 * w
   const y1 = box.y1 * h
-  // When we scale a colorBox, we need to scale x2, y2 as right, bottom values, not right, bottom insets
-  const x2 = asInsets ? w - box.x2 * w : box.x2 * w
-  const y2 = asInsets ? h - box.y2 * h : box.y2 * h
+  // When we scale a colorBox, we need to scale x2, y2 as right, bottom values, not right, bottom edge sizes
+  const x2 = asRelative ? w - box.x2 * w : box.x2 * w
+  const y2 = asRelative ? h - box.y2 * h : box.y2 * h
   const ww = x2 - x1
   const hh = y2 - y1
   const cx = x1 + ww / 2

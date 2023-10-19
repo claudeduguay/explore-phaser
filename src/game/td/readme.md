@@ -10,6 +10,8 @@ Need to account for shields (disabled for now)
 
 ## ToDo Planning
 
+* Consider whether it would be better to separate IBox { x1, y1, x2, y2 } with absolute values 
+from IInset or IMargin with relative values (ie: x2, y2 are either absolute or edge dimension values)
 * Need for consider whether we can embed a new scene inside DOM objects.
 * Need to figure out leveling
 * Effect System needs to handle InRange conditions
