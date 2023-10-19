@@ -4,6 +4,7 @@ import { IPlatformOptions, IPlatformType } from "./PlatformFactory"
 import { IWeaponOptions } from "./WeaponFactory"
 import { ITurretOptions } from "./TurretFactory"
 import { ITextureConfig, makeTowerPlatform, makeTowerWeapon, makeTowerTurret } from "./TextureFactory"
+import { box } from "../../../util/geom/Box"
 
 // ------------------------------------------------------------------
 // COLOR STYLES
@@ -108,7 +109,7 @@ export function pointWeapon(color: IColoring, ball = true): ITextureConfig<IWeap
   return {
     size: { x: 7, y: 32 },
     options: {
-      type: "point", margin: 0, inset: 0.4, line: "white", color,
+      type: "point", inset: box(0.4), line: "white", color,
       balls: ball ? { count: 1, color, start: 0 } : undefined
     }
   }
@@ -117,7 +118,7 @@ export function pointWeapon(color: IColoring, ball = true): ITextureConfig<IWeap
 export function funnelWeapon(color: IColoring): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 32 },
-    options: { type: "funnel", margin: 0, inset: 0.33, line: "white", color }
+    options: { type: "funnel", inset: box(0.33), line: "white", color }
   }
 }
 
@@ -125,7 +126,7 @@ export function rectWeapon(color: IColoring, ribs = true): ITextureConfig<IWeapo
   return {
     size: { x: 7, y: 32 },
     options: {
-      type: "rect", margin: 0, inset: 0.4, line: "white", color,
+      type: "rect", inset: box(0.4), line: "white", color,
       ribs: ribs ? { count: 3, color, start: 0.08, step: 0.08 } : undefined
     }
   }
@@ -134,7 +135,7 @@ export function rectWeapon(color: IColoring, ribs = true): ITextureConfig<IWeapo
 export function pointInsideWeapon(color: IColoring): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 18 },
-    options: { type: "point", margin: 0, inset: 0.0, line: "white", color }
+    options: { type: "point", inset: box(0.0), line: "white", color }
   }
 }
 
@@ -142,7 +143,7 @@ export function funnelInsideWeapon(color: IColoring, ball = true): ITextureConfi
   return {
     size: { x: 7, y: 18 },
     options: {
-      type: "funnel", margin: 0, inset: 0.8, line: "white", color,
+      type: "funnel", inset: box(0.8), line: "white", color,
       balls: ball ? { count: 1, color: "#FCF", start: 0.7 } : undefined
     }
   }
@@ -152,7 +153,7 @@ export function rectInsideWeapon(color: IColoring, ball = true): ITextureConfig<
   return {
     size: { x: 7, y: 18 },
     options: {
-      type: "rect", margin: 0, inset: 0.4, line: "white", color,
+      type: "rect", inset: box(0.4), line: "white", color,
       balls: ball ? { count: 1, color: ["#FCF"], start: 0 } : undefined
     }
   }

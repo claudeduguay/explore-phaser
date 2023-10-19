@@ -1,5 +1,6 @@
 import { IColoring, colorStyle, drawEllipse, drawPolygon } from "../../../util/DrawUtil";
-import { canvasSize, canvasDimensions } from "../../../util/RenderUtil";
+import { canvasSize, canvasDimensions, IMarginInsets } from "../../../util/RenderUtil";
+import { box } from "../../../util/geom/Box";
 
 export type IWeaponType = "rect" | "point" | "funnel"
 export interface IWeaponDecorator {
@@ -9,10 +10,8 @@ export interface IWeaponDecorator {
   step?: number
 }
 
-export interface IWeaponOptions {
+export interface IWeaponOptions extends IMarginInsets {
   type: IWeaponType;
-  margin: number;
-  inset: number;
   ribs?: IWeaponDecorator;
   balls?: IWeaponDecorator;
   supressor?: { pos: number, len: number, color: IColoring };
@@ -22,8 +21,8 @@ export interface IWeaponOptions {
 
 export const DEFAULT_WEAPON_OPTIONS: IWeaponOptions = {
   type: "point",
-  margin: 0,
-  inset: 0.3,
+  margin: box(0),
+  inset: box(0.3),
   color: ["#00F"],
 }
 
@@ -32,12 +31,12 @@ export function weaponRenderer(g: CanvasRenderingContext2D,
   options: IWeaponOptions) {
   const { type, margin, inset, ribs, balls, supressor, color: gradient, line } = options
   const { w, h } = canvasDimensions(g, options)
-  const x = w * margin
-  const y = h * margin
+  const x = w * margin.x1
+  const y = h * margin.y1
   const ww = w - (x * 2)
   const hh = h - (y * 2)
   const cx = ww / 2
-  const main = { x: ww / 2 - ww * inset, w: ww * inset * 2 }
+  const main = { x: ww / 2 - ww * inset.x1, w: ww * inset.x1 * 2 }
 
   g.fillStyle = colorStyle(g, { x1: x, y1: 0, x2: ww, y2: 0 }, gradient)
 

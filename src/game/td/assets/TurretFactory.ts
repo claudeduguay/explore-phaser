@@ -1,6 +1,7 @@
 import { IColoring, colorStyle } from "../../../util/DrawUtil";
 import { toRadians } from "../../../util/MathUtil";
 import { canvasSize, canvasDimensions, IMarginInsets } from "../../../util/RenderUtil";
+import { box } from "../../../util/geom/Box";
 
 export type ITurretType = "convex" | "concave"
 
@@ -15,8 +16,8 @@ export interface ITurretOptions extends IMarginInsets {
 
 export const DEFAULT_TURRET_OPTIONS: ITurretOptions = {
   type: "convex",
-  margin: 0,
-  inset: 0.1,
+  margin: box(0),
+  inset: box(0.1),
   ratio: 0.66,
   topSeg: 7,
   botSeg: 10,
@@ -56,14 +57,14 @@ export function turretRenderer(g: CanvasRenderingContext2D,
   options: ITurretOptions) {
   const { type, margin, inset, ratio, topSeg, botSeg, color, line } = options
   const { w, h } = canvasDimensions(g, options)
-  const x = w * margin
-  const y = h * margin
+  const x = w * margin.x1
+  const y = h * margin.y1
   const ww = w - (x * 2)
   const hh = h - (y * 2)
 
-  const mid = { x: ww / 2 - inset, y: hh * ratio - inset }
-  const tr = hh * ratio - inset
-  const br = hh * (1.0 - ratio) - inset
+  const mid = { x: ww / 2 - inset.x1, y: hh * ratio - inset.y1 }
+  const tr = hh * ratio - inset.y1
+  const br = hh * (1.0 - ratio) - inset.y1
 
   g.fillStyle = colorStyle(g, { x1: x, y1: y, x2: x, y2: hh }, color)
   g.strokeStyle = line

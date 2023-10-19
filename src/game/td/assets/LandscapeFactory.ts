@@ -1,6 +1,7 @@
 import { lerp } from "../../../util/MathUtil";
 import { setPixel } from "../../../util/PixelUtil";
 import { IMarginInsets, canvasSize } from "../../../util/RenderUtil";
+import { box } from "../../../util/geom/Box";
 
 export type ILandscapeType = "sand" | "grass" | "hills" | "mountain"
 
@@ -10,8 +11,8 @@ export interface ILandscapeOptions extends IMarginInsets {
 
 export const DEFAULT_LANDSCAPE_OPTIONS: ILandscapeOptions = {
   type: "grass",
-  margin: 0,
-  inset: 0
+  margin: box(0),
+  inset: box(0)
 }
 
 export function baseRenderer(g: CanvasRenderingContext2D,

@@ -1,6 +1,7 @@
 import { IColoring, colorStyle, drawArc } from "../../../util/DrawUtil";
 import { toRadians } from "../../../util/MathUtil";
 import { canvasSize, canvasDimensions, IMarginInsets } from "../../../util/RenderUtil";
+import { box } from "../../../util/geom/Box";
 
 export type IPlatformType = "angle" | "curve-o" | "curve-i" | "box-o" | "box-i" | "ntagon"
 
@@ -12,8 +13,8 @@ export interface IPlatformOptions extends IMarginInsets {
 
 export const DEFAULT_PLATFORM_OPTIONS: IPlatformOptions = {
   type: "curve-o",
-  margin: 0,
-  inset: 0.2,
+  margin: box(0),
+  inset: box(0.2),
   color: ["#CCF", "#336", "#00F"]
 }
 
@@ -22,8 +23,8 @@ function ntagon(g: CanvasRenderingContext2D,
   options: IPlatformOptions) {
   const { margin, color } = options
   const { w, h } = canvasDimensions(g, options)
-  const x = margin * w
-  const y = margin * h
+  const x = margin.x1 * w
+  const y = margin.y1 * h
   const ww = w - (x * 2)
   const hh = h - (y * 2)
   const cx = x + ww / 2
@@ -49,10 +50,10 @@ function ntagon(g: CanvasRenderingContext2D,
 function nwCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { type, margin, inset } = options
   const { w, h } = canvasDimensions(g, options)
-  const x = margin * w
-  const y = margin * h
+  const x = margin.x1 * w
+  const y = margin.y1 * h
   const ww = w - (x * 2)
-  const i = inset * ww
+  const i = inset.x1 * ww
   switch (type) {
     case "angle":
       g.lineTo(x + i, y)
@@ -75,10 +76,10 @@ function nwCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
 function neCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { type, margin, inset } = options
   const { w, h } = canvasDimensions(g, options)
-  const x = margin * w
-  const y = margin * h
+  const x = margin.x1 * w
+  const y = margin.y1 * h
   const ww = w - (x * 2)
-  const i = inset * ww
+  const i = inset.x1 * ww
   switch (type) {
     case "angle":
       g.lineTo(ww, y + i)
@@ -101,11 +102,11 @@ function neCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
 function seCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { type, margin, inset } = options
   const { w, h } = canvasDimensions(g, options)
-  const x = margin * w
-  const y = margin * h
+  const x = margin.x1 * w
+  const y = margin.y1 * h
   const ww = w - (x * 2)
   const hh = h - (y * 2)
-  const i = inset * ww
+  const i = inset.x1 * ww
   switch (type) {
     case "angle":
       g.lineTo(ww - i, hh)
@@ -128,11 +129,11 @@ function seCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
 function swCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { type, margin, inset } = options
   const { w, h } = canvasDimensions(g, options)
-  const x = margin * w
-  const y = margin * h
+  const x = margin.x1 * w
+  const y = margin.y1 * h
   const ww = w - (x * 2)
   const hh = h - (y * 2)
-  const i = inset * ww
+  const i = inset.x1 * ww
   switch (type) {
     case "angle":
       g.lineTo(x, hh - i)
@@ -158,11 +159,11 @@ export function baseRenderer(g: CanvasRenderingContext2D,
 ) {
   const { margin, inset, color } = options
   const { w, h } = canvasDimensions(g, options)
-  const x = margin * w
-  const y = margin * h
+  const x = margin.x1 * w
+  const y = margin.y1 * h
   const ww = w - (x * 2)
   const hh = h - (y * 2)
-  const i = inset * ww
+  const i = inset.x1 * ww
   g.fillStyle = colorStyle(g, { x1: x, y1: y, x2: ww, y2: hh }, color)
   g.beginPath()
   g.moveTo(x, y + i)
