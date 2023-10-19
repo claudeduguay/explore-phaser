@@ -1,6 +1,6 @@
 import IBehavior from "../core/IBehavior"
 import TDTower from "../../entity/tower/TDTower"
-import Point from "../../../../util/Point"
+import Point from "../../../../util/geom/Point"
 import { applyDamage } from "./ComputeDamage"
 
 export interface IEmitter {

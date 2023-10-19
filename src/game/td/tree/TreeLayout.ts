@@ -1,5 +1,5 @@
 import { lerp } from "../../../util/MathUtil"
-import Point from "../../../util/Point"
+import Point from "../../../util/geom/Point"
 
 export enum TreeDirection {
   NORTH = 1,

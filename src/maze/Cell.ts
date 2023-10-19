@@ -1,5 +1,5 @@
 import BITS_MAP from "../util/Cardinal"
-import Point from "../util/Point"
+import Point from "../util/geom/Point"
 
 export default class Cell {
 

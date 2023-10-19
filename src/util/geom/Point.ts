@@ -1,5 +1,5 @@
 import { GameObjects } from "phaser"
-import { bezier, lerp } from "./MathUtil"
+import { bezier, lerp } from "../MathUtil"
 
 export interface IPointLike {
   x: number

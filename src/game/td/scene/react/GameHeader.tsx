@@ -1,5 +1,5 @@
 import { Scene } from "phaser"
-import { canvasSize } from "../../../../util/SceneUtil"
+import { sceneSize } from "../../../../util/SceneUtil"
 import { useObservableValue } from "../../value/ObservableValue"
 import { IActiveValues } from "../TDPlayScene"
 import INavigator from "./INavigator"
@@ -16,7 +16,7 @@ export interface IGameHeaderProps {
 }
 
 export default function GameHeader({ active, navigator, scene, onToggleTowerPreview, onToggleTreePreview }: IGameHeaderProps) {
-  const { w } = canvasSize(navigator)
+  const { w } = sceneSize(navigator)
 
   const { health: activeHealth, credits: activeCredits } = active
   const onHome = () => navigator.transitionTo("home", "game")

@@ -1,6 +1,6 @@
 import Grid from "./Grid"
 import Cell from "./Cell"
-import Point from "../util/Point"
+import Point from "../util/geom/Point"
 import { shuffle } from "../util/ArrayUtil"
 
 export default class Maze {

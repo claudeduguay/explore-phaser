@@ -3,7 +3,7 @@ import TreeLayout, { INodeKey, ITree } from "./TreeLayout";
 import PhaserLayoutTarget from "./PhaserLayoutTarget";
 import { TOWER_INDEX, TOWER_GROUPS } from "../entity/model/ITowerModel";
 import PhaserDrawSurface from "./PhaserDrawSurface";
-import Point from "../../../util/Point";
+import Point from "../../../util/geom/Point";
 
 export default class TreePreview extends Scene {
   constructor(public main: Scene, public x: number = 0, public y: number = x) {

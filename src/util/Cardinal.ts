@@ -1,4 +1,4 @@
-import Point from "./Point"
+import Point from "./geom/Point"
 
 export const BITS_NORTH = 0b0001
 export const BITS_SOUTH = 0b0010

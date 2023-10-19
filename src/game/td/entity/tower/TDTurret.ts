@@ -2,7 +2,7 @@
 import { Scene } from "phaser"
 import TDWeapon from "./TDWeapon"
 import ITowerModel from "../model/ITowerModel"
-import Point from "../../../../util/Point"
+import Point from "../../../../util/geom/Point"
 import BehaviorContainer from "../../behavior/core/BehaviorContainer"
 
 export default class TDTurret extends BehaviorContainer {

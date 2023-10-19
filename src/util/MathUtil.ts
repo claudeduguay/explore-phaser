@@ -1,4 +1,4 @@
-import Point from "./Point";
+import Point from "./geom/Point";
 
 export function toRadians(degrees: number): number {
   return degrees * Math.PI / 180;

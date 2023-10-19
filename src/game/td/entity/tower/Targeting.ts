@@ -1,7 +1,7 @@
 import { Types, Math as PMath } from "phaser";
 import TDEnemy from "../enemy/TDEnemy";
 import TDTower from "./TDTower";
-import Point from "../../../../util/Point";
+import Point from "../../../../util/geom/Point";
 
 export default class Targeting {
 

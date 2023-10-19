@@ -1,7 +1,7 @@
 import INavigator from "./INavigator"
 import LevelButton from "./LevelButton"
 import { DEFAULT_CONFIG, IMapConfig } from "../map/TDTileMap"
-import { canvasSize } from "../../../../util/SceneUtil"
+import { sceneSize } from "../../../../util/SceneUtil"
 import { evaluateWaveDifficulty } from "../map/IWaveModel"
 import { ILevelModel, computeHardestWave, computeLongestMap, generateLevel } from "../map/ILevelModel"
 import CloseButton from "./CloseButton"
@@ -11,7 +11,7 @@ export interface IGameHomeProps {
 }
 
 export default function GameLevels({ navigator }: IGameHomeProps) {
-  const { w, h } = canvasSize(navigator)
+  const { w, h } = sceneSize(navigator)
   const config: IMapConfig = DEFAULT_CONFIG
   const count = 20
   const levels: ILevelModel[] = []

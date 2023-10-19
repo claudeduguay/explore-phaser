@@ -1,5 +1,5 @@
 import { Curves, GameObjects, Scene, Time } from "phaser"
-import Point from "../../../../util/Point"
+import Point from "../../../../util/geom/Point"
 import TDEnemy from "../../entity/enemy/TDEnemy"
 import { ENEMY_INDEX } from "../../entity/model/IEnemyModel"
 import TDPlayScene, { IActiveValues } from "../TDPlayScene"

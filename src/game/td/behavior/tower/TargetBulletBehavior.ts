@@ -1,7 +1,7 @@
 import { GameObjects, Math as PMath } from "phaser"
 import BaseTargetBehavior from "./BaseTargetBehavior"
 import TDTower from "../../entity/tower/TDTower"
-import Point from "../../../../util/Point"
+import Point from "../../../../util/geom/Point"
 
 export default class TargetBulletBehavior extends BaseTargetBehavior<GameObjects.Sprite> {
 

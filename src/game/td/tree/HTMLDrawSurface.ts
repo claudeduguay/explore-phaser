@@ -1,4 +1,4 @@
-import Point from "../../../util/Point";
+import Point from "../../../util/geom/Point";
 import { IDrawSurface } from "./TreeLayout";
 
 export default class HTMLDrawSurface implements IDrawSurface {

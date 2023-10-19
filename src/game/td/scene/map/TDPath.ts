@@ -1,7 +1,7 @@
 import { Curves, Scene } from "phaser"
 import Cell from "../../../../maze/Cell"
 import Maze from "../../../../maze/Maze"
-import Point from "../../../../util/Point"
+import Point from "../../../../util/geom/Point"
 import IPathModel from "./IPathModel"
 
 // Generate a maze, add entry/exit cells and, optionally, Prune unused cells

@@ -2,7 +2,7 @@ import { GameObjects, Math as PMath } from "phaser"
 import BaseTargetBehavior from "../BaseTargetBehavior"
 import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
-import Point from "../../../../../util/Point"
+import Point from "../../../../../util/geom/Point"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
 // import InRangeDamageEffect from "../../enemy/InRangeDamageEffect"
 

@@ -1,6 +1,6 @@
 
 import { GameObjects, Scene } from "phaser"
-import Point from "../../../../util/Point"
+import Point from "../../../../util/geom/Point"
 
 export default class TDWeapon extends GameObjects.Container {
 

@@ -3,6 +3,8 @@ import { makeHeightRects, makeLandscapeTile, makeNineSlice, makePathTiles } from
 import { generateEnemies } from "../entity/model/IEnemyModel"
 
 export default function preloadAssets(scene: Scene) {
+  // Tried this to ensure fonts were loaded (no joy, see notes on TextUtil.addIcon)
+  // scene.load.css("material-icons", "material-icons/iconfont/material-icons.css")
   preloadAudio(scene)
   preloadImages(scene)
   preloadTextures(scene)

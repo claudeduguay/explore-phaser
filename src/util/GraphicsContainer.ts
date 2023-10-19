@@ -1,5 +1,5 @@
 import { Scene, GameObjects, Types } from "phaser";
-import Point from "./Point";
+import Point from "./geom/Point";
 
 export default class GraphicsContainer extends GameObjects.Graphics {
 

@@ -6,7 +6,7 @@ import TDGameScene from "./TDGameScene"
 import GameHeader from "./react/GameHeader"
 import GameFooter from "./react/GameFooter"
 import generateMap from "./map/TDLevel"
-import Point from "../../../util/Point"
+import Point from "../../../util/geom/Point"
 import SelectableGroup from "./SelectableGroup"
 import ITowerModel, { TOWER_LIST } from "../entity/model/ITowerModel"
 import TowerPreview from "../entity/tower/TowerPreview"
@@ -15,7 +15,7 @@ import TowerInfo from "./react/TowerInfo"
 import registerTowerTextures from "../assets/TowerTextures"
 import ObservableValue from "../value/ObservableValue"
 import { shuffle } from "../../../util/ArrayUtil"
-import { canvasSize } from "../../../util/SceneUtil"
+import { sceneSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../entity/enemy/TDEnemy"
 import { ENEMY_LIST } from "../entity/model/IEnemyModel"
@@ -85,7 +85,7 @@ export default class TDPlayScene extends Scene {
   }
 
   generatePathAdjacentPositions(): Point[] {
-    const { w, h } = canvasSize(this)
+    const { w, h } = sceneSize(this)
     const WEST = new Point(-64, 0)
     const EAST = new Point(64, 0)
     const NORTH = new Point(0, -64)
@@ -132,7 +132,7 @@ export default class TDPlayScene extends Scene {
   }
 
   create() {
-    const { w, h } = canvasSize(this)
+    const { w, h } = sceneSize(this)
     this.lights.addLight(-w / 2, -h / 2, w * 2, 0xffffff, 1).setIntensity(2)
     // console.log("Added lights:", this.lights.lights)
 
@@ -257,7 +257,7 @@ export default class TDPlayScene extends Scene {
     // addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
 
     // addIcon(this, 50, 75, 9733) // Star if no fontFamily defined
-    // addIcon(this, 50, 75, 0xE5C4)
+    addIcon(this, 50, 75, "123 \ue037")
   }
 
 

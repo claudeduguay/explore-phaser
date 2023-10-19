@@ -1,5 +1,5 @@
 import { GameObjects, Curves, Math as PMath } from "phaser"
-import Point from "../../../../util/Point"
+import Point from "../../../../util/geom/Point"
 import { rotation } from "../../../../util/MathUtil"
 import BaseTargetBehavior from "./BaseTargetBehavior"
 import TDTower from "../../entity/tower/TDTower"

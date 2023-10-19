@@ -1,5 +1,5 @@
 import { Types, Math as PMath, Geom } from "phaser"
-import Point, { IPointLike } from "../../../util/Point"
+import Point, { IPointLike } from "../../../util/geom/Point"
 import { lerp } from "../../../util/MathUtil"
 
 // Best docs: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/particles/

@@ -1,4 +1,4 @@
-import { canvasSize } from "../../../../util/SceneUtil"
+import { sceneSize } from "../../../../util/SceneUtil"
 import ClickButton from "./buttons/ClickButton"
 import INavigator from "./INavigator"
 
@@ -7,7 +7,7 @@ export interface IGameHomeProps {
 }
 
 export default function GameHeader({ navigator }: IGameHomeProps) {
-  const { w, h } = canvasSize(navigator)
+  const { w, h } = sceneSize(navigator)
 
   const onPlay = () => {
     navigator.transitionTo("play", "home")

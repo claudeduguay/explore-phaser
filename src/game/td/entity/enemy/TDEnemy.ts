@@ -4,7 +4,7 @@ import HealthBar from "./HealthBar";
 import ObservableValue from "../../value/ObservableValue";
 import { ISelectable } from "../../scene/SelectableGroup";
 import BehaviorList from "../../behavior/core/BehaviorList";
-import { toSceneCoordinates } from "../../../../util/Point";
+import { toSceneCoordinates } from "../../../../util/geom/Point";
 
 export default class TDEnemy extends GameObjects.PathFollower implements ISelectable {
 

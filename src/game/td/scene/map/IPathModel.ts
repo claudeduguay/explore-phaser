@@ -1,6 +1,6 @@
 import Cell from "../../../../maze/Cell"
 import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../../util/Cardinal"
-import Point from "../../../../util/Point"
+import Point from "../../../../util/geom/Point"
 
 // Minimal information model for constructing a TileMap view
 

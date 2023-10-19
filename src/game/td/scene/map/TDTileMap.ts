@@ -1,5 +1,5 @@
 import { Scene, Tilemaps } from "phaser"
-import Point from "../../../../util/Point";
+import Point from "../../../../util/geom/Point";
 import IPathModel from "./IPathModel";
 import BehaviorContainer from "../../behavior/core/BehaviorContainer";
 import { lerpInt } from "../../../../util/MathUtil";

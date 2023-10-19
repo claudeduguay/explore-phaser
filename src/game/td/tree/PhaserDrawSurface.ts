@@ -1,6 +1,6 @@
 import { GameObjects, Scene } from "phaser";
 import { IDrawSurface } from "./TreeLayout";
-import Point from "../../../util/Point";
+import Point from "../../../util/geom/Point";
 // import { canvasSize } from "../../../util/SceneUtil";
 
 export default class PhaserDrawSurface implements IDrawSurface {

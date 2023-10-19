@@ -1,5 +1,5 @@
 import { Scene, GameObjects } from "phaser"
-import Point from "../../../../util/Point";
+import Point from "../../../../util/geom/Point";
 import makeTileMap, { DEFAULT_CONFIG, IMapConfig } from "./TDTileMap";
 import { generatePath, renderPath } from "./TDPath";
 import { makeTimeline } from "./TDTimeline";

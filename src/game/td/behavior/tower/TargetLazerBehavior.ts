@@ -1,6 +1,6 @@
 import { GameObjects } from "phaser"
 import BaseTargetBehavior from "./BaseTargetBehavior"
-import Point, { IPointLike } from "../../../../util/Point"
+import Point, { IPointLike } from "../../../../util/geom/Point"
 import TDTower from "../../entity/tower/TDTower"
 
 export default class TargetLaserBehavior extends BaseTargetBehavior<GameObjects.Graphics> {

@@ -1,14 +1,14 @@
 import { useState } from "react"
 import ClickButton from "./buttons/ClickButton"
 import INavigator from "./INavigator"
-import { canvasSize } from "../../../../util/SceneUtil"
+import { sceneSize } from "../../../../util/SceneUtil"
 
 export interface IGameOptionsProps {
   navigator: INavigator
 }
 
 export default function GameOptions({ navigator }: IGameOptionsProps) {
-  const { w, h } = canvasSize(navigator)
+  const { w, h } = sceneSize(navigator)
   const [muted, setMuted] = useState<boolean>(navigator.mute)
   const onHome = () => {
     navigator.transitionTo("home", "options")

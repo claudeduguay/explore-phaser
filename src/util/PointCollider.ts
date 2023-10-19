@@ -1,4 +1,4 @@
-import Point from "./Point"
+import Point from "./geom/Point"
 
 export default class PointCollider {
   constructor(

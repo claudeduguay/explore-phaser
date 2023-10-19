@@ -9,7 +9,7 @@ import ITowerModel from "../model/ITowerModel"
 import { TOWER_INDEX } from "../model/ITowerModel"
 import { ISelectable } from "../../scene/SelectableGroup"
 import { clamp } from "../../../../util/MathUtil"
-import Point, { toSceneCoordinates } from "../../../../util/Point"
+import Point, { toSceneCoordinates } from "../../../../util/geom/Point"
 import { addLabel } from "../../../../util/TextUtil"
 import Targeting from "./Targeting"
 

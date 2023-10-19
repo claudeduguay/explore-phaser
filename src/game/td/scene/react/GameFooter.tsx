@@ -1,7 +1,7 @@
 import { Scene } from "phaser"
 import ITowerModel, { TOWER_LIST } from "../../entity/model/ITowerModel"
 import TowerButton from "./TowerButton"
-import { canvasSize } from "../../../../util/SceneUtil"
+import { sceneSize } from "../../../../util/SceneUtil"
 
 export interface IGameFooterProps {
   scene: Scene
@@ -9,7 +9,7 @@ export interface IGameFooterProps {
 }
 
 export default function GameFooter({ scene, onAddTower }: IGameFooterProps) {
-  const { w } = canvasSize(scene)
+  const { w } = sceneSize(scene)
   const handleAddTower = (model: ITowerModel) => {
     if (onAddTower) {
       onAddTower(model)
