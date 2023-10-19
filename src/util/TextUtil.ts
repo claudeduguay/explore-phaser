@@ -36,12 +36,17 @@ export function addLabel(scene: Scene, x: number, y: number, label: string, alig
 // Possible use of a custom preloader: 
 // https://github.com/mozdevs/webfont-preloading/blob/master/preloading.js
 // Uses FontFaceObserver: https://github.com/bramstein/fontfaceobserver
-export function addIcon(scene: Scene, x: number, y: number, code: string | number) {
+// npm install fontfaceobserver
+export function addMaterialIcon(scene: Scene, x: number, y: number, code: string | number,
+  fontSize: number = 64, color: string = "white") {
   const value = typeof code === "number" ? String.fromCharCode(code) : code
   const text = scene.add.text(x, y, value, {
-    // fontFamily: "Material Icons Outlined",
-    fontFamily: "xxx",
-    fontSize: '64px',
+    fontFamily: "Material Icons Outlined",
+    fontSize,
+    color,
+    backgroundColor: "rgba(127, 127, 127, 0.66)",
+    padding: { x: 0, y: 0 },
+    fixedHeight: fontSize * 0.75, // Need this to be calculated
   })
   return text
 }

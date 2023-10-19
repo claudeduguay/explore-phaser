@@ -1,13 +1,43 @@
-import { Scene } from "phaser"
+import { Loader, Scene } from "phaser"
 import { makeHeightRects, makeLandscapeTile, makeNineSlice, makePathTiles } from "../assets/TextureFactory"
 import { generateEnemies } from "../entity/model/IEnemyModel"
+import FontFaceObserver from "fontfaceobserver"
+
+// Intreresting repo: https://github.com/samme/phaser-plugin-loader
+// Also interesting repo: https://phaserplugins.com/
+
+// Adapt and modernize FontFaceObserver-based WebFont loader
+// See: https://github.com/mozdevs/webfont-preloading/blob/master/preloading.js
+export class WebFontLoader extends Loader.LoaderPlugin {
+
+  webfont(key: string, fontName: string) {
+    // fontName is stored in file's `url` property for use in addFile
+    this.addFile(new Loader.File(this, { type: "webfont", key, url: fontName }))
+    return this;
+  }
+
+  addFile(file: Loader.File) {
+    super.addFile(file) // Not loadFile?
+    if (file.type === 'webfont' && typeof file.url === "string") {
+      // note: file.url contains font name
+      const font = new FontFaceObserver(file.url)
+      font.load(null, 10000).then(() => this.fileProcessComplete(file))
+    }
+  }
+}
+
 
 export default function preloadAssets(scene: Scene) {
-  // Tried this to ensure fonts were loaded (no joy, see notes on TextUtil.addIcon)
-  // scene.load.css("material-icons", "material-icons/iconfont/material-icons.css")
+  preloadWebFont(scene)
   preloadAudio(scene)
   preloadImages(scene)
   preloadTextures(scene)
+}
+
+export function preloadWebFont(scene: Scene) {
+  scene.plugins.installScenePlugin("WebFontLoader", WebFontLoader, "webfont", scene)
+  // @ts-ignore - Note: This should be accesible via the load manager but works like this
+  scene.webfont.webfont("material-icons-outline", "Material Icons Outlined")
 }
 
 export function preloadAudio(scene: Scene) {
