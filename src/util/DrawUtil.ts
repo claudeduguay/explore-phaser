@@ -69,6 +69,19 @@ export interface IBox {
   y2: number
 }
 
+export function box(all: number): IBox
+export function box(horz: number, vert: number): IBox
+export function box(x1: number, y1: number, x2: number, y2: number): IBox
+export function box(a: number, b?: number, c?: number, d?: number): IBox {
+  if (a !== undefined && b !== undefined && c !== undefined && d !== undefined) {
+    return { x1: a, y1: b, x2: c, y2: d }
+  } else if (a !== undefined && b !== undefined) {
+    return { x1: a, y1: b, x2: a, y2: b }
+  } else {
+    return { x1: a, y1: a, x2: a, y2: a }
+  }
+}
+
 export function scaleBox(g: CanvasRenderingContext2D, box: IBox): IBox {
   const { w, h } = canvasSize(g)
   return {
