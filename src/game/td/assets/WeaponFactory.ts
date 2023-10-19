@@ -29,13 +29,12 @@ export const DEFAULT_WEAPON_OPTIONS: IWeaponOptions = {
 export function weaponRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IWeaponOptions) {
-  const { type, margin, inset, ribs, balls, supressor, color: gradient, line } = options
-  const { w, h } = dimensions(g, options)
-  const x = w * margin.x1
-  const y = h * margin.y1
-  const ww = w - (x * 2)
-  const hh = h - (y * 2)
-  const cx = ww / 2
+  const { type, inset, ribs, balls, supressor, color: gradient, line } = options
+  const { margin } = dimensions(g, options)
+  const x = margin.x1
+  const ww = margin.w
+  const hh = margin.h
+  const cx = margin.cx
   const main = { x: ww / 2 - ww * inset.x1, w: ww * inset.x1 * 2 }
 
   g.fillStyle = colorStyle(g, { x1: x, y1: 0, x2: ww, y2: 0 }, gradient)

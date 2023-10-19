@@ -21,23 +21,16 @@ export const DEFAULT_PLATFORM_OPTIONS: IPlatformOptions = {
 function ntagon(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IPlatformOptions) {
-  const { margin, color } = options
-  const { w, h } = dimensions(g, options)
-  const x = margin.x1 * w
-  const y = margin.y1 * h
-  const ww = w - (x * 2)
-  const hh = h - (y * 2)
-  const cx = x + ww / 2
-  const cy = y + hh / 2
-  // const i = inset * ww
+  const { color } = options
+  const { margin } = dimensions(g, options)
   const div = options.divisions || 0
   const slice = 360.0 / div
-  g.fillStyle = colorStyle(g, { x1: x, y1: y, x2: ww, y2: hh }, color)
+  g.fillStyle = colorStyle(g, margin, color)
   g.beginPath()
   for (let i = 0; i < div; i++) {
     const a = toRadians(slice * i)
-    const x = cx + Math.cos(a) * cx
-    const y = cy + Math.sin(a) * cy
+    const x = margin.cx + Math.cos(a) * margin.cx
+    const y = margin.cy + Math.sin(a) * margin.cy
     if (i === 0) {
       g.moveTo(x, y)
     } else {
@@ -48,12 +41,11 @@ function ntagon(g: CanvasRenderingContext2D,
 }
 
 function nwCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
-  const { type, margin, inset } = options
-  const { w, h } = dimensions(g, options)
-  const x = margin.x1 * w
-  const y = margin.y1 * h
-  const ww = w - (x * 2)
-  const i = inset.x1 * ww
+  const { type } = options
+  const { margin, inset } = dimensions(g, options)
+  const x = margin.x1
+  const y = margin.y1
+  const i = inset.x1
   switch (type) {
     case "angle":
       g.lineTo(x + i, y)
@@ -74,12 +66,11 @@ function nwCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
 }
 
 function neCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
-  const { type, margin, inset } = options
-  const { w, h } = dimensions(g, options)
-  const x = margin.x1 * w
-  const y = margin.y1 * h
-  const ww = w - (x * 2)
-  const i = inset.x1 * ww
+  const { type } = options
+  const { margin, inset } = dimensions(g, options)
+  const y = margin.y1
+  const ww = margin.w
+  const i = inset.x1
   switch (type) {
     case "angle":
       g.lineTo(ww, y + i)
@@ -100,13 +91,11 @@ function neCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
 }
 
 function seCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
-  const { type, margin, inset } = options
-  const { w, h } = dimensions(g, options)
-  const x = margin.x1 * w
-  const y = margin.y1 * h
-  const ww = w - (x * 2)
-  const hh = h - (y * 2)
-  const i = inset.x1 * ww
+  const { type } = options
+  const { margin, inset } = dimensions(g, options)
+  const ww = margin.w
+  const hh = margin.h
+  const i = inset.x1
   switch (type) {
     case "angle":
       g.lineTo(ww - i, hh)
@@ -127,13 +116,11 @@ function seCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
 }
 
 function swCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
-  const { type, margin, inset } = options
-  const { w, h } = dimensions(g, options)
-  const x = margin.x1 * w
-  const y = margin.y1 * h
-  const ww = w - (x * 2)
-  const hh = h - (y * 2)
-  const i = inset.x1 * ww
+  const { type } = options
+  const { margin, inset } = dimensions(g, options)
+  const x = margin.x1
+  const hh = margin.h
+  const i = inset.x1
   switch (type) {
     case "angle":
       g.lineTo(x, hh - i)
@@ -157,14 +144,14 @@ export function baseRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IPlatformOptions
 ) {
-  const { margin, inset, color } = options
-  const { w, h } = dimensions(g, options)
-  const x = margin.x1 * w
-  const y = margin.y1 * h
-  const ww = w - (x * 2)
-  const hh = h - (y * 2)
-  const i = inset.x1 * ww
-  g.fillStyle = colorStyle(g, { x1: x, y1: y, x2: ww, y2: hh }, color)
+  const { color } = options
+  const { margin, inset } = dimensions(g, options)
+  const x = margin.x1
+  const y = margin.y1
+  const ww = margin.w
+  const hh = margin.h
+  const i = inset.x1
+  g.fillStyle = colorStyle(g, margin, color)
   g.beginPath()
   g.moveTo(x, y + i)
   nwCorner(g, options)

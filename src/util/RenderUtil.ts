@@ -20,11 +20,16 @@ export interface IMarginInsets {
 
 export function dimensions(g: CanvasRenderingContext2D, { margin, inset }: IMarginInsets) {
   const { w, h } = canvasSize(g)
+  // scaleBox adds w, h values. 
+  const scaledMargin = scaleBox(margin, w, h)
+  // We use scaled margin w, h values for insets, which are inside the margin area
+  const scaledInset = scaleBox(inset, scaledMargin.w, scaledMargin.h)
+  console.log("Scaled:", w, h, scaledMargin, scaledInset)
   return {
     w,
     h,
-    margin: scaleBox(margin, w, h),
-    inset: scaleBox(inset, w, h)
+    margin: scaledMargin,
+    inset: scaledInset
   }
 }
 

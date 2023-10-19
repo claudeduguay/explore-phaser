@@ -22,8 +22,16 @@ export function box(a: number, b?: number, c?: number, d?: number): IBox {
   }
 }
 
-export function scaleBox(box: IBox, w: number, h: number): IBox {
-  return { x1: box.x1 * w, y1: box.y1 * h, x2: box.x2 * w, y2: box.y2 * h }
+export function scaleBox(box: IBox, w: number, h: number): IBox & { w: number, h: number, cx: number, cy: number } {
+  const x1 = box.x1 * w
+  const y1 = box.y1 * h
+  const x2 = w - box.x2 * w
+  const y2 = h - box.y2 * h
+  const ww = x2 - x1
+  const hh = y2 - y1
+  const cx = x1 + ww / 2
+  const cy = y1 + hh / 2
+  return { x1, y1, x2, y2, w: ww, h: hh, cx, cy }
 }
 
 // Scaleable direction IBox instances

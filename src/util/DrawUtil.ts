@@ -119,6 +119,7 @@ export function drawArcVector(g: CanvasRenderingContext2D, center: Vector, r: nu
   drawArc(g, center.x, center.y, r, startAngle, endAngle);
 }
 
+// Note: Need a custom drawArc to properly reflect x/y radii 
 export function drawArc(g: CanvasRenderingContext2D, cx: number, cy: number, r: number, startAngle: number, endAngle: number) {
   g.arc(cx, cy, r, toRadians(startAngle), toRadians(endAngle), startAngle > endAngle);
 }
