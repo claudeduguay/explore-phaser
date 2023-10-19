@@ -93,5 +93,5 @@ export function turretRendererFunctionFactory(
     g.rect(0, 0, w, h)
     g.clip()
     turretRenderer(g, frameIndexFraction, merged)
-  };
+  }
 }

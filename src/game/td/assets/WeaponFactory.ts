@@ -96,5 +96,5 @@ export function weaponRendererFunctionFactory(
     g.rect(0, 0, w, h)
     g.clip()
     weaponRenderer(g, frameIndexFraction, merged)
-  };
+  }
 }

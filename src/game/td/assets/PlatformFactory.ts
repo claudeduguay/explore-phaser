@@ -193,5 +193,5 @@ export function platformRendererFunctionFactory(
     } else {
       baseRenderer(g, frameIndexFraction, merged)
     }
-  };
+  }
 }
