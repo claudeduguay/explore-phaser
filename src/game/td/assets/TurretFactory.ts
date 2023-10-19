@@ -1,6 +1,6 @@
 import { IColoring, colorStyle } from "../../../util/DrawUtil";
 import { toRadians } from "../../../util/MathUtil";
-import { canvasSize, canvasDimensions, IMarginInsets } from "../../../util/RenderUtil";
+import { canvasSize, dimensions, IMarginInsets } from "../../../util/RenderUtil";
 import { box } from "../../../util/geom/Box";
 
 export type ITurretType = "convex" | "concave"
@@ -56,7 +56,7 @@ export function turretRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: ITurretOptions) {
   const { type, margin, inset, ratio, topSeg, botSeg, color, line } = options
-  const { w, h } = canvasDimensions(g, options)
+  const { w, h } = dimensions(g, options)
   const x = w * margin.x1
   const y = h * margin.y1
   const ww = w - (x * 2)

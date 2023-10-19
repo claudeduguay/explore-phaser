@@ -1,5 +1,5 @@
 import RenderFunction from "./IRenderFunction";
-import { IBox } from "./geom/Box";
+import { IBox, scaleBox } from "./geom/Box";
 
 export function invertTime(frameIndexFraction: number, invert: boolean) {
   return invert ? 1.0 - frameIndexFraction : frameIndexFraction
@@ -18,14 +18,13 @@ export interface IMarginInsets {
   inset: IBox
 }
 
-export function canvasDimensions(g: CanvasRenderingContext2D, { margin, inset }: IMarginInsets) {
+export function dimensions(g: CanvasRenderingContext2D, { margin, inset }: IMarginInsets) {
   const { w, h } = canvasSize(g)
   return {
-    w, h,
-    mx: w * margin.x1, my: h * margin.y1,
-    mw: w - w * margin.x2 * 2, mh: h - h * margin.x2 * 2,
-    cx: w / 2, cy: h / 2,
-    ix: w * inset.x1, iy: h * inset.y1
+    w,
+    h,
+    margin: scaleBox(margin, w, h),
+    inset: scaleBox(inset, w, h)
   }
 }
 

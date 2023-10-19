@@ -22,13 +22,8 @@ export function box(a: number, b?: number, c?: number, d?: number): IBox {
   }
 }
 
-export function scaleBox(g: CanvasRenderingContext2D, box: IBox, w: number, h: number): IBox {
-  return {
-    x1: box.x1 * w,
-    y1: box.y1 * h,
-    x2: box.x2 * w,
-    y2: box.y2 * h
-  }
+export function scaleBox(box: IBox, w: number, h: number): IBox {
+  return { x1: box.x1 * w, y1: box.y1 * h, x2: box.x2 * w, y2: box.y2 * h }
 }
 
 // Scaleable direction IBox instances

@@ -1,6 +1,6 @@
 import { IColoring, colorStyle, drawArc } from "../../../util/DrawUtil";
 import { toRadians } from "../../../util/MathUtil";
-import { canvasSize, canvasDimensions, IMarginInsets } from "../../../util/RenderUtil";
+import { canvasSize, dimensions, IMarginInsets } from "../../../util/RenderUtil";
 import { box } from "../../../util/geom/Box";
 
 export type IPlatformType = "angle" | "curve-o" | "curve-i" | "box-o" | "box-i" | "ntagon"
@@ -22,7 +22,7 @@ function ntagon(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IPlatformOptions) {
   const { margin, color } = options
-  const { w, h } = canvasDimensions(g, options)
+  const { w, h } = dimensions(g, options)
   const x = margin.x1 * w
   const y = margin.y1 * h
   const ww = w - (x * 2)
@@ -49,7 +49,7 @@ function ntagon(g: CanvasRenderingContext2D,
 
 function nwCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { type, margin, inset } = options
-  const { w, h } = canvasDimensions(g, options)
+  const { w, h } = dimensions(g, options)
   const x = margin.x1 * w
   const y = margin.y1 * h
   const ww = w - (x * 2)
@@ -75,7 +75,7 @@ function nwCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
 
 function neCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { type, margin, inset } = options
-  const { w, h } = canvasDimensions(g, options)
+  const { w, h } = dimensions(g, options)
   const x = margin.x1 * w
   const y = margin.y1 * h
   const ww = w - (x * 2)
@@ -101,7 +101,7 @@ function neCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
 
 function seCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { type, margin, inset } = options
-  const { w, h } = canvasDimensions(g, options)
+  const { w, h } = dimensions(g, options)
   const x = margin.x1 * w
   const y = margin.y1 * h
   const ww = w - (x * 2)
@@ -128,7 +128,7 @@ function seCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
 
 function swCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { type, margin, inset } = options
-  const { w, h } = canvasDimensions(g, options)
+  const { w, h } = dimensions(g, options)
   const x = margin.x1 * w
   const y = margin.y1 * h
   const ww = w - (x * 2)
@@ -158,7 +158,7 @@ export function baseRenderer(g: CanvasRenderingContext2D,
   options: IPlatformOptions
 ) {
   const { margin, inset, color } = options
-  const { w, h } = canvasDimensions(g, options)
+  const { w, h } = dimensions(g, options)
   const x = margin.x1 * w
   const y = margin.y1 * h
   const ww = w - (x * 2)

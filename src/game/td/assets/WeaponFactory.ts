@@ -1,5 +1,5 @@
 import { IColoring, colorStyle, drawEllipse, drawPolygon } from "../../../util/DrawUtil";
-import { canvasSize, canvasDimensions, IMarginInsets } from "../../../util/RenderUtil";
+import { canvasSize, dimensions, IMarginInsets } from "../../../util/RenderUtil";
 import { box } from "../../../util/geom/Box";
 
 export type IWeaponType = "rect" | "point" | "funnel"
@@ -30,7 +30,7 @@ export function weaponRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IWeaponOptions) {
   const { type, margin, inset, ribs, balls, supressor, color: gradient, line } = options
-  const { w, h } = canvasDimensions(g, options)
+  const { w, h } = dimensions(g, options)
   const x = w * margin.x1
   const y = h * margin.y1
   const ww = w - (x * 2)
