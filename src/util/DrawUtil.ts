@@ -3,7 +3,6 @@ import { lerp, toRadians } from "./MathUtil"
 import Rectangle from "./Rectangle"
 import { Stroke, maybeStroke } from "./StyleUtil";
 import { IBox } from "./geom/Box";
-import { splitLeftPathRendererFunctionFactory } from "../game/td/assets/PathFactory";
 
 export type Optional<T> = T | null | undefined;
 

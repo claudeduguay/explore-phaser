@@ -1,6 +1,6 @@
 import { Display, Scene } from "phaser"
 import { IColoring } from "../../../util/DrawUtil"
-import { IPlatformOptions, IPlatformType } from "./PlatformFactory"
+import { IPlatformOptions, IPlatformType, ICorners, corners } from "./PlatformFactory"
 import { IWeaponOptions } from "./WeaponFactory"
 import { ITurretOptions } from "./TurretFactory"
 import { ITextureConfig, makeTowerPlatform, makeTowerWeapon, makeTowerTurret } from "./TextureFactory"
@@ -50,19 +50,24 @@ export const COLORS: { [key: string]: IColoring } = {
 // PLATFORM STYLES
 // ------------------------------------------------------------------
 
-const PLATFORM: Record<string, IPlatformType> = {
-  SPRAY: "angle",
-  CLOUD: "curve-o",
-  FALL: "ntagon",
-  BEAM: "curve-i",
-  THROW: "curve-i",
-  AREA: "box-o"
+interface ITypeAndCorners {
+  type: IPlatformType
+  corners: ICorners
 }
 
-export function platformConfig(type: IPlatformType, color: IColoring, divisions: number = 8) {
+const PLATFORM: Record<string, ITypeAndCorners> = {
+  SPRAY: { type: "box", corners: corners("angle") },
+  CLOUD: { type: "box", corners: corners("curve-o") },
+  FALL: { type: "ntagon", corners: corners("angle") },
+  BEAM: { type: "box", corners: corners("curve-i") },
+  THROW: { type: "box", corners: corners("curve-i") },
+  AREA: { type: "box", corners: corners("box-o") }
+}
+
+export function platformConfig({ type, corners }: ITypeAndCorners, color: IColoring, divisions: number = 8) {
   return {
     size: { x: 64, y: 64 },
-    options: { type, divisions, color }
+    options: { type, corners, divisions, color }
   }
 }
 
