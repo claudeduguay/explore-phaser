@@ -30,7 +30,9 @@ export default function EnemyInfo({ scene, enemy: enemyObservable, onClose }: IE
     <CloseButton onClick={onClose} />
     <h1 className="fs-2 p-1 text-title">Enemy Info</h1>
     {model && <>
-      <div><img src={imageSrc} alt="Enemy" /></div>
+      <div className="mb-2">
+        <img src={imageSrc} alt="Enemy" />
+      </div>
       <h4 className="fs-5 border-top p-1 pt-2">{model.name} Enemy</h4>
       <PropsInfo title="General" model={model.stats} />
       <PropsInfo title="Vulnerability (dps multiplier)" model={model.vulnerability} valueFormatter={percentFormatter} />

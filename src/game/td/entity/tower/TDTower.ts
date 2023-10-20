@@ -59,10 +59,9 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
   targeting = new Targeting()
   showRange: GameObjects.Container
   showLabel: GameObjects.Text
-  preview: boolean = false
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x,
-    public model: ITowerModel = TOWER_INDEX.LAZER) {
+    public model: ITowerModel = TOWER_INDEX.LAZER, public preview: boolean = false) {
     super(scene)
     const range = model.stats.range
     this.platform = this.scene.add.sprite(0, 0, `${model.key}-platform`).setInteractive()
@@ -78,8 +77,10 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
           this.showLabel.visible = false
         }
       }, this)
-    this.platform.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
     this.add(this.platform)
+    if (!preview) {
+      this.platform.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
+    }
 
     this.turret = new TDTurret(scene, 0, 0, model)
     if (model.meta.rotation !== "target") {

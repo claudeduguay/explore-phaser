@@ -7,7 +7,7 @@ import { useCallback } from "react";
 export function makeTowerRenderCallback(scene: Scene, model?: ITowerModel, angle = 0) {
   return (texture: GameObjects.RenderTexture) => {
     if (model) {
-      const copy = new TDTower(scene, 32, 32, model)
+      const copy = new TDTower(scene, 32, 32, model, true)
       copy.angle = angle
       texture.draw(copy)
     }

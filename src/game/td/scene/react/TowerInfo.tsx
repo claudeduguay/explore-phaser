@@ -42,7 +42,9 @@ export default function TowerInfo({ scene, tower: towerObservable, onClose }: IT
     <CloseButton onClick={onClose} />
     <h1 className="fs-2 p-1 text-title">Tower Info</h1>
     {model && <>
-      <div><img src={imageSrc} alt="Tower" width={64} height={64} /></div>
+      <div className="mb-2">
+        <img src={imageSrc} alt="Tower" width={64} height={64} />
+      </div>
       <h4 className="fs-4 border-top p-1 m-0">{model.name}</h4>
       <p className="mb-2">({entitle(model.group)})</p>
       <p className="text-start py-0 px-3">{model.description}</p>
