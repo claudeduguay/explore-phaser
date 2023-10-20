@@ -74,14 +74,15 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
   }
 
   addSelectHandler(select: (selection?: TDEnemy) => void) {
-    this.on(Input.Events.POINTER_UP, () => {
+    this.on(Input.Events.POINTER_DOWN, (pointer: any, x: number, y: number, e: Event) => {
       select(this)
       this.showSelection()
+      e.stopPropagation()
     }, this)
   }
 
   removeSelectHandler() {
-    this.off(Input.Events.POINTER_UP)
+    this.off(Input.Events.POINTER_DOWN)
   }
 
   showSelection() {

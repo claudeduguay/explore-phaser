@@ -108,16 +108,17 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
   }
 
   addSelectHandler(select: (selection?: TDTower) => void) {
-    this.platform.on(Input.Events.POINTER_UP, () => {
+    this.platform.on(Input.Events.POINTER_DOWN, (pointer: any, x: number, y: number, e: Event) => {
       if (!this.preview) {
         select(this)
         this.showSelection()
+        e.stopPropagation()
       }
     }, this)
   }
 
   removeSelectHandler() {
-    this.platform.off(Input.Events.POINTER_UP)
+    this.platform.off(Input.Events.POINTER_DOWN)
   }
 
   showSelection() {
