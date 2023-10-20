@@ -280,8 +280,8 @@ export default class TDPlayScene extends Scene {
     if (this.addingTower) {
       if (!this.input.mousePointer.isDown) {
         this.input.setDefaultCursor("none")
-        const x = PMath.Snap.Floor(this.input.x, 64) + this.mapOrigin.x + 32
-        const y = PMath.Snap.Floor(this.input.y, 64) + this.mapOrigin.y - 32
+        const x = PMath.Snap.Floor(this.input.x - this.mapOrigin.x, 64) + 32 + this.mapOrigin.x
+        const y = PMath.Snap.Floor(this.input.y - this.mapOrigin.y, 64) + 32 + this.mapOrigin.y
 
         // Highlight invalid positions
         if (!this.towerColliders.collision(new Point(x, y))) {
