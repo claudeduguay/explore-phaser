@@ -1,7 +1,7 @@
 import { IColoring, colorStyle } from "../../../util/DrawUtil";
 import { toRadians } from "../../../util/MathUtil";
 import { canvasSize, dimensions, IMarginInsets } from "../../../util/RenderUtil";
-import { box } from "../../../util/geom/Box";
+import { BOX, IBox, box, scaleBox } from "../../../util/geom/Box";
 
 export type ITurretType = "convex" | "concave"
 
@@ -11,6 +11,7 @@ export interface ITurretOptions extends IMarginInsets {
   topSeg: number;
   botSeg: number;
   color: IColoring
+  colorBox: IBox
   line: string
 }
 
@@ -22,6 +23,7 @@ export const DEFAULT_TURRET_OPTIONS: ITurretOptions = {
   topSeg: 7,
   botSeg: 10,
   color: ["#99F", "#00F", "#009"],
+  colorBox: BOX.TO_SOUTH,
   line: "white"
 }
 
@@ -55,8 +57,8 @@ export function drawPolylipse(g: CanvasRenderingContext2D,
 export function turretRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: ITurretOptions) {
-  const { type, inset, ratio, topSeg, botSeg, color, line } = options
-  const { margin } = dimensions(g, options)
+  const { type, inset, ratio, topSeg, botSeg, color, colorBox, line } = options
+  const { w, h, margin } = dimensions(g, options)
   const x = margin.x1
   const y = margin.y1
   const ww = margin.w
@@ -66,7 +68,8 @@ export function turretRenderer(g: CanvasRenderingContext2D,
   const tr = hh * ratio - inset.y1
   const br = hh * (1.0 - ratio) - inset.y1
 
-  g.fillStyle = colorStyle(g, { x1: x, y1: y, x2: x, y2: hh }, color)
+  const bounds = scaleBox(colorBox, w, h)
+  g.fillStyle = colorStyle(g, bounds, color)
   g.strokeStyle = line
   g.lineWidth = 0.5
 
