@@ -63,13 +63,17 @@ export function renderImage(g: CanvasRenderingContext2D, renderer: IRenderFuncti
   }
 }
 
-// options: { type: "grass" } })
 export function makeLandscapeTile(scene: Scene, key: string, config: ITextureConfig<Partial<ILandscapeOptions>>) {
-  const render: IRenderFunction = landscapeRendererFunctionFactory(0, config.options)
-  renderCanvas(scene, key, config.size.x, config.size.y, render)
+  const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
+    const renderGrass: IRenderFunction = landscapeRendererFunctionFactory(0, { type: "grass" })
+    for (let i = 0; i < 4; i++) {
+      renderImage(g, renderGrass, 64 * i, 0, 64, 64, 1.0)
+    }
+  }
+  renderCanvas(scene, key, config.size.x * 4, config.size.y, render)
 }
 
-export function makePathTiles(scene: Scene, key: string, w: number, h: number, appendLandscape: boolean = true, insetRatio = 0.25) {
+export function makePathTiles(scene: Scene, key: string, w: number, h: number, insetRatio = 0.25) {
   const count = 0b1111
   const straightPathRender: IRenderFunction = pathRendererFunctionFactory(0, { type: "straight", beltInset: insetRatio })
   const endPathRender: IRenderFunction = pathRendererFunctionFactory(0, { type: "end", beltInset: insetRatio })
@@ -140,17 +144,9 @@ export function makePathTiles(scene: Scene, key: string, w: number, h: number, a
       // g.lineWidth = 2
       // g.rect(x, 0, w, h)
       // g.stroke()
-
-      // Note: May not need to use the same tileset
-      if (appendLandscape) {
-        const renderGrass: IRenderFunction = landscapeRendererFunctionFactory(0, { type: "grass" })
-        for (let i = 0; i < 4; i++) {
-          renderImage(g, renderGrass, 64 * i, h, 64, 64, 1.0)
-        }
-      }
     }
   }
-  renderCanvas(scene, key, w * (count + 1), appendLandscape ? h * 2 : h, render)
+  renderCanvas(scene, key, w * (count + 1), h, render)
 }
 
 export function makeHeightRects(scene: Scene, key: string, w: number, h: number, count: number = 16) {

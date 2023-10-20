@@ -81,7 +81,7 @@ export function preloadImages(scene: Scene) {
 export function preloadTextures(scene: Scene) {
   makePathTiles(scene, "path_tiles", 64, 64)
   makeHeightRects(scene, "height_cells", 64, 64, 10)
-  makeLandscapeTile(scene, "grass", { size: { x: 64, y: 64 }, options: { type: "grass" } })
+  makeLandscapeTile(scene, "landscape", { size: { x: 64, y: 64 }, options: { type: "grass" } })
 
   generateEnemies(scene)
 

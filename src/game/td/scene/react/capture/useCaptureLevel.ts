@@ -12,8 +12,8 @@ export function makeLevelRenderCallback(scene: Scene, level: ILevelModel, scale:
     const { w, h } = sceneSize(scene)
     const copy = new TDTileMap(scene, 0, 0, DEFAULT_CONFIG)
     copy.setModel(level.path)
-    copy.mainLayer.scale = scale
-    copy.backgroundLayer.scale = scale
+    copy.pathLayer.scale = scale
+    copy.landLayer.scale = scale
     texture.draw(copy)
     const summary = buildSummary(scene, 0, (h - 50) * scale, w / 2, 50, level.waves)
     summary.scale = scale * 2
