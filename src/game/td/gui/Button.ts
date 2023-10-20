@@ -12,6 +12,7 @@ export default class Button extends GameObjects.Container {
   constructor(scene: Scene, x: number, y: number, public w: number, public h: number,
     public text?: string, public onClick?: () => void) {
     super(scene, x, y)
+    console.log("Height:", h)
     this.background = scene.add.nineslice(0, 0, "button", undefined, w, h, 16, 16, 16, 16)
     this.background.setSize(w, h)
     this.add(this.background)
@@ -70,3 +71,13 @@ export function makeButtonTextures(scene: Scene) {
     }
   })
 }
+
+GameObjects.GameObjectFactory.register("button",
+  function (this: GameObjects.GameObjectFactory, x: number, y: number, w: number, h: number,
+    text?: string, onClick?: () => void) {
+    const button = new Button(this.scene, x, y, w, h, text, onClick)
+    this.displayList.add(button)
+    // this.updateList.add(tower)
+    return button
+  }
+)
