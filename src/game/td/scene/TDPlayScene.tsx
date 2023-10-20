@@ -21,6 +21,7 @@ import TDEnemy from "../entity/enemy/TDEnemy"
 import { ENEMY_LIST } from "../entity/model/IEnemyModel"
 import { onEnemyInRange, onEnemyOverlap } from "../entity/tower/Targeting"
 import TreePreview from "../tree/TreePreview"
+import GUIPreview from "../gui/GUIPreview"
 // import { addMaterialIcon } from "../../../util/TextUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
@@ -42,6 +43,7 @@ export default class TDPlayScene extends Scene {
   addingTower?: TDTower
   towerPreview!: TowerPreview
   treePreview!: TreePreview
+  guiPreview!: GUIPreview
 
   mapOrigin = new Point(0, 46)
 
@@ -250,8 +252,25 @@ export default class TDPlayScene extends Scene {
     this.scene.sleep("tree_preview")
 
 
+    // ------------------------------------------------------------------
+    // GUI COMPONENT PREVIEW
+    // ------------------------------------------------------------------
+
+    const onToggleGUIPreview = () => {
+      if (this.scene.isActive("gui_preview")) {
+        this.scene.sleep("gui_preview")
+      } else {
+        this.scene.wake("gui_preview")
+      }
+    }
+    this.guiPreview = new GUIPreview(this, 50, 50)
+    this.scene.add("gui_preview", this.guiPreview, true)
+    this.scene.sleep("gui_preview")
+
     addReactNode(this, <GameHeader scene={this} active={this.active} navigator={this.parent}
-      onToggleTowerPreview={onToggleTowerPreview} onToggleTreePreview={onToggleTreePreview} />,
+      onToggleTowerPreview={onToggleTowerPreview}
+      onToggleTreePreview={onToggleTreePreview}
+      onToggleGUIPreview={onToggleGUIPreview} />,
       0, 0)
     addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />,
       0, this.game.canvas.height - 56)
