@@ -127,7 +127,7 @@ const slideBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, x
 })
 
 // Tweening-in works, but twening-out has to delay visibility toggle to off
-export function addReactNode(scene: Scene, x1: number = 0, y1: number = 0, x2: number = 2, y2: number, node: ReactNode, isVisible?: ObservableValue<boolean>, overlay = false): GameObjects.DOMElement {
+export function addReactNode(scene: Scene, node: ReactNode, x1: number = 0, y1: number = 0, x2: number = x1, y2: number = y1, isVisible?: ObservableValue<boolean>, overlay = false): GameObjects.DOMElement {
   const id = uuid()
   const gameElement = scene.add.dom(x1, y1).createFromHTML(`<div id="${id}" />`)
   const tweens = slideBuilder(gameElement, x1, y1, x2, y2)

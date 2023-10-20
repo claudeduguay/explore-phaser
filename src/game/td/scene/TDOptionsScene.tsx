@@ -10,6 +10,6 @@ export default class TDOptionsScene extends Scene {
   }
 
   create() {
-    addReactNode(this, 0, -800, 0, 0, <GameOptions navigator={this.main} />)
+    addReactNode(this, <GameOptions navigator={this.main} />, 0, -800, 0, 0)
   }
 }

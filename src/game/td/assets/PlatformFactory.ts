@@ -49,7 +49,6 @@ function ntagon(g: CanvasRenderingContext2D,
   const bounds = scaleBox(colorBox, w, h)
   g.fillStyle = colorStyle(g, bounds, color)
   g.beginPath()
-  console.log("Bounds:", bounds)
   for (let i = 0; i < div; i++) {
     const a = toRadians(slice * i)
     const x = margin.cx + Math.cos(a) * margin.cx

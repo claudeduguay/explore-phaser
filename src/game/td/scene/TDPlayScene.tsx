@@ -141,8 +141,8 @@ export default class TDPlayScene extends Scene {
     const onCloseTowerInfo = () => this.towerGroup.infoVisible.value = false
     // @ts-ignore
     this.physics.add.existing(this.towerGroup)
-    addReactNode(this, -400, 75, 25, 75, <TowerInfo scene={this} tower={this.towerGroup.selected} onClose={onCloseTowerInfo} />,
-      this.towerGroup.infoVisible, true)
+    addReactNode(this, <TowerInfo scene={this} tower={this.towerGroup.selected} onClose={onCloseTowerInfo} />,
+      -400, 75, 25, 75, this.towerGroup.infoVisible, true)
 
     // Enemy Info
     this.enemyGroup = new SelectableGroup(this, "enemyGroup")
@@ -152,8 +152,8 @@ export default class TDPlayScene extends Scene {
     // Enemies are created as the timeline moves, so we can't take the first entry of the group
     this.enemyGroup.select(new TDEnemy(this, 0, 0, ENEMY_LIST[0]))
     this.enemyGroup.infoVisible.value = false
-    addReactNode(this, w + 5, 75, w - 350 - 25, 75, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
-      this.enemyGroup.infoVisible, true)
+    addReactNode(this, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
+      w + 5, 75, w - 350 - 25, 75, this.enemyGroup.infoVisible, true)
 
     // Clear selections when clicked outside info panel
     this.input.on(Input.Events.POINTER_DOWN, () => {
@@ -250,10 +250,11 @@ export default class TDPlayScene extends Scene {
     this.scene.sleep("tree_preview")
 
 
-    addReactNode(this, 0, 0, 0, 0, <GameHeader scene={this} active={this.active} navigator={this.parent}
-      onToggleTowerPreview={onToggleTowerPreview} onToggleTreePreview={onToggleTreePreview} />)
-    addReactNode(this, 0, this.game.canvas.height - 56, 0, this.game.canvas.height - 56,
-      <GameFooter scene={this} onAddTower={onAddTower} />)
+    addReactNode(this, <GameHeader scene={this} active={this.active} navigator={this.parent}
+      onToggleTowerPreview={onToggleTowerPreview} onToggleTreePreview={onToggleTreePreview} />,
+      0, 0)
+    addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />,
+      0, this.game.canvas.height - 56)
     // addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
 
     // addMaterialIcon(this, 50, 75, 0xe87d, 64, "red")
