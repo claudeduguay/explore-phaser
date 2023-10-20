@@ -286,7 +286,6 @@ export default class TDPlayScene extends Scene {
     // addMaterialIcon(this, 150, 75, 0xe227, 64, "green")
     // addMaterialIcon(this, 250, 75, 0xe88a, 64, "blue")
 
-    // this.add.button(150, 100, 150, 36, "Test Button", () => console.log("Button clicked"))
   }
 
 

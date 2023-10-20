@@ -28,6 +28,8 @@ export interface IPlatformOptions extends IMarginInsets {
   color: IColoring
   colorBox: IBox
   divisions?: number
+  lineWidth: number
+  line?: string
 }
 
 export const DEFAULT_PLATFORM_OPTIONS: IPlatformOptions = {
@@ -36,13 +38,14 @@ export const DEFAULT_PLATFORM_OPTIONS: IPlatformOptions = {
   margin: box(0),
   inset: box(0.2),
   color: ["#CCF", "#336", "#00F"],
-  colorBox: BOX.TO_SE
+  colorBox: BOX.TO_SE,
+  lineWidth: 1
 }
 
 function ntagon(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IPlatformOptions) {
-  const { color, colorBox } = options
+  const { color, colorBox, line, lineWidth } = options
   const { w, h, margin } = dimensions(g, options)
   const div = options.divisions || 0
   const slice = 360.0 / div
@@ -60,6 +63,11 @@ function ntagon(g: CanvasRenderingContext2D,
     }
   }
   g.fill()
+  if (line) {
+    g.lineWidth = lineWidth
+    g.strokeStyle = line
+    g.stroke()
+  }
 }
 
 function nwCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
@@ -162,7 +170,7 @@ export function baseRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IPlatformOptions
 ) {
-  const { color, colorBox } = options
+  const { color, colorBox, line, lineWidth } = options
   const { w, h, margin, inset } = dimensions(g, options)
   const x = margin.x1
   const y = margin.y1
@@ -183,6 +191,12 @@ export function baseRenderer(g: CanvasRenderingContext2D,
   g.lineTo(x, y + i)
   g.closePath()
   g.fill()
+  if (line) {
+    console.log("Stroke line")
+    g.lineWidth = lineWidth
+    g.strokeStyle = line
+    g.stroke()
+  }
 }
 
 export function platformRendererFunctionFactory(

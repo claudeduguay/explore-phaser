@@ -24,6 +24,7 @@ export default class Button extends GameObjects.Container {
 
     this.background.setInteractive()
     this.background.on(Input.Events.POINTER_DOWN, this.onButtonPress)
+    this.background.on(Input.Events.POINTER_OVER, this.onButtonHover)
     this.background.on(Input.Events.POINTER_UP, this.onButtonNormal)
     this.background.on(Input.Events.POINTER_OUT, this.onButtonNormal)
   }
@@ -38,6 +39,11 @@ export default class Button extends GameObjects.Container {
     this.background.setTexture("button-pressed")
     this.setLabelColor("#33FF33")
     this.onClick?.()
+  }
+
+  onButtonHover = () => {
+    console.log("On Hover")
+    this.background.setTexture("button-hover")
   }
 
   onButtonNormal = () => {
@@ -68,6 +74,18 @@ export function makeButtonTextures(scene: Scene) {
       inset: box(0.15),
       color,
       colorBox: BOX.TO_NORTH,
+    }
+  })
+  makeTowerPlatform(scene, "button-hover", {
+    size: { x: 100, y: 100 },
+    options: {
+      type: "box",
+      corners: corners("curve-o"),
+      margin: box(0),
+      inset: box(0.15),
+      color,
+      colorBox: BOX.TO_SOUTH,
+      line: "#FFFFFF"
     }
   })
 }

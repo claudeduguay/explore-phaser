@@ -15,6 +15,7 @@ export default class GUIPreview extends Scene {
     g.strokeRoundedRect(this.x, this.y, hBox * 6, vBox * 3 + 20)
     this.add.existing(g)
 
+    this.add.button(150, 100, 150, 36, "Test Button", () => console.log("Button clicked"))
 
   }
 }
