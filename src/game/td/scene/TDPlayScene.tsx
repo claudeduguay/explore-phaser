@@ -270,7 +270,7 @@ export default class TDPlayScene extends Scene {
       const margin = 10
       const x = 38
       g.fillStyle(0xCCCCFF, 1)
-      g.fillRect(x - margin, 590 - margin, 16 * 64 + margin * 2, 64 * 2 + margin * 2)
+      g.fillRect(x - margin, 590 - margin, 16 * 64 + margin * 2, 64 + margin * 2)
       this.add.sprite(x, 590, "path_tiles").setOrigin(0, 0)
     }
   }
