@@ -51,7 +51,6 @@ export function randomBodyColor() {
 
 export function randomPeepOptions(): Partial<IPeepOptions> {
   return {
-    // type,
     headWidth: randomRange(HEAD_WIDTH_RANGE),
     headHeight: randomRange(HEAD_HEIGHT_RANGE),
     bodyWidth: randomRange(BODY_WIDTH_RANGE),
