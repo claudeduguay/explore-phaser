@@ -43,7 +43,7 @@ export default class TDPlayScene extends Scene {
   towerPreview!: TowerPreview
   treePreview!: TreePreview
 
-  mapOrigin = new Point(0, 48)
+  mapOrigin = new Point(0, 46)
 
 
   constructor(public readonly parent: TDGameScene) {
