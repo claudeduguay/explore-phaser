@@ -40,8 +40,8 @@ export function scaleBox(box: IBox, w: number, h: number, x: number = 0, y: numb
   const hh = h - (y1 + y2)
   const cx = x + x1 + ww / 2
   const cy = y + y1 + hh / 2
-  const r = x1 + ww
-  const b = y1 + hh
+  const r = x + x1 + ww
+  const b = y + y1 + hh
   return { x1, y1, x2, y2, w: ww, h: hh, cx, cy, r, b }
 }
 
