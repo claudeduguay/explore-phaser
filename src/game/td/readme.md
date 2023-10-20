@@ -20,7 +20,6 @@ from IInset or IMargin with relative values (ie: x2, y2 are either absolute or e
 * BUG: Plopping tower doesn't aways unstick from mouse
 * BUG: Peeps facing sometimes oscilates (seems more apparent when slowed)
 * BUG: Levels page keeps updating grass backgrounds
-* BUG: There's a dot in the tower capture bottom left 
 * IMPROVEMENT: Towers need to ease into aim position, avoid jump turns, maybe return to zero in the same way afterward
 
 ### Effect/Afliction Design Notes
