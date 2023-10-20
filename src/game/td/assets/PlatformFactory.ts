@@ -94,7 +94,7 @@ function neCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const y = margin.y1
   const ww = margin.w
   const ix = inset.x1
-  const iy = inset.y1
+  const iy = margin.w - inset.y2
   switch (corners.ne) {
     case "angle":
       g.lineTo(ww, y + iy)
@@ -119,8 +119,8 @@ function seCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { margin, inset } = dimensions(g, options)
   const ww = margin.w
   const hh = margin.h
-  const ix = inset.x1
-  const iy = inset.y1
+  const ix = margin.w - inset.x2
+  const iy = margin.h - inset.y2
   switch (corners.se) {
     case "angle":
       g.lineTo(ww - ix, hh)
@@ -146,7 +146,7 @@ function swCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const x = margin.x1
   const hh = margin.h
   const ix = inset.x1
-  const iy = inset.y1
+  const iy = margin.h - inset.y2
   switch (corners.sw) {
     case "angle":
       g.lineTo(x, hh - iy)
