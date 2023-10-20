@@ -17,9 +17,8 @@ export function box(a: number, b?: number, c?: number, d?: number): IBox {
     return { x1: a, y1: b, x2: c, y2: d }
   } else if (a !== undefined && b !== undefined) {
     return { x1: a, y1: b, x2: a, y2: b }
-  } else {
-    return { x1: a, y1: a, x2: a, y2: a }
   }
+  return { x1: a, y1: a, x2: a, y2: a }
 }
 
 // As insets pulls in the righgt/bottom scaling, else we treat coordinates as w/h values

@@ -13,8 +13,13 @@ export interface ICorners {
   sw: ICornerType
 }
 
-export function corners(type: ICornerType) {
-  return { nw: type, ne: type, se: type, sw: type }
+export function corners(all: ICornerType): ICorners
+export function corners(nw: ICornerType, ne: ICornerType, se: ICornerType, sw: ICornerType): ICorners
+export function corners(a: ICornerType, b?: ICornerType, c?: ICornerType, d?: ICornerType): ICorners {
+  if (a !== undefined && b !== undefined && c !== undefined && d !== undefined) {
+    return { nw: a, ne: b, se: c, sw: d }
+  }
+  return { nw: a, ne: a, se: a, sw: a }
 }
 
 export interface IPlatformOptions extends IMarginInsets {
