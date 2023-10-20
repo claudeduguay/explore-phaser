@@ -191,7 +191,7 @@ export default class TDPlayScene extends Scene {
     // this.add.rectangle(10, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
     // this.add.particles(950, 795, 'smoke', cloudEmitter())
 
-    this.add.existing(new Button(this, 150, 100, 150, 36, "Test Button"))
+    this.add.existing(new Button(this, 150, 100, 150, 36, "Test Button", () => console.log("Button clicked")))
 
     // ------------------------------------------------------------------
     // START ADD TOWER MECHANICS
