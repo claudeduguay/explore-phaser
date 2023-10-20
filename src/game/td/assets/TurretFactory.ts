@@ -59,10 +59,7 @@ export function turretRenderer(g: CanvasRenderingContext2D,
   options: ITurretOptions) {
   const { type, inset, ratio, topSeg, botSeg, color, colorBox, line } = options
   const { w, h, margin } = dimensions(g, options)
-  const x = margin.x1
-  const y = margin.y1
-  const ww = margin.w
-  const hh = margin.h
+  const { w: ww, h: hh } = margin
 
   const mid = { x: ww / 2 - inset.x1, y: hh * ratio - inset.y1 }
   const tr = hh * ratio - inset.y1
