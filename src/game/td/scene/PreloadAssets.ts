@@ -2,6 +2,7 @@ import { Loader, Scene } from "phaser"
 import { makeHeightRects, makeLandscapeTile, makeNineSlice, makePathTiles } from "../assets/TextureFactory"
 import { generateEnemies } from "../entity/model/IEnemyModel"
 import FontFaceObserver from "fontfaceobserver"
+import { makeButtonTextures } from "../gui/Button"
 
 // Intreresting repo: https://github.com/samme/phaser-plugin-loader
 // Also interesting repo: https://phaserplugins.com/
@@ -86,4 +87,6 @@ export function preloadTextures(scene: Scene) {
   generateEnemies(scene)
 
   makeNineSlice(scene, "nine_slice", { size: { x: 100, y: 100 }, options: { margin: 0.2 } })
+
+  makeButtonTextures(scene)
 }

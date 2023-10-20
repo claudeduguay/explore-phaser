@@ -21,6 +21,7 @@ import TDEnemy from "../entity/enemy/TDEnemy"
 import { ENEMY_LIST } from "../entity/model/IEnemyModel"
 import { onEnemyInRange, onEnemyOverlap } from "../entity/tower/Targeting"
 import TreePreview from "../tree/TreePreview"
+import Button from "../gui/Button"
 // import { addMaterialIcon } from "../../../util/TextUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
@@ -189,6 +190,8 @@ export default class TDPlayScene extends Scene {
     // this.add.particles(10, 765, 'fire', fireEmitter(fireRange))
     // this.add.rectangle(10, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
     // this.add.particles(950, 795, 'smoke', cloudEmitter())
+
+    this.add.existing(new Button(this, 150, 100, 150, 36, "Test Button"))
 
     // ------------------------------------------------------------------
     // START ADD TOWER MECHANICS
