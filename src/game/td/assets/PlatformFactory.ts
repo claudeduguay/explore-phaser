@@ -46,9 +46,10 @@ function ntagon(g: CanvasRenderingContext2D,
   const { w, h, margin } = dimensions(g, options)
   const div = options.divisions || 0
   const slice = 360.0 / div
-  const bounds = scaleBox(colorBox, w, h, false)
+  const bounds = scaleBox(colorBox, w, h)
   g.fillStyle = colorStyle(g, bounds, color)
   g.beginPath()
+  console.log("Bounds:", bounds)
   for (let i = 0; i < div; i++) {
     const a = toRadians(slice * i)
     const x = margin.cx + Math.cos(a) * margin.cx
@@ -65,104 +66,96 @@ function ntagon(g: CanvasRenderingContext2D,
 function nwCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { corners } = options
   const { margin, inset } = dimensions(g, options)
-  const x = margin.x1
-  const y = margin.y1
-  const ix = inset.x1
-  const iy = inset.y1
+  const { x1, y1 } = margin
+  const { x1: ix, y1: iy } = inset
   switch (corners.nw) {
     case "angle":
-      g.lineTo(x + ix, y)
+      g.lineTo(x1 + ix, y1)
       break
     case "box-i":
-      g.lineTo(x + ix, y + ix)
-      g.lineTo(x + ix, y)
+      g.lineTo(x1 + ix, y1 + ix)
+      g.lineTo(x1 + ix, y1)
       break
     case "curve-o":
-      drawArc2(g, x + ix, y + iy, ix, iy, 180, 270)
+      drawArc2(g, x1 + ix, y1 + iy, ix, iy, 180, 270)
       break
     case "curve-i":
-      drawArc2(g, x, y, ix, iy, 90, 0)
+      drawArc2(g, x1, y1, ix, iy, 90, 0)
       break
     default:
-      g.lineTo(x, y)
+      g.lineTo(x1, y1)
   }
 }
 
 function neCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { corners } = options
   const { margin, inset } = dimensions(g, options)
-  const y = margin.y1
-  const ww = margin.w
-  const ix = inset.x1
-  const iy = margin.w - inset.y2
+  const { y1, r } = margin
+  const { x1: ix, y2: iy } = inset
   switch (corners.ne) {
     case "angle":
-      g.lineTo(ww, y + iy)
+      g.lineTo(r, y1 + iy)
       break
     case "box-i":
-      g.lineTo(ww - ix, y + iy)
-      g.lineTo(ww, y + iy)
+      g.lineTo(r - ix, y1 + iy)
+      g.lineTo(r, y1 + iy)
       break
     case "curve-o":
-      drawArc2(g, ww - ix, y + iy, ix, iy, 270, 360);
+      drawArc2(g, r - ix, y1 + iy, ix, iy, 270, 360);
       break
     case "curve-i":
-      drawArc2(g, ww, y, ix, iy, 180, 90);
+      drawArc2(g, r, y1, ix, iy, 180, 90);
       break
     default:
-      g.lineTo(ww, y)
+      g.lineTo(r, y1)
   }
 }
 
 function seCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { corners } = options
   const { margin, inset } = dimensions(g, options)
-  const ww = margin.w
-  const hh = margin.h
-  const ix = margin.w - inset.x2
-  const iy = margin.h - inset.y2
+  const { r, b } = margin
+  const { x2: ix, y2: iy } = inset
   switch (corners.se) {
     case "angle":
-      g.lineTo(ww - ix, hh)
+      g.lineTo(r - ix, b)
       break
     case "box-i":
-      g.lineTo(ww - ix, hh - iy)
-      g.lineTo(ww - ix, hh)
+      g.lineTo(r - ix, b - iy)
+      g.lineTo(r - ix, b)
       break
     case "curve-o":
-      drawArc2(g, ww - ix, hh - iy, ix, iy, 0, 90);
+      drawArc2(g, r - ix, b - iy, ix, iy, 0, 90);
       break
     case "curve-i":
-      drawArc2(g, ww, hh, ix, iy, 270, 180);
+      drawArc2(g, r, b, ix, iy, 270, 180);
       break
     default:
-      g.lineTo(ww, hh)
+      g.lineTo(r, b)
   }
 }
 
 function swCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { corners } = options
   const { margin, inset } = dimensions(g, options)
-  const x = margin.x1
-  const hh = margin.h
-  const ix = inset.x1
-  const iy = margin.h - inset.y2
+  const { x1, b } = margin
+  const { x1: ix, y2: iy } = inset
   switch (corners.sw) {
     case "angle":
-      g.lineTo(x, hh - iy)
+      g.lineTo(x1, b - iy)
       break
     case "box-i":
-      g.lineTo(x + ix, hh - iy)
-      g.lineTo(x, hh - iy)
+      g.lineTo(x1 + ix, b - iy)
+      g.lineTo(x1, b - iy)
       break
     case "curve-o":
-      drawArc2(g, x + ix, hh - iy, ix, iy, 90, 180);
+      drawArc2(g, x1 + ix, b - iy, ix, iy, 90, 180);
       break
     case "curve-i":
-      drawArc2(g, x, hh, ix, iy, 360, 270);
+      drawArc2(g, x1, b, ix, iy, 360, 270);
       break
     default:
-      g.lineTo(x, hh)
+      g.lineTo(x1, b)
   }
 }
 
@@ -177,7 +170,7 @@ export function baseRenderer(g: CanvasRenderingContext2D,
   const ww = margin.w
   const hh = margin.h
   const i = inset.x1
-  const bounds = scaleBox(colorBox, w, h, false)
+  const bounds = scaleBox(colorBox, w, h)
   g.fillStyle = colorStyle(g, bounds, color)
   g.beginPath()
   g.moveTo(x, y + i)

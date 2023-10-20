@@ -66,8 +66,7 @@ export type IColoring = string | string[] | IColorStop[]
 
 export function colorStyle(g: CanvasRenderingContext2D,
   box: IBox, coloring: IColoring): string | CanvasGradient {
-  const scaled = box // scaleBox(box)
-  const { x1, y1, x2, y2 } = scaled
+  const { x1, y1, x2, y2 } = box
   if (Array.isArray(coloring)) {
     if (isStop(coloring[0])) {
       return linearGradient(g, x1, y1, x2, y2, ...coloring as IColorStop[])

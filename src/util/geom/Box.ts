@@ -21,18 +21,28 @@ export function box(a: number, b?: number, c?: number, d?: number): IBox {
   return { x1: a, y1: a, x2: a, y2: a }
 }
 
+export interface IComputed {
+  w: number
+  h: number
+  cx: number
+  cy: number
+  r: number
+  b: number
+}
+
 // As insets pulls in the righgt/bottom scaling, else we treat coordinates as w/h values
-export function scaleBox(box: IBox, w: number, h: number, asRelative = true): IBox & { w: number, h: number, cx: number, cy: number } {
+export function scaleBox(box: IBox, w: number, h: number, x: number = 0, y: number = 0): IBox & IComputed {
   const x1 = box.x1 * w
   const y1 = box.y1 * h
-  // When we scale a colorBox, we need to scale x2, y2 as right, bottom values, not right, bottom edge sizes
-  const x2 = asRelative ? w - box.x2 * w : box.x2 * w
-  const y2 = asRelative ? h - box.y2 * h : box.y2 * h
-  const ww = x2 - x1
-  const hh = y2 - y1
-  const cx = x1 + ww / 2
-  const cy = y1 + hh / 2
-  return { x1, y1, x2, y2, w: ww, h: hh, cx, cy }
+  const x2 = box.x2 * w
+  const y2 = box.y2 * h
+  const ww = w - (x1 + x2)
+  const hh = h - (y1 + y2)
+  const cx = x + x1 + ww / 2
+  const cy = y + y1 + hh / 2
+  const r = x1 + ww
+  const b = y1 + hh
+  return { x1, y1, x2, y2, w: ww, h: hh, cx, cy, r, b }
 }
 
 // Scaleable direction IBox instances
