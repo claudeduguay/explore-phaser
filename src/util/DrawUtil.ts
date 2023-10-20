@@ -1,8 +1,9 @@
 import Vector from "./Vector"
-import { toRadians } from "./MathUtil"
+import { lerp, toRadians } from "./MathUtil"
 import Rectangle from "./Rectangle"
 import { Stroke, maybeStroke } from "./StyleUtil";
 import { IBox } from "./geom/Box";
+import { splitLeftPathRendererFunctionFactory } from "../game/td/assets/PathFactory";
 
 export type Optional<T> = T | null | undefined;
 
@@ -116,12 +117,22 @@ export function drawLine(g: CanvasRenderingContext2D, x1: number, y1: number, x2
 // ----------------------------------------------------------------------------
 
 export function drawArcVector(g: CanvasRenderingContext2D, center: Vector, r: number, startAngle: number, endAngle: number) {
-  drawArc(g, center.x, center.y, r, startAngle, endAngle);
+  drawArc(g, center.x, center.y, r, startAngle, endAngle)
 }
 
 // Note: Need a custom drawArc to properly reflect x/y radii 
 export function drawArc(g: CanvasRenderingContext2D, cx: number, cy: number, r: number, startAngle: number, endAngle: number) {
-  g.arc(cx, cy, r, toRadians(startAngle), toRadians(endAngle), startAngle > endAngle);
+  g.arc(cx, cy, r, toRadians(startAngle), toRadians(endAngle), startAngle > endAngle)
+}
+
+export function drawArc2(g: CanvasRenderingContext2D, cx: number, cy: number, rx: number, ry: number, startAngle: number, endAngle: number, segments: number = 16) {
+  for (let i = 0; i < segments; i++) {
+    const f = i / segments
+    const a = toRadians(lerp(startAngle, endAngle, f))
+    const x = cx + Math.cos(a) * rx
+    const y = cy + Math.sin(a) * ry
+    g.lineTo(x, y)
+  }
 }
 
 

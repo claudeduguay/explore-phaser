@@ -1,9 +1,17 @@
-import { IColoring, colorStyle, drawArc } from "../../../util/DrawUtil";
+import { IColoring, colorStyle, drawArc2 } from "../../../util/DrawUtil";
 import { toRadians } from "../../../util/MathUtil";
 import { canvasSize, dimensions, IMarginInsets } from "../../../util/RenderUtil";
 import { BOX, IBox, box, scaleBox } from "../../../util/geom/Box";
 
 export type IPlatformType = "angle" | "curve-o" | "curve-i" | "box-o" | "box-i" | "ntagon"
+export type ICornerType = "angle" | "curve-o" | "curve-i" | "box-o" | "box-i"
+
+export interface ICorner {
+  nw: ICornerType
+  ne: ICornerType
+  se: ICornerType
+  sw: ICornerType
+}
 
 export interface IPlatformOptions extends IMarginInsets {
   type: IPlatformType;
@@ -48,20 +56,21 @@ function nwCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { margin, inset } = dimensions(g, options)
   const x = margin.x1
   const y = margin.y1
-  const i = inset.x1
+  const ix = inset.x1
+  const iy = inset.y1
   switch (type) {
     case "angle":
-      g.lineTo(x + i, y)
+      g.lineTo(x + ix, y)
       break
     case "box-i":
-      g.lineTo(x + i, y + i)
-      g.lineTo(x + i, y)
+      g.lineTo(x + ix, y + ix)
+      g.lineTo(x + ix, y)
       break
     case "curve-o":
-      drawArc(g, x + i, y + i, i, 180, 270);
+      drawArc2(g, x + ix, y + iy, ix, iy, 180, 270)
       break
     case "curve-i":
-      drawArc(g, x, y, i, 90, 0);
+      drawArc2(g, x, y, ix, iy, 90, 0)
       break
     default:
       g.lineTo(x, y)
@@ -73,20 +82,21 @@ function neCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { margin, inset } = dimensions(g, options)
   const y = margin.y1
   const ww = margin.w
-  const i = inset.x1
+  const ix = inset.x1
+  const iy = inset.y1
   switch (type) {
     case "angle":
-      g.lineTo(ww, y + i)
+      g.lineTo(ww, y + iy)
       break
     case "box-i":
-      g.lineTo(ww - i, y + i)
-      g.lineTo(ww, y + i)
+      g.lineTo(ww - ix, y + iy)
+      g.lineTo(ww, y + iy)
       break
     case "curve-o":
-      drawArc(g, ww - i, y + i, i, 270, 360);
+      drawArc2(g, ww - ix, y + iy, ix, iy, 270, 360);
       break
     case "curve-i":
-      drawArc(g, ww, y, i, 180, 90);
+      drawArc2(g, ww, y, ix, iy, 180, 90);
       break
     default:
       g.lineTo(ww, y)
@@ -98,20 +108,21 @@ function seCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { margin, inset } = dimensions(g, options)
   const ww = margin.w
   const hh = margin.h
-  const i = inset.x1
+  const ix = inset.x1
+  const iy = inset.y1
   switch (type) {
     case "angle":
-      g.lineTo(ww - i, hh)
+      g.lineTo(ww - ix, hh)
       break
     case "box-i":
-      g.lineTo(ww - i, hh - i)
-      g.lineTo(ww - i, hh)
+      g.lineTo(ww - ix, hh - iy)
+      g.lineTo(ww - ix, hh)
       break
     case "curve-o":
-      drawArc(g, ww - i, hh - i, i, 0, 90);
+      drawArc2(g, ww - ix, hh - iy, ix, iy, 0, 90);
       break
     case "curve-i":
-      drawArc(g, ww, hh, i, 270, 180);
+      drawArc2(g, ww, hh, ix, iy, 270, 180);
       break
     default:
       g.lineTo(ww, hh)
@@ -123,20 +134,21 @@ function swCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const { margin, inset } = dimensions(g, options)
   const x = margin.x1
   const hh = margin.h
-  const i = inset.x1
+  const ix = inset.x1
+  const iy = inset.y1
   switch (type) {
     case "angle":
-      g.lineTo(x, hh - i)
+      g.lineTo(x, hh - iy)
       break
     case "box-i":
-      g.lineTo(x + i, hh - i)
-      g.lineTo(x, hh - i)
+      g.lineTo(x + ix, hh - iy)
+      g.lineTo(x, hh - iy)
       break
     case "curve-o":
-      drawArc(g, x + i, hh - i, i, 90, 180);
+      drawArc2(g, x + ix, hh - iy, ix, iy, 90, 180);
       break
     case "curve-i":
-      drawArc(g, x, hh, i, 360, 270);
+      drawArc2(g, x, hh, ix, iy, 360, 270);
       break
     default:
       g.lineTo(x, hh)
