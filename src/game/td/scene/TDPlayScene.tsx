@@ -21,7 +21,6 @@ import TDEnemy from "../entity/enemy/TDEnemy"
 import { ENEMY_LIST } from "../entity/model/IEnemyModel"
 import { onEnemyInRange, onEnemyOverlap } from "../entity/tower/Targeting"
 import TreePreview from "../tree/TreePreview"
-import Button from "../gui/Button"
 // import { addMaterialIcon } from "../../../util/TextUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
@@ -191,8 +190,6 @@ export default class TDPlayScene extends Scene {
     // this.add.rectangle(10, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
     // this.add.particles(950, 795, 'smoke', cloudEmitter())
 
-    this.add.button(150, 100, 150, 36, "Test Button", () => console.log("Button clicked"))
-
     // ------------------------------------------------------------------
     // START ADD TOWER MECHANICS
     // ------------------------------------------------------------------
@@ -258,11 +255,19 @@ export default class TDPlayScene extends Scene {
       0, 0)
     addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />,
       0, this.game.canvas.height - 56)
+
+
+    // ------------------------------------------------------------------
+    // TEST CONTENT
+    // ------------------------------------------------------------------
+
     // addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
 
     // addMaterialIcon(this, 50, 75, 0xe87d, 64, "red")
     // addMaterialIcon(this, 150, 75, 0xe227, 64, "green")
     // addMaterialIcon(this, 250, 75, 0xe88a, 64, "blue")
+
+    // this.add.button(150, 100, 150, 36, "Test Button", () => console.log("Button clicked"))
   }
 
 
