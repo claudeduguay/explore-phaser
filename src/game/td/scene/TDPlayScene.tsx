@@ -252,7 +252,7 @@ export default class TDPlayScene extends Scene {
 
     addReactNode(this, 0, 0, 0, 0, <GameHeader scene={this} active={this.active} navigator={this.parent}
       onToggleTowerPreview={onToggleTowerPreview} onToggleTreePreview={onToggleTreePreview} />)
-    addReactNode(this, 0, this.game.canvas.height - 50, 0, this.game.canvas.height - 50,
+    addReactNode(this, 0, this.game.canvas.height - 56, 0, this.game.canvas.height - 56,
       <GameFooter scene={this} onAddTower={onAddTower} />)
     // addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
 
