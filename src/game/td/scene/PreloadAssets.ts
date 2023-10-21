@@ -2,7 +2,12 @@ import { Loader, Scene } from "phaser"
 import { makeHeightRects, makeLandscapeTile, makeNineSlice, makePathTiles } from "../assets/TextureFactory"
 import { generateEnemies } from "../entity/model/IEnemyModel"
 import FontFaceObserver from "fontfaceobserver"
-import { makeButtonTextures } from "../gui/Button"
+import { makeButtonTextures, registerButtonFactory } from "../gui/Button"
+import { registerLabelFactory } from "../gui/Label"
+import { registerLayoutFactory } from "../gui/layout/LayoutContainer"
+import { registerTowerFactory } from "../entity/tower/TDTower"
+import { registerEnemyFactory } from "../entity/enemy/TDEnemy"
+import { registerIconFactory } from "../gui/Icon"
 
 // Intreresting repo: https://github.com/samme/phaser-plugin-loader
 // Also interesting repo: https://phaserplugins.com/
@@ -27,12 +32,26 @@ export class WebFontLoader extends Loader.LoaderPlugin {
   }
 }
 
-
 export default function preloadAssets(scene: Scene) {
+  registerObjectFactories()
   preloadWebFont(scene)
   preloadAudio(scene)
   preloadImages(scene)
   preloadTextures(scene)
+}
+
+export function registerObjectFactories() {
+
+  // GUI Objects
+  registerLayoutFactory()
+  registerButtonFactory()
+  registerLabelFactory()
+  registerIconFactory()
+
+  // Game Objects
+  registerTowerFactory()
+  registerEnemyFactory()
+
 }
 
 export function preloadWebFont(scene: Scene) {

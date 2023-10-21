@@ -1,6 +1,6 @@
 import { GameObjects, Input, Scene } from "phaser";
 import { makeTowerPlatform } from "../assets/TextureFactory";
-import { corners } from "../assets/PlatformFactory";
+import { IPlatformOptions, corners } from "../assets/PlatformFactory";
 import { BOX, box } from "../../../util/geom/Box";
 import { addLabel } from "../../../util/TextUtil";
 
@@ -9,12 +9,12 @@ export default class Button extends GameObjects.Container {
   background: GameObjects.NineSlice
   label?: GameObjects.Text
 
-  constructor(scene: Scene, x: number, y: number, public w: number, public h: number,
+  constructor(scene: Scene, x: number, y: number,
+    public width: number, public height: number, // We use width, height to qualify for Size interface
     public text?: string, public onClick?: () => void) {
     super(scene, x, y)
-    console.log("Height:", h)
-    this.background = scene.add.nineslice(0, 0, "button", undefined, w, h, 16, 16, 16, 16)
-    this.background.setSize(w, h)
+    this.background = scene.add.nineslice(0, 0, "button", undefined, width, height, 16, 16, 16, 16)
+    this.background.setSize(width, height)
     this.add(this.background)
     if (text && text.length > 0) {
       this.label = addLabel(scene, 0, 0, text).setOrigin(0.5)
@@ -54,48 +54,45 @@ export default class Button extends GameObjects.Container {
 
 export function makeButtonTextures(scene: Scene) {
   const color = ["#0000FF", "#000099"]
+  const size = { x: 100, y: 100 }
+  const common: Partial<IPlatformOptions> = {
+    type: "box",
+    margin: box(0),
+    inset: box(0.15),
+    corners: corners("curve-o"),
+    color,
+  }
   makeTowerPlatform(scene, "button", {
-    size: { x: 100, y: 100 },
+    size,
     options: {
-      type: "box",
-      corners: corners("curve-o"),
-      margin: box(0),
-      inset: box(0.15),
-      color,
+      ...common,
       colorBox: BOX.TO_SOUTH,
     }
   })
   makeTowerPlatform(scene, "button-pressed", {
-    size: { x: 100, y: 100 },
+    size,
     options: {
-      type: "box",
-      corners: corners("curve-o"),
-      margin: box(0),
-      inset: box(0.15),
-      color,
+      ...common,
       colorBox: BOX.TO_NORTH,
     }
   })
   makeTowerPlatform(scene, "button-hover", {
-    size: { x: 100, y: 100 },
+    size,
     options: {
-      type: "box",
-      corners: corners("curve-o"),
-      margin: box(0),
-      inset: box(0.15),
-      color,
+      ...common,
       colorBox: BOX.TO_SOUTH,
       line: "#FFFFFF"
     }
   })
 }
 
-GameObjects.GameObjectFactory.register("button",
-  function (this: GameObjects.GameObjectFactory, x: number, y: number, w: number, h: number,
-    text?: string, onClick?: () => void) {
-    const button = new Button(this.scene, x, y, w, h, text, onClick)
-    this.displayList.add(button)
-    // this.updateList.add(tower)
-    return button
-  }
-)
+export function registerButtonFactory() {
+  GameObjects.GameObjectFactory.register("button",
+    function (this: GameObjects.GameObjectFactory, x: number, y: number, w: number, h: number,
+      text?: string, onClick?: () => void) {
+      const button = new Button(this.scene, x, y, w, h, text, onClick)
+      this.displayList.add(button)
+      return button
+    }
+  )
+}

@@ -147,11 +147,13 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
 
 }
 
-GameObjects.GameObjectFactory.register("tower",
-  function (this: GameObjects.GameObjectFactory, x: number, y: number, model: ITowerModel) {
-    const tower = new TDTower(this.scene, x, y, model)
-    this.displayList.add(tower)
-    this.updateList.add(tower)
-    return tower
-  }
-)
+export function registerTowerFactory() {
+  GameObjects.GameObjectFactory.register("tower",
+    function (this: GameObjects.GameObjectFactory, x: number, y: number, model: ITowerModel) {
+      const tower = new TDTower(this.scene, x, y, model)
+      this.displayList.add(tower)
+      this.updateList.add(tower)
+      return tower
+    }
+  )
+}

@@ -6,11 +6,11 @@ export default class HealthBar extends GameObjects.Graphics {
 
   constructor(scene: Scene, public entity: any,
     public x: number, public y: number,
-    public w: number = 30, public h: number = 5,
+    public width: number = 30, public h: number = 5,
     public color: number = 0x00ff00) {
     super(scene)
     this.fillStyle(color, 0.8)
-    this.fillRect(x, y, w, h)
+    this.fillRect(x, y, width, h)
   }
 
   get fraction() {
@@ -21,6 +21,6 @@ export default class HealthBar extends GameObjects.Graphics {
     this._fraction = fraction
     this.clear()
     this.fillStyle(this.color, 0.8)
-    this.fillRect(this.x, this.y, this.w * fraction, this.h)
+    this.fillRect(this.x, this.y, this.width * fraction, this.h)
   }
 }

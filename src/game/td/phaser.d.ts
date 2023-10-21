@@ -5,8 +5,15 @@
 declare namespace Phaser.GameObjects {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface GameObjectFactory {
+
+    // Game Elements
     tower(x: number, y: number, model: ITowerModel): TDTower
     enemy(x: number, y: number, model: IEnemyModel, path?: Curves.Path, showStatusBars?: boolean): TDEnemy
+
+    // GUI Elements
+    layout(x: number, y: number, layout: ILayout): LayoutContainer
     button(x: number, y: number, w: number, h: number, text?: string, onClick?: () => void): Button
+    label(x: number, y: number, text: string, style?: Types.GameObjects.Text.TextStyle): Label
+    icon(number, y: number, code: string | number, style?: Types.GameObjects.Text.TextStyle): Icon
   }
 }

@@ -136,7 +136,7 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
       this.shieldBar.fraction = shieldFraction
       this.healthBar.fraction = healthFraction
       const bounds = this.getBounds()
-      const x = this.pathVector.x - this.healthBar.w / 2
+      const x = this.pathVector.x - this.healthBar.width / 2
       const y = this.pathVector.y - bounds.height - this.healthBar.h * 2
       this.container.setPosition(x, y)
     }
@@ -158,11 +158,13 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
 
 }
 
-GameObjects.GameObjectFactory.register("enemy",
-  function (this: GameObjects.GameObjectFactory, x: number, y: number, model: IEnemyModel, path?: Curves.Path, showStatusBars?: boolean) {
-    const tower = new TDEnemy(this.scene, x, y, model, path, showStatusBars)
-    this.displayList.add(tower)
-    this.updateList.add(tower)
-    return tower
-  }
-)
+export function registerEnemyFactory() {
+  GameObjects.GameObjectFactory.register("enemy",
+    function (this: GameObjects.GameObjectFactory, x: number, y: number, model: IEnemyModel, path?: Curves.Path, showStatusBars?: boolean) {
+      const tower = new TDEnemy(this.scene, x, y, model, path, showStatusBars)
+      this.displayList.add(tower)
+      this.updateList.add(tower)
+      return tower
+    }
+  )
+}
