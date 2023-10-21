@@ -54,15 +54,14 @@ export class HBoxLayout extends AbstractLayout implements ILayout {
 export class VBoxLayout extends AbstractLayout implements ILayout {
   apply(container: GameObjects.Container) {
     let offset = this.margin.y1
-    const cBounds = container.getBounds()
     container.list.forEach((child, i) => {
       if (hasBounds(child)) {
         if (child instanceof Icon || child instanceof Label) {
           child.setOrigin(0)
           // child.setPosition(this.margin.x1 - child.width / 2, offset - child.height)
-          console.log("Target:", this.margin.x1, offset - child.height)
-          child.setPosition(this.margin.x1 - cBounds.width / 2, offset - child.height)
-          console.log("Position:", child.x, child.y)
+          // console.log("Target:", this.margin.x1, offset - child.height)
+          child.setPosition(this.margin.x1 - child.width / 2, offset - child.height)
+          // console.log("Position:", child.x, child.y)
 
         } else {
           child.setPosition(this.margin.x1, offset)
