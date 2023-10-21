@@ -4,6 +4,10 @@ import { IPlatformOptions, corners } from "../assets/PlatformFactory";
 import { BOX, box } from "../../../util/geom/Box";
 import { addLabel } from "../../../util/TextUtil";
 
+function makeKey(prefix: string, suffix: string) {
+  return `${prefix}-${suffix}`
+}
+
 export default class Button extends GameObjects.Container {
 
   background: GameObjects.NineSlice
@@ -11,9 +15,10 @@ export default class Button extends GameObjects.Container {
 
   constructor(scene: Scene, x: number, y: number,
     public width: number, public height: number, // We use width, height to qualify for Size interface
-    public text?: string, public onClick?: () => void) {
+    public text?: string, public stylePrefix: string = "blue", public onClick?: () => void) {
     super(scene, x, y)
-    this.background = scene.add.nineslice(0, 0, "button", undefined, width, height, 16, 16, 16, 16)
+    this.background = scene.add.nineslice(0, 0, makeKey(stylePrefix, "button"),
+      undefined, width, height, 16, 16, 16, 16)
     this.background.setSize(width, height)
     this.add(this.background)
     if (text && text.length > 0) {
@@ -36,18 +41,18 @@ export default class Button extends GameObjects.Container {
   }
 
   onButtonPress = () => {
-    this.background.setTexture("button-pressed")
+    this.background.setTexture(makeKey(this.stylePrefix, "button-pressed"))
     this.setLabelColor("#33FF33")
     this.onClick?.()
   }
 
   onButtonHover = () => {
     console.log("On Hover")
-    this.background.setTexture("button-hover")
+    this.background.setTexture(makeKey(this.stylePrefix, "button-hover"))
   }
 
   onButtonNormal = () => {
-    this.background.setTexture("button")
+    this.background.setTexture(makeKey(this.stylePrefix, "button"))
     this.setLabelColor("white")
   }
 }
@@ -62,21 +67,21 @@ export function makeButtonTextures(scene: Scene) {
     corners: corners("curve-o"),
     color,
   }
-  makeTowerPlatform(scene, "button", {
+  makeTowerPlatform(scene, "blue-button", {
     size,
     options: {
       ...common,
       colorBox: BOX.TO_SOUTH,
     }
   })
-  makeTowerPlatform(scene, "button-pressed", {
+  makeTowerPlatform(scene, "blue-button-pressed", {
     size,
     options: {
       ...common,
       colorBox: BOX.TO_NORTH,
     }
   })
-  makeTowerPlatform(scene, "button-hover", {
+  makeTowerPlatform(scene, "blue-button-hover", {
     size,
     options: {
       ...common,
@@ -89,8 +94,8 @@ export function makeButtonTextures(scene: Scene) {
 export function registerButtonFactory() {
   GameObjects.GameObjectFactory.register("button",
     function (this: GameObjects.GameObjectFactory, x: number, y: number, w: number, h: number,
-      text?: string, onClick?: () => void) {
-      const button = new Button(this.scene, x, y, w, h, text, onClick)
+      text?: string, stylePrefix: string = "blue", onClick?: () => void) {
+      const button = new Button(this.scene, x, y, w, h, text, stylePrefix, onClick)
       this.displayList.add(button)
       return button
     }
