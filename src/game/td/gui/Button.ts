@@ -88,7 +88,7 @@ export function makeButtonTextures(scene: Scene) {
     options: {
       ...blue,
       colorBox: BOX.TO_SOUTH,
-      line: "#FFFFFF"
+      line: "#FFFFFF",
     }
   })
   // Flat buttons
@@ -101,21 +101,21 @@ export function makeButtonTextures(scene: Scene) {
     size,
     options: {
       ...flat,
-      color: "#666666"
+      color: "#666666",
     }
   })
   makeTowerPlatform(scene, "flat-button-pressed", {
     size,
     options: {
       ...flat,
-      color: "#333333"
+      color: "#333333",
     }
   })
   makeTowerPlatform(scene, "flat-button-hover", {
     size,
     options: {
       ...flat,
-      color: "#999999"
+      color: "#999999",
     }
   })
 }

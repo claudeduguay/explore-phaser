@@ -192,7 +192,6 @@ export function baseRenderer(g: CanvasRenderingContext2D,
   g.closePath()
   g.fill()
   if (line) {
-    console.log("Stroke line")
     g.lineWidth = lineWidth
     g.strokeStyle = line
     g.stroke()
