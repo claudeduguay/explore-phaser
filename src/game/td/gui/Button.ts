@@ -14,12 +14,14 @@ export default class Button extends GameObjects.Container {
   label?: GameObjects.Text
 
   constructor(scene: Scene, x: number, y: number,
-    public width: number, public height: number, // We use width, height to qualify for Size interface
+    public w: number, public h: number, // We use width, height to qualify for Size interface
     public text?: string, public stylePrefix: string = "blue", public onClick?: () => void) {
     super(scene, x, y)
     this.background = scene.add.nineslice(0, 0, makeKey(stylePrefix, "button"),
-      undefined, width, height, 16, 16, 16, 16)
-    this.background.setSize(width, height)
+      undefined, w, h, 16, 16, 16, 16)
+    this.background.setSize(w, h)
+    this.setSize(w, h)// Set bounds
+    // this.setDisplaySize(w, h)
     this.add(this.background)
     if (text && text.length > 0) {
       this.label = addLabel(scene, 0, 0, text).setOrigin(0.5)
@@ -58,35 +60,62 @@ export default class Button extends GameObjects.Container {
 }
 
 export function makeButtonTextures(scene: Scene) {
-  const color = ["#0000FF", "#000099"]
   const size = { x: 100, y: 100 }
-  const common: Partial<IPlatformOptions> = {
+  // Blue buttons
+  const blue: Partial<IPlatformOptions> = {
     type: "box",
     margin: box(0),
     inset: box(0.15),
     corners: corners("curve-o"),
-    color,
+    color: ["#0000FF", "#000099"],
   }
   makeTowerPlatform(scene, "blue-button", {
     size,
     options: {
-      ...common,
+      ...blue,
       colorBox: BOX.TO_SOUTH,
     }
   })
   makeTowerPlatform(scene, "blue-button-pressed", {
     size,
     options: {
-      ...common,
+      ...blue,
       colorBox: BOX.TO_NORTH,
     }
   })
   makeTowerPlatform(scene, "blue-button-hover", {
     size,
     options: {
-      ...common,
+      ...blue,
       colorBox: BOX.TO_SOUTH,
       line: "#FFFFFF"
+    }
+  })
+  // Flat buttons
+  const flat: Partial<IPlatformOptions> = {
+    type: "box",
+    margin: box(0),
+    inset: box(0),
+  }
+  makeTowerPlatform(scene, "flat-button", {
+    size,
+    options: {
+      ...flat,
+      color: "#666666"
+    }
+  })
+  makeTowerPlatform(scene, "flat-button-pressed", {
+    size,
+    options: {
+      ...flat,
+      color: "#333333"
+    }
+  })
+  makeTowerPlatform(scene, "flat-button-hover", {
+    size,
+    options: {
+      ...flat,
+      color: "#999999"
     }
   })
 }
