@@ -42,3 +42,22 @@ arrays, after the first, and the cost of filter-comparison across the result set
 A set compares by reference-matching and so is very fast and worth constructing. 
 However, the filtered (found) list with continue to get smaller on every pass and
 may be performant enough as a result.
+
+ComponentID can be a property name used in the Phaser data system used to store
+structured component data.
+
+## Phaser DataManager
+
+The Phaser [DataManager](https://newdocs.phaser.io/docs/3.60.0/Phaser.Data.DataManager)
+supports a ```set``` method to initialy register a data property and emits a "setdata"
+event when the property changes.
+
+We need to do a few experiments:
+
+* Determine how the set/value.name= approaches differ
+* Determine what events are emitted and how. Does one register 
+to recieve all or specific property events?
+* Determine how ```get``` destructuring (with a list of values) works with 
+some properties not found.
+* Determine how useful the query (regular expressions) might be.
+
