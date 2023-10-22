@@ -61,3 +61,8 @@ to recieve all or specific property events?
 some properties not found.
 * Determine how useful the query (regular expressions) might be.
 
+Events emitted during ```set``` are: SET_DATA, CHANGE_DATA, CHANGE_DATA_KEY
+The latter application is a bit unclear.
+
+DataManager [Events](https://newdocs.phaser.io/docs/3.60.0/Phaser.Data.Events)
+are documented in the referenced module.
