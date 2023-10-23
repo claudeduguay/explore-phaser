@@ -23,7 +23,8 @@ export default class GUIPreview extends Scene {
     const MARGIN = box(10)
 
     this.add.label(100, 60, "HBox Layout")
-    const hBox = this.add.layout(100, 100, new HBoxLayout(GAP, MARGIN, "center"))
+    const hBoxLayout = new HBoxLayout(GAP, MARGIN, "center")
+    const hBox = this.add.layout(100, 100, hBoxLayout)
     hBox.add(this.add.icon(0, 0, 0xe87d))
     hBox.add(this.add.label(0, 0, "HBox"))
     for (let i = 0; i < 4; i++) {
@@ -40,7 +41,8 @@ export default class GUIPreview extends Scene {
     this.add.existing(hg)
 
     this.add.label(100, 180, "VBox Layout")
-    const vBox = this.add.layout(100, 220, new VBoxLayout(GAP, MARGIN, "left"))
+    const vBoxLayout = new VBoxLayout(GAP, MARGIN, "left")
+    const vBox = this.add.layout(100, 220, vBoxLayout)
     vBox.add(this.add.icon(0, 0, 0xe87d))
     vBox.add(this.add.label(0, 0, "VBox Layout"))
     for (let i = 0; i < 4; i++) {
@@ -61,5 +63,15 @@ export default class GUIPreview extends Scene {
     vg.lineBetween(vBox.x, vBox.y - 10, vBox.x, vBox.y + 10)
     vg.lineBetween(vBox.x - 10, vBox.y, vBox.x + 10, vBox.y)
     this.add.existing(vg)
+
+    this.add.label(300, 180, "RGB Panels")
+    this.add.panel(300, 220, 150, 100, "red")
+    this.add.panel(470, 220, 150, 100, "green")
+    this.add.panel(640, 220, 150, 100, "blue")
+    this.add.label(300, 340, "CMY Panels")
+    this.add.panel(300, 380, 150, 100, "cyan")
+    this.add.panel(470, 380, 150, 100, "magenta")
+    this.add.panel(640, 380, 150, 100, "yellow")
+
   }
 }

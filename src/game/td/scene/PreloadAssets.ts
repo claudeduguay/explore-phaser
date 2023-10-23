@@ -8,6 +8,7 @@ import { registerLayoutFactory } from "../gui/layout/LayoutContainer"
 import { registerTowerFactory } from "../entity/tower/TDTower"
 import { registerEnemyFactory } from "../entity/enemy/TDEnemy"
 import { registerIconFactory } from "../gui/Icon"
+import { makePanelTextures, registerPanelFactory } from "../gui/Panel"
 
 // Intreresting repo: https://github.com/samme/phaser-plugin-loader
 // Also interesting repo: https://phaserplugins.com/
@@ -44,6 +45,7 @@ export function registerObjectFactories() {
 
   // GUI Objects
   registerLayoutFactory()
+  registerPanelFactory()
   registerButtonFactory()
   registerLabelFactory()
   registerIconFactory()
@@ -51,7 +53,6 @@ export function registerObjectFactories() {
   // Game Objects
   registerTowerFactory()
   registerEnemyFactory()
-
 }
 
 export function preloadWebFont(scene: Scene) {
@@ -108,4 +109,5 @@ export function preloadTextures(scene: Scene) {
   makeNineSlice(scene, "nine_slice", { size: { x: 100, y: 100 }, options: { margin: 0.2 } })
 
   makeButtonTextures(scene)
+  makePanelTextures(scene)
 }
