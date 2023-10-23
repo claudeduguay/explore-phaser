@@ -15,7 +15,7 @@ export const DEFAULT_CONVERSATION: IConversationModel = {
   content:
     "This area will have content that explains whatever the context of this conversation is, " +
     "allowing for a set of potential response options. Conversations can be chained with onClick " +
-    "events leading to additional conversation panels or, eventually, exit.",
+    "events leading to additional conversation panels or, eventually, an exit.",
   options: [
     { text: "Option 1" },
     { text: "Option 2" },
