@@ -1,5 +1,5 @@
 
-import { Scene, Utils, Math as PMath, Input } from "phaser"
+import { Scene, Utils, Math as PMath, Input, GameObjects, Geom } from "phaser"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../entity/tower/TDTower"
 import TDGameScene from "./TDGameScene"
@@ -37,6 +37,7 @@ export default class TDPlayScene extends Scene {
     health: new ObservableValue(100),
     credits: new ObservableValue(0)
   }
+  selectors: TowerSelector[] = []
   towerGroup!: SelectableGroup<TDTower>
   enemyGroup!: SelectableGroup<TDEnemy>
   pathPoints!: Point[]
@@ -159,11 +160,33 @@ export default class TDPlayScene extends Scene {
       w + 5, 75, w - 350 - 25, 75, this.enemyGroup.infoVisible, true)
 
     // Clear selections when clicked outside info panel
-    this.input.on(Input.Events.POINTER_DOWN, () => {
+    this.input.on(Input.Events.POINTER_DOWN, ({ x, y }: Input.Pointer) => {
       this.towerGroup.select(undefined)
       this.enemyGroup.select(undefined)
       this.towerGroup.infoVisible.value = false
       this.enemyGroup.infoVisible.value = false
+      this.selectors.forEach(selector => {
+        // Close selectors if not inside one
+        if (!Geom.Rectangle.Contains(selector.getBounds(), x, y)) {
+          selector.isOpen = false
+        }
+      })
+    })
+    // Close selectors if TowerInfo is opened
+    this.towerGroup.infoVisible.addListener("changed", (value: boolean) => {
+      if (value) {
+        this.selectors.forEach(selector => {
+          selector.isOpen = false
+        })
+      }
+    })
+    // Close selectors if EnemyInfo is opened
+    this.enemyGroup.infoVisible.addListener("changed", (value: boolean) => {
+      if (value) {
+        this.selectors.forEach(selector => {
+          selector.isOpen = false
+        })
+      }
     })
 
     this.createMap() // Call this before selecting enemy
@@ -218,6 +241,19 @@ export default class TDPlayScene extends Scene {
         this.towerColliders.push(new PointCollider(towerPoints))
         this.towerColliders.push(new PointCollider(this.pathPoints))
       }
+    }
+
+    this.selectors = [
+      new TowerSelector(this, 0, 100, "throw", onAddTower),
+      new TowerSelector(this, 0, 180, "beam", onAddTower),
+      new TowerSelector(this, 0, 260, "spray", onAddTower),
+      new TowerSelector(this, 0, 340, "cloud", onAddTower),
+      new TowerSelector(this, 0, 420, "fall", onAddTower),
+      new TowerSelector(this, 0, 500, "area", onAddTower)
+    ]
+    for (let selector of this.selectors) {
+      selector.group = this.selectors
+      this.add.existing(selector)
     }
 
 
@@ -287,18 +323,6 @@ export default class TDPlayScene extends Scene {
     // addMaterialIcon(this, 150, 75, 0xe227, 64, "green")
     // addMaterialIcon(this, 250, 75, 0xe88a, 64, "blue")
 
-    const selectors = [
-      new TowerSelector(this, 0, 100, "throw", onAddTower),
-      new TowerSelector(this, 0, 180, "beam", onAddTower),
-      new TowerSelector(this, 0, 260, "spray", onAddTower),
-      new TowerSelector(this, 0, 340, "cloud", onAddTower),
-      new TowerSelector(this, 0, 420, "fall", onAddTower),
-      new TowerSelector(this, 0, 500, "area", onAddTower)
-    ]
-    for (let selector of selectors) {
-      selector.group = selectors
-      this.add.existing(selector)
-    }
   }
 
 
