@@ -54,6 +54,7 @@ const TOWER_BEHAVIORS: Record<string, any> = {
 
 export default class TDTower extends BehaviorContainer implements ISelectable {
 
+  effectContainer: GameObjects.Container
   platform: GameObjects.Sprite
   turret: TDTurret
   targeting = new Targeting()
@@ -87,6 +88,10 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
       this.behavior.add(new TargetSpinBehavior(this, model.meta.rotation))
     }
     this.add(this.turret)
+
+    // >>> To be used to apply visual efffects relative to this GameObject <<<
+    this.effectContainer = scene.add.container()
+    this.add(this.effectContainer)
 
     this.showRange = scene.add.existing(new TDRange(scene, 0, 0, model.name, model.stats.range))
     this.showRange.visible = false
