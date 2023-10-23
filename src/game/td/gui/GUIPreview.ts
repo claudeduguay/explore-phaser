@@ -19,14 +19,23 @@ export default class GUIPreview extends Scene {
     g.strokeRoundedRect(this.x, this.y, 1000, 680)
     this.add.existing(g)
 
-    const hBox: LayoutContainer = this.add.layout(150, 100, new HBoxLayout(new Point(10, 10)))
+    const hBox = this.add.layout(100, 100, new HBoxLayout(new Point(10, 10)))
     hBox.add(this.add.icon(0, 0, 0xe87d))
     hBox.add(this.add.label(0, 0, "HBox"))
     for (let i = 0; i < 4; i++) {
       hBox.add(this.add.button(0, 0, 160, 36, `Test Button ${i + 1}`, "blue", () => console.log(`Button ${i + 1} clicked`)))
     }
+    hBox.triggerLayout()
 
-    const vBox = this.add.layout(150, 220, new VBoxLayout(new Point(10, 10)))
+    const hg = this.add.graphics()
+    hg.lineStyle(2, 0xFFFFFF, 1.0)
+    // const hBounds = hBox.getBounds()
+    // hg.strokeRect(hBounds.x, hBounds.y, hBounds.width, hBounds.height)
+    hg.lineBetween(hBox.x, hBox.y - 20, hBox.x, hBox.y + 20)
+    hg.lineBetween(hBox.x - 20, hBox.y, hBox.x + 20, hBox.y)
+    this.add.existing(hg)
+
+    const vBox = this.add.layout(100, 220, new VBoxLayout(new Point(10, 10)))
     vBox.add(this.add.icon(0, 0, 0xe87d))
     vBox.add(this.add.label(0, 0, "VBox Layout"))
     for (let i = 0; i < 4; i++) {
@@ -38,5 +47,14 @@ export default class GUIPreview extends Scene {
     tower.preview = true
     flat.add(tower)
     vBox.add(flat)
+    vBox.triggerLayout()
+
+    const vg = this.add.graphics()
+    vg.lineStyle(2, 0xFFFFFF, 1.0)
+    // const vBounds = vBox.getBounds()
+    // vg.strokeRect(vBounds.x, vBounds.y, vBounds.width, vBounds.height)
+    vg.lineBetween(vBox.x, vBox.y - 20, vBox.x, vBox.y + 20)
+    vg.lineBetween(vBox.x - 20, vBox.y, vBox.x + 20, vBox.y)
+    this.add.existing(vg)
   }
 }
