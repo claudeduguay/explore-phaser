@@ -288,11 +288,18 @@ export default class TDPlayScene extends Scene {
     // addMaterialIcon(this, 150, 75, 0xe227, 64, "green")
     // addMaterialIcon(this, 250, 75, 0xe88a, 64, "blue")
 
-    this.add.existing(new TowerSelector(this, 0, 100, "beam"))
-    this.add.existing(new TowerSelector(this, 0, 180, "spray"))
-    this.add.existing(new TowerSelector(this, 0, 260, "cloud"))
-    this.add.existing(new TowerSelector(this, 0, 340, "fall"))
-    this.add.existing(new TowerSelector(this, 0, 420, "area"))
+    const selectors = [
+      new TowerSelector(this, 0, 100, "throw"),
+      new TowerSelector(this, 0, 180, "beam"),
+      new TowerSelector(this, 0, 260, "spray"),
+      new TowerSelector(this, 0, 340, "cloud"),
+      new TowerSelector(this, 0, 420, "fall"),
+      new TowerSelector(this, 0, 500, "area")
+    ]
+    for (let selector of selectors) {
+      selector.group = selectors
+      this.add.existing(selector)
+    }
   }
 
 
