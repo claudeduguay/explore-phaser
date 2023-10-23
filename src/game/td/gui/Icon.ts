@@ -12,7 +12,7 @@ export class Icon extends GameObjects.Text {
   constructor(scene: Scene, x: number, y: number, code: string | number,
     style: Types.GameObjects.Text.TextStyle = DEFAULT_STYLE) {
     super(scene, x, y, typeof code === "number" ? String.fromCharCode(code) : code, style)
-    this.setOrigin(0.5)
+    this.setOrigin(0)
   }
 }
 

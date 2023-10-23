@@ -12,7 +12,7 @@ export class Label extends GameObjects.Text {
   constructor(scene: Scene, x: number, y: number, text: string,
     style: Types.GameObjects.Text.TextStyle = DEFAULT_STYLE) {
     super(scene, x, y, text, style)
-    this.setOrigin(0.5)
+    this.setOrigin(0)
   }
 }
 
