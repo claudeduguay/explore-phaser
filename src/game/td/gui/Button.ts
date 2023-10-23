@@ -67,7 +67,7 @@ export function makeButtonTextures(scene: Scene) {
     margin: box(0),
     inset: box(0.15),
     corners: corners("curve-o"),
-    color: ["#0000FF", "#000099"],
+    color: ["#000099", "#000033"],
   }
   makeTowerPlatform(scene, "blue-button", {
     size,
@@ -91,6 +91,37 @@ export function makeButtonTextures(scene: Scene) {
       line: "#FFFFFF",
     }
   })
+
+  const green: Partial<IPlatformOptions> = {
+    type: "box",
+    margin: box(0),
+    inset: box(0.15),
+    corners: corners("curve-o"),
+    color: ["#009900", "#003300"],
+  }
+  makeTowerPlatform(scene, "green-button", {
+    size,
+    options: {
+      ...green,
+      colorBox: BOX.TO_SOUTH,
+    }
+  })
+  makeTowerPlatform(scene, "green-button-pressed", {
+    size,
+    options: {
+      ...green,
+      colorBox: BOX.TO_NORTH,
+    }
+  })
+  makeTowerPlatform(scene, "green-button-hover", {
+    size,
+    options: {
+      ...green,
+      colorBox: BOX.TO_SOUTH,
+      line: "#FFFFFF",
+    }
+  })
+
   // Flat buttons
   const flat: Partial<IPlatformOptions> = {
     type: "box",

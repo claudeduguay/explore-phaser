@@ -22,6 +22,7 @@ import { onEnemyInRange, onEnemyOverlap } from "../entity/tower/Targeting"
 import TreePreview from "../tree/TreePreview"
 import GUIPreview from "../gui/GUIPreview"
 import TowerSelector from "./TowerSelector"
+import Conversation from "../gui/Conversation"
 // import { addMaterialIcon } from "../../../util/TextUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
@@ -321,6 +322,9 @@ export default class TDPlayScene extends Scene {
     // addMaterialIcon(this, 50, 75, 0xe87d, 64, "red")
     // addMaterialIcon(this, 150, 75, 0xe227, 64, "green")
     // addMaterialIcon(this, 250, 75, 0xe88a, 64, "blue")
+
+    const conversation = new Conversation(this, 200, 570, 700, 200)
+    this.add.existing(conversation)
 
   }
 
