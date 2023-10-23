@@ -13,9 +13,9 @@ export interface IConversationModel {
 export const DEFAULT_CONVERSATION: IConversationModel = {
   title: "Conversation Title",
   content:
-    "This area will have content that explains whaterve the context of this conversation is, " +
+    "This area will have content that explains whatever the context of this conversation is, " +
     "allowing for a set of potential response options. Conversations can be chained with onClick " +
-    "events leading to additional conversation panels.",
+    "events leading to additional conversation panels or, eventually, exit.",
   options: [
     { text: "Option 1" },
     { text: "Option 2" },
