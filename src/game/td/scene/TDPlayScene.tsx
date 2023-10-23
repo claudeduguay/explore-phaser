@@ -4,11 +4,11 @@ import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../entity/tower/TDTower"
 import TDGameScene from "./TDGameScene"
 import GameHeader from "./react/GameHeader"
-import GameFooter from "./react/GameFooter"
+// import GameFooter from "./react/GameFooter"
 import generateMap from "./map/TDLevel"
 import Point from "../../../util/geom/Point"
 import SelectableGroup from "./SelectableGroup"
-import ITowerModel, { TOWER_GROUPS, TOWER_LIST } from "../entity/model/ITowerModel"
+import ITowerModel, { TOWER_LIST } from "../entity/model/ITowerModel"
 import TowerPreview from "../entity/tower/TowerPreview"
 import PointCollider, { PointColliders } from "../../../util/PointCollider"
 import TowerInfo from "./react/TowerInfo"
@@ -22,7 +22,6 @@ import { ENEMY_LIST } from "../entity/model/IEnemyModel"
 import { onEnemyInRange, onEnemyOverlap } from "../entity/tower/Targeting"
 import TreePreview from "../tree/TreePreview"
 import GUIPreview from "../gui/GUIPreview"
-import TowerSelectorBar from "./TowerSelectorBar"
 import TowerSelector from "./TowerSelector"
 // import { addMaterialIcon } from "../../../util/TextUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
@@ -274,8 +273,8 @@ export default class TDPlayScene extends Scene {
       onToggleTreePreview={onToggleTreePreview}
       onToggleGUIPreview={onToggleGUIPreview} />,
       0, 0)
-    addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />,
-      0, this.game.canvas.height - 56)
+    // addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />,
+    //   0, this.game.canvas.height - 56)
 
 
     // ------------------------------------------------------------------
@@ -289,12 +288,12 @@ export default class TDPlayScene extends Scene {
     // addMaterialIcon(this, 250, 75, 0xe88a, 64, "blue")
 
     const selectors = [
-      new TowerSelector(this, 0, 100, "throw"),
-      new TowerSelector(this, 0, 180, "beam"),
-      new TowerSelector(this, 0, 260, "spray"),
-      new TowerSelector(this, 0, 340, "cloud"),
-      new TowerSelector(this, 0, 420, "fall"),
-      new TowerSelector(this, 0, 500, "area")
+      new TowerSelector(this, 0, 100, "throw", onAddTower),
+      new TowerSelector(this, 0, 180, "beam", onAddTower),
+      new TowerSelector(this, 0, 260, "spray", onAddTower),
+      new TowerSelector(this, 0, 340, "cloud", onAddTower),
+      new TowerSelector(this, 0, 420, "fall", onAddTower),
+      new TowerSelector(this, 0, 500, "area", onAddTower)
     ]
     for (let selector of selectors) {
       selector.group = selectors

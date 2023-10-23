@@ -1,6 +1,6 @@
 import { GameObjects, Scene } from "phaser";
 import TowerSelectorBar from "./TowerSelectorBar";
-import { TOWER_GROUPS } from "../entity/model/ITowerModel";
+import ITowerModel, { TOWER_GROUPS } from "../entity/model/ITowerModel";
 import Button from "../gui/Button";
 
 export function entitle(text: string) {
@@ -13,9 +13,9 @@ export default class TowerSelector extends GameObjects.Container {
   group: TowerSelector[] = []
   _isOpen = false
 
-  constructor(scene: Scene, x: number, y: number, public type: string) {
+  constructor(scene: Scene, x: number, y: number, public type: string, onAddTower: (model: ITowerModel) => void) {
     super(scene, x, y)
-    this.bar = new TowerSelectorBar(scene, 30, 0, TOWER_GROUPS[type])
+    this.bar = new TowerSelectorBar(scene, 30, 0, this, TOWER_GROUPS[type], onAddTower)
     this.add(this.bar)
     this.button = new Button(scene, 15, 0, 80, 30, entitle(type), "flat", this.onToggle)
     this.button.angle = 270
