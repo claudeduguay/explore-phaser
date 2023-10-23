@@ -158,7 +158,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   // CLOUD
   poison: {
     key: "poison",
-    group: "spray",
+    group: "cloud",
     name: "Poison",
     description: "Targets multiple enemies within range with a cloud of poison.",
     meta: {

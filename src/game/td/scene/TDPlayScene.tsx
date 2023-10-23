@@ -8,7 +8,7 @@ import GameFooter from "./react/GameFooter"
 import generateMap from "./map/TDLevel"
 import Point from "../../../util/geom/Point"
 import SelectableGroup from "./SelectableGroup"
-import ITowerModel, { TOWER_LIST } from "../entity/model/ITowerModel"
+import ITowerModel, { TOWER_GROUPS, TOWER_LIST } from "../entity/model/ITowerModel"
 import TowerPreview from "../entity/tower/TowerPreview"
 import PointCollider, { PointColliders } from "../../../util/PointCollider"
 import TowerInfo from "./react/TowerInfo"
@@ -22,6 +22,8 @@ import { ENEMY_LIST } from "../entity/model/IEnemyModel"
 import { onEnemyInRange, onEnemyOverlap } from "../entity/tower/Targeting"
 import TreePreview from "../tree/TreePreview"
 import GUIPreview from "../gui/GUIPreview"
+import TowerSelectorBar from "./TowerSelectorBar"
+import TowerSelector from "./TowerSelector"
 // import { addMaterialIcon } from "../../../util/TextUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
@@ -286,6 +288,11 @@ export default class TDPlayScene extends Scene {
     // addMaterialIcon(this, 150, 75, 0xe227, 64, "green")
     // addMaterialIcon(this, 250, 75, 0xe88a, 64, "blue")
 
+    this.add.existing(new TowerSelector(this, 0, 100, "beam"))
+    this.add.existing(new TowerSelector(this, 0, 180, "spray"))
+    this.add.existing(new TowerSelector(this, 0, 260, "cloud"))
+    this.add.existing(new TowerSelector(this, 0, 340, "fall"))
+    this.add.existing(new TowerSelector(this, 0, 420, "area"))
   }
 
 
