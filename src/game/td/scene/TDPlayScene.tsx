@@ -46,7 +46,7 @@ export default class TDPlayScene extends Scene {
   treePreview!: TreePreview
   guiPreview!: GUIPreview
 
-  mapOrigin = new Point(0, 46)
+  mapOrigin = new Point(0, 0)
 
 
   constructor(public readonly parent: TDGameScene) {
@@ -99,7 +99,7 @@ export default class TDPlayScene extends Scene {
     const positions: Point[] = []
     for (let point of this.pathPoints) {
       // Include only odd positions
-      if (Math.floor(point.x / 64) % 2 !== 0 && Math.floor(point.y / 64) % 2 !== 0) {
+      if (Math.floor(point.x / 64) % 2 === 0 && Math.floor(point.y / 64) % 2 === 0) {
         const west = point.plus(WEST)
         const east = point.plus(EAST)
         const north = point.plus(NORTH)

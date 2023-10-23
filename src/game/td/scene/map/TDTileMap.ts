@@ -36,7 +36,7 @@ export class TDTileMap extends BehaviorContainer {
       tileWidth: cellSize.x,
       tileHeight: cellSize.y,
       width: cols * 2,
-      height: rows * 2
+      height: 1 + rows * 2
     })
     this.map = map
 
@@ -78,7 +78,7 @@ export class TDTileMap extends BehaviorContainer {
     this.landLayer.forEachTile(
       (tile, i) => tile.index = lerpInt(16, 20, Math.random()))
     path.forEach(cell => {
-      this.pathLayer.putTileAt(cell.bits, cell.pos.x, cell.pos.y)
+      this.pathLayer.putTileAt(cell.bits, cell.pos.x, cell.pos.y + 1)
     })
   }
 }
