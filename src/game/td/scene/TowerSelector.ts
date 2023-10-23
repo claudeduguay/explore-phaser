@@ -43,7 +43,7 @@ export default class TowerSelector extends GameObjects.Container {
       })
     }
     this._isOpen = value
-    const duration = this.bar.models.length * 100
+    const duration = 500 // this.bar.models.length * 100
     if (value) {
       this.scene.add.tween({
         targets: this.bar,
