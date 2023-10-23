@@ -27,7 +27,7 @@ export function applyDamage(tower: TDTower, delta: number, singleTarget: boolean
   targets.forEach(target => {
     if (target instanceof TDEnemy) {  // Ensure acces by type
       let damage = computeTargetDamage(tower, target, delta)
-      target.health.value -= damage
+      target.health -= damage
     }
   })
 }

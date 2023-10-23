@@ -1,7 +1,6 @@
 import { Scene, GameObjects, Curves, Input } from "phaser";
 import IEnemyModel from "../model/IEnemyModel";
 import HealthBar from "./HealthBar";
-import ObservableValue from "../../value/ObservableValue";
 import { ISelectable } from "../../scene/SelectableGroup";
 import BehaviorList from "../../behavior/core/BehaviorList";
 import { toSceneCoordinates } from "../../../../util/geom/Point";
@@ -11,12 +10,12 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
   twin?: TDEnemy   // Used in path preview (needed to match slow effect when applied)
   effects = new BehaviorList()
   frameCount: number = 0
-  container!: GameObjects.Container
+  barContainer!: GameObjects.Container
   shieldBar!: HealthBar
   healthBar!: HealthBar
 
-  health!: ObservableValue<number>
-  shield!: ObservableValue<number>
+  health!: number
+  shield!: number
 
   constructor(scene: Scene,
     public x: number, public y: number,
@@ -27,9 +26,7 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     this.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
     this.anims.create({
       key: 'east',
-      frameRate: 20,
       frames: this.anims.generateFrameNumbers(model.key, { start: 0, end: 15 }),
-      repeat: -1,
     })
     this.anims.create({
       key: 'south', frameRate: 20, repeat: -1,
@@ -46,8 +43,8 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     this.anims.play("east")
     this.setInteractive()
 
-    this.health = new ObservableValue(model.stats.health || 0)
-    this.shield = new ObservableValue(model.stats.shield || 0)
+    this.health = model.stats.health || 0
+    this.shield = model.stats.shield || 0
 
     if (showStatusBars) {
       this.shieldBar = new HealthBar(scene, this, 0, 0, 30, 5, 0xffa500)
@@ -57,9 +54,9 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
       this.healthBar = new HealthBar(scene, this, 0, 3, 30, 5, 0x00ff00)
       scene.add.existing(this.healthBar)
 
-      this.container = scene.add.container()
-      this.container.add(this.healthBar)
-      this.container.add(this.shieldBar)
+      this.barContainer = scene.add.container()
+      this.barContainer.add(this.healthBar)
+      this.barContainer.add(this.shieldBar)
     }
   }
 
@@ -124,21 +121,21 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
 
   handleStatusBars() {
     if (this.showStatusBars) {
-      if (this.health.value < 1) {
-        this.container.destroy()  // Make sure we don't leave lingering bar parts behind
+      if (this.health < 1) {
+        this.barContainer.destroy()  // Make sure we don't leave lingering bar parts behind
         this.emit("died", this)
       }
-      if (this.shield.value < 1) {
-        this.shield.value = 100
+      if (this.shield < 1) {
+        this.shield = 100
       }
-      const healthFraction = this.health.value / this.model.stats.health
-      const shieldFraction = this.shield.value / this.model.stats.shield
+      const healthFraction = this.health / this.model.stats.health
+      const shieldFraction = this.shield / this.model.stats.shield
       this.shieldBar.fraction = shieldFraction
       this.healthBar.fraction = healthFraction
       const bounds = this.getBounds()
       const x = this.pathVector.x - this.healthBar.width / 2
       const y = this.pathVector.y - bounds.height - this.healthBar.h * 2
-      this.container.setPosition(x, y)
+      this.barContainer.setPosition(x, y)
     }
   }
 

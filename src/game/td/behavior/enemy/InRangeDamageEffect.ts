@@ -11,7 +11,7 @@ export default class InRangeDamageEffect extends InRangeEffect {
 
   updateEffect(time: number, delta: number): void {
     let damage = computeTargetDamage(this.tower, this.enemy, delta)
-    this.enemy.health.value -= damage
+    this.enemy.health -= damage
   }
 
   endEffect(time: number, delta: number): void {
