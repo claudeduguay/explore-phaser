@@ -7,7 +7,7 @@ import { IActiveValues } from "../TDPlayScene";
 import { asPathModel } from "./IPathModel";
 
 export default function generateMap(scene: Scene, active: IActiveValues,
-  enemyGroup: GameObjects.Group, origin: Point,
+  enemyGroup: GameObjects.Group, mapOrigin: Point,
   prunePath: boolean = true, showMaze: boolean = true) {
 
   const config: IMapConfig = DEFAULT_CONFIG
@@ -16,10 +16,10 @@ export default function generateMap(scene: Scene, active: IActiveValues,
 
   const model = prunePath ? asPathModel(path) : asPathModel(maze.grid.array)
   if (showMaze) {
-    makeTileMap(scene, origin.x, origin.y, model, config)
+    makeTileMap(scene, mapOrigin.x, mapOrigin.y, model, config)
   }
-  const { curve, points } = renderPath(scene, model, origin, config.cellSize)
+  const { curve, points } = renderPath(scene, model, mapOrigin, config.cellSize)
 
-  makeTimeline(scene, active, enemyGroup, origin, curve, 0)
+  makeTimeline(scene, active, enemyGroup, mapOrigin, curve, 0)
   return points
 }

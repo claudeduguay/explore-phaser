@@ -37,9 +37,9 @@ export function generatePath(rows: number, cols: number, prunePath: boolean = tr
 const DOWN_ONE = new Point(0, 1)
 
 // Create a curve with scaled points that follow the path
-export function renderPath(scene: Scene, path: IPathModel, origin: Point, cellSize: Point) {
+export function renderPath(scene: Scene, path: IPathModel, mapOrigin: Point, cellSize: Point) {
   const centering = new Point(32, 32)
-  const points = path.map(cell => cell.pos.plus(DOWN_ONE).times(cellSize).plus(origin).plus(centering))
+  const points = path.map(cell => cell.pos.plus(DOWN_ONE).times(cellSize).plus(mapOrigin).plus(centering))
   const curve = new Curves.Path()
   for (let i = 0; i < points.length; i++) {
     const p = points[i]
