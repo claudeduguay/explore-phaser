@@ -1,10 +1,9 @@
 
-import { Scene, Utils, Math as PMath, Input, GameObjects, Geom } from "phaser"
+import { Scene, Utils, Math as PMath, Input, Geom } from "phaser"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../entity/tower/TDTower"
 import TDGameScene from "./TDGameScene"
 import GameHeader from "./react/GameHeader"
-// import GameFooter from "./react/GameFooter"
 import generateMap from "./map/TDLevel"
 import Point from "../../../util/geom/Point"
 import SelectableGroup from "./SelectableGroup"
