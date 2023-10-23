@@ -14,12 +14,11 @@ Need to account for shields (disabled for now)
 * Need to figure out leveling
 * Effect System needs to handle InRange conditions
 * Keep trying to get Tower previews to be in containers
-* BUG: Plopping tower sometimes sticks and requires a second clik
+* BUG: Plopping tower sometimes sticks and requires a second click (long click seems to fix this, timing issue)
+* BUG: Peeps are added last and thus always end up above HUDD elements, may fix with a separate Scene
 * BUG: Canvas size measurment fails on iPad Safari
-* BUG: Plopping tower doesn't aways unstick from mouse
 * BUG: Peeps facing sometimes oscilates (seems more apparent when slowed)
-* BUG: Levels page keeps updating grass backgrounds
-* BUG: Adding some towers (clouds, for example) do not automatically enable damage effects
+* BUG: Adding some towers (clouds, for example) do not automatically enable damage (visual) effects
 * IMPROVEMENT: Towers need to ease into aim position, avoid jump turns, maybe return to zero in the same way afterward
 
 ### Effect/Afliction Design Notes
