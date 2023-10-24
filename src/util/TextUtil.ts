@@ -8,7 +8,8 @@ export function entitle(text: string) {
 export function addLabel(scene: Scene, x: number, y: number, label: string, align: "left" | "right" | "center" = "left") {
   // May want to explore: TextShadow (https://newdocs.phaser.io/docs/3.60.0/Phaser.Types.GameObjects.Text)
   const text = scene.add.text(x, y, label, {
-    fontSize: '18px',
+    fontFamily: "Arial",
+    fontSize: 16,
     padding: { x: 5, y: 5 },
     // backgroundColor: '#DDDDDD',
     color: 'white',

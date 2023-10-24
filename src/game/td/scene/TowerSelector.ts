@@ -17,7 +17,7 @@ export default class TowerSelector extends GameObjects.Container {
     super(scene, x, y)
     this.bar = new TowerSelectorBar(scene, 30, 0, this, TOWER_GROUPS[type], onAddTower)
     this.add(this.bar)
-    this.button = new Button(scene, 15, 0, 80, 30, entitle(type), "flat", this.onToggle)
+    this.button = new Button(scene, 15, 0, 100, 30, entitle(type), "flat", this.onToggle)
     this.button.angle = 270
     this.add(this.button)
     this.bar.x = this.button.getBounds().width - this.bar.getBounds().width

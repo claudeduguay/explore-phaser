@@ -245,11 +245,11 @@ export default class TDPlayScene extends Scene {
 
     this.selectors = [
       new TowerSelector(this, 0, 100, "throw", onAddTower),
-      new TowerSelector(this, 0, 180, "beam", onAddTower),
-      new TowerSelector(this, 0, 260, "spray", onAddTower),
-      new TowerSelector(this, 0, 340, "cloud", onAddTower),
-      new TowerSelector(this, 0, 420, "fall", onAddTower),
-      new TowerSelector(this, 0, 500, "area", onAddTower)
+      new TowerSelector(this, 0, 200, "beam", onAddTower),
+      new TowerSelector(this, 0, 300, "spray", onAddTower),
+      new TowerSelector(this, 0, 400, "cloud", onAddTower),
+      new TowerSelector(this, 0, 500, "fall", onAddTower),
+      new TowerSelector(this, 0, 600, "area", onAddTower)
     ]
     for (let selector of this.selectors) {
       selector.group = this.selectors

@@ -17,10 +17,15 @@ export default class TowerSelectorBar extends GameObjects.Container {
       selector.isOpen = false
       this.onAddTower(model)
     }
-    const button = this.scene.add.button(x, y, 80, 80, ``, "flat", onClick)
-    const tower = new TDTower(this.scene, 0, 0, model, true)
+    const button = this.scene.add.button(x, y, 80, 100, ``, "flat", onClick)
+    const tower = new TDTower(this.scene, 0, -7, model, true)
     tower.platform.removeInteractive()
     button.add(tower)
+    button.add(this.scene.add.text(0, 30, model.name, {
+      fontFamily: "Arial",
+      fontSize: 14,
+    }).setOrigin(0.5, 0))
+
     this.add(button)
   }
 
