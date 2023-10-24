@@ -10,16 +10,16 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction:
   const radius = 39
   const top = 23
   const width = 500
-  const left = 270
+  const left = 245
   const insetStart = left + width * prefixFraction
   const insetWidth = width * (1.0 - (prefixFraction + suffixFraction))
 
   // Note: Could be converted into a generated texture
   const g = scene.add.graphics()
-  g.fillStyle(0x993333, 1.0)
+  g.fillStyle(0x994444, 1.0)
   g.fillRoundedRect(left, top - radius / 2, width, radius, 10)
-  g.fillStyle(0x339933, 1.0)
-  g.fillRoundedRect(insetStart, top - radius / 2, insetWidth, radius, 10)
+  g.fillStyle(0x44AA44, 1.0)
+  g.fillRect(insetStart, top - radius / 2, insetWidth, radius)
 
   // Generate path curve
   const path = new Curves.Path()
@@ -32,7 +32,9 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction:
 export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, duration: number, delay: number) {
   let wasDestroyed = false // onComplete triggers even if destroyed, track status
   const model = ENEMY_INDEX[key]
-  const enemy = scene.add.enemy(origin.x, origin.y, model, path, true)
+  const enemy = scene.add.enemy(0, 0, model, path, true)
+  enemy.barContainer.visible = false
+  enemy.visible = false
   enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
     enemy.destroy()
     enemyGroup.remove(enemy)
@@ -55,16 +57,21 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
     yoyo: false,
     repeat: 0,
     rotateToPath: true,
-    onStart: () => enemyGroup.add(enemy),
+    onStart: () => {
+      enemy.barContainer.visible = true
+      enemy.visible = true
+      enemyGroup.add(enemy)
+    },
     onComplete: () => {
-      if (!wasDestroyed && enemy.health.value > 0) {
+      if (!wasDestroyed) {
         enemy.destroy()
         enemyGroup.remove(enemy)
         if (active.health.value > 1) {
           active.health.value -= 1
-        }
-        if (scene.sound.get("woe")) {
-          scene.sound.play("woe")
+        } else {
+          if (scene.sound.get("woe")) {
+            scene.sound.play("woe")
+          }
         }
       }
     },
@@ -77,6 +84,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
 export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path, timeline: Time.Timeline, duration: number, isLast: boolean, twin: TDEnemy) {
   const model = ENEMY_INDEX[key]
   const enemy = scene.add.enemy(0, 0, model, path, false)
+  enemy.visible = false
   twin.twin = enemy // Track this enemy from it's twin
   twin.addListener("died", ({ x, y, model }: TDEnemy) => {
     enemy.destroy()
@@ -90,6 +98,9 @@ export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path,
     yoyo: false,
     repeat: 0,
     rotateToPath: false,
+    onStart: () => {
+      enemy.visible = true
+    },
     onComplete: () => {
       enemy.destroy()
       if (isLast) {

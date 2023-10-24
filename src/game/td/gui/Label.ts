@@ -9,7 +9,7 @@ export const DEFAULT_STYLE: Types.GameObjects.Text.TextStyle = {
   padding: { x: 5, y: 5 },
   color: "white",
   align: "left",
-  backgroundColor: "rgba(255, 255, 255, 0.25)"
+  // backgroundColor: "rgba(255, 255, 255, 0.25)"
 }
 
 export class Label extends GameObjects.Text {

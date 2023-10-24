@@ -5,13 +5,16 @@ export const DEFAULT_STYLE: Types.GameObjects.Text.TextStyle = {
   padding: { x: 5, top: 5, bottom: 0 },
   color: "white",
   align: "left",
-  backgroundColor: "rgba(255, 255, 255, 0.25)"
+  // backgroundColor: "rgba(255, 255, 255, 0.25)"
 }
 
 export class Icon extends GameObjects.Text {
   constructor(scene: Scene, x: number, y: number, code: string | number,
     style: Types.GameObjects.Text.TextStyle = DEFAULT_STYLE) {
-    super(scene, x, y, typeof code === "number" ? String.fromCharCode(code) : code, style)
+    super(scene, x, y, typeof code === "number" ? String.fromCharCode(code) : code, {
+      ...DEFAULT_STYLE,
+      ...style
+    })
     this.setOrigin(0)
   }
 }

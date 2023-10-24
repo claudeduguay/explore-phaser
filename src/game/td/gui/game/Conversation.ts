@@ -1,5 +1,5 @@
 import { Scene, GameObjects } from "phaser";
-import { Label } from "./Label";
+import { Label } from "../Label";
 
 export interface IConversationModel {
   title: string

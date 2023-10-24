@@ -13,8 +13,7 @@ export default class Button extends GameObjects.Container {
   background: GameObjects.NineSlice
   label?: GameObjects.Text
 
-  constructor(scene: Scene, x: number, y: number,
-    public w: number, public h: number, // We use width, height to qualify for Size interface
+  constructor(scene: Scene, x: number, y: number, public w: number, public h: number,
     public text?: string, public stylePrefix: string = "blue", public onClick?: () => void) {
     super(scene, x, y)
     this.background = scene.add.nineslice(0, 0, makeKey(stylePrefix, "button"),

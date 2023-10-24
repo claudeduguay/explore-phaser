@@ -1,9 +1,8 @@
 import { Scene } from "phaser"
 import { sceneSize } from "../../../../util/SceneUtil"
-import { useObservableValue } from "../../value/ObservableValue"
+// import { useObservableValue } from "../../value/ObservableValue"
 import { IActiveValues } from "../TDPlayScene"
 import INavigator from "./INavigator"
-import Icon from "./Icon"
 import IconButton from "./buttons/IconButton"
 import SpeedControl from "./SpeedControl"
 
@@ -19,7 +18,7 @@ export interface IGameHeaderProps {
 export default function GameHeader({ active, navigator, scene, onToggleTowerPreview, onToggleTreePreview, onToggleGUIPreview }: IGameHeaderProps) {
   const { w } = sceneSize(navigator)
 
-  const { health: activeHealth, credits: activeCredits } = active
+  // const { health: activeHealth, credits: activeCredits } = active
   const onHome = () => navigator.transitionTo("home", "game")
   const onWin = () => {
     const scene = navigator.transitionTo("win", "game")
@@ -33,12 +32,12 @@ export default function GameHeader({ active, navigator, scene, onToggleTowerPrev
       scene.sound.play("lose")
     }
   }
-  const health = useObservableValue(activeHealth)
-  const credits = useObservableValue(activeCredits)
+  // const health = useObservableValue(activeHealth)
+  // const credits = useObservableValue(activeCredits)
 
   return <div className="d-flex p-1 px-2" style={{ width: w, height: 45 }}>
     <div className="flex-fill justify-content-start">
-      <div className="row">
+      {/* <div className="row">
         <div className="col-auto p-0 ms-2">
           <div className="input-group">
             <span className="input-group-text fw-bold">
@@ -55,7 +54,7 @@ export default function GameHeader({ active, navigator, scene, onToggleTowerPrev
             <span className="btn btn-success">{credits}</span>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
     <div className="justify-content-end">
       <div className="btn-group me-2">

@@ -60,7 +60,7 @@ export abstract class AbstractLayout implements ILayout {
 export class HBoxLayout extends AbstractLayout implements ILayout {
 
   constructor(gap: IPointLike = new Point(), public margin: IBox = box(10),
-    public align: "top" | "middle" | "bottom" = "top") {
+    public align: "top" | "middle" | "bottom" = "middle") {
     super(gap, margin)
   }
 
