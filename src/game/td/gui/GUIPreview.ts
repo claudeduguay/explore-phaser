@@ -23,14 +23,14 @@ export default class GUIPreview extends Scene {
     const MARGIN = box(10)
 
     this.add.label(100, 60, "HBox Layout")
-    const hBoxLayout = new HBoxLayout(GAP, MARGIN, "center")
-    const hBox = this.add.layout(100, 100, hBoxLayout)
+    const hBox = this.add.panel(100, 100, 4, 4)
     hBox.add(this.add.icon(0, 0, 0xe87d))
     hBox.add(this.add.label(0, 0, "HBox"))
     for (let i = 0; i < 4; i++) {
       hBox.add(this.add.button(0, 0, 160, 36, `Test Button ${i + 1}`, "blue", () => console.log(`Button ${i + 1} clicked`)))
     }
-    hBox.triggerLayout()
+    const hBoxLayout = new HBoxLayout(GAP, MARGIN, "middle")
+    hBoxLayout.apply(hBox)
 
     const hg = this.add.graphics()
     hg.lineStyle(2, 0x666666, 1.0)
@@ -41,8 +41,7 @@ export default class GUIPreview extends Scene {
     this.add.existing(hg)
 
     this.add.label(100, 180, "VBox Layout")
-    const vBoxLayout = new VBoxLayout(GAP, MARGIN, "left")
-    const vBox = this.add.layout(100, 220, vBoxLayout)
+    const vBox = this.add.panel(100, 220, 4, 4)
     vBox.add(this.add.icon(0, 0, 0xe87d))
     vBox.add(this.add.label(0, 0, "VBox Layout"))
     for (let i = 0; i < 4; i++) {
@@ -54,7 +53,8 @@ export default class GUIPreview extends Scene {
     tower.preview = true
     flat.add(tower)
     vBox.add(flat)
-    vBox.triggerLayout()
+    const vBoxLayout = new VBoxLayout(GAP, MARGIN, "left")
+    vBoxLayout.apply(vBox)
 
     const vg = this.add.graphics()
     vg.lineStyle(2, 0x666666, 1.0)
