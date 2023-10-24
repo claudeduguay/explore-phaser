@@ -12,9 +12,7 @@ export default class TowerSelectorBar extends GameObjects.Container {
   }
 
   addTowerButton(selector: TowerSelector, model: ITowerModel, x: number, y: number) {
-    console.log("Model:", model.name)
     const onClick = () => {
-      console.log(`${model.name} Tower Button clicked`)
       selector.isOpen = false
       this.onAddTower(model)
     }

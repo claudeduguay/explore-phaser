@@ -70,7 +70,7 @@ export class TDTileMap extends BehaviorContainer {
     this.pathLayer = pathLayer
     this.add(pathLayer)
 
-    console.log("TileSets:", map.tilesets)
+    // console.log("TileSets:", map.tilesets)
   }
 
   setModel(path: IPathModel) {

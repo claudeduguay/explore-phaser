@@ -54,7 +54,7 @@ export function useShowHideVisible(initVisible: boolean = true, tweens?: ITweens
   const onHide = () => {
     if (visible && tweens?.out) {
       tweens.out(() => {
-        console.log("Out complete")
+        // console.log("Out complete")
         setVisible(false)
       })
     } else {
@@ -91,7 +91,7 @@ export function Visible({ scene, gameElement, tweens, children, visible: initVis
   useEffect(() => {
     if (visible && tweens?.in) {
       tweens.in(() => {
-        console.log("In Complete:", gameElement.x)
+        // console.log("In Complete:", gameElement.x)
       })
     }
   }, [scene, gameElement, tweens, visible])
