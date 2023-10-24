@@ -21,9 +21,10 @@ export default class TowerSelectorBar extends GameObjects.Container {
     const tower = new TDTower(this.scene, 0, -7, model, true)
     tower.platform.removeInteractive()
     button.add(tower)
-    button.add(this.scene.add.text(0, 30, model.name, {
+    button.add(this.scene.add.text(0, 28, model.name, {
       fontFamily: "Arial",
       fontSize: 14,
+      color: "#99FF99"
     }).setOrigin(0.5, 0))
 
     this.add(button)

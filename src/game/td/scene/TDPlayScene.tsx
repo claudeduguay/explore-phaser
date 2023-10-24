@@ -196,7 +196,7 @@ export default class TDPlayScene extends Scene {
 
     const towerPositions: Point[] = this.generatePathAdjacentPositions()
     const generateTower = (i: number) => {
-      let pos: Point = towerPositions[i]
+      let pos: Point = towerPositions[i % (towerPositions.length - 1)]
       const model = Utils.Array.GetRandom(TOWER_LIST)
       return this.add.tower(pos.x, pos.y, model)
     }
