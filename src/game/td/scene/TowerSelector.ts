@@ -52,7 +52,7 @@ export default class TowerSelector extends GameObjects.Container {
       })
       this.scene.add.tween({
         targets: this.button,
-        x: this.bar.models.length * 80 + this.button.getBounds().width / 2,
+        x: this.bar.models.length * 100 + this.button.getBounds().width / 2,
         angle: 90,
         duration
       })

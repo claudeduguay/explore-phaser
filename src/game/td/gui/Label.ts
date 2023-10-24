@@ -1,5 +1,6 @@
 import { GameObjects, Scene, Types } from "phaser";
 
+// https://www.w3schools.com/cssref/css_fonts_fallbacks.php
 export const DEFAULT_FONT_FAMILY = "Geneva, Verdana, sans-serif"
 
 export const DEFAULT_STYLE: Types.GameObjects.Text.TextStyle = {

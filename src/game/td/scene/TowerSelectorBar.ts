@@ -8,7 +8,7 @@ export default class TowerSelectorBar extends GameObjects.Container {
 
   constructor(scene: Scene, x: number, y: number, selector: TowerSelector, public models: ITowerModel[], public onAddTower: (model: ITowerModel) => void) {
     super(scene, x, y)
-    models.forEach((model, i) => this.addTowerButton(selector, model, 40 + i * 80, 0))
+    models.forEach((model, i) => this.addTowerButton(selector, model, 50 + i * 100, 0))
   }
 
   addTowerButton(selector: TowerSelector, model: ITowerModel, x: number, y: number) {
@@ -18,7 +18,7 @@ export default class TowerSelectorBar extends GameObjects.Container {
       selector.isOpen = false
       this.onAddTower(model)
     }
-    const button = this.scene.add.button(x, y, 80, 100, ``, "flat", onClick)
+    const button = this.scene.add.button(x, y, 100, 100, ``, "flat", onClick)
     const tower = new TDTower(this.scene, 0, -8, model, true)
     tower.platform.removeInteractive()
     button.add(tower)
