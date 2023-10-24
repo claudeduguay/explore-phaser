@@ -3,7 +3,7 @@ import { IColoring } from "../../../util/DrawUtil"
 import { IPlatformOptions, IPlatformType, ICorners, corners } from "./PlatformFactory"
 import { IWeaponOptions } from "./WeaponFactory"
 import { ITurretOptions } from "./TurretFactory"
-import { ITextureConfig, makeTowerPlatform, makeTowerWeapon, makeTowerTurret } from "./TextureFactory"
+import { ITextureConfig, makePlatform, makeWeapon, makeTurret } from "./TextureFactory"
 import { box } from "../../../util/geom/Box"
 
 // ------------------------------------------------------------------
@@ -279,8 +279,8 @@ const TOWERS: Record<string, ITextureConfigs> = {
 export default function registerTowerTextures(scene: Scene) {
   for (let [key, { platform, turret, weapon }] of Object.entries(TOWERS)) {
     key = key.toLowerCase()
-    makeTowerPlatform(scene, `${key}-platform`, platform)
-    makeTowerTurret(scene, `${key}-turret`, turret)
-    makeTowerWeapon(scene, `${key}-weapon`, weapon)
+    makePlatform(scene, `${key}-platform`, platform)
+    makeTurret(scene, `${key}-turret`, turret)
+    makeWeapon(scene, `${key}-weapon`, weapon)
   }
 }

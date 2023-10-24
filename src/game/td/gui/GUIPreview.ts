@@ -64,14 +64,15 @@ export default class GUIPreview extends Scene {
     vg.lineBetween(vBox.x - 10, vBox.y, vBox.x + 10, vBox.y)
     this.add.existing(vg)
 
-    this.add.label(300, 180, "RGB Panels")
-    this.add.panel(300, 220, 150, 100, "red")
-    this.add.panel(470, 220, 150, 100, "green")
-    this.add.panel(640, 220, 150, 100, "blue")
-    this.add.label(300, 340, "CMY Panels")
-    this.add.panel(300, 380, 150, 100, "cyan")
-    this.add.panel(470, 380, 150, 100, "magenta")
-    this.add.panel(640, 380, 150, 100, "yellow")
+    this.add.label(400, 180, "RGB Panels")
+    this.add.panel(400, 220, 150, 100, "red")
+    this.add.panel(570, 220, 150, 100, "green")
+    this.add.panel(740, 220, 150, 100, "blue")
+
+    this.add.label(400, 340, "CMY Panels")
+    this.add.panel(400, 380, 150, 100, "cyan")
+    this.add.panel(570, 380, 150, 100, "magenta")
+    this.add.panel(740, 380, 150, 100, "yellow")
 
   }
 }

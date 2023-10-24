@@ -1,5 +1,5 @@
 import { GameObjects, Input, Scene } from "phaser";
-import { makeTowerPlatform } from "../assets/TextureFactory";
+import { makePlatform } from "../assets/TextureFactory";
 import { IPlatformOptions, corners } from "../assets/PlatformFactory";
 import { BOX, box } from "../../../util/geom/Box";
 import { addLabel } from "../../../util/TextUtil";
@@ -69,21 +69,21 @@ export function makeButtonTextures(scene: Scene) {
     corners: corners("curve-o"),
     color: ["#000099", "#000033"],
   }
-  makeTowerPlatform(scene, "blue-button", {
+  makePlatform(scene, "blue-button", {
     size,
     options: {
       ...blue,
       colorBox: BOX.TO_SOUTH,
     }
   })
-  makeTowerPlatform(scene, "blue-button-pressed", {
+  makePlatform(scene, "blue-button-pressed", {
     size,
     options: {
       ...blue,
       colorBox: BOX.TO_NORTH,
     }
   })
-  makeTowerPlatform(scene, "blue-button-hover", {
+  makePlatform(scene, "blue-button-hover", {
     size,
     options: {
       ...blue,
@@ -99,21 +99,21 @@ export function makeButtonTextures(scene: Scene) {
     corners: corners("curve-o"),
     color: ["#009900", "#003300"],
   }
-  makeTowerPlatform(scene, "green-button", {
+  makePlatform(scene, "green-button", {
     size,
     options: {
       ...green,
       colorBox: BOX.TO_SOUTH,
     }
   })
-  makeTowerPlatform(scene, "green-button-pressed", {
+  makePlatform(scene, "green-button-pressed", {
     size,
     options: {
       ...green,
       colorBox: BOX.TO_NORTH,
     }
   })
-  makeTowerPlatform(scene, "green-button-hover", {
+  makePlatform(scene, "green-button-hover", {
     size,
     options: {
       ...green,
@@ -128,21 +128,21 @@ export function makeButtonTextures(scene: Scene) {
     margin: box(0),
     inset: box(0),
   }
-  makeTowerPlatform(scene, "flat-button", {
+  makePlatform(scene, "flat-button", {
     size,
     options: {
       ...flat,
       color: "#666666",
     }
   })
-  makeTowerPlatform(scene, "flat-button-pressed", {
+  makePlatform(scene, "flat-button-pressed", {
     size,
     options: {
       ...flat,
       color: "#333333",
     }
   })
-  makeTowerPlatform(scene, "flat-button-hover", {
+  makePlatform(scene, "flat-button-hover", {
     size,
     options: {
       ...flat,

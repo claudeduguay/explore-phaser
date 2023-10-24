@@ -202,17 +202,17 @@ export function makeNineSlice(scene: Scene, key: string, config: ITextureConfig<
   renderCanvas(scene, key, config.size.x, config.size.y, render)
 }
 
-export function makeTowerPlatform(scene: Scene, key: string, config: ITextureConfig<Partial<IPlatformOptions>>) {
+export function makePlatform(scene: Scene, key: string, config: ITextureConfig<Partial<IPlatformOptions>>) {
   const render: IRenderFunction = platformRendererFunctionFactory(0, config.options)
   renderCanvas(scene, key, config.size.x, config.size.y, render)
 }
 
-export function makeTowerTurret(scene: Scene, key: string, config: ITextureConfig<Partial<ITurretOptions>>) {
+export function makeTurret(scene: Scene, key: string, config: ITextureConfig<Partial<ITurretOptions>>) {
   const render: IRenderFunction = turretRendererFunctionFactory(0, config.options)
   renderCanvas(scene, key, config.size.x, config.size.y, render)
 }
 
-export function makeTowerWeapon(scene: Scene, key: string, config: ITextureConfig<Partial<IWeaponOptions>>) {
+export function makeWeapon(scene: Scene, key: string, config: ITextureConfig<Partial<IWeaponOptions>>) {
   const render: IRenderFunction = weaponRendererFunctionFactory(0, config.options)
   renderCanvas(scene, key, config.size.x, config.size.y, render)
 }

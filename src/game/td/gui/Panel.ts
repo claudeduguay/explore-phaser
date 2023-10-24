@@ -1,5 +1,5 @@
 import { GameObjects, Scene } from "phaser";
-import { makeTowerPlatform } from "../assets/TextureFactory";
+import { makePlatform } from "../assets/TextureFactory";
 import { IPlatformOptions, corners } from "../assets/PlatformFactory";
 import { BOX, box } from "../../../util/geom/Box";
 
@@ -31,7 +31,7 @@ export function makePanelTextures(scene: Scene) {
     inset: box(0.1),
     corners: corners("curve-o"),
   }
-  makeTowerPlatform(scene, "red-panel", {
+  makePlatform(scene, "red-panel", {
     size,
     options: {
       ...blue,
@@ -39,7 +39,7 @@ export function makePanelTextures(scene: Scene) {
       colorBox: BOX.TO_SE,
     }
   })
-  makeTowerPlatform(scene, "green-panel", {
+  makePlatform(scene, "green-panel", {
     size,
     options: {
       ...blue,
@@ -47,7 +47,7 @@ export function makePanelTextures(scene: Scene) {
       colorBox: BOX.TO_SE,
     }
   })
-  makeTowerPlatform(scene, "blue-panel", {
+  makePlatform(scene, "blue-panel", {
     size,
     options: {
       ...blue,
@@ -55,7 +55,7 @@ export function makePanelTextures(scene: Scene) {
       colorBox: BOX.TO_SE,
     }
   })
-  makeTowerPlatform(scene, "cyan-panel", {
+  makePlatform(scene, "cyan-panel", {
     size,
     options: {
       ...blue,
@@ -63,7 +63,7 @@ export function makePanelTextures(scene: Scene) {
       colorBox: BOX.TO_SE,
     }
   })
-  makeTowerPlatform(scene, "magenta-panel", {
+  makePlatform(scene, "magenta-panel", {
     size,
     options: {
       ...blue,
@@ -71,7 +71,7 @@ export function makePanelTextures(scene: Scene) {
       colorBox: BOX.TO_SE,
     }
   })
-  makeTowerPlatform(scene, "yellow-panel", {
+  makePlatform(scene, "yellow-panel", {
     size,
     options: {
       ...blue,
