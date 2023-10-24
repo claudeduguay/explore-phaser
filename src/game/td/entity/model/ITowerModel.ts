@@ -250,7 +250,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   // FALL
   rain: {
     key: "rain",
-    group: "fall",
+    group: "gravity",
     name: "Rain",
     description: "Targets multiple enemies within range with rainfall.",
     meta: {
@@ -268,7 +268,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   },
   snow: {
     key: "snow",
-    group: "fall",
+    group: "gravity",
     name: "Snow",
     description: "Targets multiple enemies within range with snowfall.",
     meta: {
@@ -288,7 +288,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   // THROW
   bullet: {
     key: "bullet",
-    group: "throw",
+    group: "eject",
     name: "Bullet",
     description: "Fires bullets at a single enemy within range.",
     meta: {
@@ -306,7 +306,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   },
   missile: {
     key: "missile",
-    group: "throw",
+    group: "eject",
     name: "Missile",
     description: "Fires missiles at a single enemy within range.",
     meta: {

@@ -2,6 +2,7 @@ import { GameObjects, Scene } from "phaser"
 import ITowerModel from "../entity/model/ITowerModel"
 import TDTower from "../entity/tower/TDTower"
 import TowerSelector from "./TowerSelector"
+import { DEFAULT_FONT_FAMILY } from "../gui/Label"
 
 export default class TowerSelectorBar extends GameObjects.Container {
 
@@ -22,7 +23,7 @@ export default class TowerSelectorBar extends GameObjects.Container {
     tower.platform.removeInteractive()
     button.add(tower)
     button.add(this.scene.add.text(0, 28, model.name, {
-      fontFamily: "Arial",
+      fontFamily: DEFAULT_FONT_FAMILY,
       fontSize: 14,
       color: "#99FF99"
     }).setOrigin(0.5, 0))

@@ -49,7 +49,6 @@ export default class Button extends GameObjects.Container {
   }
 
   onButtonHover = () => {
-    console.log("On Hover")
     this.background.setTexture(makeKey(this.stylePrefix, "button-hover"))
   }
 

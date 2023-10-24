@@ -26,10 +26,10 @@ export default class TreePreview extends Scene {
       edges: new Map<INodeKey, INodeKey[]>()
     }
     const beams = TOWER_GROUPS["beam"].map(t => t.key).filter(k => k !== root)
-    const thrown = TOWER_GROUPS["throw"].map(t => t.key).filter(k => k !== root)
+    const thrown = TOWER_GROUPS["eject"].map(t => t.key).filter(k => k !== root)
     const spray = TOWER_GROUPS["spray"].map(t => t.key).filter(k => k !== root)
     const cloud = TOWER_GROUPS["cloud"].map(t => t.key).filter(k => k !== root)
-    const fall = TOWER_GROUPS["fall"].map(t => t.key).filter(k => k !== root)
+    const fall = TOWER_GROUPS["gravity"].map(t => t.key).filter(k => k !== root)
     const area = TOWER_GROUPS["area"].map(t => t.key).filter(k => k !== root)
     function sequenceFor(node: string, children: string[]) {
       if (children.length > 0) {
