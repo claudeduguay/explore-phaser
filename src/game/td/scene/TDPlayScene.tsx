@@ -3,7 +3,6 @@ import { Scene, Utils, Math as PMath, Input, Geom } from "phaser"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../entity/tower/TDTower"
 import TDGameScene from "./TDGameScene"
-import GameHeader from "./react/GameHeader"
 import generateMap from "./map/TDLevel"
 import Point from "../../../util/geom/Point"
 import SelectableGroup from "./SelectableGroup"
@@ -149,7 +148,7 @@ export default class TDPlayScene extends Scene {
     // @ts-ignore
     this.physics.add.existing(this.towerGroup)
     addReactNode(this, <TowerInfo scene={this} tower={this.towerGroup.selected} onClose={onCloseTowerInfo} />,
-      -400, 75, 25, 75, this.towerGroup.infoVisible, true)
+      -400, 75, 45, 75, this.towerGroup.infoVisible, true)
 
     // Enemy Info
     this.enemyGroup = new SelectableGroup(this, "enemyGroup")
@@ -160,7 +159,7 @@ export default class TDPlayScene extends Scene {
     this.enemyGroup.select(new TDEnemy(this, 0, 0, ENEMY_LIST[0]))
     this.enemyGroup.infoVisible.value = false
     addReactNode(this, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
-      w + 5, 75, w - 350 - 25, 75, this.enemyGroup.infoVisible, true)
+      w + 5, 75, w - 350 - 20, 75, this.enemyGroup.infoVisible, true)
 
     // Clear selections when clicked outside info panel
     this.input.on(Input.Events.POINTER_DOWN, ({ x, y }: Input.Pointer) => {

@@ -107,7 +107,7 @@ const slideBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, x
         x: x2,
         y: y2,
         ease: 'Linear',
-        duration: 500,
+        duration: 400,
         onComplete
       })
     }
@@ -119,7 +119,7 @@ const slideBuilder = (element: GameObjects.DOMElement, x1: number, y1: number, x
         x: x1,
         y: y1,
         ease: 'Linear',
-        duration: 500,
+        duration: 400,
         onComplete
       })
     }
