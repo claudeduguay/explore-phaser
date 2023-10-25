@@ -7,7 +7,6 @@ import generateMap from "./map/TDLevel"
 import Point from "../../../util/geom/Point"
 import SelectableGroup from "./SelectableGroup"
 import ITowerModel, { TOWER_LIST } from "../entity/model/ITowerModel"
-import PointCollider, { PointColliders } from "../../../util/PointCollider"
 import TowerInfo from "./react/TowerInfo"
 import registerTowerTextures from "../assets/TowerTextures"
 import ObservableValue from "../value/ObservableValue"
@@ -18,6 +17,7 @@ import TDEnemy from "../entity/enemy/TDEnemy"
 import { onEnemyInRange, onEnemyOverlap } from "../entity/tower/Targeting"
 import TowerSelector from "./TowerSelector"
 import TDHUDScene from "./TDHUDScene"
+import { TDTileMap } from "./map/TDTileMap"
 // import Conversation from "../gui/Conversation"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
@@ -30,12 +30,12 @@ export default class TDPlayScene extends Scene {
 
   health = new ObservableValue(100)
   credits = new ObservableValue(0)
-  hud!: TDHUDScene
-  selectors: TowerSelector[] = []
   towerGroup!: SelectableGroup<TDTower>
   enemyGroup!: SelectableGroup<TDEnemy>
+  selectors: TowerSelector[] = []
+  hud!: TDHUDScene
+  map!: TDTileMap
   pathPoints!: Point[]
-  towerColliders = new PointColliders()
   addingTower?: TDTower
 
   mapOrigin = new Point(0, 0)
@@ -86,7 +86,7 @@ export default class TDPlayScene extends Scene {
     const NORTH = new Point(0, -64)
     const SOUTH = new Point(0, 64)
     const inRange = ({ x, y }: Point) => x > 0 && x < w - 64 * 2 && y > 64 && y < h - 64 * 2
-    const pointSet = new Set<string>(this.pathPoints.map(p => p.toKey()))
+    const pointSet = new Set<string>(pathPoints.map(p => p.toKey()))
     const towerSet = new Set<string>()
     const positions: Point[] = []
     for (let point of pathPoints) {
@@ -133,6 +133,7 @@ export default class TDPlayScene extends Scene {
       const model = Utils.Array.GetRandom(TOWER_LIST)
       const tower = this.add.tower(pos.x, pos.y, model)
       this.towerGroup.add(tower)
+      this.map.addTowerMarkAt(pos)
     }
   }
 
@@ -223,26 +224,12 @@ export default class TDPlayScene extends Scene {
     // ADD TOWER MECHANICS
     // ------------------------------------------------------------------
 
-    const collectTowerPoints = (adding: TDTower) => {
-      const towerPoints: Point[] = []
-      this.towerGroup.children.each((grouped: any) => {
-        if (grouped instanceof TDTower && grouped !== adding) {
-          towerPoints.push(new Point(grouped.x, grouped.y))
-        }
-        return null
-      })
-      return towerPoints
-    }
-
     let onAddTower = (model: ITowerModel) => {
       this.addingTower = this.add.tower(this.input.x, this.input.y, model)
       if (this.addingTower) {
         this.addingTower.preview = true
         this.addingTower.showRange.visible = true
         this.towerGroup.select(undefined)
-        const towerPoints = collectTowerPoints(this.addingTower)
-        this.towerColliders.push(new PointCollider(towerPoints))
-        this.towerColliders.push(new PointCollider(this.pathPoints))
       }
     }
 
@@ -275,10 +262,12 @@ export default class TDPlayScene extends Scene {
 
 
   createMap() {
-    this.pathPoints = generateMap(this, this.hud,
+    const { map, points } = generateMap(this, this.hud,
       this.health, this.credits,
       this.enemyGroup, this.mapOrigin)
     const showSpriteSheet = false
+    this.map = map
+    this.pathPoints = points
     if (showSpriteSheet) {
       const g = this.add.graphics()
       const margin = 10
@@ -292,16 +281,17 @@ export default class TDPlayScene extends Scene {
 
   update(time: number, delta: number): void {
     if (this.addingTower) {
+      const x = PMath.Snap.Floor(this.input.x - this.mapOrigin.x, 64) + 32 + this.mapOrigin.x
+      const y = PMath.Snap.Floor(this.input.y - this.mapOrigin.y, 64) + 32 + this.mapOrigin.y
+      const pos = new Point(x, y)
       if (!this.input.mousePointer.isDown) {
         this.input.setDefaultCursor("none")
-        const x = PMath.Snap.Floor(this.input.x - this.mapOrigin.x, 64) + 32 + this.mapOrigin.x
-        const y = PMath.Snap.Floor(this.input.y - this.mapOrigin.y, 64) + 32 + this.mapOrigin.y
 
         // Highlight invalid positions
-        if (!this.towerColliders.collision(new Point(x, y))) {
-          this.addingTower.platform.clearTint()
-        } else {
+        if (this.map.checkCollision(pos)) {
           this.addingTower.platform.setTint(0xff0000)
+        } else {
+          this.addingTower.platform.clearTint()
         }
         this.addingTower.setPosition(x, y)
       } else {
@@ -313,6 +303,7 @@ export default class TDPlayScene extends Scene {
           }
         } else {
           this.towerGroup.add(this.addingTower)
+          this.map.addTowerMarkAt(pos)
           this.addingTower.preview = false
           if (this.sound.get("plop")) {
             this.sound.play("plop")
