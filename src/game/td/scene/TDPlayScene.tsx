@@ -141,7 +141,7 @@ export default class TDPlayScene extends Scene {
 
   create() {
 
-    // INIT HUD SCENE
+    // INIT HUD SCENE (Note: WE WANT TO ENCAPSULATE CHILDREN AND MOVE THEM INTO THIS SCENE)
     this.hud = new TDHUDScene(this.main)
     this.scene.add("hud", this.hud)
     this.scene.launch("hud")
