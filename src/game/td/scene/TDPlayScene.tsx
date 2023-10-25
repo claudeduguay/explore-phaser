@@ -22,8 +22,9 @@ import { onEnemyInRange, onEnemyOverlap } from "../entity/tower/Targeting"
 import TreePreview from "../tree/TreePreview"
 import GUIPreview from "../gui/GUIPreview"
 import TowerSelector from "./TowerSelector"
-import { HBoxLayout } from "../gui/layout/ILayout"
 import ValueMonitor from "../gui/game/ValueMonitor"
+import SpeedBar from "../gui/game/SpeedBar"
+import ButtonBar from "../gui/game/ButtonBar"
 // import Conversation from "../gui/Conversation"
 // import { addMaterialIcon } from "../../../util/TextUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
@@ -332,20 +333,9 @@ export default class TDPlayScene extends Scene {
     this.add.existing(new ValueMonitor(this, 10, 5, 0xe87d, "red", this.active.health))
     this.add.existing(new ValueMonitor(this, 120, 5, 0xe227, "green", this.active.credits))
 
-    // Icon button strip test
-    const makeButtonGroup = (x: number, y: number, icons: number[]) => {
-      const buttonGroup = this.add.container(x, y)
-      const ICON_STYLE = { color: "white", fontSize: 22, fontStyle: "normal", padding: { x: 2, y: 2 } }
-      icons.forEach(icon => {
-        const button = this.add.button(0, 2, 20, 20, "", "flat")
-        button.add(this.add.icon(0, 4, icon, ICON_STYLE).setOrigin(0.5))
-        buttonGroup.add(button)
-      })
-      const hBoxLayout = new HBoxLayout()
-      hBoxLayout.apply(buttonGroup)
-    }
-    makeButtonGroup(765, 50, [0xe037, 0xe408, 0xe034, 0xe409])
-    makeButtonGroup(900, 50, [0xe88a, 0xe813, 0xe811, 0xe8e8, 0xea4b, 0xef4c])
+    // Button bars
+    this.add.existing(new SpeedBar(this, 765, 50))
+    this.add.existing(new ButtonBar(this, 900, 50))
   }
 
 

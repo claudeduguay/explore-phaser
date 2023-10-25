@@ -41,6 +41,12 @@ export default class Button extends GameObjects.Container {
     }
   }
 
+  setLabelText(text: string) {
+    if (this.label) {
+      this.label.setText(text)
+    }
+  }
+
   onButtonPress = () => {
     this.background.setTexture(makeKey(this.stylePrefix, "button-pressed"))
     this.setLabelColor("#33FF33")

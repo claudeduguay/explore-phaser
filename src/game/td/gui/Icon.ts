@@ -17,6 +17,10 @@ export class Icon extends GameObjects.Text {
     })
     this.setOrigin(0)
   }
+
+  setIcon(code: string | number) {
+    this.setText(typeof code === "number" ? String.fromCharCode(code) : code)
+  }
 }
 
 export function registerIconFactory() {
