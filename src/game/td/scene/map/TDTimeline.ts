@@ -2,8 +2,9 @@ import { Curves, GameObjects, Scene, Time } from "phaser"
 import Point from "../../../../util/geom/Point"
 import TDEnemy from "../../entity/enemy/TDEnemy"
 import { ENEMY_INDEX } from "../../entity/model/IEnemyModel"
-import TDPlayScene, { IActiveValues } from "../TDPlayScene"
+import TDPlayScene from "../TDPlayScene"
 import { defaultWaveModel, IWaveGroup } from "./IWaveModel"
+import ObservableValue from "../../value/ObservableValue"
 
 // Create a graphics background and a line-based curve for the preview path
 export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction: number, suffixFraction: number) {
@@ -29,7 +30,9 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction:
 }
 
 // Add an enemy to the main path (add/remove in group)
-export function addMainPathFollower(key: string, scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, duration: number, delay: number) {
+export function addMainPathFollower(key: string, scene: Scene,
+  health: ObservableValue<number>, credits: ObservableValue<number>,
+  enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, duration: number, delay: number) {
   let wasDestroyed = false // onComplete triggers even if destroyed, track status
   const model = ENEMY_INDEX[key]
   const enemy = scene.add.enemy(0, 0, model, path, true)
@@ -39,7 +42,7 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
     enemy.destroy()
     enemyGroup.remove(enemy)
     if (model) {
-      active.credits.value += (model.stats.value || 0)
+      credits.value += (model.stats.value || 0)
       TDPlayScene.createExplosionSprite(scene, x, y)
       if (scene.sound.get("cash")) {
         scene.sound.play("cash")
@@ -66,8 +69,8 @@ export function addMainPathFollower(key: string, scene: Scene, active: IActiveVa
       if (!wasDestroyed) {
         enemy.destroy()
         enemyGroup.remove(enemy)
-        if (active.health.value > 1) {
-          active.health.value -= 1
+        if (health.value > 1) {
+          health.value -= 1
         } else {
           if (scene.sound.get("woe")) {
             scene.sound.play("woe")
@@ -110,7 +113,9 @@ export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path,
   })
 }
 
-export function makeTimeline(scene: Scene, hud: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, mainPath: Curves.Path, offset: number = 0) {
+export function makeTimeline(scene: Scene, hud: Scene,
+  health: ObservableValue<number>, credits: ObservableValue<number>,
+  enemyGroup: GameObjects.Group, origin: Point, mainPath: Curves.Path, offset: number = 0) {
   enemyGroup.clear()
   const prefixFraction = 0.15
   const suffixFraction = 0.15
@@ -126,7 +131,7 @@ export function makeTimeline(scene: Scene, hud: Scene, active: IActiveValues, en
   const timeline = scene.add.timeline({})
   // Build parameterized run timeline entries for both paths
   const run = (key: string, isLast: boolean = false) => () => {
-    const twin = addMainPathFollower(key, scene, active, enemyGroup, origin, mainPath, mainDuration, mainDelay)
+    const twin = addMainPathFollower(key, scene, health, credits, enemyGroup, origin, mainPath, mainDuration, mainDelay)
     addPreviewFollower(key, hud, previewPath, timeline, previewDuration, isLast, twin)
   }
 

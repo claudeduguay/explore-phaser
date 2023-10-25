@@ -3,10 +3,11 @@ import Point from "../../../../util/geom/Point";
 import makeTileMap, { DEFAULT_CONFIG, IMapConfig } from "./TDTileMap";
 import { generatePath, renderPath } from "./TDPath";
 import { makeTimeline } from "./TDTimeline";
-import { IActiveValues } from "../TDPlayScene";
 import { asPathModel } from "./IPathModel";
+import ObservableValue from "../../value/ObservableValue";
 
-export default function generateMap(scene: Scene, hud: Scene, active: IActiveValues,
+export default function generateMap(scene: Scene, hud: Scene,
+  health: ObservableValue<number>, credits: ObservableValue<number>,
   enemyGroup: GameObjects.Group, mapOrigin: Point,
   prunePath: boolean = true, showMaze: boolean = true) {
 
@@ -20,6 +21,6 @@ export default function generateMap(scene: Scene, hud: Scene, active: IActiveVal
   }
   const { curve, points } = renderPath(scene, model, mapOrigin, config.cellSize)
 
-  makeTimeline(scene, hud, active, enemyGroup, mapOrigin, curve, 0)
+  makeTimeline(scene, hud, health, credits, enemyGroup, mapOrigin, curve, 0)
   return points
 }

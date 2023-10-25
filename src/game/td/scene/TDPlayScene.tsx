@@ -7,7 +7,6 @@ import generateMap from "./map/TDLevel"
 import Point from "../../../util/geom/Point"
 import SelectableGroup from "./SelectableGroup"
 import ITowerModel, { TOWER_LIST } from "../entity/model/ITowerModel"
-import TowerPreview from "../entity/tower/TowerPreview"
 import PointCollider, { PointColliders } from "../../../util/PointCollider"
 import TowerInfo from "./react/TowerInfo"
 import registerTowerTextures from "../assets/TowerTextures"
@@ -18,15 +17,9 @@ import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../entity/enemy/TDEnemy"
 import { ENEMY_LIST } from "../entity/model/IEnemyModel"
 import { onEnemyInRange, onEnemyOverlap } from "../entity/tower/Targeting"
-import TreePreview from "../tree/TreePreview"
-import GUIPreview from "../gui/GUIPreview"
 import TowerSelector from "./TowerSelector"
-import ValueMonitor from "../gui/game/ValueMonitor"
-import SpeedBar from "../gui/game/SpeedBar"
-import ButtonBar from "../gui/game/ButtonBar"
 import TDHUDScene from "./TDHUDScene"
 // import Conversation from "../gui/Conversation"
-// import { addMaterialIcon } from "../../../util/TextUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -36,10 +29,8 @@ export interface IActiveValues {
 
 export default class TDPlayScene extends Scene {
 
-  active: IActiveValues = {
-    health: new ObservableValue(100),
-    credits: new ObservableValue(0)
-  }
+  health = new ObservableValue(100)
+  credits = new ObservableValue(0)
   hud!: TDHUDScene
   selectors: TowerSelector[] = []
   towerGroup!: SelectableGroup<TDTower>
@@ -47,9 +38,6 @@ export default class TDPlayScene extends Scene {
   pathPoints!: Point[]
   towerColliders = new PointColliders()
   addingTower?: TDTower
-  towerPreview!: TowerPreview
-  treePreview!: TreePreview
-  guiPreview!: GUIPreview
 
   mapOrigin = new Point(0, 0)
 
@@ -92,7 +80,7 @@ export default class TDPlayScene extends Scene {
     })
   }
 
-  generatePathAdjacentPositions(): Point[] {
+  generatePathAdjacentPositions(pathPoints: Point[]): Point[] {
     const { w, h } = sceneSize(this)
     const WEST = new Point(-64, 0)
     const EAST = new Point(64, 0)
@@ -102,7 +90,7 @@ export default class TDPlayScene extends Scene {
     const pointSet = new Set<string>(this.pathPoints.map(p => p.toKey()))
     const towerSet = new Set<string>()
     const positions: Point[] = []
-    for (let point of this.pathPoints) {
+    for (let point of pathPoints) {
       // Include only odd positions
       if (Math.floor(point.x / 64) % 2 === 0 && Math.floor(point.y / 64) % 2 === 0) {
         const west = point.plus(WEST)
@@ -139,10 +127,20 @@ export default class TDPlayScene extends Scene {
     return positions
   }
 
+  generateTowers(count: number = 5) {
+    const validTowerPositions: Point[] = this.generatePathAdjacentPositions(this.pathPoints)
+    for (let i = 0; i < count; i++) {
+      let pos: Point = validTowerPositions[i % (validTowerPositions.length - 1)]
+      const model = Utils.Array.GetRandom(TOWER_LIST)
+      const tower = this.add.tower(pos.x, pos.y, model)
+      this.towerGroup.add(tower)
+    }
+  }
+
   create() {
 
     // INIT HUD SCENE (Note: WE WANT TO ENCAPSULATE CHILDREN AND MOVE THEM INTO THIS SCENE)
-    this.hud = new TDHUDScene(this.main)
+    this.hud = new TDHUDScene(this.main, this.health, this.credits)
     this.scene.add("hud", this.hud)
     this.scene.launch("hud")
 
@@ -212,34 +210,19 @@ export default class TDPlayScene extends Scene {
     })
 
     this.createMap() // Call this before selecting enemy
+    this.generateTowers(5)
 
-    const towerCount = 5
-    const towers: TDTower[] = []
-
-    const towerPositions: Point[] = this.generatePathAdjacentPositions()
-    const generateTower = (i: number) => {
-      let pos: Point = towerPositions[i % (towerPositions.length - 1)]
-      const model = Utils.Array.GetRandom(TOWER_LIST)
-      return this.add.tower(pos.x, pos.y, model)
-    }
-    for (let i = 0; i < towerCount; i++) {
-      const tower = generateTower(i)
-      towers.push(tower)
-      this.towerGroup.add(tower)
-    }
-
+    // Detect Collisions between tower and enemy group members
     this.physics.add.overlap(this.towerGroup, this.enemyGroup, onEnemyOverlap, onEnemyInRange)
-
-    // Preview NineSlice
-    // this.add.sprite(50, 590, "nine_slice").setOrigin(0)
 
     // const fireRange = 220
     // this.add.particles(10, 765, 'fire', fireEmitter(fireRange))
     // this.add.rectangle(10, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
     // this.add.particles(950, 795, 'smoke', cloudEmitter())
 
+
     // ------------------------------------------------------------------
-    // START ADD TOWER MECHANICS
+    // ADD TOWER MECHANICS
     // ------------------------------------------------------------------
 
     const collectTowerPoints = (adding: TDTower) => {
@@ -253,7 +236,7 @@ export default class TDPlayScene extends Scene {
       return towerPoints
     }
 
-    const onAddTower = (model: ITowerModel) => {
+    let onAddTower = (model: ITowerModel) => {
       this.addingTower = this.add.tower(this.input.x, this.input.y, model)
       if (this.addingTower) {
         this.addingTower.preview = true
@@ -265,6 +248,7 @@ export default class TDPlayScene extends Scene {
       }
     }
 
+    // Need to capture onAddTower in play scene
     this.selectors = [
       new TowerSelector(this, 0, 100, "eject", onAddTower),
       new TowerSelector(this, 0, 200, "beam", onAddTower),
@@ -273,74 +257,7 @@ export default class TDPlayScene extends Scene {
       new TowerSelector(this, 0, 500, "gravity", onAddTower),
       new TowerSelector(this, 0, 600, "area", onAddTower)
     ]
-    for (let selector of this.selectors) {
-      selector.group = this.selectors
-      this.hud.add.existing(selector)
-    }
-
-
-    // ------------------------------------------------------------------
-    // TOWER SCENE PREVIEW
-    // ------------------------------------------------------------------
-
-    const onToggleTowerPreview = () => {
-      if (this.scene.isActive("tower_preview")) {
-        this.scene.sleep("tower_preview")
-      } else {
-        this.scene.wake("tower_preview")
-      }
-    }
-    this.towerPreview = new TowerPreview(this, 50, 58)
-    this.scene.add("tower_preview", this.towerPreview, true)
-    this.scene.sleep("tower_preview")
-
-
-    // ------------------------------------------------------------------
-    // TREE SCENE PREVIEW
-    // ------------------------------------------------------------------
-
-    const onToggleTreePreview = () => {
-      if (this.scene.isActive("tree_preview")) {
-        this.scene.sleep("tree_preview")
-      } else {
-        this.scene.wake("tree_preview")
-      }
-    }
-    this.treePreview = new TreePreview(this, 50, 50)
-    this.scene.add("tree_preview", this.treePreview, true)
-    this.scene.sleep("tree_preview")
-
-
-    // ------------------------------------------------------------------
-    // GUI COMPONENT PREVIEW
-    // ------------------------------------------------------------------
-
-    const onToggleGUIPreview = () => {
-      if (this.scene.isActive("gui_preview")) {
-        this.scene.sleep("gui_preview")
-      } else {
-        this.scene.wake("gui_preview")
-      }
-    }
-    this.guiPreview = new GUIPreview(this, 50, 50)
-    this.scene.add("gui_preview", this.guiPreview, true)
-    this.scene.sleep("gui_preview")
-
-
-    // ------------------------------------------------------------------
-    // HUD
-    // ------------------------------------------------------------------
-
-    // Value monitors (left)
-    this.hud.add.existing(new ValueMonitor(this, 10, 5, 0xe87d, "red", this.active.health))
-    this.hud.add.existing(new ValueMonitor(this, 120, 5, 0xe227, "green", this.active.credits))
-    // Button bars (right)
-    this.hud.add.existing(new SpeedBar(this, 960, 12))
-    const buttonBar = new ButtonBar(this, 760, 12)
-    buttonBar.access.towers.onClick = onToggleTowerPreview
-    buttonBar.access.tree.onClick = onToggleTreePreview
-    buttonBar.access.gui.onClick = onToggleGUIPreview
-    this.hud.add.existing(buttonBar)
+    this.hud.addSelectors(this.selectors)
 
 
     // ------------------------------------------------------------------
@@ -360,7 +277,9 @@ export default class TDPlayScene extends Scene {
 
 
   createMap() {
-    this.pathPoints = generateMap(this, this.hud, this.active, this.enemyGroup, this.mapOrigin)
+    this.pathPoints = generateMap(this, this.hud,
+      this.health, this.credits,
+      this.enemyGroup, this.mapOrigin)
     const showSpriteSheet = false
     if (showSpriteSheet) {
       const g = this.add.graphics()
