@@ -110,11 +110,11 @@ export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path,
   })
 }
 
-export function makeTimeline(scene: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, mainPath: Curves.Path, offset: number = 0) {
+export function makeTimeline(scene: Scene, hud: Scene, active: IActiveValues, enemyGroup: GameObjects.Group, origin: Point, mainPath: Curves.Path, offset: number = 0) {
   enemyGroup.clear()
   const prefixFraction = 0.15
   const suffixFraction = 0.15
-  const previewPath = makeTimelinePreviewGraphicsAndPath(scene, prefixFraction, suffixFraction)
+  const previewPath = makeTimelinePreviewGraphicsAndPath(hud, prefixFraction, suffixFraction)
 
   const ONE_SECOND = 1000
   const mainPathLength = mainPath.getLength()
@@ -127,7 +127,7 @@ export function makeTimeline(scene: Scene, active: IActiveValues, enemyGroup: Ga
   // Build parameterized run timeline entries for both paths
   const run = (key: string, isLast: boolean = false) => () => {
     const twin = addMainPathFollower(key, scene, active, enemyGroup, origin, mainPath, mainDuration, mainDelay)
-    addPreviewFollower(key, scene, previewPath, timeline, previewDuration, isLast, twin)
+    addPreviewFollower(key, hud, previewPath, timeline, previewDuration, isLast, twin)
   }
 
   const config: Phaser.Types.Time.TimelineEventConfig[] = []

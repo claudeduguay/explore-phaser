@@ -24,6 +24,7 @@ import TowerSelector from "./TowerSelector"
 import ValueMonitor from "../gui/game/ValueMonitor"
 import SpeedBar from "../gui/game/SpeedBar"
 import ButtonBar from "../gui/game/ButtonBar"
+import TDHUDScene from "./TDHUDScene"
 // import Conversation from "../gui/Conversation"
 // import { addMaterialIcon } from "../../../util/TextUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
@@ -39,6 +40,7 @@ export default class TDPlayScene extends Scene {
     health: new ObservableValue(100),
     credits: new ObservableValue(0)
   }
+  hud!: TDHUDScene
   selectors: TowerSelector[] = []
   towerGroup!: SelectableGroup<TDTower>
   enemyGroup!: SelectableGroup<TDEnemy>
@@ -138,6 +140,12 @@ export default class TDPlayScene extends Scene {
   }
 
   create() {
+
+    // INIT HUD SCENE
+    this.hud = new TDHUDScene(this.main)
+    this.scene.add("hud", this.hud)
+    this.scene.launch("hud")
+
     const { w, h } = sceneSize(this)
     this.lights.addLight(-w / 2, -h / 2, w * 2, 0xffffff, 1).setIntensity(2)
     // console.log("Added lights:", this.lights.lights)
@@ -160,6 +168,20 @@ export default class TDPlayScene extends Scene {
     this.enemyGroup.infoVisible.value = false
     addReactNode(this, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
       w + 5, 75, w - 350 - 20, 75, this.enemyGroup.infoVisible, true)
+
+    // ZOOM HANDLER
+    this.input.on(Input.Events.POINTER_WHEEL, (pointer: Input.Pointer, over: any, deltaX: number, deltaY: number, deltaZ: number) => {
+      if (deltaY < 0) {
+        console.log("Wheel Up")
+        const zoom = this.cameras.main.zoom
+        this.cameras.main.setZoom(Math.min(4, zoom * 2))
+      } else {
+        console.log("Wheel Down")
+        const zoom = this.cameras.main.zoom
+        this.cameras.main.setZoom(Math.max(0.25, zoom * 0.5))
+      }
+      // this.cameras.main.setZoom(0.5)
+    })
 
     // Clear selections when clicked outside info panel
     this.input.on(Input.Events.POINTER_DOWN, ({ x, y }: Input.Pointer) => {
@@ -255,7 +277,7 @@ export default class TDPlayScene extends Scene {
     ]
     for (let selector of this.selectors) {
       selector.group = this.selectors
-      this.add.existing(selector)
+      this.hud.add.existing(selector)
     }
 
 
@@ -306,13 +328,21 @@ export default class TDPlayScene extends Scene {
     this.scene.add("gui_preview", this.guiPreview, true)
     this.scene.sleep("gui_preview")
 
-    // addReactNode(this, <GameHeader scene={this} active={this.active} navigator={this.main}
-    //   onToggleTowerPreview={onToggleTowerPreview}
-    //   onToggleTreePreview={onToggleTreePreview}
-    //   onToggleGUIPreview={onToggleGUIPreview} />,
-    //   0, 0)
-    // addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />,
-    //   0, this.game.canvas.height - 56)
+
+    // ------------------------------------------------------------------
+    // HUD
+    // ------------------------------------------------------------------
+
+    // Value monitors (left)
+    this.hud.add.existing(new ValueMonitor(this, 10, 5, 0xe87d, "red", this.active.health))
+    this.hud.add.existing(new ValueMonitor(this, 120, 5, 0xe227, "green", this.active.credits))
+    // Button bars (right)
+    this.hud.add.existing(new SpeedBar(this, 960, 12))
+    const buttonBar = new ButtonBar(this, 760, 12)
+    buttonBar.access.towers.onClick = onToggleTowerPreview
+    buttonBar.access.tree.onClick = onToggleTreePreview
+    buttonBar.access.gui.onClick = onToggleGUIPreview
+    this.hud.add.existing(buttonBar)
 
 
     // ------------------------------------------------------------------
@@ -328,24 +358,11 @@ export default class TDPlayScene extends Scene {
     // const conversation = new Conversation(this, 200, 570, 700, 200)
     // this.add.existing(conversation)
 
-    // ADD HEADER ELEMENTS
-
-    // Icon label test
-    this.add.existing(new ValueMonitor(this, 10, 5, 0xe87d, "red", this.active.health))
-    this.add.existing(new ValueMonitor(this, 120, 5, 0xe227, "green", this.active.credits))
-
-    // Button bars
-    this.add.existing(new SpeedBar(this, 960, 12))
-    const buttonBar = new ButtonBar(this, 760, 12)
-    buttonBar.access.towers.onClick = onToggleTowerPreview
-    buttonBar.access.tree.onClick = onToggleTreePreview
-    buttonBar.access.gui.onClick = onToggleGUIPreview
-    this.add.existing(buttonBar)
   }
 
 
   createMap() {
-    this.pathPoints = generateMap(this, this.active, this.enemyGroup, this.mapOrigin)
+    this.pathPoints = generateMap(this, this.hud, this.active, this.enemyGroup, this.mapOrigin)
     const showSpriteSheet = false
     if (showSpriteSheet) {
       const g = this.add.graphics()

@@ -48,7 +48,10 @@ export default class TowerSelector extends GameObjects.Container {
       this.scene.add.tween({
         targets: this.bar,
         x: 0,
-        duration
+        duration,
+        onStart: () => {
+          this.bar.visible = true
+        }
       })
       this.scene.add.tween({
         targets: this.button,
@@ -60,7 +63,10 @@ export default class TowerSelector extends GameObjects.Container {
       this.scene.add.tween({
         targets: this.bar,
         x: this.button.getBounds().width - this.bar.getBounds().width,
-        duration
+        duration,
+        onComplete: () => {
+          this.bar.visible = false
+        }
       })
       this.scene.add.tween({
         targets: this.button,

@@ -9,6 +9,7 @@ export default class TowerSelectorBar extends GameObjects.Container {
   constructor(scene: Scene, x: number, y: number, selector: TowerSelector, public models: ITowerModel[], public onAddTower: (model: ITowerModel) => void) {
     super(scene, x, y)
     models.forEach((model, i) => this.addTowerButton(selector, model, 50 + i * 100, 0))
+    this.visible = false
   }
 
   addTowerButton(selector: TowerSelector, model: ITowerModel, x: number, y: number) {
