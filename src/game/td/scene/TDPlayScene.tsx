@@ -150,19 +150,18 @@ export default class TDPlayScene extends Scene {
 
     // Tower Info
     this.towerGroup = new SelectableGroup(this, "towerGroup")
-    const onCloseTowerInfo = () => this.towerGroup.infoVisible.value = false
     // @ts-ignore
     this.physics.add.existing(this.towerGroup)
+    const onCloseTowerInfo = () => this.towerGroup.infoVisible.value = false
     addReactNode(this, <TowerInfo scene={this} tower={this.towerGroup.selected} onClose={onCloseTowerInfo} />,
       -400, 75, 45, 75, this.towerGroup.infoVisible, true)
 
     // Enemy Info
     this.enemyGroup = new SelectableGroup(this, "enemyGroup")
-    const onCloseEnemyInfo = () => this.enemyGroup.infoVisible.value = false
     // @ts-ignore
     this.physics.add.existing(this.enemyGroup)
+    const onCloseEnemyInfo = () => this.enemyGroup.infoVisible.value = false
     // Enemies are created as the timeline moves, so we can't take the first entry of the group
-    this.enemyGroup.select(new TDEnemy(this, 0, 0, ENEMY_LIST[0]))
     this.enemyGroup.infoVisible.value = false
     addReactNode(this, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
       w + 5, 75, w - 350 - 20, 75, this.enemyGroup.infoVisible, true)
@@ -178,7 +177,7 @@ export default class TDPlayScene extends Scene {
       }
     })
 
-    // Clear selections when clicked outside info panel
+    // Clear selections when clicked outside info panel or tower selector
     this.input.on(Input.Events.POINTER_DOWN, ({ x, y }: Input.Pointer) => {
       this.towerGroup.select(undefined)
       this.enemyGroup.select(undefined)
@@ -209,7 +208,7 @@ export default class TDPlayScene extends Scene {
       }
     })
 
-    this.createMap() // Call this before selecting enemy
+    this.createMap()
     this.generateTowers(5)
 
     // Detect Collisions between tower and enemy group members
