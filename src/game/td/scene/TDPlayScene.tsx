@@ -172,15 +172,12 @@ export default class TDPlayScene extends Scene {
     // ZOOM HANDLER
     this.input.on(Input.Events.POINTER_WHEEL, (pointer: Input.Pointer, over: any, deltaX: number, deltaY: number, deltaZ: number) => {
       if (deltaY < 0) {
-        console.log("Wheel Up")
         const zoom = this.cameras.main.zoom
         this.cameras.main.setZoom(Math.min(4, zoom * 2))
       } else {
-        console.log("Wheel Down")
         const zoom = this.cameras.main.zoom
         this.cameras.main.setZoom(Math.max(0.25, zoom * 0.5))
       }
-      // this.cameras.main.setZoom(0.5)
     })
 
     // Clear selections when clicked outside info panel
