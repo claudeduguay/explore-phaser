@@ -329,6 +329,8 @@ export default class TDPlayScene extends Scene {
     // const conversation = new Conversation(this, 200, 570, 700, 200)
     // this.add.existing(conversation)
 
+    // ADD HEADER ELEMENTS
+
     // Icon label test
     this.add.existing(new ValueMonitor(this, 10, 5, 0xe87d, "red", this.active.health))
     this.add.existing(new ValueMonitor(this, 120, 5, 0xe227, "green", this.active.credits))

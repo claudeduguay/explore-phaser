@@ -21,23 +21,33 @@ const ICONS = [
   { name: "gui", icon: ICON_DIALOG }
 ]
 
-export function transitionTo(scene: Scene, target: string, sleep?: string): Scene {
-  // this.cameras.main.once("camerafadeoutcomplete", (camera: Cameras.Scene2D.Camera) => {
+export function transitionTo(mainScene: Scene, target: string, sleep?: string): Scene {
+  // const camera = mainScene.cameras.default
+  // console.log("Camera:", mainScene, camera)
+  // camera.once("camerafadeoutcomplete", (camera: Cameras.Scene2D.Camera) => {
   //   console.log("Faded out")
   // })
-  // this.cameras.main.fadeOut(1000, 0, 0, 0)
+  // camera.fadeOut(1000, 0, 0, 0)
   if (sleep) {
-    scene.scene.sleep(sleep)
+    // const sleepScene = mainScene.scene.get(sleep)
+    // console.log("Found sleep scene:", sleepScene)
+    // if (sleepScene) {
+    //   sleepScene.cameras.default.fadeOut(1000, 0, 0, 0)
+    //   sleepScene.cameras.default.once("camerafadeoutcomplete", (camera: Cameras.Scene2D.Camera) => {
+    //     console.log("Faded out")
+    //   })
+    // }
+    mainScene.scene.sleep(sleep)
   }
-  scene.scene.transition({
+  mainScene.scene.transition({
     target,
-    duration: 1000
+    duration: 0
   })
   // if (this.cameras.main) {
   //   this.cameras.main.fadeIn(1000)
   // }
   // console.log(`Transition to ${target}`)
-  return scene
+  return mainScene
 }
 
 
