@@ -54,11 +54,10 @@ export class TDTileMap extends BehaviorContainer {
       throw new Error("Failed to create landscape tileset")
     }
 
-    const tileMaps = [pathTiles, landTiles]
-
     // Assigning all tilemaps to each layer is a workaround for bug: 6353
     // See: https://github.com/photonstorm/phaser/issues/6353
     // Workaround: https://github.com/photonstorm/phaser/issues/5931
+    const tileMaps = [pathTiles, landTiles]
 
     const landLayer = map.createBlankLayer('Land Layer', tileMaps, x, y)
     if (!landLayer) {
@@ -74,6 +73,9 @@ export class TDTileMap extends BehaviorContainer {
     this.pathLayer = pathLayer
     this.add(pathLayer)
 
+    // The Mark Layer is used to identify occupied tower cells for collision-detection
+    // All added towers now set the corresponding tile to 0 
+    // (-1 is unassigned and 0 is a blank tile from pathTiles)
     const markLayer = map.createBlankLayer('Mark Layer', tileMaps, x, y)
     if (!markLayer) {
       throw new Error("Failed to create mark layer")
