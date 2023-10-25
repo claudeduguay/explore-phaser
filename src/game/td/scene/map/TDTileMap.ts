@@ -114,7 +114,10 @@ export class TDTileMap extends GameObjects.Container {
   getPathPoints(path: IPathModel) {
     return path.map(cell => {
       const pos = this.map.tileToWorldXY(cell.pos.x, cell.pos.y)
-      return new Point(pos?.x, pos?.y)
+      if (pos) {
+        return new Point(pos.x, pos.y)
+      }
+      return new Point()
     })
   }
 
