@@ -193,20 +193,21 @@ export default class TDPlayScene extends Scene {
         }
       })
     })
+    const closeAllSelectors = () => {
+      this.selectors.forEach(selector => {
+        selector.isOpen = false
+      })
+    }
     // Close selectors if TowerInfo is opened
     this.towerGroup.infoVisible.addListener("changed", (value: boolean) => {
       if (value) {
-        this.selectors.forEach(selector => {
-          selector.isOpen = false
-        })
+        closeAllSelectors()
       }
     })
     // Close selectors if EnemyInfo is opened
     this.enemyGroup.infoVisible.addListener("changed", (value: boolean) => {
       if (value) {
-        this.selectors.forEach(selector => {
-          selector.isOpen = false
-        })
+        closeAllSelectors()
       }
     })
 
