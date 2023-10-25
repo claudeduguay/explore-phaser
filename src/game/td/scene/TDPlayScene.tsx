@@ -53,7 +53,7 @@ export default class TDPlayScene extends Scene {
   mapOrigin = new Point(0, 0)
 
 
-  constructor(public readonly parent: TDGameScene) {
+  constructor(public readonly main: TDGameScene) {
     super({ key: "play" })
   }
 
@@ -307,11 +307,11 @@ export default class TDPlayScene extends Scene {
     this.scene.add("gui_preview", this.guiPreview, true)
     this.scene.sleep("gui_preview")
 
-    addReactNode(this, <GameHeader scene={this} active={this.active} navigator={this.parent}
-      onToggleTowerPreview={onToggleTowerPreview}
-      onToggleTreePreview={onToggleTreePreview}
-      onToggleGUIPreview={onToggleGUIPreview} />,
-      0, 0)
+    // addReactNode(this, <GameHeader scene={this} active={this.active} navigator={this.main}
+    //   onToggleTowerPreview={onToggleTowerPreview}
+    //   onToggleTreePreview={onToggleTreePreview}
+    //   onToggleGUIPreview={onToggleGUIPreview} />,
+    //   0, 0)
     // addReactNode(this, <GameFooter scene={this} onAddTower={onAddTower} />,
     //   0, this.game.canvas.height - 56)
 
@@ -334,8 +334,12 @@ export default class TDPlayScene extends Scene {
     this.add.existing(new ValueMonitor(this, 120, 5, 0xe227, "green", this.active.credits))
 
     // Button bars
-    this.add.existing(new SpeedBar(this, 765, 50))
-    this.add.existing(new ButtonBar(this, 900, 50))
+    this.add.existing(new SpeedBar(this, 960, 12))
+    const buttonBar = new ButtonBar(this, 760, 12)
+    buttonBar.access.towers.onClick = onToggleTowerPreview
+    buttonBar.access.tree.onClick = onToggleTreePreview
+    buttonBar.access.gui.onClick = onToggleGUIPreview
+    this.add.existing(buttonBar)
   }
 
 
