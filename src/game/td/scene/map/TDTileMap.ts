@@ -1,7 +1,6 @@
-import { Scene, Tilemaps } from "phaser"
+import { GameObjects, Scene, Tilemaps } from "phaser"
 import Point, { IPointLike } from "../../../../util/geom/Point";
 import IPathModel from "./IPathModel";
-import BehaviorContainer from "../../behavior/core/BehaviorContainer";
 import { lerpInt } from "../../../../util/MathUtil";
 
 export interface IMapConfig {
@@ -24,7 +23,7 @@ export default function makeTileMap(scene: Scene, x: number, y: number, model: I
 }
 
 
-export class TDTileMap extends BehaviorContainer {
+export class TDTileMap extends GameObjects.Container {
 
   map!: Tilemaps.Tilemap
   landLayer!: Tilemaps.TilemapLayer
@@ -85,12 +84,15 @@ export class TDTileMap extends BehaviorContainer {
   }
 
   setModel(path: IPathModel) {
-    // This is non-deterministic and so would each time we call setModel?
+    this.landLayer.fill(-1)
     this.landLayer.forEachTile(
+      // This is non-deterministic and so would change each time we call setModel?
       (tile, i) => tile.index = lerpInt(16, 20, Math.random()))
+    this.pathLayer.fill(-1)
     path.forEach(cell => {
       this.pathLayer.putTileAt(cell.bits, cell.pos.x, cell.pos.y + 1)
     })
+    this.markLayer.fill(-1)
   }
 
   addTowerMarkAt(pos: IPointLike) {
@@ -108,4 +110,12 @@ export class TDTileMap extends BehaviorContainer {
     }
     return false
   }
+
+  getPathPoints(path: IPathModel) {
+    return path.map(cell => {
+      const pos = this.map.tileToWorldXY(cell.pos.x, cell.pos.y)
+      return new Point(pos?.x, pos?.y)
+    })
+  }
+
 }
