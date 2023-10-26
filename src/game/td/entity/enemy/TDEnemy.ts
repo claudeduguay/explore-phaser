@@ -25,7 +25,7 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     super(scene, path, x, y, model.key)
     this.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
     this.anims.create({
-      key: 'east',
+      key: 'east', frameRate: 20, repeat: -1,
       frames: this.anims.generateFrameNumbers(model.key, { start: 0, end: 15 }),
     })
     this.anims.create({

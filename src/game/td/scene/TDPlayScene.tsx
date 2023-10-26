@@ -87,7 +87,7 @@ export default class TDPlayScene extends Scene {
     this.scene.launch("hud")
 
     const { w, h } = sceneSize(this)
-    this.lights.addLight(-w / 2, -h / 2, w * 2, 0xffffff, 1).setIntensity(2)
+    // this.lights.addPointLight(-w / 2, -h / 2, 0xffffff, Math.max(w, h) * 2, 2, 0.01)
     // console.log("Added lights:", this.lights.lights)
 
     // Tower Info
@@ -108,7 +108,7 @@ export default class TDPlayScene extends Scene {
     addReactNode(this, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
       w + 5, 75, w - 350 - 20, 75, this.enemyGroup.infoVisible, true)
 
-    // ZOOM HANDLER
+    // >>> ZOOM HANDLER <<<
     this.input.on(Input.Events.POINTER_WHEEL, (pointer: Input.Pointer, over: any, deltaX: number, deltaY: number, deltaZ: number) => {
       if (deltaY < 0) {
         const zoom = this.cameras.main.zoom
@@ -123,8 +123,6 @@ export default class TDPlayScene extends Scene {
     this.input.on(Input.Events.POINTER_DOWN, ({ x, y }: Input.Pointer) => {
       this.towerGroup.select(undefined)
       this.enemyGroup.select(undefined)
-      this.towerGroup.infoVisible.value = false
-      this.enemyGroup.infoVisible.value = false
       this.selectors.forEach(selector => {
         // Close selectors if not inside one
         if (!Geom.Rectangle.Contains(selector.getBounds(), x, y)) {
@@ -132,21 +130,22 @@ export default class TDPlayScene extends Scene {
         }
       })
     })
-    const closeAllSelectors = () => {
-      this.selectors.forEach(selector => {
-        selector.isOpen = false
-      })
-    }
-    // Close selectors if TowerInfo is opened
+    // Close selectors and EnemyInfo if TowerInfo is opened
     this.towerGroup.infoVisible.addListener("changed", (value: boolean) => {
       if (value) {
-        closeAllSelectors()
+        this.enemyGroup.select(undefined)
+        this.selectors.forEach(selector => {
+          selector.isOpen = false
+        })
       }
     })
-    // Close selectors if EnemyInfo is opened
+    // Close selectors and TowerInfo if EnemyInfo is opened
     this.enemyGroup.infoVisible.addListener("changed", (value: boolean) => {
       if (value) {
-        closeAllSelectors()
+        this.towerGroup.select(undefined)
+        this.selectors.forEach(selector => {
+          selector.isOpen = false
+        })
       }
     })
 
@@ -154,11 +153,6 @@ export default class TDPlayScene extends Scene {
 
     // Detect Collisions between tower and enemy group members
     this.physics.add.overlap(this.towerGroup, this.enemyGroup, onEnemyOverlap, onEnemyInRange)
-
-    // const fireRange = 220
-    // this.add.particles(10, 765, 'fire', fireEmitter(fireRange))
-    // this.add.rectangle(10, 795, fireRange, 2, 0xFFFFFF).setOrigin(0, 0)
-    // this.add.particles(950, 795, 'smoke', cloudEmitter())
 
 
     // ------------------------------------------------------------------
