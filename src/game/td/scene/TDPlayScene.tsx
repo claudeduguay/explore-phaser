@@ -174,8 +174,8 @@ export default class TDPlayScene extends Scene {
       new TowerSelector(this, 0, 200, "beam", onAddTower),
       new TowerSelector(this, 0, 300, "spray", onAddTower),
       new TowerSelector(this, 0, 400, "cloud", onAddTower),
-      new TowerSelector(this, 0, 500, "gravity", onAddTower),
-      new TowerSelector(this, 0, 600, "explode", onAddTower),
+      new TowerSelector(this, 0, 500, "vertical", onAddTower),
+      new TowerSelector(this, 0, 600, "expand", onAddTower),
       new TowerSelector(this, 0, 700, "area", onAddTower)
     ]
     this.hud.addSelectors(this.selectors)

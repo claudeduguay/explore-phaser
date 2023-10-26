@@ -34,8 +34,9 @@ export const COLORS: { [key: string]: IColoring } = {
   RAIN: colors(0.55),
   SNOW: colors(0, 0, 0.35),
   STUN: colors(0.45),
-  // EXPLODE
+  // Expand
   SPIKE: colors(0.1),
+  ROCK: colors(0.8),
   // Beam
   LAZER: colors(0.6),
   PLASMA: colors(0.65),
@@ -61,8 +62,8 @@ interface ITypeAndCorners {
 const PLATFORM: Record<string, ITypeAndCorners> = {
   SPRAY: { type: "box", corners: corners("angle") },
   CLOUD: { type: "box", corners: corners("curve-o") },
-  GRAV: { type: "ntagon", corners: corners("angle") },
-  EXPLODE: { type: "ntagon", corners: corners("angle") },
+  VERTICAL: { type: "ntagon", corners: corners("angle") },
+  EXPAND: { type: "ntagon", corners: corners("angle") },
   BEAM: { type: "box", corners: corners("curve-i") },
   THROW: { type: "box", corners: corners("curve-i") },
   AREA: { type: "box", corners: corners("box-o") }
@@ -228,26 +229,31 @@ const TOWERS: Record<string, ITextureConfigs> = {
 
   // FALL
   RAIN: {
-    platform: platformConfig(PLATFORM.GRAV, COLORS.RAIN),
+    platform: platformConfig(PLATFORM.VERTICAL, COLORS.RAIN),
     turret: roundTurret(COLORS.RAIN),
     weapon: pointInsideWeapon(COLORS.RAIN)
   },
   SNOW: {
-    platform: platformConfig(PLATFORM.GRAV, COLORS.SNOW),
+    platform: platformConfig(PLATFORM.VERTICAL, COLORS.SNOW),
     turret: roundTurret(COLORS.SNOW),
     weapon: pointInsideWeapon(COLORS.SNOW)
   },
   STUN: {
-    platform: platformConfig(PLATFORM.GRAV, COLORS.STUN),
+    platform: platformConfig(PLATFORM.VERTICAL, COLORS.STUN),
     turret: roundTurret(COLORS.STUN),
     weapon: pointInsideWeapon(COLORS.STUN)
   },
 
-  // EXPLODE
+  // Expand
   SPIKE: {
-    platform: platformConfig(PLATFORM.EXPLODE, COLORS.SPIKE),
+    platform: platformConfig(PLATFORM.EXPAND, COLORS.SPIKE),
     turret: roundTurret(COLORS.SPIKE),
     weapon: pointInsideWeapon(COLORS.SPIKE)
+  },
+  ROCK: {
+    platform: platformConfig(PLATFORM.EXPAND, COLORS.ROCK),
+    turret: roundTurret(COLORS.ROCK),
+    weapon: pointInsideWeapon(COLORS.ROCK)
   },
 
   // BEAM

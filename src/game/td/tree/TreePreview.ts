@@ -29,8 +29,9 @@ export default class TreePreview extends Scene {
     const thrown = TOWER_GROUPS["eject"].map(t => t.key).filter(k => k !== root)
     const spray = TOWER_GROUPS["spray"].map(t => t.key).filter(k => k !== root)
     const cloud = TOWER_GROUPS["cloud"].map(t => t.key).filter(k => k !== root)
-    const fall = TOWER_GROUPS["gravity"].map(t => t.key).filter(k => k !== root)
+    const fall = TOWER_GROUPS["vertical"].map(t => t.key).filter(k => k !== root)
     const area = TOWER_GROUPS["area"].map(t => t.key).filter(k => k !== root)
+    const expand = TOWER_GROUPS["expand"].map(t => t.key).filter(k => k !== root)
     function sequenceFor(node: string, children: string[]) {
       if (children.length > 0) {
         const [head, ...tail] = children
@@ -46,6 +47,7 @@ export default class TreePreview extends Scene {
     sequenceFor(root, cloud)
     sequenceFor(root, fall)
     sequenceFor(root, area)
+    sequenceFor(root, expand)
 
     const nodeKeySet = [...sampleTree.edges.entries()].reduce((prev, [node, children]) => {
       prev.add(node)

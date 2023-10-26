@@ -34,7 +34,7 @@ export default class BaseTargeCloudBehavior implements IBehavior {
       }
     }
     if (this.tower.targeting.current.length) {
-      if (this.emitterConfig.frequency === -1 && time % 1000 < (1000 / 60)) {
+      if (this.emitterConfig.frequency === -1 && time % 2000 < (1000 / 60)) {
         console.log("Emit explosion")
         this.cloud?.explode(50, 0, 0)
       }

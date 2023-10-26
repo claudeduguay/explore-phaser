@@ -87,6 +87,7 @@ export function preloadImages(scene: Scene) {
   scene.load.image('snow', 'assets/particles/star_05.png')
   scene.load.image('stun', 'assets/particles/star_01.png')
   scene.load.image('spike', 'assets/particles/trace_01.png')
+  scene.load.image('rock', 'assets/particles/dirt_01.png')
   scene.load.image('spark', 'assets/particles/spark_04.png')
   scene.load.image('slash', 'assets/particles/slash_03.png')
   scene.load.image('muzzle', 'assets/particles/muzzle_01.png')

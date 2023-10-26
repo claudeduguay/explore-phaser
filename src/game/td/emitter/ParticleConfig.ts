@@ -6,6 +6,7 @@ import { lerp, toDegrees } from "../../../util/MathUtil"
 // Easing functions: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
 // Particle Assets: R:\Kenney-Assets\particles\particlePack_1.1\PNG (Transparent)
 
+// See: https://newdocs.phaser.io/docs/3.54.0/Phaser.GameObjects.Particles.ParticleEmitter
 export type IEmitterConfig = Types.GameObjects.Particles.ParticleEmitterConfig
 export type IEmitterConfigBuilder = (range: number, pos: IPointLike) => IEmitterConfig
 export type IEmitterDeathZoneConfig = Types.GameObjects.Particles.ParticleEmitterDeathZoneConfig
@@ -174,7 +175,7 @@ export const sleepEmitter: IEmitterConfigBuilder =
 
 
 // ------------------------------------------------------------------
-// DROP (GRAVITY) EMITTERS
+// DROP (VERTICAL) EMITTERS
 // ------------------------------------------------------------------
 
 export const commonFall: IEmitterConfigBuilder =
@@ -221,7 +222,7 @@ export const snowEmitter: IEmitterConfigBuilder =
 
 
 // ------------------------------------------------------------------
-// RISE (ANTI-GRAVITY) EMITTERS
+// RISE (VERTICAL) EMITTERS
 // ------------------------------------------------------------------
 
 export const commonRise: IEmitterConfigBuilder =
@@ -254,17 +255,35 @@ export const stunEmitter: IEmitterConfigBuilder =
   }
 
 // ------------------------------------------------------------------
-// EXPLODE EMITTERS
+// EXPAND EMITTERS
 // ------------------------------------------------------------------
 
-export const commonExplode: IEmitterConfigBuilder =
+export const commonExpand: IEmitterConfigBuilder =
   (range: number = 100, pos: IPointLike): IEmitterConfig => {
     return {
       colorEase: PMath.Easing.Linear.name,
       advance: 0,
       lifespan: 3000,
       angle: { min: 0, max: 360 },
-      radial: true,
+      rotate: { min: 0, max: 360 },
+      speed: 250,
+      blendMode: 'NORMAL',
+      deathZone: rangeDeathZone(range, pos),
+      // Frequency -1 marks the emitter as an explosion
+      // frequency: -1,
+    }
+  }
+
+export const spikeEmitter: IEmitterConfigBuilder =
+  (range: number = 100, pos: IPointLike): IEmitterConfig => {
+    const speed = 250
+    return {
+      ...commonExpand(range, pos),
+      alpha: 1,
+      color: [0xCC6666],
+      speed,
+      scale: 0.15,
+      blendMode: 'ADD',
       rotate: {
         // Align particle sprite with the velocity direction
         onEmit: (particle: GameObjects.Particles.Particle) => {
@@ -274,25 +293,22 @@ export const commonExplode: IEmitterConfigBuilder =
           return toDegrees(Math.atan2(particle.velocityY, particle.velocityX) - Math.PI / 2)
         },
       },
-      speed: 250,
-      blendMode: 'NORMAL',
-      deathZone: rangeDeathZone(range, pos),
-      // Frequency -1 marks the emitter as an explosion
-      // frequency: -1,
       quantity: 5 // Per cycle?
     }
   }
 
-export const spikeEmitter: IEmitterConfigBuilder =
+export const rockEmitter: IEmitterConfigBuilder =
   (range: number = 100, pos: IPointLike): IEmitterConfig => {
-    const speed = 250
+    const speed = 100
     return {
-      ...commonExplode(range, pos),
-      alpha: 1,
-      color: [0xCC6666],
+      ...commonExpand(range, pos),
+      alpha: 0.5,
+      color: [0xFFEECC],
       speed,
-      scale: 0.15,
-      blendMode: 'ADD',
+      scale: 0.5,
+      blendMode: 'NORMAL',
+      lifespan: 500,
+      frequency: 50,
     }
   }
 

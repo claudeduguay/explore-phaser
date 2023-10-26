@@ -247,10 +247,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     }
   },
 
-  // GRAVITY
+  // VERTICAL
   rain: {
     key: "rain",
-    group: "gravity",
+    group: "vertical",
     name: "Rain",
     description: "Targets multiple enemies within range with rainfall.",
     meta: {
@@ -268,7 +268,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   },
   snow: {
     key: "snow",
-    group: "gravity",
+    group: "vertical",
     name: "Snow",
     description: "Targets multiple enemies within range with snowfall.",
     meta: {
@@ -286,7 +286,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
   },
   stun: {
     key: "stun",
-    group: "gravity",
+    group: "vertical",
     name: "Stun",
     description: "Targets multiple enemies within range with stun effect.",
     meta: {
@@ -341,10 +341,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     }
   },
 
-  // EXPLODE
+  // EXPAND
   spike: {
     key: "spike",
-    group: "explode",
+    group: "expand",
     name: "Spike",
     description: "Fires spikes at multiple enemies within range.",
     meta: {
@@ -358,6 +358,24 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     },
     damage: {
       spike: { dps: 25 }
+    }
+  },
+  rock: {
+    key: "rock",
+    group: "expand",
+    name: "Rock",
+    description: "Fires rocks at multiple enemies within range.",
+    meta: {
+      distribution: "radial",
+      rotation: 1,
+    },
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
+    damage: {
+      rock: { dps: 25 }
     }
   },
 
