@@ -303,7 +303,7 @@ export const rockEmitter: IEmitterConfigBuilder =
     return {
       ...commonExpand(range, pos),
       alpha: 0.5,
-      color: [0xFFEECC],
+      color: [0xEEEEEE],
       speed,
       scale: 0.5,
       blendMode: 'NORMAL',
