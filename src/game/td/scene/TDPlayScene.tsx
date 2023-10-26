@@ -18,6 +18,7 @@ import { onEnemyInRange, onEnemyOverlap } from "../entity/tower/Targeting"
 import TowerSelector from "./TowerSelector"
 import TDHUDScene from "./TDHUDScene"
 import { TDTileMap } from "./map/TDTileMap"
+import { generatePathAdjacentPositions } from "./map/TDPath"
 // import Conversation from "../gui/Conversation"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
@@ -35,7 +36,6 @@ export default class TDPlayScene extends Scene {
   selectors: TowerSelector[] = []
   hud!: TDHUDScene
   map!: TDTileMap
-  pathPoints!: Point[]
   addingTower?: TDTower
 
   mapOrigin = new Point(0, 0)
@@ -77,64 +77,6 @@ export default class TDPlayScene extends Scene {
         // scene.sound.play("cash")
       }
     })
-  }
-
-  generatePathAdjacentPositions(pathPoints: Point[]): Point[] {
-    const { w, h } = sceneSize(this)
-    const WEST = new Point(-64, 0)
-    const EAST = new Point(64, 0)
-    const NORTH = new Point(0, -64)
-    const SOUTH = new Point(0, 64)
-    const inRange = ({ x, y }: Point) => x > 0 && x < w - 64 * 2 && y > 64 && y < h - 64 * 2
-    const pointSet = new Set<string>(pathPoints.map(p => p.toKey()))
-    const towerSet = new Set<string>()
-    const positions: Point[] = []
-    for (let point of pathPoints) {
-      // Include only odd positions
-      if (Math.floor(point.x / 64) % 2 === 0 && Math.floor(point.y / 64) % 2 === 0) {
-        const west = point.plus(WEST)
-        const east = point.plus(EAST)
-        const north = point.plus(NORTH)
-        const south = point.plus(SOUTH)
-        // Avoid recomputing keys each time
-        const westKey = west.toKey()
-        const eastKey = east.toKey()
-        const northKey = north.toKey()
-        const southKey = south.toKey()
-        // console.log("Adjacencies:", point.toKey(), westKey, eastKey, northKey, southKey)
-
-        if (inRange(west) && !pointSet.has(westKey) && !towerSet.has(westKey)) {
-          towerSet.add(westKey)
-          positions.push(west)
-        }
-        if (inRange(east) && !pointSet.has(eastKey) && !towerSet.has(eastKey)) {
-          towerSet.add(eastKey)
-          positions.push(east)
-        }
-        if (inRange(north) && !pointSet.has(northKey) && !towerSet.has(northKey)) {
-          towerSet.add(northKey)
-          positions.push(north)
-        }
-        if (inRange(south) && !pointSet.has(southKey) && !towerSet.has(southKey)) {
-          towerSet.add(southKey)
-          positions.push(south)
-        }
-      }
-    }
-    // console.log("Positions:", positions.map(x => x.toString()))
-    shuffle(positions)
-    return positions
-  }
-
-  generateTowers(count: number = 5) {
-    const validTowerPositions: Point[] = this.generatePathAdjacentPositions(this.pathPoints)
-    for (let i = 0; i < count; i++) {
-      let pos: Point = validTowerPositions[i % (validTowerPositions.length - 1)]
-      const model = Utils.Array.GetRandom(TOWER_LIST)
-      const tower = this.add.tower(pos.x, pos.y, model)
-      this.towerGroup.add(tower)
-      this.map.addTowerMarkAt(pos)
-    }
   }
 
   create() {
@@ -209,7 +151,6 @@ export default class TDPlayScene extends Scene {
     })
 
     this.createMap()
-    this.generateTowers(5)
 
     // Detect Collisions between tower and enemy group members
     this.physics.add.overlap(this.towerGroup, this.enemyGroup, onEnemyOverlap, onEnemyInRange)
@@ -260,19 +201,22 @@ export default class TDPlayScene extends Scene {
 
   }
 
+  generateSemiRandomTowers(points: Point[], count: number = 5) {
+    const validTowerPositions: Point[] = generatePathAdjacentPositions(this, points)
+    for (let i = 0; i < count; i++) {
+      let pos: Point = validTowerPositions[i % (validTowerPositions.length - 1)]
+      const model = Utils.Array.GetRandom(TOWER_LIST)
+      const tower = this.add.tower(pos.x, pos.y, model)
+      this.towerGroup.add(tower)
+      this.map.addTowerMarkAt(pos)
+    }
+  }
 
   createMap() {
     const { map, points } = generateMap(this, this.hud,
       this.health, this.credits, this.enemyGroup, this.mapOrigin)
-    const newPoints = map.getPathPoints()
-    console.log("Old Points:", points.length)
-    console.log("New Points:", newPoints.length)
-    for (let i = 0; i < points.length; i++) {
-      console.log("Points:", JSON.stringify(points[i]), JSON.stringify(newPoints[i]))
-    }
-    const showSpriteSheet = false
     this.map = map
-    this.pathPoints = points
+    const showSpriteSheet = false
     if (showSpriteSheet) {
       const g = this.add.graphics()
       const margin = 10
@@ -280,6 +224,10 @@ export default class TDPlayScene extends Scene {
       g.fillStyle(0xCCCCFF, 1)
       g.fillRect(x - margin, 590 - margin, 16 * 64 + margin * 2, 64 + margin * 2)
       this.add.sprite(x, 590, "path_tiles").setOrigin(0, 0)
+    }
+    const addSemiRandomTowers = true
+    if (addSemiRandomTowers) {
+      this.generateSemiRandomTowers(points)
     }
   }
 

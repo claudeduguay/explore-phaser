@@ -1,7 +1,7 @@
 import { Scene, GameObjects } from "phaser"
 import Point from "../../../../util/geom/Point";
 import makeTileMap, { DEFAULT_CONFIG, IMapConfig } from "./TDTileMap";
-import { generatePath, renderPath } from "./TDPath";
+import { generatePath, createCurve } from "./TDPath";
 import { makeTimeline } from "./TDTimeline";
 import { asPathModel } from "./IPathModel";
 import ObservableValue from "../../value/ObservableValue";
@@ -17,7 +17,8 @@ export default function generateMap(scene: Scene, hud: Scene,
 
   const model = prunePath ? asPathModel(path) : asPathModel(maze.grid.array)
   const map = makeTileMap(scene, mapOrigin.x, mapOrigin.y, model, config)
-  const { curve, points } = renderPath(scene, model, mapOrigin, config.cellSize)
+  const points = map.getPathPoints()
+  const curve = createCurve(points)
 
   makeTimeline(scene, hud, health, credits, enemyGroup, mapOrigin, curve, 0)
   return { map, points }
