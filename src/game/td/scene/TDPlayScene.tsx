@@ -42,7 +42,7 @@ export default class TDPlayScene extends Scene {
 
 
   constructor(public readonly main: TDGameScene) {
-    super({ key: "play" })
+    super("play")
   }
 
   preload() {
@@ -86,7 +86,7 @@ export default class TDPlayScene extends Scene {
     this.scene.add("hud", this.hud)
     this.scene.launch("hud")
 
-    const { w, h } = sceneSize(this)
+    const { w } = sceneSize(this)
     // this.lights.addPointLight(-w / 2, -h / 2, 0xffffff, Math.max(w, h) * 2, 2, 0.01)
     // console.log("Added lights:", this.lights.lights)
 

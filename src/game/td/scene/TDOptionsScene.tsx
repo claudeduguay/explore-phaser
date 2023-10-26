@@ -6,7 +6,7 @@ import GameOptions from "./react/GameOptions"
 
 export default class TDOptionsScene extends Scene {
   constructor(public readonly main: TDGameScene) {
-    super({ key: "options" })
+    super("options")
   }
 
   create() {

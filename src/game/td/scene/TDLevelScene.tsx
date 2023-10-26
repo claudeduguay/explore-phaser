@@ -7,7 +7,7 @@ import GameLevels from "./react/GameLevels"
 // @ts-ignore
 export default class TDMapsScene extends Scene {
   constructor(public readonly main: TDGameScene) {
-    super({ key: "maps" })
+    super("maps")
   }
 
   create() {

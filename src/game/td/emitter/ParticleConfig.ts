@@ -32,7 +32,7 @@ export const circleEmitZone =
   }
 
 // Upper arc of tower's range
-export const edgeEmitZone =
+export const topEmitZone =
   (range: number, pos: IPointLike): IEmitterEdgeZoneConfig => {
     return {
       type: 'edge',
@@ -166,7 +166,7 @@ export const commonFall: IEmitterConfigBuilder =
       rotate: 0,
       speed: 100,
       blendMode: 'NORMAL',
-      emitZone: edgeEmitZone(range, pos),
+      emitZone: topEmitZone(range, pos),
       deathZone: rangeDeathZone(range, pos)
     }
   }

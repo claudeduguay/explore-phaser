@@ -6,7 +6,7 @@ import GameLose from "./react/GameLose"
 
 export default class TDLoseScene extends Scene {
   constructor(public readonly main: TDGameScene) {
-    super({ key: "lose" })
+    super("lose")
   }
 
   create() {

@@ -6,7 +6,7 @@ import GameWin from "./react/GameWin"
 
 export default class TDHomeScene extends Scene {
   constructor(public readonly main: TDGameScene) {
-    super({ key: "win" })
+    super("win")
   }
 
   create() {
