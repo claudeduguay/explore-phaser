@@ -279,6 +279,7 @@ export const commonExplode: IEmitterConfigBuilder =
       deathZone: rangeDeathZone(range, pos),
       // Frequency -1 marks the emitter as an explosion
       // frequency: -1,
+      quantity: 5 // Per cycle?
     }
   }
 

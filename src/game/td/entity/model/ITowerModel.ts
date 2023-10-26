@@ -299,7 +299,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      stun: { dps: 0, duration: 100 }
+      stun: { dps: 0, duration: 1000 }
     }
   },
 

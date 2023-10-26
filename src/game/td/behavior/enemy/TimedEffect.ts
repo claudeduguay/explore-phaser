@@ -3,19 +3,19 @@ import IBehavior from "../core/IBehavior"
 
 export default abstract class TimedEffect implements IBehavior {
 
-  maxTime?: number
+  startTime?: number
 
   constructor(public enemy: TDEnemy, public readonly timeout: number) {
   }
 
   update(time: number, delta: number): void {
-    if (!this.maxTime) {
-      this.maxTime = time + this.timeout
+    if (!this.startTime) {
+      this.startTime = time
     }
-    if (time >= this.maxTime) {
+    if (time - this.startTime >= this.timeout) {
       this.endEffect(time, delta)
       this.enemy.effects.delete(this)
-      this.maxTime = undefined
+      this.startTime = undefined
     } else {
       this.updateEffect(time, delta)
     }
