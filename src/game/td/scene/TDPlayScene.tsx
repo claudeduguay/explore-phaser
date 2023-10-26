@@ -179,6 +179,7 @@ export default class TDPlayScene extends Scene {
       new TowerSelector(this, 0, 700, "area", onAddTower)
     ]
     this.hud.addSelectors(this.selectors)
+    setTimeout(() => this.hud.buttonBar.access.replay.onClick = () => this.createMap(), 0)
 
 
     // ------------------------------------------------------------------

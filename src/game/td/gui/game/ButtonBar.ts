@@ -11,14 +11,16 @@ const ICON_UNHAPPY = 0xe811
 const ICON_SHIELD = 0xe8e8
 const ICON_BEAKER = 0xea4b
 const ICON_DIALOG = 0xef4c
+const ICON_REPLAY = 0xe042
 
 const ICONS = [
   { name: "home", icon: ICON_HOME },
   { name: "win", icon: ICON_HAPPY },
   { name: "lose", icon: ICON_UNHAPPY },
+  { name: "replay", icon: ICON_REPLAY },
   { name: "towers", icon: ICON_SHIELD },
   { name: "tree", icon: ICON_BEAKER },
-  { name: "gui", icon: ICON_DIALOG }
+  { name: "gui", icon: ICON_DIALOG },
 ]
 
 export function transitionTo(mainScene: Scene, target: string, sleep?: string): Scene {
@@ -62,7 +64,6 @@ export default class ButtonBar extends GameObjects.Container {
       const button = new IconButton(scene, 0, 1, 20, 20, entry.icon, "flat")
       this.access[entry.name] = button
       this.add(button)
-
     })
     this.layout = new HBoxLayout()
     this.layout.apply(this)

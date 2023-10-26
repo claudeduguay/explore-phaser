@@ -65,7 +65,7 @@ export default class TDHUDScene extends Scene {
 
     // Button bars (right)
     this.add.existing(new SpeedBar(this, 960, 12))
-    this.buttonBar = new ButtonBar(this, 760, 12)
+    this.buttonBar = new ButtonBar(this, 730, 12)
     this.buttonBar.access.towers.onClick = onToggleTowerPreview
     this.buttonBar.access.tree.onClick = onToggleTreePreview
     this.buttonBar.access.gui.onClick = onToggleGUIPreview

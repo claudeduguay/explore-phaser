@@ -11,7 +11,7 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction:
   const radius = 39
   const top = 23
   const width = 500
-  const left = 245
+  const left = 230
   const insetStart = left + width * prefixFraction
   const insetWidth = width * (1.0 - (prefixFraction + suffixFraction))
 
@@ -113,13 +113,17 @@ export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path,
   })
 }
 
+let previewPath: Curves.Path
+
 export function makeTimeline(scene: Scene, hud: Scene,
   health: ObservableValue<number>, credits: ObservableValue<number>,
   enemyGroup: GameObjects.Group, origin: Point, mainPath: Curves.Path, offset: number = 0) {
   enemyGroup.clear()
   const prefixFraction = 0.15
   const suffixFraction = 0.15
-  const previewPath = makeTimelinePreviewGraphicsAndPath(hud, prefixFraction, suffixFraction)
+  if (!previewPath) {
+    previewPath = makeTimelinePreviewGraphicsAndPath(hud, prefixFraction, suffixFraction)
+  }
 
   const ONE_SECOND = 1000
   const mainPathLength = mainPath.getLength()
