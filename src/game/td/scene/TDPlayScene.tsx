@@ -263,8 +263,13 @@ export default class TDPlayScene extends Scene {
 
   createMap() {
     const { map, points } = generateMap(this, this.hud,
-      this.health, this.credits,
-      this.enemyGroup, this.mapOrigin)
+      this.health, this.credits, this.enemyGroup, this.mapOrigin)
+    const newPoints = map.getPathPoints()
+    console.log("Old Points:", points.length)
+    console.log("New Points:", newPoints.length)
+    for (let i = 0; i < points.length; i++) {
+      console.log("Points:", JSON.stringify(points[i]), JSON.stringify(newPoints[i]))
+    }
     const showSpriteSheet = false
     this.map = map
     this.pathPoints = points

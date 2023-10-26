@@ -30,6 +30,8 @@ export class TDTileMap extends GameObjects.Container {
   pathLayer!: Tilemaps.TilemapLayer
   markLayer!: Tilemaps.TilemapLayer
 
+  path?: IPathModel
+
   constructor(scene: Scene, x: number, y: number, { cellSize, rows, cols }: IMapConfig) {
     super(scene, x, y)
 
@@ -84,6 +86,7 @@ export class TDTileMap extends GameObjects.Container {
   }
 
   setModel(path: IPathModel) {
+    this.path = path
     this.landLayer.fill(-1)
     this.landLayer.forEachTile(
       // This is non-deterministic and so would change each time we call setModel?
@@ -111,14 +114,13 @@ export class TDTileMap extends GameObjects.Container {
     return false
   }
 
-  getPathPoints(path: IPathModel) {
-    return path.map(cell => {
-      const pos = this.map.tileToWorldXY(cell.pos.x, cell.pos.y + 1)
-      if (pos) {
-        return new Point(pos.x, pos.y)
-      }
-      return new Point()
-    })
+  getPathPoints() {
+    if (this.path) {
+      return this.path.map(cell => {
+        const pos = this.map.tileToWorldXY(cell.pos.x, cell.pos.y + 1) || new Point()
+        return new Point(pos.x + 32, pos.y + 32)
+      })
+    }
+    return []
   }
-
 }

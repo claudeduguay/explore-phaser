@@ -13,7 +13,7 @@ export default function GameWin({ navigator }: IGameWinProps) {
   return <div className="d-flex justify-content-center align-items-center" style={{ width: w, height: h, background: "black" }}>
     <div className="p-2 text-white container">
       <div className="p-2">
-        <h1>You Win!</h1>
+        <h1 style={{ fontSize: 96 }}>You Win!</h1>
         <p className="p-2">Nice work! You successfully completed this level.</p>
       </div>
       <div className="p-2">
