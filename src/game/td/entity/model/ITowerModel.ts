@@ -26,6 +26,7 @@ export interface ITowerModel {
   name: string
   group: string
   description: string
+  locked: boolean,
   meta: ITowerMeta
   stats: ITowerStatistics
   damage: ITowerDamage
@@ -49,6 +50,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "beam",
     name: "Lazer",
     description: "Fires a lazer beam at a single enemy within range.",
+    locked: true,
     meta: {
       distribution: "linear",
       rotation: "target",
@@ -67,6 +69,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "beam",
     name: "Plasma",
     description: "Fires a plasma beam at a single enemy within range.",
+    locked: true,
     meta: {
       distribution: "linear",
       rotation: "target",
@@ -85,6 +88,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "beam",
     name: "Lightning",
     description: "Fires a lightning bolt at a single enemy within range.",
+    locked: true,
     meta: {
       distribution: "linear",
       rotation: "target",
@@ -105,6 +109,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "spray",
     name: "Flame",
     description: "Targets a single enemy within range with a spray of fire.",
+    locked: true,
     meta: {
       distribution: "linear",
       rotation: "target",
@@ -123,6 +128,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "spray",
     name: "Freeze",
     description: "Targets a single enemy within range with an spray of ice.",
+    locked: true,
     meta: {
       distribution: "linear",
       rotation: "target",
@@ -141,6 +147,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "spray",
     name: "Force",
     description: "Targets a single enemy within range with a spray of force.",
+    locked: true,
     meta: {
       distribution: "linear",
       rotation: "target",
@@ -161,6 +168,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "cloud",
     name: "Poison",
     description: "Targets multiple enemies within range with a cloud of poison.",
+    locked: true,
     meta: {
       distribution: "radial",
       rotation: 1,
@@ -179,6 +187,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "cloud",
     name: "Fire",
     description: "Targets multiple enemies within range with a cloud of fire.",
+    locked: true,
     meta: {
       distribution: "radial",
       rotation: 1,
@@ -197,6 +206,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "cloud",
     name: "Smoke",
     description: "Targets multiple enemies within range with a cloud of smoke.",
+    locked: true,
     meta: {
       distribution: "radial",
       rotation: 1,
@@ -215,6 +225,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "cloud",
     name: "Shock",
     description: "Targets multiple enemies within range with a cloud of electricity.",
+    locked: true,
     meta: {
       distribution: "radial",
       rotation: 1,
@@ -233,6 +244,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "cloud",
     name: "Ice",
     description: "Targets multiple enemies within range with a cloud of ice.",
+    locked: true,
     meta: {
       distribution: "radial",
       rotation: 1,
@@ -253,6 +265,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "vertical",
     name: "Rain",
     description: "Targets multiple enemies within range with rainfall.",
+    locked: true,
     meta: {
       distribution: "radial",
       rotation: 1,
@@ -271,6 +284,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "vertical",
     name: "Snow",
     description: "Targets multiple enemies within range with snowfall.",
+    locked: true,
     meta: {
       distribution: "radial",
       rotation: 1,
@@ -289,6 +303,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "vertical",
     name: "Stun",
     description: "Targets multiple enemies within range with stun effect.",
+    locked: true,
     meta: {
       distribution: "radial",
       rotation: 1,
@@ -309,6 +324,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "eject",
     name: "Bullet",
     description: "Fires bullets at a single enemy within range.",
+    locked: true,
     meta: {
       distribution: "linear",
       rotation: "target",
@@ -327,6 +343,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "eject",
     name: "Missile",
     description: "Fires missiles at a single enemy within range.",
+    locked: true,
     meta: {
       distribution: "linear",
       rotation: "target",
@@ -347,6 +364,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "expand",
     name: "Spike",
     description: "Fires spikes at multiple enemies within range.",
+    locked: true,
     meta: {
       distribution: "radial",
       rotation: 1,
@@ -365,6 +383,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "expand",
     name: "Rock",
     description: "Fires rocks at multiple enemies within range.",
+    locked: true,
     meta: {
       distribution: "radial",
       rotation: 1,
@@ -385,6 +404,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "area",
     name: "Boost",
     description: "Boosts other towers' damage effect, within range.",
+    locked: true,
     meta: {
       distribution: "radial",
       rotation: 4,
@@ -403,6 +423,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "area",
     name: "Slow",
     description: "Applies a timed slowing effect whenever enemies enter the tower's range",
+    locked: true,
     meta: {
       distribution: "radial",
       rotation: -1,

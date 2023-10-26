@@ -204,6 +204,7 @@ export const rainEmitter: IEmitterConfigBuilder =
       speed,
       scale: 0.075,
       blendMode: 'ADD',
+      frequency: 10
     }
   }
 
@@ -217,6 +218,7 @@ export const snowEmitter: IEmitterConfigBuilder =
       speed,
       scale: 0.05,
       blendMode: 'ADD',
+      frequency: 10
     }
   }
 
@@ -251,6 +253,7 @@ export const stunEmitter: IEmitterConfigBuilder =
       speed,
       scale: 0.1,
       blendMode: 'ADD',
+      frequency: 10
     }
   }
 
