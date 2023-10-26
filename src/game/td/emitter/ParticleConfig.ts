@@ -1,6 +1,6 @@
-import { Types, Math as PMath, Geom } from "phaser"
+import { Types, Math as PMath, Geom, GameObjects } from "phaser"
 import Point, { IPointLike } from "../../../util/geom/Point"
-import { lerp } from "../../../util/MathUtil"
+import { lerp, toDegrees } from "../../../util/MathUtil"
 
 // Best docs: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/particles/
 // Easing functions: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/ease-function/
@@ -249,6 +249,48 @@ export const stunEmitter: IEmitterConfigBuilder =
       rotate: { start: 0, end: 360 },
       speed,
       scale: 0.1,
+      blendMode: 'ADD',
+    }
+  }
+
+// ------------------------------------------------------------------
+// EXPLODE EMITTERS
+// ------------------------------------------------------------------
+
+export const commonExplode: IEmitterConfigBuilder =
+  (range: number = 100, pos: IPointLike): IEmitterConfig => {
+    return {
+      colorEase: PMath.Easing.Linear.name,
+      advance: 0,
+      lifespan: 3000,
+      angle: { min: 0, max: 360 },
+      radial: true,
+      rotate: {
+        // Align particle sprite with the velocity direction
+        onEmit: (particle: GameObjects.Particles.Particle) => {
+          return toDegrees(Math.atan2(particle.velocityY, particle.velocityX) - Math.PI / 2)
+        },
+        onUpdate: (particle: GameObjects.Particles.Particle) => {
+          return toDegrees(Math.atan2(particle.velocityY, particle.velocityX) - Math.PI / 2)
+        },
+      },
+      speed: 250,
+      blendMode: 'NORMAL',
+      deathZone: rangeDeathZone(range, pos),
+      // Frequency -1 marks the emitter as an explosion
+      // frequency: -1,
+    }
+  }
+
+export const spikeEmitter: IEmitterConfigBuilder =
+  (range: number = 100, pos: IPointLike): IEmitterConfig => {
+    const speed = 250
+    return {
+      ...commonExplode(range, pos),
+      alpha: 1,
+      color: [0xCC6666],
+      speed,
+      scale: 0.15,
       blendMode: 'ADD',
     }
   }

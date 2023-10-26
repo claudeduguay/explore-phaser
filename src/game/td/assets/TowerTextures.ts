@@ -34,6 +34,8 @@ export const COLORS: { [key: string]: IColoring } = {
   RAIN: colors(0.55),
   SNOW: colors(0, 0, 0.35),
   STUN: colors(0.45),
+  // EXPLODE
+  SPIKE: colors(0.1),
   // Beam
   LAZER: colors(0.6),
   PLASMA: colors(0.65),
@@ -60,6 +62,7 @@ const PLATFORM: Record<string, ITypeAndCorners> = {
   SPRAY: { type: "box", corners: corners("angle") },
   CLOUD: { type: "box", corners: corners("curve-o") },
   GRAV: { type: "ntagon", corners: corners("angle") },
+  EXPLODE: { type: "ntagon", corners: corners("angle") },
   BEAM: { type: "box", corners: corners("curve-i") },
   THROW: { type: "box", corners: corners("curve-i") },
   AREA: { type: "box", corners: corners("box-o") }
@@ -238,6 +241,13 @@ const TOWERS: Record<string, ITextureConfigs> = {
     platform: platformConfig(PLATFORM.GRAV, COLORS.STUN),
     turret: roundTurret(COLORS.STUN),
     weapon: pointInsideWeapon(COLORS.STUN)
+  },
+
+  // EXPLODE
+  SPIKE: {
+    platform: platformConfig(PLATFORM.EXPLODE, COLORS.SPIKE),
+    turret: roundTurret(COLORS.SPIKE),
+    weapon: pointInsideWeapon(COLORS.SPIKE)
   },
 
   // BEAM

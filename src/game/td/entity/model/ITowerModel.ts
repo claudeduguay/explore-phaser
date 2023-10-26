@@ -341,6 +341,26 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     }
   },
 
+  // EXPLODE
+  spike: {
+    key: "spike",
+    group: "explode",
+    name: "Spike",
+    description: "Fires spikes at multiple enemies within range.",
+    meta: {
+      distribution: "radial",
+      rotation: 1,
+    },
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
+    damage: {
+      spike: { dps: 25 }
+    }
+  },
+
   // AREA
   boost: {
     key: "boost",
