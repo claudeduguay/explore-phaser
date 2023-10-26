@@ -247,7 +247,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     }
   },
 
-  // FALL
+  // GRAVITY
   rain: {
     key: "rain",
     group: "gravity",
@@ -282,6 +282,24 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     },
     damage: {
       snow: { dps: 25 }
+    }
+  },
+  stun: {
+    key: "stun",
+    group: "gravity",
+    name: "Stun",
+    description: "Targets multiple enemies within range with stun effect.",
+    meta: {
+      distribution: "radial",
+      rotation: 1,
+    },
+    stats: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
+    damage: {
+      stun: { dps: 0, duration: 100 }
     }
   },
 

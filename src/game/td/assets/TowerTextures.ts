@@ -33,6 +33,7 @@ export const COLORS: { [key: string]: IColoring } = {
   // Fall
   RAIN: colors(0.55),
   SNOW: colors(0, 0, 0.35),
+  STUN: colors(0.45),
   // Beam
   LAZER: colors(0.6),
   PLASMA: colors(0.65),
@@ -58,7 +59,7 @@ interface ITypeAndCorners {
 const PLATFORM: Record<string, ITypeAndCorners> = {
   SPRAY: { type: "box", corners: corners("angle") },
   CLOUD: { type: "box", corners: corners("curve-o") },
-  FALL: { type: "ntagon", corners: corners("angle") },
+  GRAV: { type: "ntagon", corners: corners("angle") },
   BEAM: { type: "box", corners: corners("curve-i") },
   THROW: { type: "box", corners: corners("curve-i") },
   AREA: { type: "box", corners: corners("box-o") }
@@ -224,14 +225,19 @@ const TOWERS: Record<string, ITextureConfigs> = {
 
   // FALL
   RAIN: {
-    platform: platformConfig(PLATFORM.FALL, COLORS.RAIN),
+    platform: platformConfig(PLATFORM.GRAV, COLORS.RAIN),
     turret: roundTurret(COLORS.RAIN),
     weapon: pointInsideWeapon(COLORS.RAIN)
   },
   SNOW: {
-    platform: platformConfig(PLATFORM.FALL, COLORS.SNOW),
+    platform: platformConfig(PLATFORM.GRAV, COLORS.SNOW),
     turret: roundTurret(COLORS.SNOW),
     weapon: pointInsideWeapon(COLORS.SNOW)
+  },
+  STUN: {
+    platform: platformConfig(PLATFORM.GRAV, COLORS.STUN),
+    turret: roundTurret(COLORS.STUN),
+    weapon: pointInsideWeapon(COLORS.STUN)
   },
 
   // BEAM

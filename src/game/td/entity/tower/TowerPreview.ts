@@ -12,20 +12,20 @@ export default class TowerPreview extends Scene {
   }
 
   create() {
-    const vBox = 220
+    const vBox = 175
     const hBox = 170
     const g = this.add.graphics()
     g.fillStyle(0x111111, 1.0)
     g.lineStyle(2, 0xFFFFFF, 1.0)
-    g.fillRoundedRect(this.x, this.y, hBox * 6, vBox * 3 + 20)
-    g.strokeRoundedRect(this.x, this.y, hBox * 6, vBox * 3 + 20)
+    g.fillRoundedRect(this.x, this.y, hBox * 6, vBox * 4 + 20)
+    g.strokeRoundedRect(this.x, this.y, hBox * 6, vBox * 4 + 20)
     this.add.existing(g)
 
     TOWER_LIST.forEach((model, i) => {
       const row = Math.floor(i / 6)
       const col = i % 6
       const x = this.x + hBox / 2 + hBox * col
-      const y = this.y + 150 + vBox * row
+      const y = this.y + 110 + vBox * row
       const tower = new TDTower(this, x, y, model)
       tower.preview = true
       tower.showLabel.visible = true

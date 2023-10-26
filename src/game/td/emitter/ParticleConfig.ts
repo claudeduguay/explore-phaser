@@ -52,6 +52,27 @@ export const topEmitZone =
     }
   }
 
+// Bottom arc of tower's range
+export const bottomEmitZone =
+  (range: number, pos: IPointLike): IEmitterEdgeZoneConfig => {
+    return {
+      type: 'edge',
+      quantity: 200,
+      source: {
+        getPoints: (quantity: number) => {
+          const points = []
+          for (let i = 0; i < quantity; i++) {
+            const a = lerp(0, Math.PI, Math.random())
+            const x = Math.cos(a) * range
+            const y = Math.sin(a) * range
+            points.push(new Point(x, y))
+          }
+          return points
+        }
+      }
+    }
+  }
+
 // Points appear to be relative to the scene, not the emitter, so this is a problem w/o access to the emitter position
 // Reported at: https://github.com/photonstorm/phaser/issues/6371
 export const rangeDeathZone =
@@ -194,6 +215,40 @@ export const snowEmitter: IEmitterConfigBuilder =
       color: [0xffffff],
       speed,
       scale: 0.05,
+      blendMode: 'ADD',
+    }
+  }
+
+
+// ------------------------------------------------------------------
+// RISE (ANTI-GRAVITY) EMITTERS
+// ------------------------------------------------------------------
+
+export const commonRise: IEmitterConfigBuilder =
+  (range: number = 100, pos: IPointLike): IEmitterConfig => {
+    return {
+      colorEase: PMath.Easing.Linear.name,
+      advance: 0,
+      lifespan: 3000,
+      angle: 270,
+      rotate: 0,
+      speed: 100,
+      blendMode: 'NORMAL',
+      emitZone: bottomEmitZone(range, pos),
+      deathZone: rangeDeathZone(range, pos)
+    }
+  }
+
+export const stunEmitter: IEmitterConfigBuilder =
+  (range: number = 100, pos: IPointLike): IEmitterConfig => {
+    const speed = 100
+    return {
+      ...commonRise(range, pos),
+      alpha: 0.5,
+      color: [0x9999ff],
+      rotate: { start: 0, end: 360 },
+      speed,
+      scale: 0.1,
       blendMode: 'ADD',
     }
   }

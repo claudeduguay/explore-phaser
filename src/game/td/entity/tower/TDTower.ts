@@ -31,6 +31,7 @@ import TargetBulletBehavior from "../../behavior/tower/TargetBulletBehavior"
 import TargetMissileBehavior from "../../behavior/tower/TargetMissileBehavior"
 import TargetBoostBehavior from "../../behavior/tower/TargetBoostBehavior"
 import TargetSlowBehavior from "../../behavior/tower/TargetSlowBehavior"
+import TargetStunBehavior from "../../behavior/tower/cloud/TargetStunBehavior"
 
 const TOWER_BEHAVIORS: Record<string, any> = {
   lazer: TargetLaserBehavior,
@@ -46,6 +47,7 @@ const TOWER_BEHAVIORS: Record<string, any> = {
   ice: TargetIceBehavior,
   rain: TargetRainBehavior,
   snow: TargetSnowBehavior,
+  stun: TargetStunBehavior,
   bullet: TargetBulletBehavior,
   missile: TargetMissileBehavior,
   boost: TargetBoostBehavior,
