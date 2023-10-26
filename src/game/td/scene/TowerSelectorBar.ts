@@ -31,6 +31,7 @@ export default class TowerSelectorBar extends GameObjects.Container {
     // Disabled but functional (clicking on a locked entry should:
     // * Check we have enough cash
     // * Deduct the cash and set the tower to locked: false
+    // * If successful, we can call onAddTower
     // )
     if (model.locked && false) {
       button.add(this.scene.add.icon(0, -14, 0xe897, {
