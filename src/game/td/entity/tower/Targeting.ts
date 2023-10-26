@@ -1,7 +1,9 @@
-import { Types, Math as PMath } from "phaser";
+import SelectableGroup from "../../scene/SelectableGroup";
+import { Types, Math as PMath, Scene } from "phaser";
 import TDEnemy from "../enemy/TDEnemy";
 import TDTower from "./TDTower";
-import Point from "../../../../util/geom/Point";
+
+export type ICollidable = Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile
 
 export default class Targeting {
 
@@ -35,10 +37,19 @@ export default class Targeting {
   }
 }
 
+export function connectTowerEnemyCollisionDetection(scene: Scene, towerGroup: SelectableGroup<TDTower>, enemyGroup: SelectableGroup<TDEnemy>) {
+  scene.physics.add.overlap(towerGroup, enemyGroup, onEnemyOverlap, onEnemyInRadius)
+}
+
+// If we are in collision range (radius is checked by onEnemyInRange), add target
+export function onEnemyOverlap(tower: ICollidable, enemy: ICollidable) {
+  if (tower instanceof TDTower && enemy instanceof TDEnemy) {
+    tower.targeting.current.unshift(enemy)
+  }
+}
 
 // Check if enemy is within range radius
-export function onEnemyInRange(tower: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
-  enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
+export function onEnemyInRadius(tower: ICollidable, enemy: ICollidable) {
   if (tower instanceof TDTower && enemy instanceof TDEnemy) {
     if (tower.preview) {
       return false
@@ -46,24 +57,4 @@ export function onEnemyInRange(tower: Types.Physics.Arcade.GameObjectWithBody | 
     const distance = PMath.Distance.BetweenPoints(enemy, tower)
     return distance <= tower.model.stats.range
   }
-}
-
-// If we are within range (radius checked by onEnemyInRange), add target
-export function onEnemyOverlap(
-  tower: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile,
-  enemy: Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
-  if (tower instanceof TDTower && enemy instanceof TDEnemy) {
-    tower.targeting.current.unshift(enemy)
-  }
-}
-
-export function checkPointCollision(points: Point[], pos: Point, tolerance: number = 32,) {
-  let collision = false
-  points?.forEach(point => {
-    const diff = point.diff(pos)
-    if (diff.x < tolerance && diff.y < tolerance) {
-      collision = true
-    }
-  })
-  return collision
 }

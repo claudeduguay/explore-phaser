@@ -14,7 +14,7 @@ import { shuffle } from "../../../util/ArrayUtil"
 import { sceneSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../entity/enemy/TDEnemy"
-import { onEnemyInRange, onEnemyOverlap } from "../entity/tower/Targeting"
+import { connectTowerEnemyCollisionDetection } from "../entity/tower/Targeting"
 import TowerSelector from "./TowerSelector"
 import TDHUDScene from "./TDHUDScene"
 import { TDTileMap } from "./map/TDTileMap"
@@ -152,7 +152,7 @@ export default class TDPlayScene extends Scene {
     this.createMap()
 
     // Detect Collisions between tower and enemy group members
-    this.physics.add.overlap(this.towerGroup, this.enemyGroup, onEnemyOverlap, onEnemyInRange)
+    connectTowerEnemyCollisionDetection(this, this.towerGroup, this.enemyGroup)
 
 
     // ------------------------------------------------------------------
