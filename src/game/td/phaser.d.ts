@@ -16,5 +16,8 @@ declare namespace Phaser.GameObjects {
     button(x: number, y: number, w: number, h: number, text?: string, public stylePrefix?: string, onClick?: () => void): Button
     label(x: number, y: number, text: string, style?: Types.GameObjects.Text.TextStyle): Label
     icon(x: number, y: number, code: string | number, style?: Types.GameObjects.Text.TextStyle): Icon
+
+    // Update-only Components
+    statemachine(name?: string, validateTransisions?: ValidateTransitions): StateMachine
   }
 }

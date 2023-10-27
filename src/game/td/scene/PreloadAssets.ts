@@ -9,6 +9,7 @@ import { registerTowerFactory } from "../entity/tower/TDTower"
 import { registerEnemyFactory } from "../entity/enemy/TDEnemy"
 import { registerIconFactory } from "../gui/Icon"
 import { makePanelTextures, registerPanelFactory } from "../gui/Panel"
+import { registerStateMachineFactory } from "../../../util/StateMachine"
 
 // Intreresting repo: https://github.com/samme/phaser-plugin-loader
 // Also interesting repo: https://phaserplugins.com/
@@ -53,6 +54,8 @@ export function registerObjectFactories() {
   // Game Objects
   registerTowerFactory()
   registerEnemyFactory()
+
+  registerStateMachineFactory()
 }
 
 export function preloadWebFont(scene: Scene) {

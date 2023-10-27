@@ -19,6 +19,7 @@ import TowerSelector from "./TowerSelector"
 import TDHUDScene from "./TDHUDScene"
 import { TDTileMap } from "./map/TDTileMap"
 import { generatePathAdjacentPositions } from "./map/TDPath"
+import { ValidateTransitions } from "../../../util/StateMachine"
 // import Conversation from "../gui/Conversation"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
@@ -82,6 +83,13 @@ export default class TDPlayScene extends Scene {
   }
 
   create() {
+
+    // const machine = this.add.statemachine("Test", ValidateTransitions.Log)  // Using the object factory registers for auto-updates  
+    // machine.addState("home", { onEnter: () => console.log("Enter Home"), onExit: () => console.log("Exit Home") })
+    // machine.addState("next", { onEnter: () => console.log("Enter Next") })
+    // machine.addTransition("home", "next")
+    // machine.transitionTo("home")
+    // machine.transitionTo("next")
 
     // INIT HUD SCENE (Note: WE WANT TO ENCAPSULATE CHILDREN AND MOVE THEM INTO THIS SCENE)
     this.hud = new TDHUDScene(this.main, this.health, this.credits)
