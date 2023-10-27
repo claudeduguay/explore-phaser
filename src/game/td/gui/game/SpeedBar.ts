@@ -42,7 +42,7 @@ export default class SpeedBar extends GameObjects.Container {
         this.access.text = text
         this.add(text)
       }
-      const button = new IconButton(scene, 0, 1, 20, 20, entry.icon, "flat")
+      const button = new IconButton(scene, 0, 1, 2, 2, entry.icon, "flat")
       this.access[entry.name] = button
       this.add(button)
     })

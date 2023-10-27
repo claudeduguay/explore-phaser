@@ -8,24 +8,24 @@ import ObservableValue from "../../value/ObservableValue"
 
 // Create a graphics background and a line-based curve for the preview path
 export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction: number, suffixFraction: number) {
-  const radius = 39
-  const top = 23
-  const width = 500
+  const top = 6
   const left = 230
+  const height = 34
+  const width = 500
   const insetStart = left + width * prefixFraction
   const insetWidth = width * (1.0 - (prefixFraction + suffixFraction))
 
   // Note: Could be converted into a generated texture
   const g = scene.add.graphics()
   g.fillStyle(0x994444, 1.0)
-  g.fillRoundedRect(left, top - radius / 2, width, radius, 10)
+  g.fillRoundedRect(left, top, width, height, 10)
   g.fillStyle(0x44AA44, 1.0)
-  g.fillRect(insetStart, top - radius / 2, insetWidth, radius)
+  g.fillRect(insetStart, top, insetWidth, height)
 
   // Generate path curve
   const path = new Curves.Path()
-  path.moveTo(left, top)
-  path.lineTo(left + width, top)
+  path.moveTo(left, top + height / 2 - 4)
+  path.lineTo(left + width, top + height / 2 - 4)
   return path
 }
 

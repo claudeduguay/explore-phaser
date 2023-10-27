@@ -61,7 +61,7 @@ export default class ButtonBar extends GameObjects.Container {
   constructor(scene: Scene, x: number, y: number) {
     super(scene, x, y)
     ICONS.forEach((entry, i) => {
-      const button = new IconButton(scene, 0, 1, 20, 20, entry.icon, "flat")
+      const button = new IconButton(scene, 0, 1, 2, 2, entry.icon, "flat")
       this.access[entry.name] = button
       this.add(button)
     })
