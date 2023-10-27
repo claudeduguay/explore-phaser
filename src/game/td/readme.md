@@ -10,15 +10,14 @@ Need to account for shields (disabled for now)
 
 ## ToDo Planning
 
-* Need for consider whether we can embed a new scene inside DOM objects.
 * Need to figure out leveling
-* Effect System needs to handle InRange conditions
 * Keep trying to get Tower previews to be in containers
 * BUG: Plopping tower sometimes sticks and requires a second click (long click seems to fix this, timing issue)
-* BUG: Peeps are added last and thus always end up above HUDD elements, may fix with a separate Scene
+* BUG: Main Peeps initially show at 0,0, causing artifacts
 * BUG: Canvas size measurment fails on iPad Safari
-* BUG: Peeps facing sometimes oscilates (seems more apparent when slowed)
+* BUG: Peeps facing direction sometimes oscilates (seems more apparent when slowed)
 * BUG: Adding some towers (clouds, for example) do not automatically enable damage (visual) effects
+* BUG: If Selectors are associated with the hud scene, plops don't work correctly.
 * IMPROVEMENT: Towers need to ease into aim position, avoid jump turns, maybe return to zero in the same way afterward
 
 ### Effect/Afliction Design Notes

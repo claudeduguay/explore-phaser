@@ -172,7 +172,7 @@ export default class TDPlayScene extends Scene {
     // ADD TOWER MECHANICS
     // ------------------------------------------------------------------
 
-    let onAddTower = (model: ITowerModel) => {
+    const onAddTower = (model: ITowerModel) => {
       this.addingTower = this.add.tower(this.input.x, this.input.y, model)
       if (this.addingTower) {
         this.addingTower.preview = true
@@ -183,13 +183,13 @@ export default class TDPlayScene extends Scene {
 
     // Need to capture onAddTower in play scene
     this.selectors = [
-      new TowerSelector(this.hud, 0, 100, "eject", onAddTower),
-      new TowerSelector(this.hud, 0, 200, "beam", onAddTower),
-      new TowerSelector(this.hud, 0, 300, "spray", onAddTower),
-      new TowerSelector(this.hud, 0, 400, "cloud", onAddTower),
-      new TowerSelector(this.hud, 0, 500, "vertical", onAddTower),
-      new TowerSelector(this.hud, 0, 600, "expand", onAddTower),
-      new TowerSelector(this.hud, 0, 700, "area", onAddTower)
+      new TowerSelector(this, 0, 100, "eject", onAddTower),
+      new TowerSelector(this, 0, 200, "beam", onAddTower),
+      new TowerSelector(this, 0, 300, "spray", onAddTower),
+      new TowerSelector(this, 0, 400, "cloud", onAddTower),
+      new TowerSelector(this, 0, 500, "vertical", onAddTower),
+      new TowerSelector(this, 0, 600, "expand", onAddTower),
+      new TowerSelector(this, 0, 700, "area", onAddTower)
     ]
     this.hud.addSelectors(this.selectors)
     setTimeout(() => this.hud.buttonBar.access.replay.onClick = () => this.createMap(), 0)
