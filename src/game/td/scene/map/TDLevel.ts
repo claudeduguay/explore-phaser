@@ -20,6 +20,6 @@ export default function generateMap(scene: Scene, hud: Scene,
   const points = map.getPathPoints()
   const curve = createCurve(points)
 
-  const timeline = makeTimeline(scene, hud, health, credits, enemyGroup, previewGroup, mapOrigin, curve, 0)
+  const timeline = makeTimeline(scene, hud, health, credits, enemyGroup, previewGroup, curve, 0)
   return { map, points, timeline }
 }

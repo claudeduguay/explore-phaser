@@ -1,5 +1,4 @@
 import { Curves, GameObjects, Scene, Time } from "phaser"
-import Point from "../../../../util/geom/Point"
 import TDEnemy from "../../entity/enemy/TDEnemy"
 import { ENEMY_INDEX } from "../../entity/model/IEnemyModel"
 import TDPlayScene from "../TDPlayScene"
@@ -32,11 +31,10 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction:
 // Add an enemy to the main path (add/remove in group)
 export function addMainPathFollower(key: string, scene: Scene,
   health: ObservableValue<number>, credits: ObservableValue<number>,
-  enemyGroup: GameObjects.Group, origin: Point, path: Curves.Path, duration: number, delay: number) {
+  enemyGroup: GameObjects.Group, path: Curves.Path, duration: number, delay: number) {
   let wasDestroyed = false // onComplete triggers even if destroyed, track status
-  const model = ENEMY_INDEX[key]
-  const enemy = scene.add.enemy(0, 0, model, path, true)
-  enemy.barContainer.visible = false
+  const enemy = scene.add.enemy(0, 0, ENEMY_INDEX[key], path, true)
+  // enemy.barContainer.visible = false
   enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
     enemyGroup.remove(enemy, true, true)
     if (model) {
@@ -59,7 +57,6 @@ export function addMainPathFollower(key: string, scene: Scene,
     repeat: 0,
     rotateToPath: true,
     onStart: () => {
-      enemy.barContainer.visible = true
       enemyGroup.add(enemy)
     },
     onComplete: () => {
@@ -80,10 +77,7 @@ export function addMainPathFollower(key: string, scene: Scene,
 
 // Add preview follower to the proview path, reset timeline after last is finished
 export function addPreviewFollower(key: string, scene: Scene, previewGroup: GameObjects.Group, path: Curves.Path, timeline: Time.Timeline, duration: number, isLast: boolean, twin: TDEnemy) {
-  const model = ENEMY_INDEX[key]
-  const enemy = scene.add.enemy(0, 0, model, path, false)
-
-  enemy.visible = false
+  const enemy = scene.add.enemy(0, 0, ENEMY_INDEX[key], path, false)
   twin.twin = enemy // Track this enemy from it's twin
   twin.addListener("died", ({ x, y, model }: TDEnemy) => {
     previewGroup.remove(enemy, true, true)
@@ -98,7 +92,6 @@ export function addPreviewFollower(key: string, scene: Scene, previewGroup: Game
     repeat: 0,
     rotateToPath: false,
     onStart: () => {
-      enemy.visible = true
       previewGroup.add(enemy)
     },
     onComplete: () => {
@@ -116,7 +109,7 @@ let previewPath: Curves.Path
 export function makeTimeline(scene: Scene, hud: Scene,
   health: ObservableValue<number>, credits: ObservableValue<number>,
   enemyGroup: GameObjects.Group, previewGroup: GameObjects.Group,
-  origin: Point, mainPath: Curves.Path, offset: number = 0) {
+  mainPath: Curves.Path, offset: number = 0) {
   enemyGroup.clear()
   const prefixFraction = 0.15
   const suffixFraction = 0.15
@@ -134,7 +127,7 @@ export function makeTimeline(scene: Scene, hud: Scene,
   const timeline = scene.add.timeline({})
   // Build parameterized run timeline entries for both paths
   const run = (key: string, isLast: boolean = false) => () => {
-    const twin = addMainPathFollower(key, scene, health, credits, enemyGroup, origin, mainPath, mainDuration, mainDelay)
+    const twin = addMainPathFollower(key, scene, health, credits, enemyGroup, mainPath, mainDuration, mainDelay)
     // const preview = 
     addPreviewFollower(key, hud, previewGroup, previewPath, timeline, previewDuration, isLast, twin)
   }
