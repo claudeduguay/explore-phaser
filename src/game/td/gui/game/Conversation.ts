@@ -1,6 +1,6 @@
 import { Scene } from "phaser";
 import { Label } from "../Label";
-import { HAlign, HBoxLayout, VAlign, VBoxLayout } from "../layout/ILayout";
+import { HAlign, VBoxLayout } from "../layout/ILayout";
 import Panel from "../Panel";
 import Point from "../../../../util/geom/Point";
 import { box } from "../../../../util/geom/Box";

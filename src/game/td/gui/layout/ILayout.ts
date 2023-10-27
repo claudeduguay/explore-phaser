@@ -101,7 +101,7 @@ export class HBoxLayout extends AbstractLayout implements ILayout {
     let offset = this.margin.x1
     const max = this.computeMaximum(children)
     children.forEach((child, i) => {
-      if (hasSize(child)) {
+      if (hasBounds(child)) {
         Display.Bounds.SetLeft(child, offset)
         switch (this.align) {
           case VAlign.Middle:
@@ -135,7 +135,7 @@ export class VBoxLayout extends AbstractLayout implements ILayout {
     let offset = this.margin.y1
     const max = this.computeMaximum(children)
     children.forEach((child, i) => {
-      if (hasSize(child)) {
+      if (hasBounds(child)) {
         switch (this.align) {
           case HAlign.Center:
             Display.Bounds.SetCenterX(child, this.margin.y1 + max.w / 2)
