@@ -8,8 +8,8 @@ import ObservableValue from "../../value/ObservableValue";
 
 export default function generateMap(scene: Scene, hud: Scene,
   health: ObservableValue<number>, credits: ObservableValue<number>,
-  enemyGroup: GameObjects.Group, mapOrigin: Point,
-  prunePath: boolean = true) {
+  enemyGroup: GameObjects.Group, previewGroup: GameObjects.Group,
+  mapOrigin: Point, prunePath: boolean = true) {
 
   const config: IMapConfig = DEFAULT_CONFIG
 
@@ -20,6 +20,6 @@ export default function generateMap(scene: Scene, hud: Scene,
   const points = map.getPathPoints()
   const curve = createCurve(points)
 
-  makeTimeline(scene, hud, health, credits, enemyGroup, mapOrigin, curve, 0)
-  return { map, points }
+  const timeline = makeTimeline(scene, hud, health, credits, enemyGroup, previewGroup, mapOrigin, curve, 0)
+  return { map, points, timeline }
 }

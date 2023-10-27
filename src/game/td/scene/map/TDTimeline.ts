@@ -39,8 +39,8 @@ export function addMainPathFollower(key: string, scene: Scene,
   enemy.barContainer.visible = false
   enemy.visible = false
   enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
-    enemy.destroy()
     enemyGroup.remove(enemy)
+    enemy.destroy()
     if (model) {
       credits.value += (model.stats.value || 0)
       TDPlayScene.createExplosionSprite(scene, x, y)
@@ -84,12 +84,14 @@ export function addMainPathFollower(key: string, scene: Scene,
 }
 
 // Add preview follower to the proview path, reset timeline after last is finished
-export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path, timeline: Time.Timeline, duration: number, isLast: boolean, twin: TDEnemy) {
+export function addPreviewFollower(key: string, scene: Scene, previewGroup: GameObjects.Group, path: Curves.Path, timeline: Time.Timeline, duration: number, isLast: boolean, twin: TDEnemy) {
   const model = ENEMY_INDEX[key]
   const enemy = scene.add.enemy(0, 0, model, path, false)
+
   enemy.visible = false
   twin.twin = enemy // Track this enemy from it's twin
   twin.addListener("died", ({ x, y, model }: TDEnemy) => {
+    previewGroup.remove(enemy)
     enemy.destroy()
     enemy.removeListener("died")
   })
@@ -103,21 +105,25 @@ export function addPreviewFollower(key: string, scene: Scene, path: Curves.Path,
     rotateToPath: false,
     onStart: () => {
       enemy.visible = true
+      previewGroup.add(enemy)
     },
     onComplete: () => {
+      previewGroup.remove(enemy)
       enemy.destroy()
       if (isLast) {
         setTimeout(() => timeline.reset(), 1000)
       }
     }
   })
+  return enemy
 }
 
 let previewPath: Curves.Path
 
 export function makeTimeline(scene: Scene, hud: Scene,
   health: ObservableValue<number>, credits: ObservableValue<number>,
-  enemyGroup: GameObjects.Group, origin: Point, mainPath: Curves.Path, offset: number = 0) {
+  enemyGroup: GameObjects.Group, previewGroup: GameObjects.Group,
+  origin: Point, mainPath: Curves.Path, offset: number = 0) {
   enemyGroup.clear()
   const prefixFraction = 0.15
   const suffixFraction = 0.15
@@ -136,7 +142,8 @@ export function makeTimeline(scene: Scene, hud: Scene,
   // Build parameterized run timeline entries for both paths
   const run = (key: string, isLast: boolean = false) => () => {
     const twin = addMainPathFollower(key, scene, health, credits, enemyGroup, origin, mainPath, mainDuration, mainDelay)
-    addPreviewFollower(key, hud, previewPath, timeline, previewDuration, isLast, twin)
+    // const preview = 
+    addPreviewFollower(key, hud, previewGroup, previewPath, timeline, previewDuration, isLast, twin)
   }
 
   const config: Phaser.Types.Time.TimelineEventConfig[] = []
@@ -145,12 +152,17 @@ export function makeTimeline(scene: Scene, hud: Scene,
     const lastGroup = index === waves.length - 1
     for (let i = 0; i < group.count; i++) {
       const lastEntry = i === group.count - 1
-      config.push({ at: group.offset + group.spacing * i, run: run(group.key, lastGroup && lastEntry) })
+      config.push({
+        at: group.offset + group.spacing * i,
+        run: run(group.key, lastGroup && lastEntry)
+      })
     }
   })
   timeline.add(config)
 
   timeline.play()
+
+  return timeline
 }
 
 export function buildSummary(scene: Scene, x: number, y: number, w: number, h: number, waves = defaultWaveModel()) {

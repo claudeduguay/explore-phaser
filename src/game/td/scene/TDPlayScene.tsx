@@ -1,5 +1,5 @@
 
-import { Scene, Utils, Math as PMath, Input, Geom } from "phaser"
+import { Scene, Utils, Math as PMath, Input, Geom, GameObjects, Time } from "phaser"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../entity/tower/TDTower"
 import TDGameScene from "./TDGameScene"
@@ -33,9 +33,11 @@ export default class TDPlayScene extends Scene {
   credits = new ObservableValue(0)
   towerGroup!: SelectableGroup<TDTower>
   enemyGroup!: SelectableGroup<TDEnemy>
+  previewGroup!: GameObjects.Group
   selectors: TowerSelector[] = []
   hud!: TDHUDScene
   map!: TDTileMap
+  timeline!: Time.Timeline
   addingTower?: TDTower
 
   mapOrigin = new Point(0, 0)
@@ -107,6 +109,8 @@ export default class TDPlayScene extends Scene {
     this.enemyGroup.infoVisible.value = false
     addReactNode(this, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
       w + 5, 75, w - 350 - 20, 75, this.enemyGroup.infoVisible, true)
+
+    this.previewGroup = new GameObjects.Group(this)
 
     // >>> ZOOM HANDLER <<<
     this.input.on(Input.Events.POINTER_WHEEL, (pointer: Input.Pointer, over: any, deltaX: number, deltaY: number, deltaZ: number) => {
@@ -209,9 +213,18 @@ export default class TDPlayScene extends Scene {
   }
 
   createMap() {
-    const { map, points } = generateMap(this, this.hud,
-      this.health, this.credits, this.enemyGroup, this.mapOrigin)
+    if (this.timeline) {
+      this.timeline.stop()
+      this.previewGroup.clear(true, true)
+      this.enemyGroup.clear(true, true)
+      this.towerGroup.clear(true, true)
+      this.health.value = 100
+      this.credits.value = 0
+    }
+    const { map, points, timeline } = generateMap(this, this.hud,
+      this.health, this.credits, this.enemyGroup, this.previewGroup, this.mapOrigin)
     this.map = map
+    this.timeline = timeline
     const showSpriteSheet = false
     if (showSpriteSheet) {
       const g = this.add.graphics()
