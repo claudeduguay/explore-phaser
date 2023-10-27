@@ -19,7 +19,6 @@ import TowerSelector from "./TowerSelector"
 import TDHUDScene from "./TDHUDScene"
 import { TDTileMap } from "./map/TDTileMap"
 import { generatePathAdjacentPositions } from "./map/TDPath"
-import { ValidateTransitions } from "../../../util/StateMachine"
 // import Conversation from "../gui/Conversation"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
