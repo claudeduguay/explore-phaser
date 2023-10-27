@@ -20,6 +20,7 @@ import TDHUDScene from "./TDHUDScene"
 import { TDTileMap } from "./map/TDTileMap"
 import { generatePathAdjacentPositions } from "./map/TDPath"
 import Conversation from "../gui/game/Conversation"
+import TowerPlacement from "./TowerPlacement"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -172,24 +173,18 @@ export default class TDPlayScene extends Scene {
     // ADD TOWER MECHANICS
     // ------------------------------------------------------------------
 
-    const onAddTower = (model: ITowerModel) => {
-      this.addingTower = this.add.tower(this.input.x, this.input.y, model)
-      if (this.addingTower) {
-        this.addingTower.preview = true
-        this.addingTower.showRange.visible = true
-        this.towerGroup.select(undefined)
-      }
-    }
+    const placement = new TowerPlacement(this, this.hud, this.map, this.towerGroup)
+    this.add.existing(placement)
 
     // Need to capture onAddTower in play scene
     this.selectors = [
-      new TowerSelector(this, 0, 100, "eject", onAddTower),
-      new TowerSelector(this, 0, 200, "beam", onAddTower),
-      new TowerSelector(this, 0, 300, "spray", onAddTower),
-      new TowerSelector(this, 0, 400, "cloud", onAddTower),
-      new TowerSelector(this, 0, 500, "vertical", onAddTower),
-      new TowerSelector(this, 0, 600, "expand", onAddTower),
-      new TowerSelector(this, 0, 700, "area", onAddTower)
+      new TowerSelector(this, 0, 100, "eject", placement.onAddTower),
+      new TowerSelector(this, 0, 200, "beam", placement.onAddTower),
+      new TowerSelector(this, 0, 300, "spray", placement.onAddTower),
+      new TowerSelector(this, 0, 400, "cloud", placement.onAddTower),
+      new TowerSelector(this, 0, 500, "vertical", placement.onAddTower),
+      new TowerSelector(this, 0, 600, "expand", placement.onAddTower),
+      new TowerSelector(this, 0, 700, "area", placement.onAddTower)
     ]
     this.hud.addSelectors(this.selectors)
     setTimeout(() => this.hud.buttonBar.access.replay.onClick = () => this.createMap(), 0)
@@ -248,43 +243,6 @@ export default class TDPlayScene extends Scene {
     const addSemiRandomTowers = true
     if (addSemiRandomTowers) {
       this.generateSemiRandomTowers(points)
-    }
-  }
-
-
-  update(time: number, delta: number): void {
-    if (this.addingTower) {
-      const x = PMath.Snap.Floor(this.input.x - this.mapOrigin.x, 64) + 32 + this.mapOrigin.x
-      const y = PMath.Snap.Floor(this.input.y - this.mapOrigin.y, 64) + 32 + this.mapOrigin.y
-      const pos = new Point(x, y)
-      if (!this.input.mousePointer.isDown) {
-        this.input.setDefaultCursor("none")
-
-        // Highlight invalid positions
-        if (this.map.checkCollision(pos)) {
-          this.addingTower.platform.setTint(0xff0000)
-        } else {
-          this.addingTower.platform.clearTint()
-        }
-        this.addingTower.setPosition(x, y)
-      } else {
-        this.input.setDefaultCursor("default")
-        if (this.addingTower.platform.isTinted) {
-          this.addingTower.destroy()
-          if (this.sound.get("fail")) {
-            this.sound.play("fail")
-          }
-        } else {
-          this.towerGroup.add(this.addingTower)
-          this.map.addTowerMarkAt(pos)
-          this.addingTower.preview = false
-          if (this.sound.get("plop")) {
-            this.sound.play("plop")
-          }
-        }
-        this.addingTower.showRange.visible = false
-        this.addingTower = undefined
-      }
     }
   }
 }
