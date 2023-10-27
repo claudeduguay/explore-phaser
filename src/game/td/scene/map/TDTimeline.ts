@@ -37,7 +37,6 @@ export function addMainPathFollower(key: string, scene: Scene,
   const model = ENEMY_INDEX[key]
   const enemy = scene.add.enemy(0, 0, model, path, true)
   enemy.barContainer.visible = false
-  enemy.visible = false
   enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
     enemyGroup.remove(enemy, true, true)
     if (model) {
@@ -61,7 +60,6 @@ export function addMainPathFollower(key: string, scene: Scene,
     rotateToPath: true,
     onStart: () => {
       enemy.barContainer.visible = true
-      enemy.visible = true
       enemyGroup.add(enemy)
     },
     onComplete: () => {

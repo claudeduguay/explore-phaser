@@ -26,8 +26,8 @@ export default class TDHUDScene extends Scene {
     // IMPORTANT: this.add is not available in constructor, so we use create() 
 
     // Value monitors (left)
-    this.add.existing(new ValueMonitor(this, 10, 5, 0xe87d, "red", this.health))
-    this.add.existing(new ValueMonitor(this, 120, 5, 0xe227, "green", this.credits))
+    this.add.existing(new ValueMonitor(this, 10, 7, 0xe87d, "red", this.health))
+    this.add.existing(new ValueMonitor(this, 120, 7, 0xe227, "green", this.credits))
 
     const onToggleTowerPreview = () => {
       if (this.scene.isActive("tower_preview")) {

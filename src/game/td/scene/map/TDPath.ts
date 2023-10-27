@@ -58,7 +58,7 @@ export function generatePathAdjacentPositions(scene: Scene, pathPoints: Point[])
   const EAST = new Point(64, 0)
   const NORTH = new Point(0, -64)
   const SOUTH = new Point(0, 64)
-  const inRange = ({ x, y }: Point) => x > 0 && x < w - 64 * 2 && y > 64 && y < h - 64 * 2
+  const inRange = ({ x, y }: Point) => x > 64 && x < w - 64 && y > 64 && y < h - 64
   const pointSet = new Set<string>(pathPoints.map(p => p.toKey()))
   const towerSet = new Set<string>()
   const positions: Point[] = []

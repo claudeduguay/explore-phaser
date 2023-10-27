@@ -10,11 +10,11 @@ export default class IconLabel extends GameObjects.Container {
     super(scene, x, y)
     const g = scene.add.graphics()
     g.fillStyle(0x000000, 0.5)
-    g.fillRect(0, 0, 100, 35)
+    g.fillRect(0, 0, 100, 30)
     this.add(g)
-    this.icon = scene.add.icon(0, 2, iconCode, { color: iconColor, fontSize: 26, align: "right" })
+    this.icon = scene.add.icon(0, 2, iconCode, { color: iconColor, fontSize: 24, align: "right" })
     this.add(this.icon)
-    this.label = scene.add.label(36, 0, labelText)
+    this.label = scene.add.label(36, 1, labelText)
     this.add(this.label)
   }
 }

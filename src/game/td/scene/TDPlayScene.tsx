@@ -128,6 +128,8 @@ export default class TDPlayScene extends Scene {
         const zoom = this.cameras.main.zoom
         this.cameras.main.setZoom(Math.max(0.25, zoom * 0.5))
       }
+      // this.cameras.main.startFollow(pointer)
+      // this.cameras.main.stopFollow()
     })
 
     // Clear selections when clicked outside info panel or tower selector
