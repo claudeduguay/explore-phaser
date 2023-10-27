@@ -35,7 +35,7 @@ export function makePanelTextures(scene: Scene) {
     size,
     options: {
       ...blue,
-      color: ["#CC0000", "#990000"],
+      color: ["#996666", "#663333"],
       colorBox: BOX.TO_SE,
     }
   })
@@ -43,7 +43,7 @@ export function makePanelTextures(scene: Scene) {
     size,
     options: {
       ...blue,
-      color: ["#00CC00", "#009900"],
+      color: ["#669966", "#336633"],
       colorBox: BOX.TO_SE,
     }
   })
@@ -51,7 +51,7 @@ export function makePanelTextures(scene: Scene) {
     size,
     options: {
       ...blue,
-      color: ["#0000CC", "#000099"],
+      color: ["#666699", "#333366"],
       colorBox: BOX.TO_SE,
     }
   })
@@ -59,7 +59,7 @@ export function makePanelTextures(scene: Scene) {
     size,
     options: {
       ...blue,
-      color: ["#00CCCC", "#009999"],
+      color: ["#669999", "#336666"],
       colorBox: BOX.TO_SE,
     }
   })
@@ -67,7 +67,7 @@ export function makePanelTextures(scene: Scene) {
     size,
     options: {
       ...blue,
-      color: ["#CC00CC", "#990099"],
+      color: ["#996699", "#663366"],
       colorBox: BOX.TO_SE,
     }
   })
@@ -75,7 +75,7 @@ export function makePanelTextures(scene: Scene) {
     size,
     options: {
       ...blue,
-      color: ["#CCCC00", "#999900"],
+      color: ["#999966", "#666633"],
       colorBox: BOX.TO_SE,
     }
   })

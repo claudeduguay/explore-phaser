@@ -13,6 +13,7 @@ export default class IconButton extends Button {
     super(scene, x, y, w, h, "", stylePrefix, onClick)
     this.icon = scene.add.icon(0, 4, icon, ICON_STYLE).setOrigin(0.5)
     this.add(this.icon)
+    this.setSize(this.icon.width, this.icon.height)
   }
 
   setIcon(code: string | number) {

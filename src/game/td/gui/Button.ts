@@ -69,9 +69,9 @@ export function makeButtonTextures(scene: Scene) {
   const blue: Partial<IPlatformOptions> = {
     type: "box",
     margin: box(0),
-    inset: box(0.15),
+    inset: box(0.1),
     corners: corners("curve-o"),
-    color: ["#000099", "#000033"],
+    color: ["#666699", "#333366"],
   }
   makePlatform(scene, "blue-button", {
     size,

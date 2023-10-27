@@ -4,6 +4,11 @@ import Point, { IPointLike } from "../../../../util/geom/Point";
 type GetBounds = GameObjects.Components.GetBounds
 type Size = GameObjects.Components.Size
 
+export interface IMax {
+  w: number,
+  h: number
+}
+
 export interface ILayout {
   apply(container: GameObjects.Container): void
 }
@@ -17,8 +22,8 @@ export function hasBackground(child: GameObjects.GameObject): child is GameObjec
   return hasBounds(child) && "background" in child && "setSize" in child
 }
 
-export function hasBounds(child: GameObjects.GameObject): child is GameObjects.GameObject & GetBounds {
-  return "getBounds" in child
+export function hasBounds(child: GameObjects.GameObject): child is GameObjects.GameObject & GetBounds & Size {
+  return "getBounds" in child && hasSize(child)
 }
 
 export interface ISize {
@@ -38,9 +43,26 @@ export abstract class AbstractLayout implements ILayout {
     }
   }
 
+  computeMaximum(children: GameObjects.GameObject[]): IMax {
+    const max = { w: 0, h: 0 }
+    for (let child of children) {
+      if (hasBounds(child)) {
+        const bounds = child.getBounds()
+        if (bounds.width > max.w) {
+          max.w = bounds.width
+        }
+        if (bounds.height > max.h) {
+          max.h = bounds.height
+        }
+      }
+    }
+    return max
+  }
+
   resizeBackground(container: GameObjects.Container, max: { w: number, h: number }) {
     if (hasBackground(container)) {
-      // const b = container.getBounds()
+      const b = container.getBounds()
+      console.log("Bounds:", b, ", Max:", max)
       if (hasSize(container.background)) {
         container.background.setSize(max.w, max.h)
       }
@@ -56,38 +78,47 @@ export abstract class AbstractLayout implements ILayout {
   abstract doLayout(container: GameObjects.Container, children: GameObjects.GameObject[]): ISize
 }
 
+export enum VAlign {
+  Top = "top",
+  Middle = "middle",
+  Bottom = "bottom"
+}
+
+export enum HAlign {
+  Left = "left",
+  Center = "center",
+  Right = "right"
+}
 
 export class HBoxLayout extends AbstractLayout implements ILayout {
 
   constructor(gap: IPointLike = new Point(), public margin: IBox = box(10),
-    public align: "top" | "middle" | "bottom" = "middle") {
+    public align: VAlign = VAlign.Middle) {
     super(gap, margin)
   }
 
   doLayout(container: GameObjects.Container, children: GameObjects.GameObject[]): ISize {
     let offset = this.margin.x1
-    const max = { w: 0, h: 0 }
+    const max = this.computeMaximum(children)
     children.forEach((child, i) => {
-      if (hasBounds(child)) {
-        const bounds = child.getBounds()
-        if (bounds.height > max.h) {
-          max.h = bounds.height
-        }
+      if (hasSize(child)) {
         Display.Bounds.SetLeft(child, offset)
         switch (this.align) {
-          case "middle":
-            Display.Bounds.SetCenterY(child, this.margin.y1)
+          case VAlign.Middle:
+            Display.Bounds.SetCenterY(child, this.margin.y1 + max.h / 2)
             break
-          case "bottom":
-            Display.Bounds.SetBottom(child, this.margin.y1)
+          case VAlign.Bottom:
+            Display.Bounds.SetBottom(child, this.margin.y1 + max.h)
             break
           default:
             Display.Bounds.SetTop(child, this.margin.y1)
         }
-        offset += child.getBounds().width + this.gap.x
+        offset += child.width + this.gap.x
       }
     })
-    max.w = offset
+    // Max is repurposed to reflect container target size
+    max.h += (this.margin.y1 + this.margin.y2)
+    max.w = offset + this.margin.x2
     return max
   }
 }
@@ -96,34 +127,35 @@ export class HBoxLayout extends AbstractLayout implements ILayout {
 export class VBoxLayout extends AbstractLayout implements ILayout {
 
   constructor(gap: IPointLike = new Point(), public margin: IBox = box(10),
-    public align: "left" | "center" | "right" = "left") {
+    public align: HAlign = HAlign.Left) {
     super(gap, margin)
   }
 
   doLayout(container: GameObjects.Container, children: GameObjects.GameObject[]): ISize {
     let offset = this.margin.y1
-    const max = { w: 0, h: 0 }
+    const max = this.computeMaximum(children)
     children.forEach((child, i) => {
-      if (hasBounds(child)) {
-        const bounds = child.getBounds()
-        if (bounds.width > max.w) {
-          max.w = bounds.width
-        }
+      if (hasSize(child)) {
         switch (this.align) {
-          case "center":
-            Display.Bounds.SetCenterX(child, this.margin.y1)
+          case HAlign.Center:
+            Display.Bounds.SetCenterX(child, this.margin.y1 + max.w / 2)
             break
-          case "right":
-            Display.Bounds.SetRight(child, this.margin.y1)
+          case HAlign.Right:
+            Display.Bounds.SetRight(child, this.margin.y1 + max.w)
             break
           default:
             Display.Bounds.SetLeft(child, this.margin.x1)
         }
         Display.Bounds.SetTop(child, offset)
-        offset += child.getBounds().height + this.gap.y
+        if (i === children.length - 1) {
+          console.log("Last child height:", child.height)
+        }
+        offset += child.height + this.gap.y
       }
     })
-    max.h = offset
+    // Max is repurposed to reflect container target size
+    max.w += (this.margin.x1 + this.margin.x2)
+    max.h = offset + this.margin.y2
     return max
   }
 }

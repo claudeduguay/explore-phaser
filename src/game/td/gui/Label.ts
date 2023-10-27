@@ -6,7 +6,7 @@ export const DEFAULT_FONT_FAMILY = "Geneva, Verdana, sans-serif"
 export const DEFAULT_STYLE: Types.GameObjects.Text.TextStyle = {
   fontFamily: DEFAULT_FONT_FAMILY,
   fontSize: 18,
-  padding: { x: 5, y: 5 },
+  padding: { x: 2, y: 2 },
   color: "white",
   align: "left",
   // backgroundColor: "rgba(255, 255, 255, 0.25)"
