@@ -39,8 +39,7 @@ export function addMainPathFollower(key: string, scene: Scene,
   enemy.barContainer.visible = false
   enemy.visible = false
   enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
-    enemyGroup.remove(enemy)
-    enemy.destroy()
+    enemyGroup.remove(enemy, true, true)
     if (model) {
       credits.value += (model.stats.value || 0)
       TDPlayScene.createExplosionSprite(scene, x, y)
@@ -67,8 +66,7 @@ export function addMainPathFollower(key: string, scene: Scene,
     },
     onComplete: () => {
       if (!wasDestroyed) {
-        enemy.destroy()
-        enemyGroup.remove(enemy)
+        enemyGroup.remove(enemy, true, true)
         if (health.value > 1) {
           health.value -= 1
         } else {
@@ -79,7 +77,6 @@ export function addMainPathFollower(key: string, scene: Scene,
       }
     },
   })
-  enemyGroup.add(enemy)
   return enemy
 }
 
@@ -91,8 +88,7 @@ export function addPreviewFollower(key: string, scene: Scene, previewGroup: Game
   enemy.visible = false
   twin.twin = enemy // Track this enemy from it's twin
   twin.addListener("died", ({ x, y, model }: TDEnemy) => {
-    previewGroup.remove(enemy)
-    enemy.destroy()
+    previewGroup.remove(enemy, true, true)
     enemy.removeListener("died")
   })
   enemy.startFollow({
@@ -108,8 +104,7 @@ export function addPreviewFollower(key: string, scene: Scene, previewGroup: Game
       previewGroup.add(enemy)
     },
     onComplete: () => {
-      previewGroup.remove(enemy)
-      enemy.destroy()
+      previewGroup.remove(enemy, true, true)
       if (isLast) {
         setTimeout(() => timeline.reset(), 1000)
       }

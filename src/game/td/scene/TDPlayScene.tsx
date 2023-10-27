@@ -215,6 +215,7 @@ export default class TDPlayScene extends Scene {
   createMap() {
     if (this.timeline) {
       this.timeline.stop()
+      this.timeline.destroy()
       this.previewGroup.clear(true, true)
       this.enemyGroup.clear(true, true)
       this.towerGroup.clear(true, true)
