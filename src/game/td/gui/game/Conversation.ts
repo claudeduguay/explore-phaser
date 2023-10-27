@@ -1,5 +1,9 @@
-import { Scene, GameObjects } from "phaser";
+import { Scene } from "phaser";
 import { Label } from "../Label";
+import { HAlign, HBoxLayout, VAlign, VBoxLayout } from "../layout/ILayout";
+import Panel from "../Panel";
+import Point from "../../../../util/geom/Point";
+import { box } from "../../../../util/geom/Box";
 
 export interface IConversationModel {
   title: string
@@ -24,32 +28,41 @@ export const DEFAULT_CONVERSATION: IConversationModel = {
   ]
 }
 
-export default class Conversation extends GameObjects.Container {
+export default class Conversation extends Panel {
 
   constructor(scene: Scene, x: number, y: number, public w: number, public h: number,
     public conversation = DEFAULT_CONVERSATION) {
-    super(scene, x, y)
-    const panel = scene.add.panel(0, 0, w, h, "blue")
-    this.add(panel)
+    super(scene, x, y, 0, 0, "cyan")
+
     const header = new Label(scene, w / 2, 12, conversation.title, {
       fontSize: 24,
       fontFamily: "Arial",
-
+      padding: { x: 0, y: 5 }
     }).setOrigin(0.5, 0)
     this.add(header)
     this.add(scene.add.text(10, 25 + header.getBounds().height, conversation.content, {
       fontFamily: "Arial",
+      fontSize: 18,
       wordWrap: {
         width: w - 20,
         useAdvancedWrap: true
       },
       lineSpacing: 5,
       padding: { x: 10, y: 10 },
-      backgroundColor: "rgba(99, 99, 99, 0.5)"
+      backgroundColor: "rgba(99, 99, 99, 0.5)",
     }))
-    conversation.options.forEach((o, i) => {
-      this.add(scene.add.button(95 + 170 * i, h - 30, 150, 30, o.text, "green"))
+    // const optionsContainer = scene.add.container(-w / 2, 0)
+    // this.add(optionsContainer)
+    conversation.options.forEach((option, i) => {
+      const button = scene.add.button(0, 0, w - 20, 34, option.text, "green")
+      // const button = scene.add.button(0, 0, w / conversation.options.length - 20, 34, option.text, "green")
+      // optionsContainer.add(button)
+      this.add(button)
     })
+    // const optionsLayout = new HBoxLayout(new Point(10, 12), box(10), VAlign.Middle)
+    // optionsLayout.apply(optionsContainer)
+    const layout = new VBoxLayout(new Point(10, 12), box(10), HAlign.Center)
+    layout.apply(this)
   }
 
 }

@@ -19,7 +19,7 @@ import TowerSelector from "./TowerSelector"
 import TDHUDScene from "./TDHUDScene"
 import { TDTileMap } from "./map/TDTileMap"
 import { generatePathAdjacentPositions } from "./map/TDPath"
-// import Conversation from "../gui/Conversation"
+import Conversation from "../gui/game/Conversation"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -181,13 +181,13 @@ export default class TDPlayScene extends Scene {
 
     // Need to capture onAddTower in play scene
     this.selectors = [
-      new TowerSelector(this, 0, 100, "eject", onAddTower),
-      new TowerSelector(this, 0, 200, "beam", onAddTower),
-      new TowerSelector(this, 0, 300, "spray", onAddTower),
-      new TowerSelector(this, 0, 400, "cloud", onAddTower),
-      new TowerSelector(this, 0, 500, "vertical", onAddTower),
-      new TowerSelector(this, 0, 600, "expand", onAddTower),
-      new TowerSelector(this, 0, 700, "area", onAddTower)
+      new TowerSelector(this.hud, 0, 100, "eject", onAddTower),
+      new TowerSelector(this.hud, 0, 200, "beam", onAddTower),
+      new TowerSelector(this.hud, 0, 300, "spray", onAddTower),
+      new TowerSelector(this.hud, 0, 400, "cloud", onAddTower),
+      new TowerSelector(this.hud, 0, 500, "vertical", onAddTower),
+      new TowerSelector(this.hud, 0, 600, "expand", onAddTower),
+      new TowerSelector(this.hud, 0, 700, "area", onAddTower)
     ]
     this.hud.addSelectors(this.selectors)
     setTimeout(() => this.hud.buttonBar.access.replay.onClick = () => this.createMap(), 0)
@@ -203,8 +203,9 @@ export default class TDPlayScene extends Scene {
     // addMaterialIcon(this, 150, 75, 0xe227, 64, "green")
     // addMaterialIcon(this, 250, 75, 0xe88a, 64, "blue")
 
-    // const conversation = new Conversation(this, 200, 570, 700, 200)
-    // this.add.existing(conversation)
+    const conversation = new Conversation(this, 200, 570, 700, 200)
+    conversation.y = 750 - conversation.getBounds().height
+    // this.hud.add.existing(conversation)
 
   }
 

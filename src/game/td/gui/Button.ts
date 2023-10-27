@@ -101,7 +101,7 @@ export function makeButtonTextures(scene: Scene) {
     margin: box(0),
     inset: box(0.15),
     corners: corners("curve-o"),
-    color: ["#009900", "#003300"],
+    color: ["#669966", "#336633"],
   }
   makePlatform(scene, "green-button", {
     size,
