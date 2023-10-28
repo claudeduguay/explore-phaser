@@ -31,7 +31,7 @@ export interface IActiveValues {
 export default class TDPlayScene extends Scene {
 
   health = new ObservableValue(100)
-  credits = new ObservableValue(0)
+  credits = new ObservableValue(200)
   towerGroup!: SelectableGroup<TDTower>
   enemyGroup!: SelectableGroup<TDEnemy>
   previewGroup!: GameObjects.Group
@@ -219,7 +219,7 @@ export default class TDPlayScene extends Scene {
       this.enemyGroup.clear(true, true)
       this.towerGroup.clear(true, true)
       this.health.value = 100
-      this.credits.value = 0
+      this.credits.value = 200
     }
     const { map, points, timeline } = generateMap(this, this.hud,
       this.health, this.credits, this.enemyGroup, this.previewGroup, this.mapOrigin)

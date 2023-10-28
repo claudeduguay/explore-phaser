@@ -23,9 +23,6 @@ export default class BaseTargeCloudBehavior implements IBehavior {
     if (!this.cloud) {
       this.emitterConfig = this.emitter(this.tower.model.stats.range, this.tower)
       this.cloud = this.tower.scene.add.particles(0, 0, this.key, this.emitterConfig)
-      if (this.emitterConfig.frequency === -1) {
-        this.cloud.explode(0, 0, 0)
-      }
       this.cloud.stop()
       // Push effect behind the tower
       if (this.tower instanceof GameObjects.Container) {
@@ -34,10 +31,11 @@ export default class BaseTargeCloudBehavior implements IBehavior {
       }
     }
     if (this.tower.targeting.current.length) {
-      if (this.emitterConfig.frequency === -1 && time % 2000 < (1000 / 60)) {
-        console.log("Emit explosion")
-        this.cloud?.explode(50, 0, 0)
-      }
+      // Not currently used
+      // if (this.emitterConfig.frequency === -1 && time % 2000 < (1000 / 60)) {
+      //   console.log("Emit explosion")
+      //   this.cloud?.explode(50, 0, 0)
+      // }
       this.cloud?.start()
       const defaultBuilder: IDamageEffectBuilder = (enemy: TDEnemy) => new InRangeDamageEffect(this.tower, enemy, "")
       const effectBuilder: IDamageEffectBuilder = this.effect || defaultBuilder
