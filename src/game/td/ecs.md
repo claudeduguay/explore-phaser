@@ -26,27 +26,55 @@ Store a component ID with an array of associated EntityObject (GameObject) insta
 we want to find all the EntityObjects that have all of the given component IDs.
 
 ```typescript
-const entityMap = new Map<ComponentID, EntityObject[]>()
-function query(componentIDs: number[]) {
-  const found: number[] = entityMap.get(componentIDs[0])
-  for (let i = 1; i < componentIDs>; i++) {
-    const next = new Set(entityMap.get(componentIDs[i]))  // Use a set to speed up the comparison
-    results = results.filter(x => next.has(x))  // Keep only those entries that match the previous found entities
+// Can't use filter on a set, converting to an array may be too expensive.
+// Also array.filter creates a new array, so this is likely to be comparable.
+function filterSet<T>(set: Set<T>, filter: (e: T) => boolean) {
+  const matches = new Set<T>()
+  set.forEach(item => {
+    if (filter(item)) {
+      matches.add(item)
+    }
+  })
+  return matches
+}
+
+type EntityID = string | number
+type ComponentID = string | number
+
+const entityMap = new Map<ComponentID, Set<EntityID>>()
+
+// Add a component to the specified entity
+function addComponent(entityID: EntityID, componentID: ComponentID) {
+  if (!entityMap.has(componentID)) {
+    entityMap.set(componentID, new Set<EntityID>())
   }
-  return results
+  entityMap.get(componentID).add(entityID)
+}
+
+// Get all entities that have the specified components
+function query(componentIDs: ComponentID[]): Set<EntityID> {
+  let found: Set<EntityID> = entityMap.get(componentIDs[0])
+  for (let i = 1; i < componentIDs>; i++) {
+    const next = entityMap.get(componentIDs[i])
+    // Keep only those entries that match the previously found entities
+    found = filterSet(found, entity => next.has(entity)) 
+    // Found should be ever smaller as the conjunction iterates
+  }
+  return found
 }
 ```
 
-The overhead to this approach is that we are creating new Sets from the remaining 
-arrays, after the first, and the cost of filter-comparison across the result set.
-A set compares by reference-matching and so is very fast and worth constructing. 
-However, the filtered (found) list with continue to get smaller on every pass and
-may be performant enough as a result.
-
-ComponentID can be a property name used in the Phaser data system used to store
-structured component data.
+The overhead to this approach is that we are creating new Set for each filter
+operation, though the same would be try for an array filter a such an operation
+is not in-place. We only need to filter after the first componentID. A set
+compares by reference-matching and so is very fast when filtering. The filtered
+(found) set with continue to get smaller on every pass and may be quit
+performant like this.
 
 ## Phaser DataManager
+
+ComponentID can be a name property used in the Phaser data system to store
+structured component data.
 
 The Phaser [DataManager](https://newdocs.phaser.io/docs/3.60.0/Phaser.Data.DataManager)
 supports a ```set``` method to initialy register a data property and emits a "setdata"
@@ -66,3 +94,14 @@ The latter application is a bit unclear.
 
 DataManager [Events](https://newdocs.phaser.io/docs/3.60.0/Phaser.Data.Events)
 are documented in the referenced module.
+
+## BitMapping Approach?
+
+Consider using BigInt to map a single bit for every defined Component in order 
+to find matches more efficiently? A system would then check for the presence of a
+given collection of Components by matching the corresponding bits. Of course,
+if we had to iterate through all entries, this would still be inefficient but 
+the BitInt values could be placed in a suitable structure for fast lookup. That
+said, the matching may still degrate to the same as a linear search and would
+only be more efficient by virtue of the faster integer matching.
+
