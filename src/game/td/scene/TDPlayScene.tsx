@@ -91,35 +91,69 @@ export default class TDPlayScene extends Scene {
     // machine.transitionTo("home")
     // machine.transitionTo("next")
 
-    // INIT HUD SCENE (Note: WE WANT TO ENCAPSULATE CHILDREN AND MOVE THEM INTO THIS SCENE)
-    this.hud = new TDHUDScene(this.main, this.health, this.credits)
-    this.scene.add("hud", this.hud)
-    this.scene.launch("hud")
-
-    const { w } = sceneSize(this)
     // this.lights.addPointLight(-w / 2, -h / 2, 0xffffff, Math.max(w, h) * 2, 2, 0.01)
     // console.log("Added lights:", this.lights.lights)
 
-    // Tower Info
-    this.towerGroup = new SelectableGroup(this, "towerGroup")
-    // @ts-ignore
-    this.physics.add.existing(this.towerGroup)
-    const onCloseTowerInfo = () => this.towerGroup.infoVisible.value = false
-    addReactNode(this, <TowerInfo scene={this} tower={this.towerGroup.selected} onClose={onCloseTowerInfo} />,
-      -400, 75, 45, 75, this.towerGroup.infoVisible, true)
+    // INIT HUD SCENE (Note: WE WANT TO ENCAPSULATE CHILDREN AND MOVE THEM INTO THIS SCENE)
+    this.hud = new TDHUDScene(this)
+    this.scene.add("hud", this.hud)
+    this.scene.launch("hud")
 
-    // Enemy Info
-    this.enemyGroup = new SelectableGroup(this, "enemyGroup")
-    // @ts-ignore
-    this.physics.add.existing(this.enemyGroup)
-    const onCloseEnemyInfo = () => this.enemyGroup.infoVisible.value = false
-    // Enemies are created as the timeline moves, so we can't take the first entry of the group
-    this.enemyGroup.infoVisible.value = false
-    addReactNode(this, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={onCloseEnemyInfo} />,
-      w + 5, 75, w - 350 - 20, 75, this.enemyGroup.infoVisible, true)
+    this.initGroupsAndInfoViews()
+    this.initInputEventHandlers()
 
+    this.createMap()
+
+    // Detect Collisions between tower and enemy group members
+    connectTowerEnemyCollisionDetection(this, this.towerGroup, this.enemyGroup)
+
+
+    // ------------------------------------------------------------------
+    // ADD TOWER PLACEMENT MECHANICS
+    // ------------------------------------------------------------------
+
+    // Must be after map was created
+    const placement = new TowerPlacement(this, this.hud, this.map, this.towerGroup)
+    this.add.existing(placement)
+    this.selectors = this.hud.addSelectors(placement)
+    // Set click function on next frame
+    setTimeout(() => this.hud.buttonBar.access.replay.onClick = () => this.createMap(), 0)
+
+
+    // ------------------------------------------------------------------
+    // TEST CONTENT
+    // ------------------------------------------------------------------
+
+    // addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
+
+    // addMaterialIcon(this, 50, 75, 0xe87d, 64, "red")
+    // addMaterialIcon(this, 150, 75, 0xe227, 64, "green")
+    // addMaterialIcon(this, 250, 75, 0xe88a, 64, "blue")
+
+    const conversation = new Conversation(this, 200, 570, 700, 200)
+    conversation.y = 750 - conversation.getBounds().height
+    // this.hud.add.existing(conversation)
+
+  }
+
+  initGroupsAndInfoViews() {
+    const { w } = sceneSize(this)
+
+    // Used for Peep cleanup on replay events
     this.previewGroup = new GameObjects.Group(this)
 
+    // Tower Group/Info
+    this.towerGroup = new SelectableGroup(this, "towerGroup")
+    addReactNode(this, <TowerInfo scene={this} tower={this.towerGroup.selected} onClose={this.towerGroup.onCloseInfo} />,
+      -400, 75, 45, 75, this.towerGroup.infoVisible, true)
+
+    // Enemy Group/Info
+    this.enemyGroup = new SelectableGroup(this, "enemyGroup")
+    addReactNode(this, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={this.enemyGroup.onCloseInfo} />,
+      w + 5, 75, w - 350 - 20, 75, this.enemyGroup.infoVisible, true)
+  }
+
+  initInputEventHandlers() {
     // >>> ZOOM HANDLER <<<
     this.input.on(Input.Events.POINTER_WHEEL, (pointer: Input.Pointer, over: any, deltaX: number, deltaY: number, deltaZ: number) => {
       if (deltaY < 0) {
@@ -144,6 +178,7 @@ export default class TDPlayScene extends Scene {
         }
       })
     })
+
     // Close selectors and EnemyInfo if TowerInfo is opened
     this.towerGroup.infoVisible.addListener("changed", (value: boolean) => {
       if (value) {
@@ -153,6 +188,7 @@ export default class TDPlayScene extends Scene {
         })
       }
     })
+
     // Close selectors and TowerInfo if EnemyInfo is opened
     this.enemyGroup.infoVisible.addListener("changed", (value: boolean) => {
       if (value) {
@@ -162,48 +198,6 @@ export default class TDPlayScene extends Scene {
         })
       }
     })
-
-    this.createMap()
-
-    // Detect Collisions between tower and enemy group members
-    connectTowerEnemyCollisionDetection(this, this.towerGroup, this.enemyGroup)
-
-
-    // ------------------------------------------------------------------
-    // ADD TOWER MECHANICS
-    // ------------------------------------------------------------------
-
-    const placement = new TowerPlacement(this, this.hud, this.map, this.towerGroup)
-    this.add.existing(placement)
-
-    // Need to capture onAddTower in play scene
-    this.selectors = [
-      new TowerSelector(this, 0, 100, "eject", placement.onAddTower),
-      new TowerSelector(this, 0, 200, "beam", placement.onAddTower),
-      new TowerSelector(this, 0, 300, "spray", placement.onAddTower),
-      new TowerSelector(this, 0, 400, "cloud", placement.onAddTower),
-      new TowerSelector(this, 0, 500, "vertical", placement.onAddTower),
-      new TowerSelector(this, 0, 600, "expand", placement.onAddTower),
-      new TowerSelector(this, 0, 700, "area", placement.onAddTower)
-    ]
-    this.hud.addSelectors(this.selectors)
-    setTimeout(() => this.hud.buttonBar.access.replay.onClick = () => this.createMap(), 0)
-
-
-    // ------------------------------------------------------------------
-    // TEST CONTENT
-    // ------------------------------------------------------------------
-
-    // addReactNode(this, 50, 50, <ButtonTreeExample width={w - 100} height={h - 100} />)
-
-    // addMaterialIcon(this, 50, 75, 0xe87d, 64, "red")
-    // addMaterialIcon(this, 150, 75, 0xe227, 64, "green")
-    // addMaterialIcon(this, 250, 75, 0xe88a, 64, "blue")
-
-    const conversation = new Conversation(this, 200, 570, 700, 200)
-    conversation.y = 750 - conversation.getBounds().height
-    // this.hud.add.existing(conversation)
-
   }
 
   generateSemiRandomTowers(points: Point[], count: number = 5) {

@@ -14,8 +14,13 @@ export default class SelectableGroup<T extends ISelectable> extends Physics.Arca
   infoVisible = new ObservableValue<boolean>(false)
   selected = new ObservableValue<T | undefined>(undefined)
 
+  onCloseInfo = () => this.infoVisible.value = false
+
   constructor(scene: Scene, key: string) {
     super(scene.physics.world, scene, { key })
+    // @ts-ignore
+    scene.physics.add.existing(this)
+
   }
 
   add(child: ISelectable, addToScene?: boolean) {

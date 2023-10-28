@@ -1,6 +1,4 @@
 import { Scene } from "phaser";
-import TDGameScene from "./TDGameScene";
-import ObservableValue from "../value/ObservableValue";
 import SpeedBar from "../gui/game/SpeedBar";
 import ValueMonitor from "../gui/game/ValueMonitor";
 import ButtonBar from "../gui/game/ButtonBar";
@@ -8,6 +6,8 @@ import TowerPreview from "../entity/tower/TowerPreview";
 import GUIPreview from "../gui/GUIPreview";
 import TreePreview from "../tree/TreePreview";
 import TowerSelector from "./TowerSelector";
+import TowerPlacement from "./TowerPlacement";
+import TDPlayScene from "./TDPlayScene";
 
 export default class TDHUDScene extends Scene {
   buttonBar!: ButtonBar
@@ -16,9 +16,7 @@ export default class TDHUDScene extends Scene {
   treePreview!: TreePreview
   guiPreview!: GUIPreview
 
-  constructor(public readonly main: TDGameScene,
-    public health: ObservableValue<number>,
-    public credits: ObservableValue<number>) {
+  constructor(public readonly playScene: TDPlayScene) {
     super("hud")
   }
 
@@ -26,8 +24,8 @@ export default class TDHUDScene extends Scene {
     // IMPORTANT: this.add is not available in constructor, so we use create() 
 
     // Value monitors (left)
-    this.add.existing(new ValueMonitor(this, 10, 7, 0xe87d, "red", this.health))
-    this.add.existing(new ValueMonitor(this, 120, 7, 0xe227, "green", this.credits))
+    this.add.existing(new ValueMonitor(this, 10, 7, 0xe87d, "red", this.playScene.health))
+    this.add.existing(new ValueMonitor(this, 120, 7, 0xe227, "green", this.playScene.credits))
 
     const onToggleTowerPreview = () => {
       if (this.scene.isActive("tower_preview")) {
@@ -72,11 +70,21 @@ export default class TDHUDScene extends Scene {
     this.add.existing(this.buttonBar)
   }
 
-  addSelectors(selectors: TowerSelector[]) {
-    this.selectors = selectors
-    for (let selector of selectors) {
-      selector.group = selectors
+  addSelectors(placement: TowerPlacement) {
+    // Need to capture onAddTower in play scene
+    this.selectors = [
+      new TowerSelector(this.playScene, 0, 100, "eject", placement.onAddTower),
+      new TowerSelector(this.playScene, 0, 200, "beam", placement.onAddTower),
+      new TowerSelector(this.playScene, 0, 300, "spray", placement.onAddTower),
+      new TowerSelector(this.playScene, 0, 400, "cloud", placement.onAddTower),
+      new TowerSelector(this.playScene, 0, 500, "vertical", placement.onAddTower),
+      new TowerSelector(this.playScene, 0, 600, "expand", placement.onAddTower),
+      new TowerSelector(this.playScene, 0, 700, "area", placement.onAddTower)
+    ]
+    for (let selector of this.selectors) {
+      selector.group = this.selectors
       this.add.existing(selector)
     }
+    return this.selectors
   }
 }
