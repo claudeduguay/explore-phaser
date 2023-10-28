@@ -1,4 +1,4 @@
-import { GameObjects, Input, Scene } from "phaser";
+import { GameObjects, Input, Scene, Types } from "phaser";
 import { makePlatform } from "../assets/TextureFactory";
 import { IPlatformOptions, corners } from "../assets/PlatformFactory";
 import { BOX, box } from "../../../util/geom/Box";
@@ -14,7 +14,7 @@ export default class Button extends GameObjects.Container {
   label?: GameObjects.Text
 
   constructor(scene: Scene, x: number, y: number, public w: number, public h: number,
-    public text?: string, public stylePrefix: string = "blue", public onClick?: () => void) {
+    public text?: string, public stylePrefix: string = "blue", public onClick?: (event?: Types.Input.EventData) => void) {
     super(scene, x, y)
     this.background = scene.add.nineslice(0, 0, makeKey(stylePrefix, "button"),
       undefined, w, h, 16, 16, 16, 16)
@@ -29,10 +29,10 @@ export default class Button extends GameObjects.Container {
     }
 
     this.background.setInteractive()
-    this.background.on(Input.Events.POINTER_DOWN, this.onButtonPress)
-    this.background.on(Input.Events.POINTER_OVER, this.onButtonHover)
-    this.background.on(Input.Events.POINTER_UP, this.onButtonNormal)
-    this.background.on(Input.Events.POINTER_OUT, this.onButtonNormal)
+    this.background.on(Input.Events.GAMEOBJECT_POINTER_DOWN, this.onButtonPress)
+    this.background.on(Input.Events.GAMEOBJECT_POINTER_OVER, this.onButtonHover)
+    this.background.on(Input.Events.GAMEOBJECT_POINTER_UP, this.onButtonNormal)
+    this.background.on(Input.Events.GAMEOBJECT_POINTER_OUT, this.onButtonNormal)
   }
 
   setLabelColor(color: string) {
@@ -47,10 +47,10 @@ export default class Button extends GameObjects.Container {
     }
   }
 
-  onButtonPress = () => {
+  onButtonPress = (pointer: Input.Pointer, x: number, y: number, event: Types.Input.EventData) => {
     this.background.setTexture(makeKey(this.stylePrefix, "button-pressed"))
     this.setLabelColor("#33FF33")
-    this.onClick?.()
+    this.onClick?.(event)
   }
 
   onButtonHover = () => {

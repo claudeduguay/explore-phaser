@@ -61,8 +61,8 @@ export abstract class AbstractLayout implements ILayout {
 
   resizeBackground(container: GameObjects.Container, max: { w: number, h: number }) {
     if (hasBackground(container)) {
-      const b = container.getBounds()
-      console.log("Bounds:", b, ", Max:", max)
+      // const b = container.getBounds()
+      // console.log("Bounds:", b, ", Max:", max)
       if (hasSize(container.background)) {
         container.background.setSize(max.w, max.h)
       }
@@ -148,7 +148,7 @@ export class VBoxLayout extends AbstractLayout implements ILayout {
         }
         Display.Bounds.SetTop(child, offset)
         if (i === children.length - 1) {
-          console.log("Last child height:", child.height)
+          // console.log("Last child height:", child.height)
         }
         offset += child.height + this.gap.y
       }
