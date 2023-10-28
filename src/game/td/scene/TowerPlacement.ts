@@ -27,7 +27,6 @@ export default class TowerPlacement extends GameObjects.GameObject {
   }
 
   preUpdate(time: number, delta: number): void {
-    console.log("Update tick")
     const input = this.playScene.input
     if (this.addingTower) {
       const x = PMath.Snap.Floor(input.x, 64) + 32

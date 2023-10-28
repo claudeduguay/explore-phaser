@@ -324,7 +324,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     group: "eject",
     name: "Bullet",
     description: "Fires bullets at a single enemy within range.",
-    locked: true,
+    locked: false,
     meta: {
       distribution: "linear",
       rotation: "target",

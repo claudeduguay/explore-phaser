@@ -46,8 +46,8 @@ export default class TreePreview extends Scene {
     sequenceFor(root, spray)
     sequenceFor(root, cloud)
     sequenceFor(root, fall)
-    sequenceFor(root, area)
     sequenceFor(root, expand)
+    sequenceFor(root, area)
 
     const nodeKeySet = [...sampleTree.edges.entries()].reduce((prev, [node, children]) => {
       prev.add(node)
@@ -68,7 +68,7 @@ export default class TreePreview extends Scene {
 
     const drawSurface = new PhaserDrawSurface(this)
     const treeLayout = new TreeLayout(sampleTree, drawSurface, layoutTarget)
-    treeLayout.margin = new Point(150, 150)
+    treeLayout.margin = new Point(150, 90)
     treeLayout.doLayout()
   }
 }
