@@ -33,17 +33,9 @@ export default class TowerPlacement extends GameObjects.GameObject {
       const x = PMath.Snap.Floor(input.x, 64) + 32
       const y = PMath.Snap.Floor(input.y, 64) + 32
       const pos = new Point(x, y)
-      if (!input.mousePointer.isDown) {
-        input.setDefaultCursor("none")
 
-        // Highlight invalid positions
-        if (this.map.checkCollision(pos)) {
-          this.addingTower.platform.setTint(0xff0000)
-        } else {
-          this.addingTower.platform.clearTint()
-        }
-        this.addingTower.setPosition(x, y)
-      } else {
+      if (input.mousePointer.isDown) {
+        // PLOP IF ON VALID POSITION
         input.setDefaultCursor("default")
         if (this.addingTower.platform.isTinted) {
           this.addingTower.destroy()
@@ -60,6 +52,17 @@ export default class TowerPlacement extends GameObjects.GameObject {
         }
         this.addingTower.showRange.visible = false
         this.addingTower = undefined
+      } else {
+        // DRAGGING
+        input.setDefaultCursor("none")
+
+        // Highlight invalid positions
+        if (this.map.checkCollision(pos)) {
+          this.addingTower.platform.setTint(0xff0000)
+        } else {
+          this.addingTower.platform.clearTint()
+        }
+        this.addingTower.setPosition(x, y)
       }
     }
   }
