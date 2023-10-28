@@ -1,9 +1,8 @@
-import { GameObjects, Scene } from "phaser";
+import { GameObjects } from "phaser";
 import IconButton from "../IconButton";
 import ILayout, { HBoxLayout } from "../layout/ILayout";
 import Button from "../Button";
 import TDGameScene from "../../scene/TDGameScene";
-import TDPlayScene from "../../scene/TDPlayScene";
 import TDHUDScene from "../../scene/TDHUDScene";
 
 const ICON_HOME = 0xe88a
