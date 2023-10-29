@@ -15,11 +15,11 @@ export default class TowerSelector extends GameObjects.Container {
   _isOpen = false
 
   constructor(scene: Scene, x: number, y: number, public credits: ObservableValue<number>,
-    public name: string, onAddTower: (model: ITowerModel) => void) {
+    public machineName: string, onAddTower: (model: ITowerModel) => void) {
     super(scene, x, y)
-    this.bar = new TowerSelectorBar(scene, 30, 0, this, TOWER_GROUPS[name], onAddTower)
+    this.bar = new TowerSelectorBar(scene, 30, 0, this, TOWER_GROUPS[machineName], onAddTower)
     this.add(this.bar)
-    this.button = new Button(scene, 15, 0, 100, 30, entitle(name), "flat", this.onToggle)
+    this.button = new Button(scene, 15, 0, 100, 30, entitle(machineName), "flat", this.onToggle)
     this.button.angle = 270
     this.add(this.button)
     this.bar.x = this.button.getBounds().width - this.bar.getBounds().width

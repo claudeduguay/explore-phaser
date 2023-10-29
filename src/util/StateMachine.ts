@@ -7,9 +7,18 @@ export interface IState {
 }
 
 export enum ValidateTransitions {
-  None,
-  Error,
-  Log
+  IGNORE,
+  CONSOLE,
+  ERROR,
+}
+
+export enum TraceTransitons {
+  NONE = 0,
+  ON_ENTER = 0b001,
+  ON_EXIT = 0b010,
+  ON_TRANSITION = 0x011,
+  ON_UPDATE = 0b100,
+  ON_ALL = 0b111
 }
 
 export default class StateMachine extends GameObjects.GameObject {
@@ -23,8 +32,9 @@ export default class StateMachine extends GameObjects.GameObject {
   stateQueue: string[] = []
 
   constructor(scene: Scene,
-    public name: string = "State Machine",
-    public validateTransitions = ValidateTransitions.None) {
+    public machineName: string = "State Machine",
+    public validateTransitions = ValidateTransitions.IGNORE,
+    public traceTransitions = TraceTransitons.NONE) {
     super(scene, "statemachine")
   }
 
@@ -69,15 +79,15 @@ export default class StateMachine extends GameObjects.GameObject {
     }
 
     // If validateTransisions is not None, check that source->target is valid
-    if (this.validateTransitions !== ValidateTransitions.None && this.currentState) {
+    if (this.validateTransitions !== ValidateTransitions.IGNORE && this.currentState) {
       const targets = this.validTransitions.get(this.currentState)
       if (!targets?.has(name)) {
-        const message = `Invalid transition in ${this.name} from "${this.currentState}" to "${name}".`
-        if (this.validateTransitions === ValidateTransitions.Error) {
-          throw new Error(message)
-        }
-        if (this.validateTransitions === ValidateTransitions.Log) {
+        const message = `Invalid transition in ${this.machineName} from "${this.currentState}" to "${name}".`
+        if (this.validateTransitions === ValidateTransitions.CONSOLE) {
           console.error(message)
+        }
+        if (this.validateTransitions === ValidateTransitions.ERROR) {
+          throw new Error(message)
         }
       }
     }
@@ -95,6 +105,9 @@ export default class StateMachine extends GameObjects.GameObject {
     if (this.currentState) {
       const state = this.states.get(this.currentState)
       if (state?.onExit) {
+        if (this.hasTraceFlag(TraceTransitons.ON_EXIT)) {
+          console.log(`Execute onExit in  ${this.machineName} for "${this.currentState}"`)
+        }
         state.onExit()
       }
     }
@@ -102,14 +115,21 @@ export default class StateMachine extends GameObjects.GameObject {
     // Set currentState to the new state name
     this.currentState = name
 
-    // If currentState has an onEnter, call it
+    // If currentState has an onExit, call it
     const state = this.states.get(this.currentState)
     if (state?.onEnter) {
+      if (this.hasTraceFlag(TraceTransitons.ON_ENTER)) {
+        console.log(`Execute onEnter in  ${this.machineName} for "${name}"`)
+      }
       state.onEnter()
     }
 
     // Clear flag that we are inside a transition
     this.inTransition = false
+  }
+
+  hasTraceFlag(flag: TraceTransitons) {
+    return (this.traceTransitions & flag) === flag
   }
 
   preUpdate(time: number, delta: number) {
@@ -120,20 +140,26 @@ export default class StateMachine extends GameObjects.GameObject {
       }
       return
     }
+
     if (this.currentState) {
       const state = this.states.get(this.currentState)
       if (state?.onUpdate) {
+        if (this.hasTraceFlag(TraceTransitons.ON_UPDATE)) {
+          console.log(`Execute onUpdate in  ${this.machineName} for "${this.currentState}"`)
+        }
         state.onUpdate(time, delta)
       }
     }
   }
-
 }
 
 export function registerStateMachineFactory() {
   GameObjects.GameObjectFactory.register("statemachine",
-    function (this: GameObjects.GameObjectFactory, name?: string, validateTransitions?: ValidateTransitions): StateMachine {
-      const stateMachine = new StateMachine(this.scene, name, validateTransitions)
+    function (this: GameObjects.GameObjectFactory,
+      machineName?: string,
+      validateTransitions?: ValidateTransitions,
+      traceTransitions?: TraceTransitons): StateMachine {
+      const stateMachine = new StateMachine(this.scene, machineName, validateTransitions, traceTransitions)
       this.updateList.add(stateMachine)
       return stateMachine
     }
