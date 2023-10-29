@@ -1,15 +1,17 @@
-import { sceneSize } from "../../../../util/SceneUtil"
+import { Scene } from "phaser"
+import { sceneSize, transitionTo } from "../../../../util/SceneUtil"
 import ClickButton from "./buttons/ClickButton"
 import INavigator from "./INavigator"
 
 export interface IGameLoseProps {
+  scene: Scene
   navigator: INavigator
 }
 
-export default function GameLose({ navigator }: IGameLoseProps) {
+export default function GameLose({ scene, navigator }: IGameLoseProps) {
   const { w, h } = sceneSize(navigator)
-  const onReplay = () => navigator.transitionTo("play", "lose")
-  const onHome = () => navigator.transitionTo("home")
+  const onReplay = () => transitionTo(scene, "play")
+  const onHome = () => transitionTo(scene, "home")
   return <div className="d-flex justify-content-center align-items-center" style={{ width: w, height: h, background: "black" }}>
     <div className="p-2 text-white container">
       <div className="p-2">

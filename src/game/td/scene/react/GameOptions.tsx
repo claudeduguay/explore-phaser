@@ -1,18 +1,18 @@
 import { useState } from "react"
 import ClickButton from "./buttons/ClickButton"
 import INavigator from "./INavigator"
-import { sceneSize } from "../../../../util/SceneUtil"
+import { sceneSize, transitionTo } from "../../../../util/SceneUtil"
+import { Scene } from "phaser"
 
 export interface IGameOptionsProps {
+  scene: Scene
   navigator: INavigator
 }
 
-export default function GameOptions({ navigator }: IGameOptionsProps) {
+export default function GameOptions({ scene, navigator }: IGameOptionsProps) {
   const { w, h } = sceneSize(navigator)
   const [muted, setMuted] = useState<boolean>(navigator.mute)
-  const onHome = () => {
-    navigator.transitionTo("home", "options")
-  }
+  const onHome = () => transitionTo(scene, "home")
   const onMute = () => {
     navigator.mute = !navigator.mute
     setMuted(navigator.mute)

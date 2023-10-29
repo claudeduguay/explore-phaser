@@ -8,6 +8,7 @@ import INavigator from "./react/INavigator"
 import TDMapsScene from "./TDLevelScene"
 import TDOptionsScene from "./TDOptionsScene"
 import preloadAssets from "./PreloadAssets"
+import { transitionTo } from "../../../util/SceneUtil"
 
 export default class TDGameScene extends Scene implements INavigator {
 
@@ -45,25 +46,28 @@ export default class TDGameScene extends Scene implements INavigator {
     // console.log("this.sound.mute=", this.sound.mute, value)
   }
 
-  transitionTo(target: string, sleep?: string): Scene {
-    // this.cameras.main.once("camerafadeoutcomplete", (camera: Cameras.Scene2D.Camera) => {
-    //   console.log("Faded out")
-    // })
-    // this.cameras.main.fadeOut(1000, 0, 0, 0)
-    if (sleep) {
-      this.scene.sleep(sleep)
-    }
-    this.scene.transition({
-      target,
-      duration: 1000
-    })
-    // if (this.cameras.main) {
-    //   this.cameras.main.fadeIn(1000)
-    // }
-    // console.log(`Transition to ${target}`)
-    return this
-  }
-
-  update(time: number, delta: number): void {
+  transitionTo(target: string, sleep?: string) {
+    transitionTo(this, target)
   }
 }
+//     // this.cameras.main.once("camerafadeoutcomplete", (camera: Cameras.Scene2D.Camera) => {
+//     //   console.log("Faded out")
+//     // })
+//     // this.cameras.main.fadeOut(1000, 0, 0, 0)
+//     if (sleep) {
+//       this.scene.sleep(sleep)
+//     }
+//     this.scene.transition({
+//       target,
+//       duration: 1000
+//     })
+//     // if (this.cameras.main) {
+//     //   this.cameras.main.fadeIn(1000)
+//     // }
+//     // console.log(`Transition to ${target}`)
+//     return this
+//   }
+
+//   update(time: number, delta: number): void {
+//   }
+// }

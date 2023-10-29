@@ -11,6 +11,6 @@ export default class TDMapsScene extends Scene {
   }
 
   create() {
-    addReactNode(this, <GameLevels navigator={this.main} />, 0, -800, 0, 0)
+    addReactNode(this, <GameLevels scene={this} navigator={this.main} />, 0, -800, 0, 0)
   }
 }

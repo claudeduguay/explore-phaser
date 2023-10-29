@@ -1,5 +1,5 @@
 
-import { Scene, Utils, Input, Geom, GameObjects, Time } from "phaser"
+import { Scene, Utils, Input, Geom, GameObjects, Time, Scenes } from "phaser"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../entity/tower/TDTower"
 import TDGameScene from "./TDGameScene"
@@ -99,6 +99,16 @@ export default class TDPlayScene extends Scene {
     this.scene.add("hud", this.hud)
     this.scene.launch("hud")
 
+    this.events.on(Scenes.Events.TRANSITION_WAKE, () => {
+      console.log(`Wake "play", activate "hud".`)
+      console.log("HUD:", this.scene.get("hud"))
+      this.scene.wake("hud")
+      this.scene.bringToTop("hud")
+    })
+    // this.events.on(Scenes.Events.TRANSITION_OUT, () => {
+    //   console.log(`Leaving "play", deactivate "hud".`)
+    //   this.scene.sleep("hud")
+    // })
     this.initGroupsAndInfoViews()
     this.initInputEventHandlers()
 
@@ -145,7 +155,7 @@ export default class TDPlayScene extends Scene {
     // Tower Group/Info
     this.towerGroup = new SelectableGroup(this, "towerGroup")
     addReactNode(this, <TowerInfo scene={this} tower={this.towerGroup.selected} onClose={this.towerGroup.onCloseInfo} />,
-      -400, 75, 45, 75, this.towerGroup.infoVisible, true)
+      - 400, 75, 45, 75, this.towerGroup.infoVisible, true)
 
     // Enemy Group/Info
     this.enemyGroup = new SelectableGroup(this, "enemyGroup")

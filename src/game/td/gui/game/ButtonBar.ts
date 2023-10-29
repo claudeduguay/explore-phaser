@@ -4,6 +4,7 @@ import ILayout, { HBoxLayout } from "../layout/ILayout";
 import Button from "../Button";
 import TDGameScene from "../../scene/TDGameScene";
 import TDHUDScene from "../../scene/TDHUDScene";
+import { transitionTo } from "../../../../util/SceneUtil";
 
 const ICON_HOME = 0xe88a
 const ICON_HAPPY = 0xe813
@@ -38,19 +39,17 @@ export default class ButtonBar extends GameObjects.Container {
     this.layout = new HBoxLayout()
     this.layout.apply(this)
 
-    const mainScene = scene.playScene.main as TDGameScene
-
-    this.access.home.onClick = () => mainScene.transitionTo("home", "game")
+    this.access.home.onClick = () => transitionTo(scene, "home")
     this.access.win.onClick = () => {
-      const target = mainScene.transitionTo("win", "game")
-      if (target.sound.get("win")) {
-        target.sound.play("win")
+      transitionTo(scene, "win")
+      if (scene.sound.get("win")) {
+        scene.sound.play("win")
       }
     }
     this.access.lose.onClick = () => {
-      const target = mainScene.transitionTo("lose", "game")
-      if (target.sound.get("lose")) {
-        target.sound.play("lose")
+      transitionTo(scene, "lose")
+      if (scene.sound.get("lose")) {
+        scene.sound.play("lose")
       }
     }
 

@@ -1,23 +1,19 @@
-import { sceneSize } from "../../../../util/SceneUtil"
+import { Scene } from "phaser"
+import { sceneSize, transitionTo } from "../../../../util/SceneUtil"
 import ClickButton from "./buttons/ClickButton"
 import INavigator from "./INavigator"
 
 export interface IGameHomeProps {
+  scene: Scene
   navigator: INavigator
 }
 
-export default function GameHeader({ navigator }: IGameHomeProps) {
+export default function GameHeader({ scene, navigator }: IGameHomeProps) {
   const { w, h } = sceneSize(navigator)
 
-  const onPlay = () => {
-    navigator.transitionTo("play", "home")
-  }
-  const onLevels = () => {
-    navigator.transitionTo("maps", "home")
-  }
-  const onOptions = () => {
-    navigator.transitionTo("options", "home")
-  }
+  const onPlay = () => transitionTo(scene, "play")
+  const onLevels = () => transitionTo(scene, "maps")
+  const onOptions = () => transitionTo(scene, "options")
   return <div className="d-flex justify-content-center align-items-center" style={{ width: w, height: h, background: "black" }}>
     <div className="p-2 text-white container">
       <div className="p-2">

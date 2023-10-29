@@ -1,15 +1,17 @@
-import { sceneSize } from "../../../../util/SceneUtil"
+import { Scene } from "phaser"
+import { sceneSize, transitionTo } from "../../../../util/SceneUtil"
 import ClickButton from "./buttons/ClickButton"
 import INavigator from "./INavigator"
 
 export interface IGameWinProps {
+  scene: Scene
   navigator: INavigator
 }
 
-export default function GameWin({ navigator }: IGameWinProps) {
+export default function GameWin({ scene, navigator }: IGameWinProps) {
   const { w, h } = sceneSize(navigator)
-  const onReplay = () => navigator.transitionTo("play", "win")
-  const onHome = () => navigator.transitionTo("home", "win")
+  const onReplay = () => transitionTo(scene, "play")
+  const onHome = () => transitionTo(scene, "home")
   return <div className="d-flex justify-content-center align-items-center" style={{ width: w, height: h, background: "black" }}>
     <div className="p-2 text-white container">
       <div className="p-2">

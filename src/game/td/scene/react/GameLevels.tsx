@@ -1,16 +1,18 @@
 import INavigator from "./INavigator"
 import LevelButton from "./LevelButton"
 import { DEFAULT_CONFIG, IMapConfig } from "../map/TDTileMap"
-import { sceneSize } from "../../../../util/SceneUtil"
+import { sceneSize, transitionTo } from "../../../../util/SceneUtil"
 import { evaluateWaveDifficulty } from "../map/IWaveModel"
 import { ILevelModel, computeHardestWave, computeLongestMap, generateLevel } from "../map/ILevelModel"
 import CloseButton from "./CloseButton"
+import { Scene } from "phaser"
 
 export interface IGameHomeProps {
+  scene: Scene
   navigator: INavigator
 }
 
-export default function GameLevels({ navigator }: IGameHomeProps) {
+export default function GameLevels({ scene, navigator }: IGameHomeProps) {
   const { w, h } = sceneSize(navigator)
   const config: IMapConfig = DEFAULT_CONFIG
   const count = 20
@@ -34,12 +36,8 @@ export default function GameLevels({ navigator }: IGameHomeProps) {
   }
   levels.sort(inverseDifficulty)
 
-  const onPlay = () => {
-    navigator.transitionTo("play", "maps")
-  }
-  const onHome = () => {
-    navigator.transitionTo("home", "maps")
-  }
+  const onPlay = () => transitionTo(scene, "play")
+  const onHome = () => transitionTo(scene, "home")
   return <div className="p-1" style={{ width: w, height: h, background: "black" }} data-bs-theme="dark" >
     <CloseButton onClick={onHome} />
     <h1 className="text-white">Maps by Level</h1>
