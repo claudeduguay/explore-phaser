@@ -99,10 +99,14 @@ export default class TDPlayScene extends Scene {
     this.scene.add("hud", this.hud)
     this.scene.launch("hud")
 
-    // this.events.on(Scenes.Events.TRANSITION_COMPLETE, () => {
-    //   console.log(`>>> Put "hud to sleep" <<<`)
-    //   this.scene.sleep("hud")
-    // })
+    this.hud.events.on(Scenes.Events.SLEEP, () => {
+      console.log(">>> Hud is going to sleep")
+      // this.scene.sleep("play")
+    })
+    this.events.on(Scenes.Events.SLEEP, () => {
+      console.log("Play is going to sleep")
+      this.scene.sleep("hud")
+    })
 
     this.hud.events.on(Scenes.Events.TRANSITION_WAKE, () => {
       console.log(`>>> Wake "hud" <<<`) // Appears not to trigger

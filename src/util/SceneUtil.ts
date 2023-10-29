@@ -20,9 +20,8 @@ export function transitionTo(currentScene: Scene, target: string) {
     console.log(`OnStart: Source is "${currentScene.scene.key}" Target is "${target}"`)
     if (currentScene.scene.key === "play" || currentScene.scene.key === "hud") {
       console.log(`Put "hud" and "play" to sleep`)
+      // currentScene.scene.sleep("hud")  // "hud" does not appear to be going to sleep
       currentScene.scene.sleep("play")
-      currentScene.scene.sleep("hud")  // "hud" does not appear to be going to sleep
-      // setTimeout(() => console.log("Is sleeping:", currentScene.scene.isSleeping("hud")), 500)
     } else {
       console.log(`Put "${currentScene.scene.key}" to sleep`)
       currentScene.scene.sleep(currentScene.scene.key)
