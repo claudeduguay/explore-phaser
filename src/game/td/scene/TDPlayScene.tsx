@@ -106,6 +106,8 @@ export default class TDPlayScene extends Scene {
     this.events.on(Scenes.Events.TRANSITION_WAKE, () => {
       console.log(`Wake "play", activate "hud".`)
       console.log("HUD:", this.scene.get("hud"))
+      // Appears not to be sleeping
+      console.log("HUD is Sleeping:", this.scene.isSleeping("hud"))
       this.scene.wake("hud") // Doesn't seem to trigger TRANSITION_WAKE
       this.scene.bringToTop("hud")
     })

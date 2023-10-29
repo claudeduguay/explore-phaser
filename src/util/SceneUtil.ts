@@ -29,10 +29,6 @@ export function transitionTo(currentScene: Scene, target: string) {
   })
   // currentScene.scene.get("play").events.once(Scenes.Events.TRANSITION_WAKE, () => {
   //   console.log(`Wake "play" activate "hud".`)
-  //   console.log("HUD:", currentScene.scene.get("hud"))
-  //   currentScene.scene.get("hud").events.once(Scenes.Events.TRANSITION_WAKE, () => {
-  //     console.log(`Wake "hud".`)
-  //   })
   //   currentScene.scene.wake("hud")
   //   currentScene.scene.bringToTop("hud")
   // })
