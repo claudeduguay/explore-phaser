@@ -1,15 +1,23 @@
-
-import { Scene } from "phaser"
-import { addReactNode } from "../../../util/DOMUtil"
 import TDGameScene from "./TDGameScene"
-import GameLose from "./react/GameLose"
+import TDNavScene from "./TDNavScene"
+import { transitionTo } from "../../../util/SceneUtil"
 
-export default class TDLoseScene extends Scene {
+export default class TDLoseScene extends TDNavScene {
   constructor(public readonly main: TDGameScene) {
-    super("lose")
+    super("lose", main)
   }
 
   create() {
-    addReactNode(this, <GameLose scene={this} navigator={this.main} />, 0, 0)
+    const onPlay = () => transitionTo(this, "play")
+    const onHome = () => transitionTo(this, "home")
+
+    this.addHeader("You lost!")
+    this.addSubtitle("Keep practicing.")
+    this.addDescription("You'll do better next time.")
+
+    this.addButtons([
+      { title: "Replay", onClick: onPlay },
+      { title: "Home", onClick: onHome }
+    ])
   }
 }

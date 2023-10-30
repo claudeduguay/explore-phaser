@@ -12,6 +12,7 @@ export interface IGameHomeProps {
   navigator: INavigator
 }
 
+// TODO: Need to port to non-React view
 export default function GameLevels({ scene, navigator }: IGameHomeProps) {
   const { w, h } = sceneSize(navigator)
   const config: IMapConfig = DEFAULT_CONFIG

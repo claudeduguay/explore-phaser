@@ -9,6 +9,7 @@ export interface IGameOptionsProps {
   navigator: INavigator
 }
 
+// TODO: Need to port to non-React view
 export default function GameOptions({ scene, navigator }: IGameOptionsProps) {
   const { w, h } = sceneSize(navigator)
   const [muted, setMuted] = useState<boolean>(navigator.mute)
