@@ -48,11 +48,12 @@ There are two primary ways to upgrade:
 
 Major categories:
 
+* **Eject** (projectile weapons) like Bullet, Missile, Grenade (not implemented yet)
 * **Beam** like Lazer, Plasma, Lightning
-* **Throw** (projectile weapons) like Bullet, Missile, Grenade (not implemented yet)
-* **Cloud**, (area emissions) like Poison, Smoke, Fire, Ice, Shock
 * **Spray**, (spray emissions) like Flame and Freeze
-* **Fall**, (vertical fall) like Rain and Snow
+* **Cloud**, (area emissions) like Poison, Smoke, Fire, Ice, Shock
+* **Vertical**, (vertical fall) like Rain and Snow
+* **Expand**, (outward projection) like Spike, Rock
 * **Area**, (buff/debuff) like Boost, Slow
 
 Note that Boost towers affect other Towers and so does't operate on Enemy Targets.
