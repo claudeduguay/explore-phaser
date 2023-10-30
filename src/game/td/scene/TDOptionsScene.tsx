@@ -1,8 +1,6 @@
-
-import { addReactNode } from "../../../util/DOMUtil"
 import TDGameScene from "./TDGameScene"
-import GameOptions from "./react/GameOptions"
 import TDNavScene from "./TDNavScene"
+import { transitionTo } from "../../../util/SceneUtil"
 
 export default class TDOptionsScene extends TDNavScene {
   constructor(public readonly main: TDGameScene) {
@@ -10,7 +8,24 @@ export default class TDOptionsScene extends TDNavScene {
   }
 
   create() {
-    // TODO: Need to port to non-React view
-    addReactNode(this, <GameOptions scene={this} navigator={this.main} />, 0, -800, 0, 0)
+
+    const onHome = () => transitionTo(this, "home")
+    const onMute = () => {
+      this.sound.setMute(!this.sound.mute)
+      if (this.description) {
+        this.description.text = `Muted: ${this.sound.mute}`
+      }
+    }
+
+    this.addHeader("Game Options")
+    this.addSubtitle("You can change settings on this screen.")
+
+    this.addDescription(`Muted: ${this.sound.mute}`)
+
+    this.addButtons([
+      { title: "Toggle Mute", onClick: onMute },
+      { title: "Home", onClick: onHome },
+    ])
+
   }
 }

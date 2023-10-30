@@ -1,5 +1,5 @@
 
-import { Scene } from "phaser"
+import { GameObjects, Scene } from "phaser"
 import TDGameScene from "./TDGameScene"
 import { sceneSize } from "../../../util/SceneUtil"
 
@@ -11,34 +11,38 @@ export interface IButtonSpec {
 }
 
 export default class TDNavScene extends Scene {
+
+  description!: GameObjects.Text
+
   constructor(key: string, public readonly main: TDGameScene) {
     super(key)
   }
 
-  addHeader(title: string) {
+  addHeader(title: string, top: number = 120, fontSize = 96) {
     const { w } = sceneSize(this)
-    this.add.text(w / 2, 120, title, {
+    this.add.text(w / 2, top, title, {
       fontFamily: DEFAULT_FONT_FAMILY,
-      fontSize: 96,
+      fontSize,
       align: "center"
     }).setOrigin(0.5)
   }
 
-  addSubtitle(subtitle: string) {
+  addSubtitle(subtitle: string, top: number = 230) {
     const { w } = sceneSize(this)
-    this.add.text(w / 2, 230, subtitle, {
+    this.add.text(w / 2, top, subtitle, {
       fontFamily: DEFAULT_FONT_FAMILY,
       fontSize: 32,
       align: "center"
     }).setOrigin(0.5)
   }
 
-  addDescription(description: string) {
+  addDescription(description: string, top: number = 320) {
     const { w } = sceneSize(this)
-    this.add.text(w / 2, 300, description, {
+    this.description = this.add.text(w / 2, top, description, {
       fontFamily: DEFAULT_FONT_FAMILY,
       fontSize: 24,
-      align: "center"
+      align: "center",
+      lineSpacing: 6
     }).setOrigin(0.5)
   }
 

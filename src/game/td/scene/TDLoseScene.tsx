@@ -12,8 +12,8 @@ export default class TDLoseScene extends TDNavScene {
     const onHome = () => transitionTo(this, "home")
 
     this.addHeader("You lost!")
-    this.addSubtitle("Keep practicing.")
-    this.addDescription("You'll do better next time.")
+    this.addSubtitle("Keep practicing")
+    this.addDescription("You'll do better next time")
 
     this.addButtons([
       { title: "Replay", onClick: onPlay },

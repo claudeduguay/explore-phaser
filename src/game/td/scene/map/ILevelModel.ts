@@ -7,7 +7,7 @@ export interface ILevelModel {
   waves: IWaveModel
 }
 
-export function generateLevel(rows: number, cols: number) {
+export function generateLevel(rows: number, cols: number): ILevelModel {
   const { path } = generatePath(rows, cols)
   const waves = generateWaves()
   return { path: asPathModel(path), waves }

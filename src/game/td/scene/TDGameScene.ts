@@ -9,6 +9,7 @@ import TDMapsScene from "./TDLevelScene"
 import TDOptionsScene from "./TDOptionsScene"
 import preloadAssets from "./PreloadAssets"
 import { transitionTo } from "../../../util/SceneUtil"
+import TDAboutScene from "./TDAboutScene"
 
 export default class TDGameScene extends Scene implements INavigator {
 
@@ -23,6 +24,7 @@ export default class TDGameScene extends Scene implements INavigator {
     // console.log("Mute:", this.mute)
 
     this.scene.add("home", new TDHomeScene(this), true)
+    this.scene.add("about", new TDAboutScene(this))
     this.scene.add("options", new TDOptionsScene(this))
     this.scene.add("maps", new TDMapsScene(this))
     this.scene.add("play", new TDPlayScene(this))
