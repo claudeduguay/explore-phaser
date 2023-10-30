@@ -67,6 +67,8 @@ export default class TDHUDScene extends Scene {
     this.buttonBar.access.towers.onClick = onToggleTowerPreview
     this.buttonBar.access.tree.onClick = onToggleTreePreview
     this.buttonBar.access.gui.onClick = onToggleGUIPreview
+    this.buttonBar.access.replay.onClick = () => this.playScene.createMap()
+
     this.add.existing(this.buttonBar)
 
     makeTimelinePreviewGraphics(this)

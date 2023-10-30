@@ -18,6 +18,7 @@ Need to account for shields (disabled for now)
 * BUG: Peeps facing direction sometimes oscilates (seems more apparent when slowed)
 * BUG: Adding some towers (clouds, for example) do not automatically enable damage (visual) effects
 * BUG: If Selectors are associated with the hud scene, plops don't work correctly.
+* BUG: On HUD revisit, timeline is not apparently showing peeps
 * IMPROVEMENT: Towers need to ease into aim position, avoid jump turns, maybe return to zero in the same way afterward
 
 ### Effect/Afliction Design Notes

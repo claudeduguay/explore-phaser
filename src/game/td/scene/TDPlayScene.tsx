@@ -96,9 +96,6 @@ export default class TDPlayScene extends Scene {
     this.scene.add("hud", this.hud)
     this.scene.launch("hud")
 
-    // Set click function on next frame to avoid access error
-    setTimeout(() => this.hud.buttonBar.access.replay.onClick = () => this.createMap(), 0)
-
     this.initGroupsAndInfoViews()
     this.initInputEventHandlers()
 
