@@ -68,7 +68,7 @@ export default class TreePreview extends Scene {
 
     const drawSurface = new PhaserDrawSurface(this)
     const treeLayout = new TreeLayout(sampleTree, drawSurface, layoutTarget)
-    treeLayout.margin = new Point(150, 90)
+    treeLayout.margin = new Point(150, 115)
     treeLayout.doLayout()
   }
 }
