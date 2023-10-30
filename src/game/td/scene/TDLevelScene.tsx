@@ -4,7 +4,6 @@ import TDNavScene from "./TDNavScene"
 import { ILevelModel, computeHardestWave, computeLongestMap, generateLevel } from "./map/ILevelModel"
 import { DEFAULT_CONFIG, IMapConfig, TDTileMap } from "./map/TDTileMap";
 import { evaluateWaveDifficulty } from "./map/IWaveModel"
-import { Scene } from "phaser"
 import { sceneSize, transitionTo } from "../../../util/SceneUtil"
 import { buildSummary } from "./map/TDTimeline"
 import Button from "../gui/Button"
