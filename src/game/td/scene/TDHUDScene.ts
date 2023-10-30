@@ -21,15 +21,19 @@ export default class TDHUDScene extends Scene {
     super("hud")
   }
 
-  makeTogglePreviewFunction(scene: Scene, key: string) {
+  makeTogglePreviewFunction(scene: Scene, key: string, previews: string[]) {
+    const sleepIfOther = (other: string) => other !== key && this.scene.sleep(other)
+    const putOthersToSleep = () => previews.forEach(sleepIfOther)
     return () => {
       if (!this.scene.get(key)) {
         this.scene.add(key, scene, true)
+        putOthersToSleep()
         return
       }
       if (this.scene.isActive(key)) {
         this.scene.sleep(key)
       } else {
+        putOthersToSleep()
         this.scene.wake(key)
       }
     }
@@ -42,14 +46,13 @@ export default class TDHUDScene extends Scene {
     this.add.existing(new ValueMonitor(this, 10, 7, 0xe87d, "red", this.playScene.health))
     this.add.existing(new ValueMonitor(this, 120, 7, 0xe227, "green", this.playScene.credits))
 
-    this.towerPreview = new TowerPreview(this, 50, 50)
-    const onToggleTowerPreview = this.makeTogglePreviewFunction(this.towerPreview, "tower_preview")
-
-    this.treePreview = new TreePreview(this, 50, 50)
-    const onToggleTreePreview = this.makeTogglePreviewFunction(this.treePreview, "tree_preview")
-
-    this.guiPreview = new GUIPreview(this, 50, 50)
-    const onToggleGUIPreview = this.makeTogglePreviewFunction(this.guiPreview, "gui_preview")
+    const towerPreview = new TowerPreview(this, 50, 50)
+    const treePreview = new TreePreview(this, 50, 50)
+    const guiPreview = new GUIPreview(this, 50, 50)
+    const previews = ["tower_preview", "tree_preview", "gui_preview"]
+    const onToggleTowerPreview = this.makeTogglePreviewFunction(towerPreview, "tower_preview", previews)
+    const onToggleTreePreview = this.makeTogglePreviewFunction(treePreview, "tree_preview", previews)
+    const onToggleGUIPreview = this.makeTogglePreviewFunction(guiPreview, "gui_preview", previews)
 
     // Button bars (right)
     this.add.existing(new SpeedBar(this, 970, -4))
