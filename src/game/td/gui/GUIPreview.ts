@@ -15,8 +15,8 @@ export default class GUIPreview extends Scene {
     const g = this.add.graphics()
     g.fillStyle(0x111111, 1.0)
     g.lineStyle(2, 0xFFFFFF, 1.0)
-    g.fillRoundedRect(this.x, this.y, 1000, 680)
-    g.strokeRoundedRect(this.x, this.y, 1000, 680)
+    g.fillRoundedRect(this.x, this.y, 1020, 720)
+    g.strokeRoundedRect(this.x, this.y, 1020, 720)
     this.add.existing(g)
 
     const GAP = new Point(10, 10)

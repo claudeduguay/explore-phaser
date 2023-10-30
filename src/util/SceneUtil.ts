@@ -19,7 +19,7 @@ export function transitionTo(currentScene: Scene, target: string) {
   currentScene.scene.get(target).events.once(Scenes.Events.TRANSITION_START, () => {
     console.log(`OnStart: Source is "${currentScene.scene.key}" Target is "${target}"`)
     if (currentScene.scene.key === "play" || currentScene.scene.key === "hud") {
-      console.log(`Put "hud" and "play" to sleep`)
+      console.log(`Put "play" to sleep`)
       // currentScene.scene.sleep("hud")  // "hud" does not appear to be going to sleep
       currentScene.scene.sleep("play")
     } else {
@@ -27,24 +27,7 @@ export function transitionTo(currentScene: Scene, target: string) {
       currentScene.scene.sleep(currentScene.scene.key)
     }
   })
-  // currentScene.scene.get("play").events.once(Scenes.Events.TRANSITION_WAKE, () => {
-  //   console.log(`Wake "play" activate "hud".`)
-  //   currentScene.scene.wake("hud")
-  //   currentScene.scene.bringToTop("hud")
-  // })
-  // currentScene.scene.get(target).events.once(Scenes.Events.TRANSITION_COMPLETE, () => {
-  //   console.log(`OnComplete: Target is "${target}"`)
-  //   if (target === "play") {
-  //     console.log(`Target is "play", activate "hud"`)
-  //     currentScene.scene.wake("hud")
-  //     currentScene.scene.bringToTop("hud")
-  //   }
-  //   if (target === "hud") {
-  //     console.log(`Target is "hud", activate "play"`)
-  //     currentScene.scene.wake("play")
-  //     currentScene.scene.bringToTop("hud")
-  //   }
-  // })
+
   currentScene.scene.transition({
     target,
     duration: 0,

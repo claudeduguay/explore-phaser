@@ -6,7 +6,7 @@ import { defaultWaveModel, IWaveGroup } from "./IWaveModel"
 import ObservableValue from "../../value/ObservableValue"
 
 // Create a graphics background and a line-based curve for the preview path
-export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction: number, suffixFraction: number) {
+export function makeTimelinePreviewGraphics(scene: Scene, prefixFraction: number = 0.15, suffixFraction: number = 0.15) {
   const top = 6
   const left = 230
   const height = 34
@@ -20,6 +20,15 @@ export function makeTimelinePreviewGraphicsAndPath(scene: Scene, prefixFraction:
   g.fillRoundedRect(left, top, width, height, 10)
   g.fillStyle(0x44AA44, 1.0)
   g.fillRect(insetStart, top, insetWidth, height)
+
+  return g
+}
+
+export function makeTimelinePreviewPath() {
+  const top = 6
+  const left = 230
+  const height = 34
+  const width = 500
 
   // Generate path curve
   const path = new Curves.Path()
@@ -113,8 +122,8 @@ export function makeTimeline(scene: Scene, hud: Scene,
   enemyGroup.clear()
   const prefixFraction = 0.15
   const suffixFraction = 0.15
-  if (!previewPath) {
-    previewPath = makeTimelinePreviewGraphicsAndPath(hud, prefixFraction, suffixFraction)
+  if (!previewPath) { // Avoid multiple reconstructions
+    previewPath = makeTimelinePreviewPath()
   }
 
   const ONE_SECOND = 1000

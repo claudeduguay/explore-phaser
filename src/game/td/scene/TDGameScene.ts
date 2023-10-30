@@ -28,7 +28,6 @@ export default class TDGameScene extends Scene implements INavigator {
     this.scene.add("play", new TDPlayScene(this))
     this.scene.add("win", new TDWinScene(this))
     this.scene.add("lose", new TDLoseScene(this))
-
   }
 
   play(key: string) {

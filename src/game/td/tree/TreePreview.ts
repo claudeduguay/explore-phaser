@@ -11,13 +11,13 @@ export default class TreePreview extends Scene {
   }
 
   create() {
-    const vBox = 220
+    const vBox = 175
     const hBox = 170
     const g = this.add.graphics()
     g.fillStyle(0x111111, 1.0)
     g.lineStyle(2, 0xFFFFFF, 1.0)
-    g.fillRoundedRect(this.x, this.y, hBox * 6, vBox * 3 + 20)
-    g.strokeRoundedRect(this.x, this.y, hBox * 6, vBox * 3 + 20)
+    g.fillRoundedRect(this.x, this.y, hBox * 6, vBox * 4 + 20)
+    g.strokeRoundedRect(this.x, this.y, hBox * 6, vBox * 4 + 20)
     this.add.existing(g)
 
     const root = "bullet"

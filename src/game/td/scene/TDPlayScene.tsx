@@ -99,33 +99,10 @@ export default class TDPlayScene extends Scene {
     this.scene.add("hud", this.hud)
     this.scene.launch("hud")
 
-    this.hud.events.on(Scenes.Events.SLEEP, () => {
-      console.log(">>> Hud is going to sleep")
-      // this.scene.sleep("play")
-    })
     this.events.on(Scenes.Events.SLEEP, () => {
       console.log("Play is going to sleep")
       this.scene.sleep("hud")
     })
-
-    this.hud.events.on(Scenes.Events.TRANSITION_WAKE, () => {
-      console.log(`>>> Wake "hud" <<<`) // Appears not to trigger
-    })
-
-    this.events.on(Scenes.Events.TRANSITION_WAKE, () => {
-      console.log(`Wake "play", activate "hud".`)
-      // Appears not to be sleeping
-      // if (!this.scene.isSleeping("hud")) {
-      //   this.scene.sleep("hud")
-      // }
-      console.log("HUD is Sleeping:", this.scene.isSleeping("hud"))
-      this.scene.wake("hud") // Doesn't seem to trigger TRANSITION_WAKE
-      this.scene.bringToTop("hud")
-    })
-    // this.events.on(Scenes.Events.TRANSITION_OUT, () => {
-    //   console.log(`Leaving "play", deactivate "hud".`)
-    //   this.scene.sleep("hud")
-    // })
     this.initGroupsAndInfoViews()
     this.initInputEventHandlers()
 
@@ -145,6 +122,12 @@ export default class TDPlayScene extends Scene {
     this.selectors = this.hud.addSelectors(placement)
     // Set click function on next frame
     setTimeout(() => this.hud.buttonBar.access.replay.onClick = () => this.createMap(), 0)
+
+    // Must create placement before this event-handler is installed
+    this.events.on(Scenes.Events.TRANSITION_WAKE, () => {
+      this.hud.scene.restart()
+      this.hud.addSelectors(placement)
+    })
 
 
     // ------------------------------------------------------------------
