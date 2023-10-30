@@ -1,4 +1,4 @@
-import { Scene } from "phaser";
+import { Scene, Scenes } from "phaser";
 import SpeedBar from "../gui/game/SpeedBar";
 import ValueMonitor from "../gui/game/ValueMonitor";
 import ButtonBar from "../gui/game/ButtonBar";
@@ -19,6 +19,13 @@ export default class TDHUDScene extends Scene {
 
   constructor(public readonly playScene: TDPlayScene) {
     super("hud")
+    // Connect sleep/wake events to deactivate/activate HUD at the same time
+    playScene.events.on(Scenes.Events.SLEEP, () => {
+      this.scene.sleep("hud")
+    })
+    playScene.events.on(Scenes.Events.TRANSITION_WAKE, () => {
+      this.scene.restart()
+    })
   }
 
   makeTogglePreviewFunction(scene: Scene, key: string, previews: string[]) {
@@ -63,9 +70,14 @@ export default class TDHUDScene extends Scene {
     this.add.existing(this.buttonBar)
 
     makeTimelinePreviewGraphics(this)
+
+    this.addSelectors()
   }
 
-  addSelectors(placement: TowerPlacement) {
+  addSelectors() {
+    const placement = new TowerPlacement(this.playScene, this)
+    this.playScene.add.existing(placement)
+
     // Need to capture onAddTower in play scene
     this.selectors = [
       new TowerSelector(this.playScene, 0, 100, this.playScene.credits, "eject", placement.onAddTower),

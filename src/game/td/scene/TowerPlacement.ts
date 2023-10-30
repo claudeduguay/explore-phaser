@@ -1,19 +1,17 @@
-import { Scene, Math as PMath, GameObjects } from "phaser";
+import { Math as PMath, GameObjects } from "phaser";
 import TDTower from "../entity/tower/TDTower";
 import ITowerModel from "../entity/model/ITowerModel";
-import SelectableGroup from "./SelectableGroup";
 import Point from "../../../util/geom/Point";
-import { TDTileMap } from "./map/TDTileMap";
+import TDPlayScene from "./TDPlayScene";
+import TDHUDScene from "./TDHUDScene";
 
 export default class TowerPlacement extends GameObjects.GameObject {
 
   addingTower?: TDTower
 
   constructor(
-    public playScene: Scene,
-    public hudScene: Scene,
-    public map: TDTileMap,
-    public towerGroup: SelectableGroup<TDTower>) {
+    public playScene: TDPlayScene,
+    public hudScene: TDHUDScene) {
     super(playScene, "placement")
   }
 
@@ -22,7 +20,7 @@ export default class TowerPlacement extends GameObjects.GameObject {
     if (this.addingTower) {
       this.addingTower.preview = true
       this.addingTower.showRange.visible = true
-      this.towerGroup.select(undefined)
+      this.playScene.towerGroup.select(undefined)
     }
   }
 
@@ -42,8 +40,8 @@ export default class TowerPlacement extends GameObjects.GameObject {
             this.playScene.sound.play("fail")
           }
         } else {
-          this.towerGroup.add(this.addingTower)
-          this.map.addTowerMarkAt(pos)
+          this.playScene.towerGroup.add(this.addingTower)
+          this.playScene.map.addTowerMarkAt(pos)
           this.addingTower.preview = false
           if (this.playScene.sound.get("plop")) {
             this.playScene.sound.play("plop")
@@ -56,7 +54,7 @@ export default class TowerPlacement extends GameObjects.GameObject {
         input.setDefaultCursor("none")
 
         // Highlight invalid positions
-        if (this.map.checkCollision(pos)) {
+        if (this.playScene.map.checkCollision(pos)) {
           this.addingTower.platform.setTint(0xff0000)
         } else {
           this.addingTower.platform.clearTint()

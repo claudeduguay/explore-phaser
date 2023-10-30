@@ -15,12 +15,10 @@ import { sceneSize } from "../../../util/SceneUtil"
 import EnemyInfo from "./react/EnemyInfo"
 import TDEnemy from "../entity/enemy/TDEnemy"
 import { connectTowerEnemyCollisionDetection } from "../entity/tower/Targeting"
-import TowerSelector from "./TowerSelector"
 import TDHUDScene from "./TDHUDScene"
 import { TDTileMap } from "./map/TDTileMap"
 import { generatePathAdjacentPositions } from "./map/TDPath"
 import Conversation from "../gui/game/Conversation"
-import TowerPlacement from "./TowerPlacement"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -35,7 +33,6 @@ export default class TDPlayScene extends Scene {
   towerGroup!: SelectableGroup<TDTower>
   enemyGroup!: SelectableGroup<TDEnemy>
   previewGroup!: GameObjects.Group
-  selectors: TowerSelector[] = []
   hud!: TDHUDScene
   map!: TDTileMap
   timeline!: Time.Timeline
@@ -99,10 +96,9 @@ export default class TDPlayScene extends Scene {
     this.scene.add("hud", this.hud)
     this.scene.launch("hud")
 
-    this.events.on(Scenes.Events.SLEEP, () => {
-      console.log("Play is going to sleep")
-      this.scene.sleep("hud")
-    })
+    // Set click function on next frame to avoid access error
+    setTimeout(() => this.hud.buttonBar.access.replay.onClick = () => this.createMap(), 0)
+
     this.initGroupsAndInfoViews()
     this.initInputEventHandlers()
 
@@ -110,25 +106,6 @@ export default class TDPlayScene extends Scene {
 
     // Detect Collisions between tower and enemy group members
     connectTowerEnemyCollisionDetection(this, this.towerGroup, this.enemyGroup)
-
-
-    // ------------------------------------------------------------------
-    // ADD TOWER PLACEMENT MECHANICS
-    // ------------------------------------------------------------------
-
-    // Must be after map was created
-    const placement = new TowerPlacement(this, this.hud, this.map, this.towerGroup)
-    this.add.existing(placement)
-    this.selectors = this.hud.addSelectors(placement)
-    // Set click function on next frame
-    setTimeout(() => this.hud.buttonBar.access.replay.onClick = () => this.createMap(), 0)
-
-    // Must create placement before this event-handler is installed
-    this.events.on(Scenes.Events.TRANSITION_WAKE, () => {
-      this.hud.scene.restart()
-      this.hud.addSelectors(placement)
-    })
-
 
     // ------------------------------------------------------------------
     // TEST CONTENT
@@ -181,7 +158,7 @@ export default class TDPlayScene extends Scene {
     this.input.on(Input.Events.POINTER_DOWN, ({ x, y }: Input.Pointer) => {
       this.towerGroup.select(undefined)
       this.enemyGroup.select(undefined)
-      this.selectors.forEach(selector => {
+      this.hud.selectors.forEach(selector => {
         // Close selectors if not inside one
         if (!Geom.Rectangle.Contains(selector.getBounds(), x, y)) {
           selector.isOpen = false
@@ -193,7 +170,7 @@ export default class TDPlayScene extends Scene {
     this.towerGroup.infoVisible.addListener("changed", (value: boolean) => {
       if (value) {
         this.enemyGroup.select(undefined)
-        this.selectors.forEach(selector => {
+        this.hud.selectors.forEach(selector => {
           selector.isOpen = false
         })
       }
@@ -203,7 +180,7 @@ export default class TDPlayScene extends Scene {
     this.enemyGroup.infoVisible.addListener("changed", (value: boolean) => {
       if (value) {
         this.towerGroup.select(undefined)
-        this.selectors.forEach(selector => {
+        this.hud.selectors.forEach(selector => {
           selector.isOpen = false
         })
       }
