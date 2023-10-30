@@ -113,6 +113,9 @@ export class HBoxLayout extends AbstractLayout implements ILayout {
           default:
             Display.Bounds.SetTop(child, this.margin.y1)
         }
+        // Doesn't work on Button, since it's a Container
+        // const isChildContainer = child instanceof GameObjects.Container
+        // const width = isChildContainer ? child.getBounds().width : child.width
         offset += child.width + this.gap.x
       }
     })
@@ -150,6 +153,9 @@ export class VBoxLayout extends AbstractLayout implements ILayout {
         if (i === children.length - 1) {
           // console.log("Last child height:", child.height)
         }
+        // Doesn't work on Button, since it's a Container
+        // const isChildContainer = child instanceof GameObjects.Container
+        // const height = isChildContainer ? child.getBounds().height : child.height
         offset += child.height + this.gap.y
       }
     })
