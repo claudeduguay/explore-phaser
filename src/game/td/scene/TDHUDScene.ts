@@ -25,6 +25,7 @@ export default class TDHUDScene extends Scene {
     })
     playScene.events.on(Scenes.Events.TRANSITION_WAKE, () => {
       this.scene.restart()
+      this.playScene.createMap()
     })
   }
 
