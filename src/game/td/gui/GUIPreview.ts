@@ -7,7 +7,7 @@ import { box } from "../../../util/geom/Box";
 
 export default class GUIPreview extends Scene {
   constructor(public main: Scene, public x: number = 0, public y: number = x) {
-    super({ key: "gui_preview" })
+    super("gui_preview")
   }
 
   create() {

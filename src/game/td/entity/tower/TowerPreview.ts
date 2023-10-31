@@ -8,7 +8,7 @@ import { ENEMY_LIST } from "../model/IEnemyModel";
 // behaviors add elements relative to the tower position in the scene
 export default class TowerPreview extends Scene {
   constructor(public main: Scene, public x: number = 0, public y: number = x) {
-    super({ key: "tower_preview" })
+    super("tower_preview")
   }
 
   create() {

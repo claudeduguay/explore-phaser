@@ -7,7 +7,7 @@ import Point from "../../../util/geom/Point";
 
 export default class TreePreview extends Scene {
   constructor(public main: Scene, public x: number = 0, public y: number = x) {
-    super({ key: "tree_preview" })
+    super("tree_preview")
   }
 
   create() {
