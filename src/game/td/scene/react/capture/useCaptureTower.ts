@@ -1,4 +1,4 @@
-import TDTower from "../../../entity/tower/TDTower";
+import TDTower, { PreviewType } from "../../../entity/tower/TDTower";
 import { GameObjects, Scene } from "phaser";
 import useCapture, { captureAndCacheTexture } from "./useCapture";
 import ITowerModel from "../../../entity/model/ITowerModel";
@@ -7,7 +7,7 @@ import { useCallback } from "react";
 export function makeTowerRenderCallback(scene: Scene, model?: ITowerModel, angle = 0) {
   return (texture: GameObjects.RenderTexture) => {
     if (model) {
-      const copy = new TDTower(scene, 32, 32, model, true)
+      const copy = new TDTower(scene, 32, 32, model, PreviewType.Drag)
       copy.angle = angle
       texture.draw(copy)
     }

@@ -35,6 +35,12 @@ import TargetStunBehavior from "../../behavior/tower/cloud/TargetStunBehavior"
 import TargetSpikeBehavior from "../../behavior/tower/cloud/TargetSpikeBehavior"
 import TargetRockBehavior from "../../behavior/tower/cloud/TargetRockBehavior"
 
+export enum PreviewType {
+  Normal,
+  Preview,
+  Drag
+}
+
 const TOWER_BEHAVIORS: Record<string, any> = {
   lazer: TargetLaserBehavior,
   plasma: TargetPlasmaBehavior,
@@ -68,24 +74,24 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
   showLabel: GameObjects.Text
 
   constructor(public scene: Scene, public x: number = 0, public y: number = x,
-    public model: ITowerModel = TOWER_INDEX.LAZER, public preview: boolean = false) {
+    public model: ITowerModel = TOWER_INDEX.LAZER, public preview: PreviewType = PreviewType.Normal) {
     super(scene)
     const range = model.stats.range
     this.platform = this.scene.add.sprite(0, 0, `${model.key}-platform`).setInteractive()
       .on(Input.Events.POINTER_OVER, () => {
         this.showRange.visible = true
-        if (!this.preview) {
+        if (this.preview !== PreviewType.Drag) {
           this.showLabel.visible = true
         }
       }, this)
       .on(Input.Events.POINTER_OUT, () => {
         this.showRange.visible = false
-        if (!this.preview) {
+        if (this.preview !== PreviewType.Drag) {
           this.showLabel.visible = false
         }
       }, this)
     this.add(this.platform)
-    if (!preview) {
+    if (this.preview === PreviewType.Normal) {
       this.platform.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
     }
 
@@ -120,7 +126,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
 
   addSelectHandler(select: (selection?: TDTower) => void) {
     this.platform.on(Input.Events.POINTER_DOWN, (pointer: any, x: number, y: number, e: Event) => {
-      if (!this.preview) {
+      if (this.preview === PreviewType.Normal) {
         select(this)
         this.showSelection()
         e.stopPropagation()

@@ -23,7 +23,7 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
       }
       this.emitters = []
     }
-    if (this.tower.targeting.current.length > 0) {
+    if (this.tower.targeting.current.length) {
       this.tower.emissionPoints().forEach((point, i) => this.addEmitter(i, point, time))
       applyDamage(this.tower, delta, this.singleTarget)
     } else {

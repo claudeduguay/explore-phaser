@@ -1,7 +1,7 @@
 import { GameObjects, Types } from "phaser"
 import IBehavior from "../../core/IBehavior"
 import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
-import TDTower from "../../../entity/tower/TDTower"
+import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 import InRangeDamageEffect from "../../enemy/InRangeDamageEffect"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
@@ -20,7 +20,7 @@ export default class BaseTargeCloudBehavior implements IBehavior {
   }
 
   update(time: number, delta: number) {
-    if (!this.cloud) {
+    if (!this.cloud && this.tower.preview !== PreviewType.Drag) {
       this.emitterConfig = this.emitter(this.tower.model.stats.range, this.tower)
       this.cloud = this.tower.scene.add.particles(0, 0, this.key, this.emitterConfig)
       this.cloud.stop()
@@ -37,10 +37,10 @@ export default class BaseTargeCloudBehavior implements IBehavior {
       //   this.cloud?.explode(50, 0, 0)
       // }
       this.cloud?.start()
-      const defaultBuilder: IDamageEffectBuilder = (enemy: TDEnemy) => new InRangeDamageEffect(this.tower, enemy, "")
-      const effectBuilder: IDamageEffectBuilder = this.effect || defaultBuilder
+      const defaultDamageBuilder: IDamageEffectBuilder = (enemy: TDEnemy) => new InRangeDamageEffect(this.tower, enemy, "")
+      const effectDamageBuilder: IDamageEffectBuilder = this.effect || defaultDamageBuilder
       for (let target of this.tower.targeting.current) {
-        this.targetInstanceMap.apply(target, () => effectBuilder(target))
+        this.targetInstanceMap.apply(target, () => effectDamageBuilder(target))
       }
     } else { // No target
       this.targetInstanceMap.clear()

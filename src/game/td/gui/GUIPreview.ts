@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import { HAlign, HBoxLayout, VAlign, VBoxLayout } from "./layout/ILayout";
 import Point from "../../../util/geom/Point";
-import TDTower from "../entity/tower/TDTower";
+import TDTower, { PreviewType } from "../entity/tower/TDTower";
 import { TOWER_LIST } from "../entity/model/ITowerModel";
 import { box } from "../../../util/geom/Box";
 
@@ -48,9 +48,8 @@ export default class GUIPreview extends Scene {
       vBox.add(this.add.button(0, 0, 160, 36, `Test Button ${i + 1}`, "blue", () => console.log(`Button ${i + 1} clicked`)))
     }
     const flat = this.add.button(0, 0, 100, 100, ``, "flat", () => console.log(`Tower Button clicked`))
-    const tower = new TDTower(this, 0, 0, TOWER_LIST[0], true)
+    const tower = new TDTower(this, 0, 0, TOWER_LIST[0], PreviewType.Drag)
     tower.platform.removeInteractive()
-    tower.preview = true
     flat.add(tower)
     vBox.add(flat)
     const vBoxLayout = new VBoxLayout(GAP, MARGIN, HAlign.Left)

@@ -6,7 +6,8 @@ import BaseTargeCloudBehavior from "./BaseTargetCloudBehavior"
 
 export default class TargeSnowBehavior extends BaseTargeCloudBehavior {
   constructor(tower: TDTower) {
-    super(tower, "snow", snowEmitter, (enemy: TDEnemy) => new TimedDamageEffect(
-      tower, enemy, tower.model.damage.snow.duration || 0, "Cold"))
+    super(tower, "snow", snowEmitter,
+      (enemy: TDEnemy) => new TimedDamageEffect(
+        tower, enemy, tower.model.damage.snow.duration || 0, "Cold"))
   }
 }

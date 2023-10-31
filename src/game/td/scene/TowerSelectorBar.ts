@@ -1,6 +1,6 @@
 import { GameObjects, Scene, Types } from "phaser"
 import ITowerModel from "../entity/model/ITowerModel"
-import TDTower from "../entity/tower/TDTower"
+import TDTower, { PreviewType } from "../entity/tower/TDTower"
 import TowerSelector from "./TowerSelector"
 import { DEFAULT_FONT_FAMILY } from "../gui/Label"
 import { DEFAULT_STYLE, Icon } from "../gui/Icon"
@@ -36,7 +36,7 @@ export default class TowerSelectorBar extends GameObjects.Container {
       this.onAddTower(model)
       // event.stopPropagation() // Seems to affect ability to position
     }
-    const tower = new TDTower(this.scene, 0, -8, model, true)
+    const tower = new TDTower(this.scene, 0, -8, model, PreviewType.Drag)
     tower.platform.removeInteractive()
     button.add(tower)
     button.add(this.scene.add.text(0, 28, model.name, {

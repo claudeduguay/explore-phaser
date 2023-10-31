@@ -1,5 +1,5 @@
 import { Math as PMath, GameObjects } from "phaser";
-import TDTower from "../entity/tower/TDTower";
+import TDTower, { PreviewType } from "../entity/tower/TDTower";
 import ITowerModel from "../entity/model/ITowerModel";
 import Point from "../../../util/geom/Point";
 import TDPlayScene from "./TDPlayScene";
@@ -18,7 +18,7 @@ export default class TowerPlacement extends GameObjects.GameObject {
   onAddTower = (model: ITowerModel) => {
     this.addingTower = this.playScene.add.tower(this.playScene.input.x, this.playScene.input.y, model)
     if (this.addingTower) {
-      this.addingTower.preview = true
+      this.addingTower.preview = PreviewType.Drag
       this.addingTower.showRange.visible = true
       this.playScene.towerGroup.select(undefined)
     }
@@ -42,7 +42,7 @@ export default class TowerPlacement extends GameObjects.GameObject {
         } else {
           this.playScene.towerGroup.add(this.addingTower)
           this.playScene.map.addTowerMarkAt(pos)
-          this.addingTower.preview = false
+          this.addingTower.preview = PreviewType.Normal
           if (this.playScene.sound.get("plop")) {
             this.playScene.sound.play("plop")
           }

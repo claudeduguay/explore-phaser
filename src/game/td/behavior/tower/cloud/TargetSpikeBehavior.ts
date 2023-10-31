@@ -7,6 +7,7 @@ import BaseTargeCloudBehavior from "./BaseTargetCloudBehavior"
 export default class TargeStunBehavior extends BaseTargeCloudBehavior {
   constructor(tower: TDTower) {
     super(tower, "spike", spikeEmitter,
-      (enemy: TDEnemy) => new TimedDamageEffect(tower, enemy, tower.model.damage.spike.duration || 0, "Spike"))
+      (enemy: TDEnemy) => new TimedDamageEffect(
+        tower, enemy, tower.model.damage.spike.duration || 0, "Spike"))
   }
 }

@@ -1,6 +1,6 @@
 import { Scene } from "phaser";
 import { TOWER_LIST } from "../model/ITowerModel";
-import TDTower from "./TDTower";
+import TDTower, { PreviewType } from "./TDTower";
 import TDEnemy from "../enemy/TDEnemy";
 import { ENEMY_LIST } from "../model/IEnemyModel";
 
@@ -27,7 +27,7 @@ export default class TowerPreview extends Scene {
       const x = this.x + hBox / 2 + hBox * col
       const y = this.y + 110 + vBox * row
       const tower = new TDTower(this, x, y, model)
-      tower.preview = true
+      tower.preview = PreviewType.Preview
       tower.showLabel.visible = true
       this.add.existing(tower)
       // addLabel(this, x, y + 40, model.name.split(" ")[0], "center")
