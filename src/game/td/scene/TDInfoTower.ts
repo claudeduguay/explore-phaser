@@ -64,7 +64,7 @@ export default class TDInfoTower extends TDInfoBase {
     const close = new IconButton(this.scene, 330, 20, 25, 25, 0xe5cd)
     close.onClick = () => this.visibleObservable.value = false
     this.add(close)
-    this.addText(25, "Tower Info", 30, "orange")
+    this.addText(30, "Tower Info", 30, "orange")
 
     if (!model) {
       return
@@ -74,7 +74,7 @@ export default class TDInfoTower extends TDInfoBase {
     this.add(tower)
     this.addText(147, model.name, 22, "white")
     this.addText(180, `(${entitle(model.group)})`, 14, "white")
-    this.addText(225, model.description, 14, "white", 18).setOrigin(0, 0.5)
+    this.addText(225, model.description, 14, "white", 18, "left").setOrigin(0, 0.5)
 
     const upgrade: IUpgrade = {
       level: { text: "+1", cost: 200 },
@@ -95,13 +95,13 @@ export default class TDInfoTower extends TDInfoBase {
 
     this.addTitle(270, "General")
     Object.entries(model.stats).forEach(([key, value], i) => {
-      const y = 315 + i * 38
+      const y = 310 + i * 32
       this.addRow(y, entitle(key), value, `${upgrade[key].text} ($${upgrade[key].cost})`)
     })
 
-    this.addTitle(440, "Damage (dps per level)")
+    this.addTitle(430, "Damage (dps per level)")
     Object.entries(model.damage).forEach(([key, value], i) => {
-      const y = 482 + i * 35
+      const y = 465 + i * 32
       this.addRow(y, entitle(key), damageFormatter(value))
     })
   }

@@ -22,28 +22,24 @@ export default class TDInfoBase extends Panel {
     this.addText(y, `${key}: `, 18, "cyan").setOrigin(1, 0.5)
     this.addText(y, `${value}`, 18, "#66CC66").setOrigin(0, 0.5)
     if (buttonText) {
-      const button = new Button(this.scene, 280, y, 110, 24, buttonText, "green")
-      if (button.label) {
-        button.label.style.fontSize = 12
-      }
-      this.add(button)
+      this.add(new Button(this.scene, 280, y, 110, 24, buttonText, "flat"))
     }
   }
 
   addTitle(y: number, title: string) {
     this.addText(y, title, 20, "orange")
-    this.add(new GameObjects.Line(this.scene, 350 / 2, y + 26, 0, 0, 350, 0, 0x666666))
+    this.add(new GameObjects.Line(this.scene, 350 / 2, y + 20, 0, 0, 350, 0, 0x666666))
   }
 
-  addText(y: number, text: string, fontSize: number, color: string, x = this.width / 2) {
+  addText(y: number, text: string, fontSize: number, color: string, x = this.width / 2, align = "center") {
     const component = this.scene.add.text(x, y, text, {
       fontFamily: DEFAULT_FONT_FAMILY,
       fontSize,
-      align: "center",
+      align,
       color,
       lineSpacing: 3,
       wordWrap: {
-        width: 300
+        width: 320
       }
     }).setOrigin(0.5)
     this.add(component)

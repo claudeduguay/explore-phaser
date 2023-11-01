@@ -58,7 +58,7 @@ export default class TDInfoEnemy extends TDInfoBase {
     const close = new IconButton(this.scene, 330, 20, 25, 25, 0xe5cd)
     close.onClick = () => this.visibleObservable.value = false
     this.add(close)
-    this.addText(25, "Enemy Info", 30, "orange")
+    this.addText(30, "Enemy Info", 30, "orange")
 
     if (!model) {
       return
@@ -70,13 +70,13 @@ export default class TDInfoEnemy extends TDInfoBase {
 
     this.addTitle(180, "General")
     Object.entries(model.stats).forEach(([key, value], i) => {
-      const y = 230 + i * 32
+      const y = 220 + i * 32
       this.addRow(y, entitle(key), value)
     })
 
     this.addTitle(405, "Vulnerability (dps multiplier)")
     Object.entries(model.vulnerability).forEach(([key, value], i) => {
-      const y = 448 + i * 35
+      const y = 445 + i * 32
       this.addRow(y, entitle(key), `${Math.floor(value * 100)}%`)
     })
   }
