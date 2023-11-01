@@ -10,7 +10,7 @@ determine full damage effect.
 
 export function computeTargetDamage(tower: TDTower, target: TDEnemy, delta: number) {
   let damage = 0
-  Object.entries(tower.model.damage).forEach(([key, value]) => {
+  Object.entries(tower.model.damage.health).forEach(([key, value]) => {
     const val = Array.isArray(value.dps) ? randomRange(value.dps) : value.dps
     const dps = (val * delta / 1000 * tower.scene.time.timeScale)
     const vulnerability = (target.model?.vulnerability[key] || target.model?.vulnerability.default)

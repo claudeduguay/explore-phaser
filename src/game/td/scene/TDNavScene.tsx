@@ -2,8 +2,7 @@
 import { GameObjects, Scene } from "phaser"
 import TDGameScene from "./TDGameScene"
 import { sceneSize } from "../../../util/SceneUtil"
-
-export const DEFAULT_FONT_FAMILY = "Geneva, Verdana, sans-serif"
+import { DEFAULT_FONT_FAMILY } from "../gui/Label"
 
 export interface IButtonSpec {
   title: string

@@ -1,5 +1,5 @@
 
-import { Scene, Utils, Input, Geom, GameObjects, Time, Scenes } from "phaser"
+import { Scene, Utils, Input, Geom, GameObjects, Time } from "phaser"
 import { addReactNode } from "../../../util/DOMUtil"
 import TDTower from "../entity/tower/TDTower"
 import TDGameScene from "./TDGameScene"
@@ -19,6 +19,7 @@ import TDHUDScene from "./TDHUDScene"
 import { TDTileMap } from "./map/TDTileMap"
 import { generatePathAdjacentPositions } from "./map/TDPath"
 import Conversation from "../gui/game/Conversation"
+import TDTowerInfo from "./TDTowerInfo"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -117,6 +118,8 @@ export default class TDPlayScene extends Scene {
     const conversation = new Conversation(this, 200, 570, 700, 200)
     conversation.y = 750 - conversation.getBounds().height
     // this.hud.add.existing(conversation)
+
+    this.add.existing(new TDTowerInfo(this, 1100 - 350 - 20, 75))
 
   }
 

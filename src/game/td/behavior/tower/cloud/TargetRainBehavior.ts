@@ -8,6 +8,6 @@ export default class TargeRainBehavior extends BaseTargeCloudBehavior {
   constructor(tower: TDTower) {
     super(tower, "rain", rainEmitter,
       (enemy: TDEnemy) => new TimedDamageEffect(
-        tower, enemy, tower.model.damage.rain.duration || 0, "Wet"))
+        tower, enemy, tower.model.damage.health.rain.duration || 0, "Wet"))
   }
 }
