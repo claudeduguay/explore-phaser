@@ -96,7 +96,7 @@ export default class TDPlayScene extends Scene {
     this.scene.add("hud", this.hud)
     this.scene.launch("hud")
 
-    this.initGroupsAndInfoViews()
+    this.initGroups()
     this.initInputEventHandlers()
 
     this.createMap()
@@ -127,22 +127,15 @@ export default class TDPlayScene extends Scene {
 
   }
 
-  initGroupsAndInfoViews() {
-    const { w } = sceneSize(this)
-
+  initGroups() {
     // Used for Peep cleanup on replay events
     this.previewGroup = new GameObjects.Group(this)
 
     // Tower Group/Info
     this.towerGroup = new SelectableGroup(this, "towerGroup")
-    addReactNode(this, <TowerInfo scene={this} tower={this.towerGroup.selected} onClose={this.towerGroup.onCloseInfo} />,
-      - 400, 75, 45, 75, this.towerGroup.infoVisible, true)
 
     // Enemy Group/Info
     this.enemyGroup = new SelectableGroup(this, "enemyGroup")
-    addReactNode(this, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={this.enemyGroup.onCloseInfo} />,
-      w + 5, 75, w - 350 - 20, 75, this.enemyGroup.infoVisible, true)
-
   }
 
   initInputEventHandlers() {
