@@ -14,7 +14,7 @@ export default class TDTurret extends BehaviorContainer {
     const turret = this.scene.add.sprite(0, 0, `${model.key}-turret`)
     this.add(turret)
 
-    const count = model.stats.level
+    const count = model.general.level
     // Distribute weapons linearly
     if (model.meta.distribution === "linear") {
       let positions = [new Point(-5, -12), new Point(0, -14), new Point(5, -12)]
@@ -26,7 +26,7 @@ export default class TDTurret extends BehaviorContainer {
       }
 
       this.weapon = []
-      for (let i = 0; i < model.stats.level; i++) {
+      for (let i = 0; i < model.general.level; i++) {
         const p = positions[i]
         const weapon = new TDWeapon(scene, p.x, p.y, `${model.key}-weapon`)
         this.weapon.push(weapon)
@@ -45,7 +45,7 @@ export default class TDTurret extends BehaviorContainer {
       }
 
       this.weapon = []
-      for (let i = 0; i < model.stats.level; i++) {
+      for (let i = 0; i < model.general.level; i++) {
         const weapon = new TDWeapon(scene, 0, 0, `${model.key}-weapon`)
         weapon.angle = angles[i]
         this.weapon.push(weapon)

@@ -16,7 +16,7 @@ export default class BaseTargetSprayBehavior extends BaseTargetBehavior<GameObje
 
   addEmitter(i: number, { x, y }: Point, time: number): void {
     if (this.emitters.length < i + 1) {
-      const emitterConfig = this.emitter(this.tower.model.stats.range, this.tower)
+      const emitterConfig = this.emitter(this.tower.model.general.range, this.tower)
       const emitter = this.tower.scene.add.particles(x, y, this.key, emitterConfig)
       emitter.stop()
       this.emitters.push(emitter)

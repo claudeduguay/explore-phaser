@@ -47,7 +47,7 @@ export function addMainPathFollower(key: string, scene: Scene,
   enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
     enemyGroup.remove(enemy, true, true)
     if (model) {
-      credits.value += (model.stats.value || 0)
+      credits.value += (model.general.value || 0)
       TDPlayScene.createExplosionSprite(scene, x, y)
       if (scene.sound.get("cash")) {
         scene.sound.play("cash")

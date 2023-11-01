@@ -70,7 +70,7 @@ export default class TDInfoEnemy extends TDInfoBase {
     this.addText(130, `${model.name} Enemy`, 20, "white")
 
     this.addTitle(180, "General")
-    Object.entries(model.stats).forEach(([key, value], i) => {
+    Object.entries(model.general).forEach(([key, value], i) => {
       const y = 220 + i * 32
       this.addRow(y, entitle(key), value)
     })

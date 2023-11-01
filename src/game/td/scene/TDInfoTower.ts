@@ -94,7 +94,7 @@ export default class TDInfoTower extends TDInfoBase {
     }
 
     this.addTitle(270, "General")
-    Object.entries(model.stats).forEach(([key, value], i) => {
+    Object.entries(model.general).forEach(([key, value], i) => {
       const y = 310 + i * 32
       this.addRow(y, entitle(key), value, `${upgrade[key].text} ($${upgrade[key].cost})`)
     })

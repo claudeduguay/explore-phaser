@@ -20,13 +20,13 @@ export default class TowerSelectorBar extends GameObjects.Container {
     button.onClick = (event: Types.Input.EventData) => {
       selector.isOpen = false
       if (model.locked) {
-        if (selector.credits.value < model.stats.cost) {
+        if (selector.credits.value < model.general.cost) {
           console.error("Not enough credits to buy this tower")
           return
         }
-        console.log(`Purchase ${model.name} Tower for $${model.stats.cost}`)
+        console.log(`Purchase ${model.name} Tower for $${model.general.cost}`)
         model.locked = false
-        selector.credits.value -= model.stats.cost
+        selector.credits.value -= model.general.cost
         lockIcon?.destroy()
         lockText?.destroy()
         if (this.scene.sound.get("cash")) {
@@ -62,7 +62,7 @@ export default class TowerSelectorBar extends GameObjects.Container {
           fill: true
         }
       }).setOrigin(0.5)
-      lockText = this.scene.add.text(0, 0, `$${model.stats.cost}`, {
+      lockText = this.scene.add.text(0, 0, `$${model.general.cost}`, {
         fontFamily: DEFAULT_FONT_FAMILY,
         fontSize: 18,
         color: "orange",

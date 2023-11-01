@@ -23,8 +23,8 @@ export default class TargetSlowBehavior implements IBehavior {
         lineStyle: { color: 0xff6600, alpha: 0.2, width: 2 }
       })
       const f = time % 1000 / 1000
-      const r1 = this.tower.model.stats.range * f
-      const r2 = this.tower.model.stats.range - r1
+      const r1 = this.tower.model.general.range * f
+      const r2 = this.tower.model.general.range - r1
       this.g.fillCircle(this.tower.x, this.tower.y, r1)
       this.g.fillCircle(this.tower.x, this.tower.y, r2)
       this.g.strokeCircle(this.tower.x, this.tower.y, r1)

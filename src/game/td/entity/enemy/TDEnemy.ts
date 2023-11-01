@@ -28,8 +28,8 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     this.anims.play(`east-${model.key}`)
     this.setInteractive()
 
-    this.health = model.stats.health || 0
-    this.shield = model.stats.shield || 0
+    this.health = model.general.health || 0
+    this.shield = model.general.shield || 0
 
     if (showStatusBars) {
       this.shieldBar = new HealthBar(scene, this, 0, 0, 30, 5, 0xffa500)
@@ -113,8 +113,8 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
       if (this.shield < 1) {
         this.shield = 100
       }
-      const healthFraction = this.health / this.model.stats.health
-      const shieldFraction = this.shield / this.model.stats.shield
+      const healthFraction = this.health / this.model.general.health
+      const shieldFraction = this.shield / this.model.general.shield
       this.shieldBar.fraction = shieldFraction
       this.healthBar.fraction = healthFraction
       const bounds = this.getBounds()

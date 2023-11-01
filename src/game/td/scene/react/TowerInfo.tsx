@@ -48,7 +48,7 @@ export default function TowerInfo({ scene, tower: towerObservable, onClose }: IT
       <h4 className="fs-4 border-top p-1 m-0">{model.name}</h4>
       <p className="mb-2">({entitle(model.group)})</p>
       <p className="text-start py-0 px-3">{model.description}</p>
-      <PropsInfo title="General" model={model.stats} upgrade={upgrade} />
+      <PropsInfo title="General" model={model.general} upgrade={upgrade} />
       <PropsInfo title="Damage (dps per level)" model={model.damage} valueFormatter={damageFormatter} />
     </>}
   </div>

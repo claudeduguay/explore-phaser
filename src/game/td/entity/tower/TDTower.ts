@@ -76,7 +76,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
   constructor(public scene: Scene, public x: number = 0, public y: number = x,
     public model: ITowerModel = TOWER_INDEX.LAZER, public preview: PreviewType = PreviewType.Normal) {
     super(scene)
-    const range = model.stats.range
+    const range = model.general.range
     this.platform = this.scene.add.sprite(0, 0, `${model.key}-platform`).setInteractive()
       .on(Input.Events.POINTER_OVER, () => {
         this.showRange.visible = true
@@ -105,7 +105,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     this.effect = scene.add.container()
     this.add(this.effect)
 
-    this.showRange = scene.add.existing(new TDRange(scene, 0, 0, model.name, model.stats.range))
+    this.showRange = scene.add.existing(new TDRange(scene, 0, 0, model.name, model.general.range))
     this.showRange.visible = false
     this.add(this.showRange)
     this.sendToBack(this.showRange)

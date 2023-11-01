@@ -5,7 +5,7 @@ import { makePeep } from "../../assets/TextureFactory"
 export interface IEnemyMeta {
 }
 
-export interface IEnemyStatistics {
+export interface IEnemyGeneral {
   level: number
   health: number
   shield: number
@@ -22,7 +22,7 @@ export interface IEnemyModel {
   key: string
   name: string
   meta: IEnemyMeta
-  stats: IEnemyStatistics
+  general: IEnemyGeneral
   vulnerability: IEnemyVulnerability
 }
 
@@ -40,7 +40,7 @@ export function generateEnemies(scene: Scene, count: number = 5) {
       name: `Level ${i}`,
       meta: {
       },
-      stats: {
+      general: {
         level: i,
         health: 50 * i,
         shield: 50 * i,

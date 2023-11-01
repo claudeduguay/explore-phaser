@@ -4,7 +4,7 @@ export interface ITowerMeta {
   rotation: "target" | number        // Rotation type
 }
 
-export interface ITowerStatistics {
+export interface ITowerGeneral {
   level: number
   cost: number
   range: number
@@ -29,7 +29,7 @@ export interface ITowerModel {
   description: string
   locked: boolean,
   meta: ITowerMeta
-  stats: ITowerStatistics
+  general: ITowerGeneral
   damage: {
     shield: ITowerDamage,
     health: ITowerDamage
@@ -59,7 +59,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -79,7 +79,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -99,7 +99,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -121,7 +121,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -141,7 +141,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -161,7 +161,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -183,7 +183,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -203,7 +203,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -223,7 +223,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -243,7 +243,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -263,7 +263,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -285,7 +285,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -305,7 +305,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -325,7 +325,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -347,7 +347,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -367,7 +367,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -389,7 +389,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -409,7 +409,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -431,7 +431,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 4,
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,
@@ -451,7 +451,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: -1,
     },
-    stats: {
+    general: {
       level: 3,
       cost: 100,
       range: 100,

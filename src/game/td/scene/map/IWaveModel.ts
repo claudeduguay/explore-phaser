@@ -26,7 +26,7 @@ export function evaluateWaveDifficulty(waves: IWaveModel): number {
   let accumulator = 0
   waves.forEach(group => {
     const model = ENEMY_INDEX[group.key]
-    accumulator += (model?.stats.level || 0) * group.count
+    accumulator += (model?.general.level || 0) * group.count
   })
   return accumulator
 }

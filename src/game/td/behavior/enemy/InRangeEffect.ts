@@ -11,7 +11,7 @@ export default abstract class InRangeEffect implements IBehavior {
 
   update(time: number, delta: number): void {
     const distance = PMath.Distance.BetweenPoints(this.enemy, this.tower)
-    const inRange = distance <= this.tower.model.stats.range
+    const inRange = distance <= this.tower.model.general.range
     if (inRange) {
       this.updateEffect(time, delta)
     } else {

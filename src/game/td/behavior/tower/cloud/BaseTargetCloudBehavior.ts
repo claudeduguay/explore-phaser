@@ -21,7 +21,7 @@ export default class BaseTargeCloudBehavior implements IBehavior {
 
   update(time: number, delta: number) {
     if (!this.cloud && this.tower.preview !== PreviewType.Drag) {
-      this.emitterConfig = this.emitter(this.tower.model.stats.range, this.tower)
+      this.emitterConfig = this.emitter(this.tower.model.general.range, this.tower)
       this.cloud = this.tower.scene.add.particles(0, 0, this.key, this.emitterConfig)
       this.cloud.stop()
       // Push effect behind the tower

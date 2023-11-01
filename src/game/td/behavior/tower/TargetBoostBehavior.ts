@@ -20,7 +20,7 @@ export default class TargetBoostBehavior implements IBehavior {
       for (let a = 0; a < 360; a += slice * 2) {
         const startAngle = toRadians(this.tower.turret.angle + a)
         const endAngle = toRadians(this.tower.turret.angle + a + slice)
-        this.g.slice(this.tower.x, this.tower.y, this.tower.model.stats.range, startAngle, endAngle).fill()
+        this.g.slice(this.tower.x, this.tower.y, this.tower.model.general.range, startAngle, endAngle).fill()
       }
     }
   }
