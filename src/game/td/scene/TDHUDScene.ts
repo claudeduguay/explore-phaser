@@ -9,6 +9,9 @@ import TowerSelector from "./TowerSelector";
 import TowerPlacement from "./TowerPlacement";
 import TDPlayScene from "./TDPlayScene";
 import { makeTimelinePreviewGraphics } from "./map/TDTimeline";
+import TDInfoTower from "./TDInfoTower";
+import { sceneSize } from "../../../util/SceneUtil";
+import TDInfoEnemy from "./TDInfoEnemy";
 
 export default class TDHUDScene extends Scene {
   buttonBar!: ButtonBar
@@ -63,7 +66,7 @@ export default class TDHUDScene extends Scene {
     const onToggleGUIPreview = this.makeTogglePreviewFunction(guiPreview, "gui_preview", previews)
 
     // Button bars (right)
-    this.add.existing(new SpeedBar(this, 970, -4))
+    this.add.existing(new SpeedBar(this, 960, -4))
     this.buttonBar = new ButtonBar(this, 740, -4)
     this.buttonBar.access.towers.onClick = onToggleTowerPreview
     this.buttonBar.access.tree.onClick = onToggleTreePreview
@@ -75,6 +78,14 @@ export default class TDHUDScene extends Scene {
     makeTimelinePreviewGraphics(this)
 
     this.addSelectors()
+
+    const { w } = sceneSize(this)
+    this.add.existing(new TDInfoTower(this, w + 100, 75,
+      this.playScene.towerGroup.selected,
+      this.playScene.towerGroup.infoVisible))
+    this.add.existing(new TDInfoEnemy(this, 50, 75,
+      this.playScene.enemyGroup.selected,
+      this.playScene.enemyGroup.infoVisible))
   }
 
   addSelectors() {

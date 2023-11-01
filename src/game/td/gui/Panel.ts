@@ -83,7 +83,7 @@ export function makePanelTextures(scene: Scene) {
     size,
     options: {
       ...blue,
-      color: "rgba(64, 64, 64, 0.75)",
+      color: "rgba(64, 64, 64, 0.9)",
       colorBox: BOX.TO_SE,
     }
   })

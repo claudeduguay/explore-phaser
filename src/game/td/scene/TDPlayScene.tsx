@@ -19,7 +19,6 @@ import TDHUDScene from "./TDHUDScene"
 import { TDTileMap } from "./map/TDTileMap"
 import { generatePathAdjacentPositions } from "./map/TDPath"
 import Conversation from "../gui/game/Conversation"
-import TDTowerInfo from "./TDTowerInfo"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -105,6 +104,13 @@ export default class TDPlayScene extends Scene {
     // Detect Collisions between tower and enemy group members
     connectTowerEnemyCollisionDetection(this, this.towerGroup, this.enemyGroup)
 
+    setTimeout(() => {
+      const firstChild = this.enemyGroup.children.entries[0] as TDEnemy
+      console.log("First child:", firstChild)
+      this.enemyGroup.select(firstChild)
+    }, 2000)
+
+
     // ------------------------------------------------------------------
     // TEST CONTENT
     // ------------------------------------------------------------------
@@ -118,8 +124,6 @@ export default class TDPlayScene extends Scene {
     const conversation = new Conversation(this, 200, 570, 700, 200)
     conversation.y = 750 - conversation.getBounds().height
     // this.hud.add.existing(conversation)
-
-    this.add.existing(new TDTowerInfo(this, 1100 - 350 - 20, 75))
 
   }
 
@@ -138,6 +142,7 @@ export default class TDPlayScene extends Scene {
     this.enemyGroup = new SelectableGroup(this, "enemyGroup")
     addReactNode(this, <EnemyInfo scene={this} enemy={this.enemyGroup.selected} onClose={this.enemyGroup.onCloseInfo} />,
       w + 5, 75, w - 350 - 20, 75, this.enemyGroup.infoVisible, true)
+
   }
 
   initInputEventHandlers() {
