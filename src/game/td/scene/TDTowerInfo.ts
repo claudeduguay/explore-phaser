@@ -41,9 +41,10 @@ export default class TDTowerInfo extends Panel {
     this.add(new GameObjects.Line(scene, 350 / 2, 460, 0, 0, 350, 0, 0x666666))
     Object.entries(model.damage).forEach(([key, value], i) => {
       const y = 480 + i * 30
-      this.addText(`${entitle(key)}: `, y, 18, "cyan").setOrigin(1, 0.5)
-      Object.entries(value).forEach(([k, v]) =>
-        this.addText(`${v.dps} ${entitle(k)} ${v.duration ? "(" + v.duration + "ms)" : ""} `, y, 18, "#66CC66").setOrigin(0, 0.5))
+      Object.entries(value).forEach(([k, v]) => {
+        this.addText(`${entitle(key)} (${entitle(k)}): `, y, 18, "cyan").setOrigin(1, 0.5)
+        this.addText(`${v.dps} ${v.duration ? "(" + v.duration + "ms)" : ""} `, y, 18, "#66CC66").setOrigin(0, 0.5)
+      })
     })
   }
 
