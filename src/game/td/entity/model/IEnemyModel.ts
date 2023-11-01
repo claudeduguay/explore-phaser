@@ -35,7 +35,7 @@ export function generateEnemies(scene: Scene, count: number = 5) {
   for (let i = 1; i <= count; i++) {
     // Register assets
     makePeep(scene, `peep_${i}`, 32, 32, randomPeepOptions())
-    const peep = {
+    const peep: IEnemyModel = {
       key: `peep_${i}`,
       name: `Level ${i}`,
       meta: {
