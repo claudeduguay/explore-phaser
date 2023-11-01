@@ -79,6 +79,14 @@ export function makePanelTextures(scene: Scene) {
       colorBox: BOX.TO_SE,
     }
   })
+  makePlatform(scene, "dark-panel", {
+    size,
+    options: {
+      ...blue,
+      color: "rgba(64, 64, 64, 0.75)",
+      colorBox: BOX.TO_SE,
+    }
+  })
 }
 
 export function registerPanelFactory() {

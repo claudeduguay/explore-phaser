@@ -30,7 +30,7 @@ export default class TargetSlowBehavior implements IBehavior {
       this.g.strokeCircle(this.tower.x, this.tower.y, r1)
       this.g.strokeCircle(this.tower.x, this.tower.y, r2)
 
-      const duration = this.tower.model.damage.health.slow.duration || 0
+      const duration = this.tower.model.damage.health.duration || 0
       for (let target of this.tower.targeting.current) {
         this.targetInstanceMap.apply(target, () => new TimedSlowEffect(target, duration))
         if (target.twin) { // Handle twin if present

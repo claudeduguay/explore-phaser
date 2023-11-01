@@ -8,6 +8,6 @@ export default class TargeShockBehavior extends BaseTargeCloudBehavior {
   constructor(tower: TDTower) {
     super(tower, "spark", shockEmitter,
       (enemy: TDEnemy) => new TimedDamageEffect(
-        tower, enemy, tower.model.damage.health.shock.duration || 0, "Electrified"))
+        tower, enemy, tower.model.damage.health.duration || 0, tower.model.damage.health.type))
   }
 }

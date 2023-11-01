@@ -8,6 +8,6 @@ export default class TargeIceBehavior extends BaseTargeCloudBehavior {
   constructor(tower: TDTower) {
     super(tower, "ice", iceEmitter,
       (enemy: TDEnemy) => new TimedDamageEffect(
-        tower, enemy, tower.model.damage.health.ice.duration || 0, "Cold"))
+        tower, enemy, tower.model.damage.health.duration || 0, tower.model.damage.health.type))
   }
 }

@@ -8,6 +8,6 @@ export default class TargeRockBehavior extends BaseTargeCloudBehavior {
   constructor(tower: TDTower) {
     super(tower, "rock", rockEmitter,
       (enemy: TDEnemy) => new TimedDamageEffect(
-        tower, enemy, tower.model.damage.health.rock.duration || 0, "Rock"))
+        tower, enemy, tower.model.damage.health.duration || 0, tower.model.damage.health.type))
   }
 }

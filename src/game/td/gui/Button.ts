@@ -16,8 +16,8 @@ export default class Button extends GameObjects.Container {
   constructor(scene: Scene, x: number, y: number, public w: number, public h: number,
     public text?: string, public stylePrefix: string = "blue", public onClick?: (event?: Types.Input.EventData) => void) {
     super(scene, x, y)
-    this.background = scene.add.nineslice(0, 0, makeKey(stylePrefix, "button"),
-      undefined, w, h, 16, 16, 16, 16)
+    const key = makeKey(stylePrefix, "button")
+    this.background = scene.add.nineslice(0, 0, key, undefined, w, h, 16, 16, 16, 16)
     this.background.setSize(w, h)
     this.setSize(w, h)// Set bounds
     // this.setDisplaySize(w, h)

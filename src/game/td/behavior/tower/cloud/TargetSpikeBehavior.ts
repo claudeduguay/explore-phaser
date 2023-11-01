@@ -8,6 +8,6 @@ export default class TargeStunBehavior extends BaseTargeCloudBehavior {
   constructor(tower: TDTower) {
     super(tower, "spike", spikeEmitter,
       (enemy: TDEnemy) => new TimedDamageEffect(
-        tower, enemy, tower.model.damage.health.spike.duration || 0, "Spike"))
+        tower, enemy, tower.model.damage.health.duration || 0, tower.model.damage.health.type))
   }
 }
