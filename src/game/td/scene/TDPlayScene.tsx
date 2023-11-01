@@ -104,11 +104,11 @@ export default class TDPlayScene extends Scene {
     // Detect Collisions between tower and enemy group members
     connectTowerEnemyCollisionDetection(this, this.towerGroup, this.enemyGroup)
 
-    setTimeout(() => {
-      const firstChild = this.enemyGroup.children.entries[0] as TDEnemy
-      console.log("First child:", firstChild)
-      this.enemyGroup.select(firstChild)
-    }, 2000)
+    // setTimeout(() => {
+    //   const firstChild = this.enemyGroup.children.entries[0] as TDEnemy
+    //   console.log("First child:", firstChild)
+    //   this.enemyGroup.select(firstChild)
+    // }, 2000)
 
 
     // ------------------------------------------------------------------
