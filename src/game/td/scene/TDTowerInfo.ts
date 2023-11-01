@@ -22,13 +22,14 @@ export default class TDTowerInfo extends Panel {
     this.addText(model.name, 147, 22, "white")
     this.addText(`(${entitle(model.group)})`, 180, 14, "white")
     this.addText(model.description, 225, 14, "white")
-    this.addText("General", 270, 22, "orange")
-    this.add(new GameObjects.Line(scene, 350 / 2, 290, 0, 0, 350, 0, 0x666666))
+
     const upgrade: IUpgrade = {
       level: { text: "+1", cost: 200 },
       cost: { text: "-10%", cost: 100 },
       range: { text: "+10%", cost: 50 },
     }
+    this.addText("General", 270, 22, "orange")
+    this.add(new GameObjects.Line(scene, 350 / 2, 290, 0, 0, 350, 0, 0x666666))
     Object.entries(model.stats).forEach(([key, value], i) => {
       const y = 315 + i * 38
       this.addText(`${entitle(key)}: `, y, 18, "cyan").setOrigin(1, 0.5)
