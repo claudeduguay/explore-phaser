@@ -22,6 +22,11 @@ Need to account for shields (disabled for now)
 * IMPROVEMENT: Need to separate map level generation from createMap function, at minimum separate into discrete steps
 * FIX: Level preview alignment in Levels scene.
 
+* FIX: Reduced upgrade button heights and line spacing on Tower Info
+* FIX: Connect ObservableValue<boolean> Panel show/hide + close button
+* FIX: Connect ObservableValue<TDTower | undefined>
+* FIX: Add slide-in/out left/right game sides
+
 ### Effect/Afliction Design Notes
 
 An effect, to be most flexible, is like a modifier with a timeout.
