@@ -65,6 +65,7 @@ export default class TDInfoEnemy extends TDInfoBase {
     }
 
     const enemy = new TDEnemy(this.scene, 350 / 2, 80, model)
+    enemy.anims.play(`east-${model.key}`) //  Doesn't appear to play
     this.add(enemy)
     this.addText(130, `${model.name} Enemy`, 20, "white")
 

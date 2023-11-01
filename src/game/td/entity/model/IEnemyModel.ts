@@ -51,7 +51,36 @@ export function generateEnemies(scene: Scene, count: number = 5) {
         default: 1
       }
     }
+    makeEnemyAnimations(scene, peep)
     ENEMY_INDEX[peep.key] = peep
     ENEMY_LIST.push(peep)
   }
 }
+
+export function makeEnemyAnimations(scene: Scene, model: IEnemyModel) {
+  if (!scene.anims.get(`east-${model.key}`)) {
+    scene.anims.create({
+      key: `east-${model.key}`, frameRate: 20, repeat: -1,
+      frames: scene.anims.generateFrameNumbers(model.key, { start: 0, end: 15 }),
+    })
+  }
+  if (!scene.anims.get(`south-${model.key}`)) {
+    scene.anims.create({
+      key: `south-${model.key}`, frameRate: 20, repeat: -1,
+      frames: scene.anims.generateFrameNumbers(model.key, { start: 16, end: 31 }),
+    })
+  }
+  if (!scene.anims.get(`west-${model.key}`)) {
+    scene.anims.create({
+      key: `west-${model.key}`, frameRate: 20, repeat: -1,
+      frames: scene.anims.generateFrameNumbers(model.key, { start: 32, end: 47 }),
+    })
+  }
+  if (!scene.anims.get(`north-${model.key}`)) {
+    scene.anims.create({
+      key: `north-${model.key}`, frameRate: 20, repeat: -1,
+      frames: scene.anims.generateFrameNumbers(model.key, { start: 48, end: 63 }),
+    })
+  }
+}
+

@@ -24,23 +24,8 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
 
     super(scene, path, x, y, model.key)
     this.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
-    this.anims.create({
-      key: 'east', frameRate: 20, repeat: -1,
-      frames: this.anims.generateFrameNumbers(model.key, { start: 0, end: 15 }),
-    })
-    this.anims.create({
-      key: 'south', frameRate: 20, repeat: -1,
-      frames: this.anims.generateFrameNumbers(model.key, { start: 16, end: 31 }),
-    })
-    this.anims.create({
-      key: 'west', frameRate: 20, repeat: -1,
-      frames: this.anims.generateFrameNumbers(model.key, { start: 32, end: 47 }),
-    })
-    this.anims.create({
-      key: 'north', frameRate: 20, repeat: -1,
-      frames: this.anims.generateFrameNumbers(model.key, { start: 48, end: 63 }),
-    })
-    this.anims.play("east")
+
+    this.anims.play(`east-${model.key}`)
     this.setInteractive()
 
     this.health = model.stats.health || 0
@@ -96,23 +81,23 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     const current = this.anims.currentAnim
     switch (this.angle) {
       case -90:
-        if (current?.key !== "north") {
-          this.anims.play("north")
+        if (current?.key !== `north-${this.model.key}`) {
+          this.anims.play(`north-${this.model.key}`)
         }
         break
       case 0:
-        if (current?.key !== "east") {
-          this.anims.play("east")
+        if (current?.key !== `east-${this.model.key}`) {
+          this.anims.play(`east-${this.model.key}`)
         }
         break
       case 90:
-        if (current?.key !== "south") {
-          this.anims.play("south")
+        if (current?.key !== `south-${this.model.key}`) {
+          this.anims.play(`south-${this.model.key}`)
         }
         break
       case 180:
-        if (current?.key !== "west") {
-          this.anims.play("west")
+        if (current?.key !== `west-${this.model.key}`) {
+          this.anims.play(`west-${this.model.key}`)
         }
         break
     }
