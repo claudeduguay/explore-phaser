@@ -39,6 +39,11 @@ export default class Targeting {
   }
 }
 
+
+// ------------------------------------------------------------------
+// COLLISION DETECTION
+// ------------------------------------------------------------------
+
 export function connectTowerEnemyCollisionDetection(scene: Scene, towerGroup: SelectableGroup<TDTower>, enemyGroup: SelectableGroup<TDEnemy>) {
   scene.physics.add.overlap(towerGroup, enemyGroup, onEnemyOverlap, onEnemyInRadius)
 }
@@ -60,6 +65,7 @@ export function onEnemyInRadius(tower: ICollidable, enemy: ICollidable) {
     return distance <= tower.model.general.range
   }
 }
+
 
 // ------------------------------------------------------------------
 // TARGETING STRATEGIES
