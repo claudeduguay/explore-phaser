@@ -2,6 +2,20 @@ import { Utils } from "phaser";
 
 // Abstractions to allow for new implementations if Phaser is not available
 
+// Make an object (tree), and child values (if objects), immutable
+export function deepFreeze<T extends { [key: string]: any }>(o: T) {
+  Object.freeze(o);
+  Object.getOwnPropertyNames(o).forEach(function (prop) {
+    if (o.hasOwnProperty(prop)
+      && o[prop] !== null
+      && (typeof o[prop] === "object" || typeof o[prop] === "function")
+      && !Object.isFrozen(o[prop])) {
+      deepFreeze(o[prop]);
+    }
+  })
+  return o
+}
+
 export function deepClone<T extends {}>(obj: T): T {
   return Utils.Objects.DeepCopy(obj) as T
 }
