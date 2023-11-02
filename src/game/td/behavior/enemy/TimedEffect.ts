@@ -17,7 +17,8 @@ export default abstract class TimedEffect implements IBehavior {
     if (!this.startTime) {
       this.startTime = time
     }
-    const elapsed = time - (this.startTime || 0)
+    const elapsed = Math.floor(time - (this.startTime || 0))
+    console.log("Test:", elapsed >= this.timeout, elapsed, this.timeout)
     if (elapsed >= this.timeout) { // <<< Bug: Something is going on here that doesn't trigger
       console.log("Timed out")
       this.endEffect(time, delta)

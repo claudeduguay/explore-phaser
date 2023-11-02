@@ -78,16 +78,19 @@ export default class TDInfoEnemy extends TDInfoBase {
   }
 
   preUpdate(time: number, delta: number) {
-    const effects = this.enemy?.effects ? [...this.enemy?.effects] : []
-    const text = effects.map((e: any) => {
-      if (e instanceof TimedDamageEffect) {
-        const elapsed = time - (e.startTime || 0)
-        console.log("Check Timed out (truth, elapsed, timeout):", elapsed >= e.timeout, elapsed, e.timeout)
-      }
-      const dps = TOWER_INDEX[e.name.toLowerCase()].damage.health.dps
-      const duration = TOWER_INDEX[e.name.toLowerCase()].damage.health.duration || 0
-      return `${e.name} (dps: ${dps}${duration > 0 ? ", " + duration + "ms" : ""})`
-    }).join(", ")
-    console.log("Effects:", effects.length ? text : "None")
+    if (this.enemy) {
+      const effects = [...this.enemy.effects]
+      const text = effects.map((e: any) => {
+        if (e instanceof TimedDamageEffect) {
+          const elapsed = Math.floor(time - (e.startTime || 0))
+          console.log("Check Timeout (truth, elapsed, timeout):", elapsed >= e.timeout, elapsed, e.timeout)
+        }
+        const dps = TOWER_INDEX[e.name.toLowerCase()].damage.health.dps
+        const duration = TOWER_INDEX[e.name.toLowerCase()].damage.health.duration || 0
+        return `${e.name} (dps: ${dps}${duration > 0 ? ", " + duration + "ms" : ""})`
+      }).join(", ")
+      console.log("Effects:", effects.length ? text : "None")
+    }
   }
 }
+
