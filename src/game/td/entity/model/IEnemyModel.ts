@@ -51,9 +51,9 @@ export function generateEnemies(scene: Scene, count: number = 5) {
         default: 1
       }
     }
-    makeEnemyAnimations(scene, peep)
     ENEMY_INDEX[peep.key] = peep
     ENEMY_LIST.push(peep)
+    makeEnemyAnimations(scene, peep)
   }
 }
 
