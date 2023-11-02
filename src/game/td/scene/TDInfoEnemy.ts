@@ -77,8 +77,8 @@ export default class TDInfoEnemy extends TDInfoBase {
 
   preUpdate(time: number, delta: number) {
     // TODO: Show current effects being applied to this enemy
-    this.enemy?.effects.forEach((effect: any) => {
-      console.log(effect.name)
-    })
+    const effects = this.enemy?.effects ? [...this.enemy?.effects] : []
+    const text = effects.map((e: any) => e.name).join(", ")
+    console.log("Effects:", text)
   }
 }

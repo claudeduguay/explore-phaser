@@ -37,7 +37,7 @@ export default class BaseTargeCloudBehavior implements IBehavior {
       //   this.cloud?.explode(50, 0, 0)
       // }
       this.cloud?.start()
-      const defaultDamageBuilder: IDamageEffectBuilder = (enemy: TDEnemy) => new InRangeDamageEffect(this.tower, enemy, "")
+      const defaultDamageBuilder: IDamageEffectBuilder = (enemy: TDEnemy) => new InRangeDamageEffect(this.tower, enemy)
       const effectDamageBuilder: IDamageEffectBuilder = this.effect || defaultDamageBuilder
       for (let target of this.tower.targeting.current) {
         this.targetInstanceMap.apply(target, () => effectDamageBuilder(target))

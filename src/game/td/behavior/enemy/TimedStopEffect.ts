@@ -4,8 +4,9 @@ import TimedEffect from "./TimedEffect";
 
 export default class TimedDamageEffect extends TimedEffect {
 
-  constructor(public readonly tower: TDTower, enemy: TDEnemy, public effectTimeout: number, timeout: number, public name: string) {
-    super(enemy, timeout)
+  constructor(public readonly tower: TDTower,
+    enemy: TDEnemy, public effectTimeout: number, timeout: number, name?: string) {
+    super(tower, enemy, timeout, name)
   }
 
   updateEffect(time: number, delta: number): void {

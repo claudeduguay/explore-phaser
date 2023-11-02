@@ -1,11 +1,13 @@
 import TDEnemy from "../../entity/enemy/TDEnemy"
+import TDTower from "../../entity/tower/TDTower"
 import IBehavior from "../core/IBehavior"
 
 export default abstract class TimedEffect implements IBehavior {
 
   startTime?: number
 
-  constructor(public enemy: TDEnemy, public readonly timeout: number) {
+  constructor(public readonly tower: TDTower, public readonly enemy: TDEnemy, public readonly timeout: number,
+    public name: string = tower.model.damage.health.type) {
   }
 
   update(time: number, delta: number): void {

@@ -9,6 +9,6 @@ export default class TargetFireBehavior extends BaseTargeCloudBehavior {
   constructor(tower: TDTower) {
     super(tower, 'fire', fireEmitter,
       (enemy: TDEnemy) => new TimedDamageEffect(
-        tower, enemy, tower.model.damage.health.duration || 0, tower.model.damage.health.type))
+        tower, enemy, tower.model.damage.health.duration || 0))
   }
 }

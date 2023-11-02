@@ -32,12 +32,12 @@ export default class TargetSlowBehavior implements IBehavior {
 
       const duration = this.tower.model.damage.health.duration || 0
       for (let target of this.tower.targeting.current) {
-        this.targetInstanceMap.apply(target, () => new TimedSlowEffect(target, duration))
+        this.targetInstanceMap.apply(target, () => new TimedSlowEffect(this.tower, target, duration))
         if (target.twin) { // Handle twin if present
           // Note, event though we checked for existence of target.twin, effectBuilder 
           // complains it may be undefined (disabled ts-check)
           // @ts-ignore
-          this.twinInstanceMap.apply(target.twin, () => new TimedSlowEffect(target.twin, duration))
+          this.twinInstanceMap.apply(target.twin, () => new TimedSlowEffect(this.tower, target.twin, duration))
         }
       }
     } else {

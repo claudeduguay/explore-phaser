@@ -1,7 +1,9 @@
 import IBehavior from "../core/IBehavior"
 import TDTower from "../../entity/tower/TDTower"
 import Point from "../../../../util/geom/Point"
-import { applyDamage } from "./ComputeDamage"
+import { pickFirst } from "../../entity/tower/Targeting"
+import TargetEffectsMap from "../core/TargetEffectsMap"
+import InRangeDamageEffect from "../enemy/InRangeDamageEffect"
 
 export interface IEmitter {
   destroy: () => void
@@ -12,6 +14,7 @@ export interface IEmitter {
 export default abstract class BaseTargetBehavior<T extends IEmitter> implements IBehavior {
 
   emitters: T[] = []
+  targetInstanceMap = new TargetEffectsMap()
 
   constructor(public tower: TDTower, public destroyEachFrame: boolean = true, public singleTarget: boolean = true) {
   }
@@ -25,8 +28,18 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
     }
     if (this.tower.targeting.current.length) {
       this.tower.emissionPoints().forEach((point, i) => this.addEmitter(i, point, time))
-      applyDamage(this.tower, delta, this.singleTarget)
+      if (this.singleTarget) {
+        const target = pickFirst(this.tower.targeting.current)
+        if (target) {
+          this.targetInstanceMap.apply(target, () => (new InRangeDamageEffect(this.tower, target)))
+        }
+      } else {
+        this.tower.targeting.current.forEach(target => {
+          this.targetInstanceMap.apply(target, () => (new InRangeDamageEffect(this.tower, target)))
+        })
+      }
     } else {
+      this.targetInstanceMap.clear()
       this.removeOrStopEmitters()
     }
   }
