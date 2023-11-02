@@ -5,6 +5,8 @@ import { CHANGED_EVENT } from "../value/ObservableValue";
 import TDEnemy from "../entity/enemy/TDEnemy";
 import IEnemyModel from "../entity/model/IEnemyModel";
 import SelectableGroup from "./SelectableGroup";
+import { TOWER_INDEX } from "../entity/model/ITowerModel";
+import TimedDamageEffect from "../behavior/enemy/TimedDamageEffect";
 
 export default class TDInfoEnemy extends TDInfoBase {
 
@@ -76,9 +78,16 @@ export default class TDInfoEnemy extends TDInfoBase {
   }
 
   preUpdate(time: number, delta: number) {
-    // TODO: Show current effects being applied to this enemy
     const effects = this.enemy?.effects ? [...this.enemy?.effects] : []
-    const text = effects.map((e: any) => e.name).join(", ")
-    console.log("Effects:", text)
+    const text = effects.map((e: any) => {
+      if (e instanceof TimedDamageEffect) {
+        const elapsed = time - (e.startTime || 0)
+        console.log("Check Timed out (truth, elapsed, timeout):", elapsed >= e.timeout, elapsed, e.timeout)
+      }
+      const dps = TOWER_INDEX[e.name.toLowerCase()].damage.health.dps
+      const duration = TOWER_INDEX[e.name.toLowerCase()].damage.health.duration || 0
+      return `${e.name} (dps: ${dps}${duration > 0 ? ", " + duration + "ms" : ""})`
+    }).join(", ")
+    console.log("Effects:", effects.length ? text : "None")
   }
 }

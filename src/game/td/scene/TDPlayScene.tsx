@@ -5,7 +5,7 @@ import TDGameScene from "./TDGameScene"
 import generateMap from "./map/TDLevel"
 import Point from "../../../util/geom/Point"
 import SelectableGroup from "./SelectableGroup"
-import { TOWER_LIST } from "../entity/model/ITowerModel"
+import { TOWER_INDEX, TOWER_LIST } from "../entity/model/ITowerModel"
 import registerTowerTextures from "../assets/TowerTextures"
 import ObservableValue from "../value/ObservableValue"
 import { shuffle } from "../../../util/ArrayUtil"
@@ -16,6 +16,7 @@ import { TDTileMap } from "./map/TDTileMap"
 import { generatePathAdjacentPositions } from "./map/TDPath"
 import Conversation from "../gui/game/Conversation"
 import { play } from "../../../util/SceneUtil"
+import { randomChoice } from "../../../util/Random"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -202,11 +203,12 @@ export default class TDPlayScene extends Scene {
     })
   }
 
-  generateSemiRandomTowers(points: Point[], count: number = 5) {
+  generateSemiRandomTowers(points: Point[], count: number = 1) {
     const validTowerPositions: Point[] = generatePathAdjacentPositions(this, points)
     for (let i = 0; i < count; i++) {
-      let pos: Point = validTowerPositions[i % (validTowerPositions.length - 1)]
-      const model = Utils.Array.GetRandom(TOWER_LIST)
+      let pos: Point = randomChoice(validTowerPositions)
+      // const model = randomChoice(TOWER_LIST)
+      const model = TOWER_INDEX.poison
       const tower = this.add.tower(pos.x, pos.y, model)
       this.towerGroup.add(tower)
       this.map.addTowerMarkAt(pos)
