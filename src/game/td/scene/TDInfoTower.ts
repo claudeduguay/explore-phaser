@@ -81,7 +81,11 @@ export default class TDInfoTower extends TDInfoBase {
       cost: { text: "-10%", cost: 100 },
       range: { text: "+10%", cost: 50 },
     }
-    const damageFormatter = (damage: ITowerDamage) => {
+    const valueFormatter = (key: string, value: number) => `${value}`
+    const buttonFormatter = (key: string, value: number) => `${upgrade[key].text} ($${upgrade[key].cost})`
+    this.addTable(270, "General", model.general, valueFormatter, buttonFormatter)
+
+    const damageFormatter = (key: string, damage: ITowerDamage) => {
       let dps
       if (Array.isArray(damage.dps)) {
         const [min, max] = damage.dps
@@ -93,16 +97,6 @@ export default class TDInfoTower extends TDInfoBase {
       return `${dps} (${duration})`
     }
 
-    this.addTitle(270, "General")
-    Object.entries(model.general).forEach(([key, value], i) => {
-      const y = 310 + i * 32
-      this.addRow(y, entitle(key), value, `${upgrade[key].text} ($${upgrade[key].cost})`)
-    })
-
-    this.addTitle(430, "Damage (dps per level)")
-    Object.entries(model.damage).forEach(([key, value], i) => {
-      const y = 465 + i * 32
-      this.addRow(y, entitle(key), damageFormatter(value))
-    })
+    this.addTable(430, "Damage (dps per level)", model.damage, damageFormatter)
   }
 }

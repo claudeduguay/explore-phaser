@@ -83,7 +83,7 @@ export default class TDHUDScene extends Scene {
     this.add.existing(new TDInfoTower(this, w + 100, 75,
       this.playScene.towerGroup.selected,
       this.playScene.towerGroup.infoVisible))
-    this.add.existing(new TDInfoEnemy(this, 50, 75,
+    this.add.existing(new TDInfoEnemy(this, -450, 75,
       this.playScene.enemyGroup.selected,
       this.playScene.enemyGroup.infoVisible))
   }

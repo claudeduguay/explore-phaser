@@ -1,11 +1,14 @@
 import { GameObjects, Scene } from "phaser";
 import Panel from "../gui/Panel";
 import { DEFAULT_FONT_FAMILY } from "../gui/Label";
+import { entitle } from "../../../util/TextUtil"
 import Button from "../gui/Button";
 
 export interface IUpgrade {
   [key: string]: { text: string, delta?: (value: number) => number, cost: number }
 }
+
+export type IValueFormatter = (key: string, value: any) => string
 
 export default class TDInfoBase extends Panel {
 
@@ -16,6 +19,17 @@ export default class TDInfoBase extends Panel {
   clear() {
     // Filter out background and remove all other children
     this.remove(this.list?.filter(child => child !== this.background), true)
+  }
+
+  addTable(y: number, title: string, obj: { [key: string]: any },
+    valueFormatter?: IValueFormatter, buttonFormatter?: IValueFormatter) {
+    this.addTitle(y, title)
+    Object.entries(obj).forEach(([key, value], i) => {
+      const ry = (y + 40) + i * 32
+      const valueText = valueFormatter ? valueFormatter(key, value) : value
+      const buttonText = buttonFormatter ? buttonFormatter(key, value) : undefined
+      this.addRow(ry, entitle(key), valueText, buttonText)
+    })
   }
 
   addRow(y: number, key: string, value: any, buttonText?: string) {

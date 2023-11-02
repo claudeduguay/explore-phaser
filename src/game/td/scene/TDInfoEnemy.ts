@@ -1,5 +1,4 @@
 import { Scene } from "phaser";
-import { entitle } from "../../../util/TextUtil"
 import IconButton from "../gui/IconButton";
 import TDInfoBase from "./TDInfoBase";
 import ObservableValue, { CHANGED_EVENT } from "../value/ObservableValue";
@@ -32,7 +31,7 @@ export default class TDInfoEnemy extends TDInfoBase {
     if (!visible) {
       this.scene.tweens.add({
         targets: this,
-        x: -400,
+        x: -450,
         ease: 'Linear',
         duration: 400,
         onComplete: () => this.visible = visible
@@ -65,20 +64,11 @@ export default class TDInfoEnemy extends TDInfoBase {
     }
 
     const enemy = new TDEnemy(this.scene, 350 / 2, 80, model)
-    enemy.anims.play(`east-${model.key}`) //  Doesn't appear to play
+    enemy.anims.play(`east-${model.key}`)  // Doesn't appear to play animation
     this.add(enemy)
     this.addText(130, `${model.name} Enemy`, 20, "white")
 
-    this.addTitle(180, "General")
-    Object.entries(model.general).forEach(([key, value], i) => {
-      const y = 220 + i * 32
-      this.addRow(y, entitle(key), value)
-    })
-
-    this.addTitle(405, "Vulnerability (dps multiplier)")
-    Object.entries(model.vulnerability).forEach(([key, value], i) => {
-      const y = 445 + i * 32
-      this.addRow(y, entitle(key), `${Math.floor(value * 100)}%`)
-    })
+    this.addTable(180, "General", model.general)
+    this.addTable(405, "Vulnerability (dps multiplier)", model.vulnerability)
   }
 }
