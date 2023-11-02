@@ -12,7 +12,7 @@ export interface IMapConfig {
 export const DEFAULT_CONFIG = {
   cellSize: new Point(64, 64),
   rows: 6,
-  cols: 9
+  cols: 8
 }
 
 export default function makeTileMap(scene: Scene, x: number, y: number, model: IPathModel, config: IMapConfig = DEFAULT_CONFIG) {
@@ -38,7 +38,7 @@ export class TDTileMap extends GameObjects.Container {
     const map = scene.make.tilemap({
       tileWidth: cellSize.x,
       tileHeight: cellSize.y,
-      width: cols * 2,
+      width: 2 + cols * 2,
       height: 1 + rows * 2
     })
     this.map = map
@@ -93,7 +93,7 @@ export class TDTileMap extends GameObjects.Container {
       (tile, i) => tile.index = lerpInt(16, 20, Math.random()))
     this.pathLayer.fill(-1)
     path.forEach(cell => {
-      this.pathLayer.putTileAt(cell.bits, cell.pos.x, cell.pos.y + 1)
+      this.pathLayer.putTileAt(cell.bits, cell.pos.x + 1, cell.pos.y + 1)
     })
     this.markLayer.fill(-1)
   }
@@ -117,7 +117,7 @@ export class TDTileMap extends GameObjects.Container {
   getPathPoints() {
     if (this.path) {
       return this.path.map(cell => {
-        const pos = this.map.tileToWorldXY(cell.pos.x, cell.pos.y + 1) || new Point()
+        const pos = this.map.tileToWorldXY(cell.pos.x + 1, cell.pos.y + 1) || new Point()
         return new Point(pos.x + 32, pos.y + 32)
       })
     }

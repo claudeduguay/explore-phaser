@@ -64,7 +64,7 @@ export function generatePathAdjacentPositions(scene: Scene, pathPoints: Point[])
   const positions: Point[] = []
   for (let point of pathPoints) {
     // Include only even cell positions
-    if (Math.floor(point.x / 64) % 2 === 0 && Math.floor(point.y / 64) % 2 === 0) {
+    if (Math.floor(point.x / 64) % 2 === 0 && Math.floor(point.y / 64) % 2 !== 0) {
       const west = point.plus(WEST)
       const east = point.plus(EAST)
       const north = point.plus(NORTH)
