@@ -15,7 +15,7 @@ import TDHUDScene from "./TDHUDScene"
 import { TDTileMap } from "./map/TDTileMap"
 import { generatePathAdjacentPositions } from "./map/TDPath"
 import Conversation from "../gui/game/Conversation"
-import { play, sceneSize } from "../../../util/SceneUtil"
+import { play } from "../../../util/SceneUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -160,6 +160,7 @@ export default class TDPlayScene extends Scene {
       }
     })
     // >>> HOME (RESET CAMERA) HANDLER <<<
+    // https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values
     this.input.keyboard?.on(Input.Keyboard.Events.ANY_KEY_UP, (event: KeyboardEvent) => {
       if (event.key === "Home") { // keyCode is deprecated
         const camera = this.cameras.main

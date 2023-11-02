@@ -16,12 +16,16 @@ export default class TowerPlacement extends GameObjects.GameObject {
     super(playScene, "placement")
   }
 
+  dragging: boolean = false
+
   onAddTower = (model: ITowerModel) => {
-    this.addingTower = this.playScene.add.tower(this.playScene.input.x, this.playScene.input.y, model)
+    const { x, y } = this.playScene.input
+    this.addingTower = this.playScene.add.tower(x, y, model)
     if (this.addingTower) {
       this.addingTower.preview = PreviewType.Drag
       this.addingTower.showRange.visible = true
       this.playScene.towerGroup.select(undefined)
+      setTimeout(() => this.dragging = true, 1000) // do this to avoid immediate mouse down 
     }
   }
 
@@ -31,21 +35,22 @@ export default class TowerPlacement extends GameObjects.GameObject {
       const x = PMath.Snap.Floor(input.x, 64) + 32
       const y = PMath.Snap.Floor(input.y, 64) + 32
       const pos = new Point(x, y)
-
-      if (input.mousePointer.isDown) {
-        // PLOP IF ON VALID POSITION
-        input.setDefaultCursor("default")
+      if (input.mousePointer.isDown && this.dragging) {
+        console.log("Detected as mouse down")
+        // PLOP IF ON A VALID POSITION
         if (this.addingTower.platform.isTinted) {
           this.addingTower.destroy()
           play(this.playScene, "fail")
         } else {
           this.playScene.towerGroup.add(this.addingTower)
           this.playScene.map.addTowerMarkAt(pos)
+          this.addingTower.showRange.visible = false
           this.addingTower.preview = PreviewType.Normal
           play(this.playScene, "plop")
         }
-        this.addingTower.showRange.visible = false
+        input.setDefaultCursor("default")
         this.addingTower = undefined
+        this.dragging = false
       } else {
         // DRAGGING
         input.setDefaultCursor("none")
