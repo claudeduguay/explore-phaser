@@ -1,4 +1,4 @@
-import { Scene, Scenes } from "phaser";
+import { Input, Scene, Scenes } from "phaser";
 import SpeedBar from "../gui/game/SpeedBar";
 import ValueMonitor from "../gui/game/ValueMonitor";
 import ButtonBar from "../gui/game/ButtonBar";
@@ -12,6 +12,7 @@ import { makeTimelinePreviewGraphics } from "./map/TDTimeline";
 import TDInfoTower from "./TDInfoTower";
 import { sceneSize } from "../../../util/SceneUtil";
 import TDInfoEnemy from "./TDInfoEnemy";
+import TDEnemy from "../entity/enemy/TDEnemy";
 
 export default class TDHUDScene extends Scene {
   buttonBar!: ButtonBar
@@ -80,12 +81,20 @@ export default class TDHUDScene extends Scene {
     this.addSelectors()
 
     const { w } = sceneSize(this)
-    this.add.existing(new TDInfoTower(this, w + 100, 75,
-      this.playScene.towerGroup.selected,
-      this.playScene.towerGroup.infoVisible))
-    this.add.existing(new TDInfoEnemy(this, -450, 75,
-      this.playScene.enemyGroup.selected,
-      this.playScene.enemyGroup.infoVisible))
+    this.add.existing(new TDInfoTower(this, w + 100, 75, this.playScene.towerGroup))
+    this.add.existing(new TDInfoEnemy(this, -450, 75, this.playScene.enemyGroup))
+
+    // For numerical input from 1-9, select the first enemy with that level
+    // https://developer.mozilla.org/en-US/docs/Web/API/UI_Events/Keyboard_event_key_values
+    this.input.keyboard?.on(Input.Keyboard.Events.ANY_KEY_UP, (event: KeyboardEvent) => {
+      if (["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key)) {
+        const index = Number.parseInt(event.key)
+        const enemies = this.playScene.enemyGroup.children.entries
+        const matchLevel = (e: any) => e.model.general.level === index
+        const selection = enemies.find(matchLevel) as TDEnemy | undefined
+        this.playScene.enemyGroup.select(selection)
+      }
+    })
   }
 
   addSelectors() {

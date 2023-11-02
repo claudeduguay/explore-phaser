@@ -4,8 +4,9 @@ import TDTower, { PreviewType } from "../entity/tower/TDTower";
 import { entitle } from "../../../util/TextUtil"
 import IconButton from "../gui/IconButton";
 import TDInfoBase from "./TDInfoBase";
-import ObservableValue, { CHANGED_EVENT } from "../value/ObservableValue";
+import { CHANGED_EVENT } from "../value/ObservableValue";
 import { sceneSize } from "../../../util/SceneUtil";
+import SelectableGroup from "./SelectableGroup";
 
 export interface IUpgrade {
   [key: string]: { text: string, cost: number, delta?: (value: number) => number }
@@ -14,20 +15,19 @@ export interface IUpgrade {
 export default class TDInfoTower extends TDInfoBase {
 
   constructor(scene: Scene, x: number, y: number,
-    public towerObservable: ObservableValue<TDTower | undefined>,
-    public visibleObservable: ObservableValue<boolean>) {
+    public group: SelectableGroup<TDTower>) {
     super(scene, x, y, 350, 550)
 
-    towerObservable.addListener(CHANGED_EVENT, this.setTower)
-    visibleObservable.addListener(CHANGED_EVENT, this.setVisibility)
+    group.selected.addListener(CHANGED_EVENT, this.setTower)
+    group.infoVisible.addListener(CHANGED_EVENT, this.setVisibility)
 
-    this.setTower(towerObservable.value)
-    this.setVisibility(visibleObservable.value)
+    this.setTower(group.selected.value)
+    this.setVisibility(group.infoVisible.value)
   }
 
   protected preDestroy(): void {
-    this.towerObservable.removeListener(CHANGED_EVENT, this.setTower)
-    this.visibleObservable.removeListener(CHANGED_EVENT, this.setVisibility)
+    this.group.selected.removeListener(CHANGED_EVENT, this.setTower)
+    this.group.infoVisible.removeListener(CHANGED_EVENT, this.setVisibility)
   }
 
   setVisibility = (visible: boolean) => {
@@ -62,7 +62,7 @@ export default class TDInfoTower extends TDInfoBase {
 
     this.clear()
     const close = new IconButton(this.scene, 330, 20, 25, 25, 0xe5cd)
-    close.onClick = () => this.visibleObservable.value = false
+    close.onClick = () => this.group.infoVisible.value = false
     this.add(close)
     this.addText(30, "Tower Info", 30, "orange")
 

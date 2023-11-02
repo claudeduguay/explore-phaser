@@ -111,7 +111,6 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
       }
       const healthFraction = this.health / this.model.general.health
       const shieldFraction = this.shield / this.model.general.shield
-      console.log("Fractions:", healthFraction, shieldFraction, this.health, this.model.general.health)
       this.shieldBar.fraction = shieldFraction
       this.healthBar.fraction = healthFraction
       const bounds = this.getBounds()
