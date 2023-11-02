@@ -51,7 +51,7 @@ export default class TDHUDScene extends Scene {
   }
 
   create() {
-    // IMPORTANT: this.add is not available in constructor, so we use create() 
+    // IMPORTANT: "this.add" is not available in constructor, so we use create() 
 
     // Value monitors (left)
     this.add.existing(new ValueMonitor(this, 10, 7, 0xe87d, "red", this.playScene.health))
@@ -103,6 +103,7 @@ export default class TDHUDScene extends Scene {
       new TowerSelector(this.playScene, 0, 700, this.playScene.credits, "area", placement.onAddTower)
     ]
     for (let selector of this.selectors) {
+      selector.setScrollFactor(0) // Doesn't seem to help
       selector.group = this.selectors
       this.add.existing(selector)
     }

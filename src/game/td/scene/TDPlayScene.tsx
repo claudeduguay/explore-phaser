@@ -15,6 +15,7 @@ import TDHUDScene from "./TDHUDScene"
 import { TDTileMap } from "./map/TDTileMap"
 import { generatePathAdjacentPositions } from "./map/TDPath"
 import Conversation from "../gui/game/Conversation"
+import { sceneSize } from "../../../util/SceneUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -135,17 +136,36 @@ export default class TDPlayScene extends Scene {
   }
 
   initInputEventHandlers() {
+
     // >>> ZOOM HANDLER <<<
+    // May be useful: https://stackoverflow.com/questions/62947381/trying-to-get-mouse-wheel-zoom-effect-in-phaser
     this.input.on(Input.Events.POINTER_WHEEL, (pointer: Input.Pointer, over: any, deltaX: number, deltaY: number, deltaZ: number) => {
+      const camera = this.cameras.main
       if (deltaY < 0) {
-        const zoom = this.cameras.main.zoom
-        this.cameras.main.setZoom(Math.min(4, zoom * 2))
+        const zoom = camera.zoom
+        camera.setZoom(Math.min(4, zoom * 1.5))
       } else {
-        const zoom = this.cameras.main.zoom
-        this.cameras.main.setZoom(Math.max(0.25, zoom * 0.5))
+        const zoom = camera.zoom
+        camera.setZoom(Math.max(0.25, zoom * 0.75))
       }
-      // this.cameras.main.startFollow(pointer)
-      // this.cameras.main.stopFollow()
+      this.cameras.main.centerOn(pointer.worldX, pointer.worldY)
+      this.cameras.main.pan(pointer.worldX, pointer.worldY, 2000, "Power2")
+    })
+    // >>> PAN HANDLER <<<
+    this.input.on(Input.Events.POINTER_MOVE, (pointer: Input.Pointer) => {
+      if (pointer.isDown) {
+        const camera = this.cameras.main
+        camera.scrollX -= (pointer.x - pointer.prevPosition.x) / camera.zoom;
+        camera.scrollY -= (pointer.y - pointer.prevPosition.y) / camera.zoom;
+      }
+    })
+    // >>> HOME (RESET CAMERA) HANDLER <<<
+    this.input.keyboard?.on(Input.Keyboard.Events.ANY_KEY_UP, (event: KeyboardEvent) => {
+      if (event.key === "Home") { // keyCode is deprecated
+        const camera = this.cameras.main
+        camera.setScroll(0)
+        camera.zoom = 1.0
+      }
     })
 
     // Clear selections when clicked outside info panel or tower selector
