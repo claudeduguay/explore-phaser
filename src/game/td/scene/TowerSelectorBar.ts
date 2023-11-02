@@ -4,6 +4,7 @@ import TDTower, { PreviewType } from "../entity/tower/TDTower"
 import TowerSelector from "./TowerSelector"
 import { DEFAULT_FONT_FAMILY } from "../gui/Label"
 import { DEFAULT_STYLE, Icon } from "../gui/Icon"
+import { play } from "../../../util/SceneUtil"
 
 export default class TowerSelectorBar extends GameObjects.Container {
 
@@ -29,9 +30,7 @@ export default class TowerSelectorBar extends GameObjects.Container {
         selector.credits.value -= model.general.cost
         lockIcon?.destroy()
         lockText?.destroy()
-        if (this.scene.sound.get("cash")) {
-          this.scene.sound.play("cash")
-        }
+        play(this.scene, "cash")
       }
       this.onAddTower(model)
       // event.stopPropagation() // Seems to affect ability to position

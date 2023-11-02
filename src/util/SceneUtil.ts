@@ -40,3 +40,9 @@ export function transitionTo(currentScene: Scene, target: string) {
   // console.log(`Transition to ${target}`)
 
 }
+
+export function play(scene: Scene, clip: string) {
+  if (scene.sound.get(clip)) {
+    scene.sound.play(clip)
+  }
+}

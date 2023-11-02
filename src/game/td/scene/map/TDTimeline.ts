@@ -4,6 +4,7 @@ import { ENEMY_INDEX } from "../../entity/model/IEnemyModel"
 import TDPlayScene from "../TDPlayScene"
 import { defaultWaveModel, IWaveGroup } from "./IWaveModel"
 import ObservableValue from "../../value/ObservableValue"
+import { play } from "../../../../util/SceneUtil"
 
 // Create a graphics background and a line-based curve for the preview path
 export function makeTimelinePreviewGraphics(scene: Scene, prefixFraction: number = 0.15, suffixFraction: number = 0.15) {
@@ -49,9 +50,7 @@ export function addMainPathFollower(key: string, scene: Scene,
     if (model) {
       credits.value += (model.general.value || 0)
       TDPlayScene.createExplosionSprite(scene, x, y)
-      if (scene.sound.get("cash")) {
-        scene.sound.play("cash")
-      }
+      play(scene, "cash")
     }
     enemy.removeListener("died")
     wasDestroyed = true
@@ -74,9 +73,7 @@ export function addMainPathFollower(key: string, scene: Scene,
         if (health.value > 1) {
           health.value -= 1
         } else {
-          if (scene.sound.get("woe")) {
-            scene.sound.play("woe")
-          }
+          play(scene, "woe")
         }
       }
     },

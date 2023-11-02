@@ -3,7 +3,7 @@ import IconButton from "../IconButton";
 import ILayout, { HBoxLayout } from "../layout/ILayout";
 import Button from "../Button";
 import TDHUDScene from "../../scene/TDHUDScene";
-import { transitionTo } from "../../../../util/SceneUtil";
+import { play, transitionTo } from "../../../../util/SceneUtil";
 
 const ICON_HOME = 0xe88a
 const ICON_HAPPY = 0xe813
@@ -41,15 +41,11 @@ export default class ButtonBar extends GameObjects.Container {
     this.access.home.onClick = () => transitionTo(scene, "home")
     this.access.win.onClick = () => {
       transitionTo(scene, "win")
-      if (scene.sound.get("win")) {
-        scene.sound.play("win")
-      }
+      play(scene, "win")
     }
     this.access.lose.onClick = () => {
       transitionTo(scene, "lose")
-      if (scene.sound.get("lose")) {
-        scene.sound.play("lose")
-      }
+      play(scene, "lose")
     }
 
   }

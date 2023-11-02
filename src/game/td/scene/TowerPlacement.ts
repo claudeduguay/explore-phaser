@@ -4,6 +4,7 @@ import ITowerModel from "../entity/model/ITowerModel";
 import Point from "../../../util/geom/Point";
 import TDPlayScene from "./TDPlayScene";
 import TDHUDScene from "./TDHUDScene";
+import { play } from "../../../util/SceneUtil";
 
 export default class TowerPlacement extends GameObjects.GameObject {
 
@@ -36,16 +37,12 @@ export default class TowerPlacement extends GameObjects.GameObject {
         input.setDefaultCursor("default")
         if (this.addingTower.platform.isTinted) {
           this.addingTower.destroy()
-          if (this.playScene.sound.get("fail")) {
-            this.playScene.sound.play("fail")
-          }
+          play(this.playScene, "fail")
         } else {
           this.playScene.towerGroup.add(this.addingTower)
           this.playScene.map.addTowerMarkAt(pos)
           this.addingTower.preview = PreviewType.Normal
-          if (this.playScene.sound.get("plop")) {
-            this.playScene.sound.play("plop")
-          }
+          play(this.playScene, "plop")
         }
         this.addingTower.showRange.visible = false
         this.addingTower = undefined

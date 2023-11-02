@@ -15,7 +15,7 @@ import TDHUDScene from "./TDHUDScene"
 import { TDTileMap } from "./map/TDTileMap"
 import { generatePathAdjacentPositions } from "./map/TDPath"
 import Conversation from "../gui/game/Conversation"
-import { sceneSize } from "../../../util/SceneUtil"
+import { play, sceneSize } from "../../../util/SceneUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -71,7 +71,7 @@ export default class TDPlayScene extends Scene {
       ease: "Linear",
       onComplete: () => {
         sprite.destroy()
-        // scene.sound.play("cash")
+        play(scene, "cash")
       }
     })
   }
