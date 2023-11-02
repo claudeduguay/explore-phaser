@@ -19,7 +19,8 @@ export default class TowerPlacement extends GameObjects.GameObject {
   dragging: boolean = false
 
   onAddTower = (model: ITowerModel) => {
-    const { x, y } = this.playScene.input
+    const { x, y } = this.hudScene.input
+    // const { x: tx, y: ty } = this.playScene.cameras.main.getWorldPoint(x, y)
     this.addingTower = this.playScene.add.tower(x, y, model)
     if (this.addingTower) {
       this.addingTower.preview = PreviewType.Drag
