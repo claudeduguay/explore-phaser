@@ -45,14 +45,13 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     }
   }
 
-  destroy() {
+  preDestroy() {
     if (this.shieldBar) {
       this.shieldBar.destroy()
     }
     if (this.healthBar) {
       this.healthBar.destroy()
     }
-    super.destroy()
   }
 
   addSelectHandler(select: (selection?: TDEnemy) => void) {
@@ -110,11 +109,9 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
         this.barContainer.destroy()  // Make sure we don't leave lingering bar parts behind
         this.emit("died", this)
       }
-      if (this.shield < 1) {
-        this.shield = 100
-      }
       const healthFraction = this.health / this.model.general.health
       const shieldFraction = this.shield / this.model.general.shield
+      console.log("Fractions:", healthFraction, shieldFraction, this.health, this.model.general.health)
       this.shieldBar.fraction = shieldFraction
       this.healthBar.fraction = healthFraction
       const bounds = this.getBounds()
