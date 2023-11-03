@@ -6,7 +6,6 @@ import TDEnemy from "../entity/enemy/TDEnemy";
 import IEnemyModel from "../entity/model/IEnemyModel";
 import SelectableGroup from "./SelectableGroup";
 import { TOWER_INDEX } from "../entity/model/ITowerModel";
-import BehaviorList from "../behavior/core/BehaviorList";
 
 export default class TDInfoEnemy extends TDInfoBase {
 

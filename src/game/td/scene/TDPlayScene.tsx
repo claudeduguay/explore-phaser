@@ -1,11 +1,11 @@
 
-import { Scene, Utils, Input, Geom, GameObjects, Time } from "phaser"
+import { Scene, Input, Geom, GameObjects, Time } from "phaser"
 import TDTower from "../entity/tower/TDTower"
 import TDGameScene from "./TDGameScene"
 import generateMap from "./map/TDLevel"
 import Point from "../../../util/geom/Point"
 import SelectableGroup from "./SelectableGroup"
-import { TOWER_INDEX, TOWER_LIST } from "../entity/model/ITowerModel"
+import { TOWER_LIST } from "../entity/model/ITowerModel"
 import registerTowerTextures from "../assets/TowerTextures"
 import ObservableValue from "../value/ObservableValue"
 import { shuffle } from "../../../util/ArrayUtil"
