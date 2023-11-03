@@ -13,7 +13,7 @@ export default class TDInfoEnemy extends TDInfoBase {
 
   constructor(scene: Scene, x: number, y: number,
     public group: SelectableGroup<TDEnemy>) {
-    super(scene, x, y, 350, 600)
+    super(scene, x, y, 350, 650)
 
     group.selected.addListener(CHANGED_EVENT, this.setEnemy)
     group.infoVisible.addListener(CHANGED_EVENT, this.setVisibility)
@@ -74,6 +74,8 @@ export default class TDInfoEnemy extends TDInfoBase {
 
     this.addTable(180, "General", model.general)
     this.addTable(405, "Vulnerability (dps multiplier)", model.vulnerability)
+
+    this.effectTableObjects = [this.addText(500, "No Damage Effects", 20, "orange")]
   }
 
   effectTableObjects: GameObjects.GameObject[] = []
@@ -100,7 +102,11 @@ export default class TDInfoEnemy extends TDInfoBase {
         obj[e.name] = `dps: ${dps}${duration > 0 ? " (" + duration + "ms)" : ""}`
       })
       // console.log("Effects:", effects.length ? JSON.stringify(obj) : "None")
-      this.effectTableObjects = this.addTable(500, "Effects", obj)
+      if (Object.keys(obj).length > 0) {
+        this.effectTableObjects = this.addTable(500, "Applied Damage Effects", obj)
+      } else {
+        this.effectTableObjects = [this.addText(500, "No Damage Effects", 20, "orange")]
+      }
     }
   }
 }
