@@ -14,18 +14,11 @@ Need to account for shields (disabled for now)
 * Keep trying to get Tower previews to be in containers
 * BUG: Plopping tower sometimes sticks and requires a second click (long click seems to fix this, timing issue)
 * BUG: Main Peeps initially show at 0,0, causing artifacts
-* BUG: Canvas size measurment fails on iPad Safari
 * BUG: Peeps facing direction sometimes oscilates (seems more apparent when slowed)
-* BUG: If Selectors are associated with the hud scene, plops don't work correctly.
 * BUG: Starting a tower drag with a peep underneath loses connection and stays in-place.
 * IMPROVEMENT: Towers need to ease into aim position, avoid jump turns, maybe return to zero in the same way afterward
 * IMPROVEMENT: Need to separate map level generation from createMap function, at minimum separate into discrete steps
 * FIX: Level preview alignment in Levels scene.
-
-* FIX: Reduced upgrade button heights and line spacing on Tower Info
-* FIX: Connect ObservableValue<boolean> Panel show/hide + close button
-* FIX: Connect ObservableValue<TDTower | undefined>
-* FIX: Add slide-in/out left/right game sides
 
 ### Effect/Afliction Design Notes
 
