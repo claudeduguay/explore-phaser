@@ -8,7 +8,7 @@ export function sceneSize(scene: Scene) {
 
 // See: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/scenemanager/
 export function transitionTo(currentScene: Scene, target: string) {
-  console.log(`Transition scene from "${currentScene.scene.key}" to "${target}".`)
+  // console.log(`Transition scene from "${currentScene.scene.key}" to "${target}".`)
   // this.cameras.main.once("camerafadeoutcomplete", (camera: Cameras.Scene2D.Camera) => {
   //   console.log("Faded out")
   // })
@@ -17,13 +17,13 @@ export function transitionTo(currentScene: Scene, target: string) {
   //   currentScene.scene.sleep(currentScene)
   // }
   currentScene.scene.get(target).events.once(Scenes.Events.TRANSITION_START, () => {
-    console.log(`OnStart: Source is "${currentScene.scene.key}" Target is "${target}"`)
+    // console.log(`OnStart: Source is "${currentScene.scene.key}" Target is "${target}"`)
     if (currentScene.scene.key === "play" || currentScene.scene.key === "hud") {
-      console.log(`Put "play" to sleep`)
+      // console.log(`Put "play" to sleep`)
       // currentScene.scene.sleep("hud")  // "hud" does not appear to be going to sleep
       currentScene.scene.sleep("play")
     } else {
-      console.log(`Put "${currentScene.scene.key}" to sleep`)
+      // console.log(`Put "${currentScene.scene.key}" to sleep`)
       currentScene.scene.sleep(currentScene.scene.key)
     }
   })

@@ -203,12 +203,12 @@ export default class TDPlayScene extends Scene {
     })
   }
 
-  generateSemiRandomTowers(points: Point[], count: number = 1) {
+  generateSemiRandomTowers(points: Point[], count: number = 5) {
     const validTowerPositions: Point[] = generatePathAdjacentPositions(this, points)
     for (let i = 0; i < count; i++) {
-      let pos: Point = randomChoice(validTowerPositions)
-      // const model = randomChoice(TOWER_LIST)
-      const model = TOWER_INDEX.poison
+      let pos: Point = validTowerPositions[i] // These are shuffled during generation
+      const model = randomChoice(TOWER_LIST)
+      // const model = TOWER_INDEX.spike
       const tower = this.add.tower(pos.x, pos.y, model)
       this.towerGroup.add(tower)
       this.map.addTowerMarkAt(pos)

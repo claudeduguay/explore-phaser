@@ -1,4 +1,4 @@
-import { Scene } from "phaser";
+import { GameObjects, Scene } from "phaser";
 import IconButton from "../gui/IconButton";
 import TDInfoBase from "./TDInfoBase";
 import { CHANGED_EVENT } from "../value/ObservableValue";
@@ -6,7 +6,6 @@ import TDEnemy from "../entity/enemy/TDEnemy";
 import IEnemyModel from "../entity/model/IEnemyModel";
 import SelectableGroup from "./SelectableGroup";
 import { TOWER_INDEX } from "../entity/model/ITowerModel";
-import TimedDamageEffect from "../behavior/enemy/TimedDamageEffect";
 
 export default class TDInfoEnemy extends TDInfoBase {
 
@@ -14,7 +13,7 @@ export default class TDInfoEnemy extends TDInfoBase {
 
   constructor(scene: Scene, x: number, y: number,
     public group: SelectableGroup<TDEnemy>) {
-    super(scene, x, y, 350, 550)
+    super(scene, x, y, 350, 600)
 
     group.selected.addListener(CHANGED_EVENT, this.setEnemy)
     group.infoVisible.addListener(CHANGED_EVENT, this.setVisibility)
@@ -77,20 +76,20 @@ export default class TDInfoEnemy extends TDInfoBase {
     this.addTable(405, "Vulnerability (dps multiplier)", model.vulnerability)
   }
 
+  effectTableObjects: GameObjects.GameObject[] = []
+
   preUpdate(time: number, delta: number) {
+    this.effectTableObjects.forEach(o => o.destroy())
     if (this.enemy) {
       const effects = [...this.enemy.effects]
-      const text = effects.map((e: any) => {
-        if (e instanceof TimedDamageEffect) {
-          const elapsed = Math.floor(time - (e.startTime || 0))
-          console.log("Check Timeout (truth, elapsed, timeout):", elapsed >= e.timeout, elapsed, e.timeout)
-        }
+      const obj: Record<string, string> = {}
+      effects.forEach((e: any) => {
         const dps = TOWER_INDEX[e.name.toLowerCase()].damage.health.dps
         const duration = TOWER_INDEX[e.name.toLowerCase()].damage.health.duration || 0
-        return `${e.name} (dps: ${dps}${duration > 0 ? ", " + duration + "ms" : ""})`
-      }).join(", ")
-      console.log("Effects:", effects.length ? text : "None")
+        obj[e.name] = `dps: ${dps}${duration > 0 ? " (" + duration + "ms)" : ""}`
+      })
+      // console.log("Effects:", effects.length ? JSON.stringify(obj) : "None")
+      this.effectTableObjects = this.addTable(500, "Effects", obj)
     }
   }
 }
-

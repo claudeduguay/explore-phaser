@@ -20,13 +20,19 @@ export default class SelectableGroup<T extends ISelectable> extends Physics.Arca
     super(scene.physics.world, scene, { key })
     // @ts-ignore
     scene.physics.add.existing(this)
+  }
 
+  onChildDestroyed = (e: T) => {
+    if (this.selected.value === e) {
+      this.select(undefined)
+    }
   }
 
   add(child: ISelectable, addToScene?: boolean) {
     if (child.addSelectHandler) {
       child.addSelectHandler(this.select)
       super.add(child, addToScene)
+      child.addListener(GameObjects.Events.DESTROY, this.onChildDestroyed)
     } else if (this.printErrors) {
       console.warn("Add error (not added to group):", child)
     }
@@ -37,6 +43,7 @@ export default class SelectableGroup<T extends ISelectable> extends Physics.Arca
     if (child.removeSelectHandler) {
       child.removeSelectHandler()
       super.remove(child, removeFromScene, destroyChild)
+      child.removeListener(GameObjects.Events.DESTROY, this.onChildDestroyed)
     } else if (this.printErrors) {
       console.warn("Remove error (not removed from group):", child)
     }

@@ -9,7 +9,7 @@ export default abstract class TimedEffect implements IBehavior {
   constructor(
     public readonly tower: TDTower,
     public readonly enemy: TDEnemy,
-    public readonly timeout: number,
+    public readonly timeout: number = tower.model.damage.health.duration || 0,
     public name: string = tower.model.damage.health.type) {
   }
 
@@ -18,9 +18,7 @@ export default abstract class TimedEffect implements IBehavior {
       this.startTime = time
     }
     const elapsed = Math.floor(time - (this.startTime || 0))
-    console.log("Test:", elapsed >= this.timeout, elapsed, this.timeout)
-    if (elapsed >= this.timeout) { // <<< Bug: Something is going on here that doesn't trigger
-      console.log("Timed out")
+    if (elapsed >= this.timeout) {
       this.endEffect(time, delta)
       this.enemy.effects.delete(this)
       this.startTime = undefined

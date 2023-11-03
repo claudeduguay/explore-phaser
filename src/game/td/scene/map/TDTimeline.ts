@@ -46,13 +46,14 @@ export function addMainPathFollower(key: string, scene: Scene,
   const enemy = scene.add.enemy(0, 0, ENEMY_INDEX[key], path, true)
   // enemy.barContainer.visible = false
   enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
-    enemyGroup.remove(enemy, true, true)
+    enemy.removeListener("died")
+    enemy.destroy() // Destroy before removging from group to get destroy event and clear selection
+    enemyGroup.remove(enemy)
     if (model) {
       credits.value += (model.general.value || 0)
       TDPlayScene.createExplosionSprite(scene, x, y)
       play(scene, "cash")
     }
-    enemy.removeListener("died")
     wasDestroyed = true
   })
   enemy.startFollow({
@@ -86,8 +87,9 @@ export function addPreviewFollower(key: string, scene: Scene, previewGroup: Game
   const enemy = scene.add.enemy(0, 0, ENEMY_INDEX[key], path, false)
   twin.twin = enemy // Track this enemy from it's twin
   twin.addListener("died", ({ x, y, model }: TDEnemy) => {
-    previewGroup.remove(enemy, true, true)
     enemy.removeListener("died")
+    previewGroup.remove(enemy)
+    enemy.destroy()
   })
   enemy.startFollow({
     duration,

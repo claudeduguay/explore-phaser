@@ -46,11 +46,9 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
   }
 
   preDestroy() {
-    if (this.shieldBar) {
-      this.shieldBar.destroy()
-    }
-    if (this.healthBar) {
-      this.healthBar.destroy()
+    this.effects.clear()
+    if (this.barContainer) {
+      this.barContainer.destroy()
     }
   }
 

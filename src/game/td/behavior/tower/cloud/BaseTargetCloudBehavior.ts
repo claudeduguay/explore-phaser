@@ -5,6 +5,7 @@ import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 import InRangeDamageEffect from "../../enemy/InRangeDamageEffect"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
+import TimedDamageEffect from "../../enemy/TimedDamageEffect"
 
 export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
@@ -17,6 +18,15 @@ export default class BaseTargeCloudBehavior implements IBehavior {
   constructor(public tower: TDTower, public key: string,
     public emitter: IEmitterConfigBuilder,
     public effect?: IDamageEffectBuilder) {
+  }
+
+  // We know that if a tower has no duration it's a range effect
+  damageEffectBuilder: IDamageEffectBuilder = (target: TDEnemy) => {
+    if (this.tower.model.damage.health.duration) {
+      return new TimedDamageEffect(this.tower, target)
+    } else {
+      return new InRangeDamageEffect(this.tower, target)
+    }
   }
 
   update(time: number, delta: number) {
@@ -37,10 +47,11 @@ export default class BaseTargeCloudBehavior implements IBehavior {
       //   this.cloud?.explode(50, 0, 0)
       // }
       this.cloud?.start()
-      const defaultDamageBuilder: IDamageEffectBuilder = (enemy: TDEnemy) => new InRangeDamageEffect(this.tower, enemy)
-      const effectDamageBuilder: IDamageEffectBuilder = this.effect || defaultDamageBuilder
+      // const defaultDamageBuilder: IDamageEffectBuilder = (enemy: TDEnemy) => new InRangeDamageEffect(this.tower, enemy)
+      // const effectDamageBuilder: IDamageEffectBuilder = this.effect || defaultDamageBuilder
       for (let target of this.tower.targeting.current) {
-        this.targetInstanceMap.apply(target, () => effectDamageBuilder(target))
+        const effectBuilder = this.effect ?? this.damageEffectBuilder
+        this.targetInstanceMap.apply(target, () => effectBuilder(target))
       }
     } else { // No target
       this.targetInstanceMap.clear()

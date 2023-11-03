@@ -23,26 +23,35 @@ export default class TDInfoBase extends Panel {
 
   addTable(y: number, title: string, obj: { [key: string]: any },
     valueFormatter?: IValueFormatter, buttonFormatter?: IValueFormatter) {
-    this.addTitle(y, title)
+    const titleObjects = this.addTitle(y, title)
+    const objects: GameObjects.GameObject[] = [...titleObjects]
     Object.entries(obj).forEach(([key, value], i) => {
       const ry = (y + 40) + i * 32
       const valueText = valueFormatter ? valueFormatter(key, value) : value
       const buttonText = buttonFormatter ? buttonFormatter(key, value) : undefined
-      this.addRow(ry, entitle(key), valueText, buttonText)
+      const row = this.addRow(ry, entitle(key), valueText, buttonText)
+      objects.push(...row)
     })
+    return objects
   }
 
   addRow(y: number, key: string, value: any, buttonText?: string) {
-    this.addText(y, `${key}: `, 18, "cyan").setOrigin(1, 0.5)
-    this.addText(y, `${value}`, 18, "#66CC66").setOrigin(0, 0.5)
+    const field = this.addText(y, `${key}: `, 18, "cyan").setOrigin(1, 0.5)
+    const content = this.addText(y, `${value}`, 18, "#66CC66").setOrigin(0, 0.5)
+    const objects: GameObjects.GameObject[] = [field, content]
     if (buttonText) {
-      this.add(new Button(this.scene, 280, y, 110, 24, buttonText, "flat"))
+      const button = new Button(this.scene, 280, y, 110, 24, buttonText, "flat")
+      this.add(button)
+      objects.push(button)
     }
+    return objects
   }
 
-  addTitle(y: number, title: string) {
-    this.addText(y, title, 20, "orange")
-    this.add(new GameObjects.Line(this.scene, 350 / 2, y + 20, 0, 0, 350, 0, 0x666666))
+  addTitle(y: number, title: string): GameObjects.GameObject[] {
+    const text = this.addText(y, title, 20, "orange")
+    const line = new GameObjects.Line(this.scene, 350 / 2, y + 20, 0, 0, 350, 0, 0x666666)
+    this.add(line)
+    return [text, line]
   }
 
   addText(y: number, text: string, fontSize: number, color: string, x = this.width / 2, align = "center") {

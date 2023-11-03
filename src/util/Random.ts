@@ -12,7 +12,7 @@ export function randomRange([min, max, step = 1]: IRange) {
 }
 
 export function randomChoice<T>(options: T[]): T {
-  return options[randomRange([0, options.length])]
+  return options[randomRange([0, options.length - 1])]
 }
 
 export function randomColor() {
