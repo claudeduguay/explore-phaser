@@ -6,6 +6,7 @@ import TDEnemy from "../entity/enemy/TDEnemy";
 import IEnemyModel from "../entity/model/IEnemyModel";
 import SelectableGroup from "./SelectableGroup";
 import { TOWER_INDEX } from "../entity/model/ITowerModel";
+import BehaviorList from "../behavior/core/BehaviorList";
 
 export default class TDInfoEnemy extends TDInfoBase {
 
@@ -77,11 +78,22 @@ export default class TDInfoEnemy extends TDInfoBase {
   }
 
   effectTableObjects: GameObjects.GameObject[] = []
+  previousEffects: any[] = []
 
   preUpdate(time: number, delta: number) {
-    this.effectTableObjects.forEach(o => o.destroy())
     if (this.enemy) {
       const effects = [...this.enemy.effects]
+      if (this.previousEffects) {
+        // Note: This may be a bit expensive, maybe there's a better way to detect changes 
+        // OR: This optimization (to avoid repainting the table) is not actually worth it
+        const removed = this.previousEffects.filter(e => !effects.includes(e))
+        const added = effects.filter(e => !this.previousEffects.includes(e))
+        if (removed.length === 0 && added.length === 0) {
+          return
+        }
+      }
+      this.previousEffects = effects
+      this.effectTableObjects.forEach(o => o.destroy())
       const obj: Record<string, string> = {}
       effects.forEach((e: any) => {
         const dps = TOWER_INDEX[e.name.toLowerCase()].damage.health.dps
