@@ -33,19 +33,20 @@ There are two primary ways to upgrade:
 * Tower upgrades
   * Increase level (up to max)
   * Increase range (up to some max)
-  * Increase damage (dps per emitter)
   * Decrease cost of buying a tower
+  * Increase Health damage (dps per emitter)
+  * Increase Shield damage (dps per emitter)
 * Tower purchases
-  * Buy new towers to ad to your inventory.
+  * Buy new towers to add to your inventory.
   * Each purchases tower is available in upgraded levels/range/dps.
 
-# Towers to add:
+## Towers to add:
 
-* ADD - Grenade throw a projectile that explodes after a second or so.
-* ADD - Sleep: Put enemies in range to sleep for a given amount of time.
 * ADD - Saw - Blade rotating around the tower, perhaps growing/shrinking.
+* ADD - Grenade throw a projectile that explodes after a second or so.
+* DONE - Stun: Put enemies in range to sleep for a short amount of time.
 
-Major categories:
+## Major categories:
 
 * **Eject** (projectile weapons) like Bullet, Missile, Grenade (not implemented yet)
 * **Beam** like Lazer, Plasma, Lightning
@@ -57,3 +58,24 @@ Major categories:
 
 Note that Boost towers affect other Towers and so does't operate on Enemy Targets.
 This is the only major deviation from other Tower models.
+
+## Major Dimension Notes
+
+* **Damage Types** - Lazer, Plasma, Electricity, Fire, Ice, Force/Impact, 
+Poison, Smoke, Water (rain, snow), Stun, or Special (ie: slow, stun, boost)
+* **Effect Strategy** - In-Range or Timed
+* **Local vs Remote** - Most are Local, thrown (Grenade, Missile) are applied to Remote objects
+* **Category Types** - Eject (guns), Beam, Spray, Cloud, Vertical, Expand, Area
+* **Single or Multi-target** - ie: Lazer (single target) vs. Cloud (multi-target)
+
+### Thoughts
+
+* We can generate permutations for some of these, such as Cloud and Spray sharing a list of damage types (maybe?).
+* Remote could have the same effects as cloud in a thrown object that lands near enemies, such as a grenade.
+* Eject could fire different bullets with assigned damage types.
+* Expand and Cloud are very similar, though Eject expands outward and is In-Range while Cloud is AOE with duration.
+* Vertical could have any effect in a Cloud but that would probably just be redundant?
+* Beams could have different types, such as a fire or ice beam.
+* Genades (or maybe Mines, ie: Launchables) could be thrown ahead with a longer tower range, 
+always landing on the path, but their triggers could be something like two targets within a 
+smaller effect range
