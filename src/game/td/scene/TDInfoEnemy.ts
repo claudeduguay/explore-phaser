@@ -78,7 +78,9 @@ export default class TDInfoEnemy extends TDInfoBase {
     this.effectTableObjects = [this.addText(500, "No Damage Effects", 20, "orange")]
   }
 
+  // Track objects added by the Effect table for later removal
   effectTableObjects: GameObjects.GameObject[] = []
+  // Track previous effect list for difference determination
   previousEffects: any[] = []
 
   preUpdate(time: number, delta: number) {
@@ -87,6 +89,8 @@ export default class TDInfoEnemy extends TDInfoBase {
       if (this.previousEffects) {
         // Note: This may be a bit expensive, maybe there's a better way to detect changes 
         // OR: This optimization (to avoid repainting the table) is not actually worth it
+        // OBSERVATION: These lists will always be short as only so many towers can be in 
+        // proximity or having applied timeout effects, only for a short period.
         const removed = this.previousEffects.filter(e => !effects.includes(e))
         const added = effects.filter(e => !this.previousEffects.includes(e))
         if (removed.length === 0 && added.length === 0) {
