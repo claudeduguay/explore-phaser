@@ -4,8 +4,9 @@ import HealthBar from "./HealthBar";
 import { ISelectable } from "../../scene/SelectableGroup";
 import BehaviorList from "../../behavior/core/BehaviorList";
 import { toSceneCoordinates } from "../../../../util/geom/Point";
+import CustomFollower from "./CustomFollower";
 
-export default class TDEnemy extends GameObjects.PathFollower implements ISelectable {
+export default class TDEnemy extends CustomFollower implements ISelectable {
 
   twin?: TDEnemy   // Used in path preview (needed to match slow effect when applied)
   effects = new BehaviorList()
@@ -22,7 +23,7 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
     public model: IEnemyModel, public path: Curves.Path = new Curves.Path(),
     public showStatusBars: boolean = false) {
 
-    super(scene, path, x, y, model.key)
+    super(scene, x, y, model, path)
     this.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
 
     this.anims.play(`east-${model.key}`)
@@ -112,17 +113,17 @@ export default class TDEnemy extends GameObjects.PathFollower implements ISelect
       this.shieldBar.fraction = shieldFraction
       this.healthBar.fraction = healthFraction
       const bounds = this.getBounds()
-      const x = this.pathVector.x - this.healthBar.width / 2
-      const y = this.pathVector.y - bounds.height - this.healthBar.h * 2
+      const x = this.x - this.healthBar.width / 2
+      const y = this.y - bounds.height - this.healthBar.h * 2
       this.barContainer.setPosition(x, y)
     }
   }
 
   preUpdate(time: number, delta: number): void {
     this.frameCount += 1
-    if (this.isFollowing()) {
-      super.preUpdate(time, delta)
-    }
+    // if (this.isFollowing()) {
+    //   super.preUpdate(time, delta)
+    // }
     this.effects.update(time, delta)
     this.detectDirectionChange()
     this.handleStatusBars()
