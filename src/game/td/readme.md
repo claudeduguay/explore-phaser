@@ -48,6 +48,8 @@ There are two primary ways to upgrade:
 
 ## Major categories:
 
+Note: Bullet could be called a Shooter while Missile and Grenage are Launchers
+
 * **Eject** (projectile weapons) like Bullet, Missile, Grenade (not implemented yet)
 * **Beam** like Lazer, Plasma, Lightning
 * **Spray**, (spray emissions) like Flame and Freeze
@@ -178,3 +180,20 @@ Breaks down:
 ![Nice Dual Element Tower Guide](https://steamuserimages-a.akamaihd.net/ugc/1475443990436551251/EAA256B38CFEBDEAACF71A55071F259CD02CF810/)
 
 ![Nice Tripple Element Tower Guide](https://steamuserimages-a.akamaihd.net/ugc/1475443990436551764/E1E821C51BD44F124F09879985B22B70013F1D10/)
+
+## Kindom Rush Vengeance
+
+[Good Thread Covering Tower Types](https://steamcommunity.com/sharedfiles/filedetails/?id=2357200849)
+
+## Mindustry
+
+[Towers listed in this Guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2185502963)
+
+### Interesting Idea
+
+Could have traps of various kinds to lay down on the path - Spikes, Trap Doors, Spikes, Explosions, etc.
+
+### Exploration
+
+Need to develop a pivot table with various effects and styles, etc.
+
