@@ -107,9 +107,9 @@ export default class TDInfoEnemy extends TDInfoBase {
       })
       // console.log("Effects:", effects.length ? JSON.stringify(obj) : "None")
       if (Object.keys(obj).length > 0) {
-        this.effectTableObjects = this.addTable(500, "Applied Damage Effects", obj)
+        this.effectTableObjects = this.addTable(500, "Applied Effects", obj)
       } else {
-        this.effectTableObjects = [this.addText(500, "No Damage Effects", 20, "orange")]
+        this.effectTableObjects = [this.addText(500, "No Current Effects", 20, "orange")]
       }
     }
   }
