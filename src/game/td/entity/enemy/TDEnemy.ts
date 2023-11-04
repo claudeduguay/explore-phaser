@@ -6,17 +6,7 @@ import BehaviorList from "../../behavior/core/BehaviorList";
 import { toSceneCoordinates } from "../../../../util/geom/Point";
 import CustomFollower from "./CustomFollower";
 import Direction from "../../../../util/geom/Direction";
-import { deepClone } from "../../../../util/ObjectUtil";
-import { IProxyExtensions, makeProxy } from "../../behavior/enemy/EffectsProxy";
-
-function deepCloneModelAndProxyGeneral(model: IEnemyModel): IEnemyModel<IProxyExtensions> {
-  // Deep clone the model to ensure this instance's model is distinct
-  const cloned = deepClone(model)
-  // Replace the "general" data structure with a proxied version that can accomodate Property Effects
-  cloned.general = makeProxy(cloned.general)
-  // Return the new, cloned and proxied model
-  return cloned as IEnemyModel<IProxyExtensions>
-}
+import { IProxyExtensions, deepCloneEnemyModelAndPartialProxy } from "../../behavior/enemy/EffectsProxy";
 
 export default class TDEnemy extends CustomFollower implements ISelectable {
 
@@ -39,7 +29,7 @@ export default class TDEnemy extends CustomFollower implements ISelectable {
 
     super(scene, x, y, model, path)
 
-    this.model = deepCloneModelAndProxyGeneral(model)
+    this.model = deepCloneEnemyModelAndPartialProxy(model)
 
     this.setSize(32, 32)
     this.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)

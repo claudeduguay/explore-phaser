@@ -34,6 +34,7 @@ import TargetSlowBehavior from "../../behavior/tower/TargetSlowBehavior"
 import TargetStunBehavior from "../../behavior/tower/cloud/TargetStunBehavior"
 import TargetSpikeBehavior from "../../behavior/tower/cloud/TargetSpikeBehavior"
 import TargetRockBehavior from "../../behavior/tower/cloud/TargetRockBehavior"
+import { IProxyExtensions, deepCloneTowerModelAndPartialProxy } from "../../behavior/enemy/EffectsProxy"
 
 export enum PreviewType {
   Normal,
@@ -64,6 +65,8 @@ const TOWER_BEHAVIORS: Record<string, any> = {
   slow: TargetSlowBehavior,
 }
 
+
+
 export default class TDTower extends BehaviorContainer implements ISelectable {
 
   effect: GameObjects.Container
@@ -73,9 +76,12 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
   showRange: GameObjects.Container
   showLabel: GameObjects.Text
 
+  model: ITowerModel<IProxyExtensions>
+
   constructor(public scene: Scene, public x: number = 0, public y: number = x,
-    public model: ITowerModel = TOWER_INDEX.LAZER, public preview: PreviewType = PreviewType.Normal) {
+    model: ITowerModel = TOWER_INDEX.LAZER, public preview: PreviewType = PreviewType.Normal) {
     super(scene)
+    this.model = deepCloneTowerModelAndPartialProxy(model)
     const range = model.general.range
     this.platform = this.scene.add.sprite(0, 0, `${model.key}-platform`).setInteractive()
       .on(Input.Events.POINTER_OVER, () => {
@@ -113,7 +119,6 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     this.showLabel = addLabel(scene, 0, 38, model.name, "center")
     this.showLabel.visible = false
     this.add(this.showLabel)
-
 
     this.setSize(range * 2, range * 2) // Sets bounding box
 

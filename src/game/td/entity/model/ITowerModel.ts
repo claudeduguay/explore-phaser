@@ -17,17 +17,17 @@ export interface ITowerDamage {
   type: string
 }
 
-export interface ITowerModel {
+export interface ITowerModel<T = {}> {
   key: string
   name: string
   group: string
   description: string
   locked: boolean,
   meta: ITowerMeta
-  general: ITowerGeneral
+  general: ITowerGeneral & T
   damage: {
-    shield: ITowerDamage,
-    health: ITowerDamage
+    shield: ITowerDamage & T,
+    health: ITowerDamage & T
   }
 }
 

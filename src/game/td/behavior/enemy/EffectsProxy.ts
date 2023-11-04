@@ -1,11 +1,13 @@
-import { IEnemyGeneral } from "../../entity/model/IEnemyModel"
+import { deepClone } from "../../../../util/ObjectUtil"
+import IEnemyModel, { IEnemyGeneral } from "../../entity/model/IEnemyModel"
+import ITowerModel from "../../entity/model/ITowerModel"
 
 export const TRACE = true
 
-export interface IPropertyEffect {
+export interface IPropertyEffect<T = any> {
   name: string
   prop: string | symbol
-  formula: (value: number) => number
+  formula: (value: T) => T
 }
 
 export interface IProxyExtensions {
@@ -64,6 +66,30 @@ export function makeProxy<T extends Record<string | symbol, any>>(target: T): T 
   return new Proxy(target, new EffectsProxy<T>())
 }
 
+export function deepCloneEnemyModelAndPartialProxy(model: IEnemyModel): IEnemyModel<IProxyExtensions> {
+  // Deep clone the model to ensure this instance's model is distinct
+  const cloned = deepClone(model)
+  // Replace the "general" data structure with a proxied version that can accomodate Property Effects
+  cloned.general = makeProxy(cloned.general)
+  // Return the new, cloned and proxied model
+  return cloned as IEnemyModel<IProxyExtensions>
+}
+
+export function deepCloneTowerModelAndPartialProxy(model: ITowerModel): ITowerModel<IProxyExtensions> {
+  // Deep clone the model to ensure this instance's model is distinct
+  const cloned = deepClone(model)
+  // Replace the "general" data structure with a proxied version that can accomodate Property Effects
+  cloned.general = makeProxy(cloned.general)
+  // Replace the "damage.health" data structure with a proxied version that can accomodate Property Effects
+  cloned.damage.health = makeProxy(cloned.damage.health)
+  // Replace the "damage.shield" data structure with a proxied version that can accomodate Property Effects
+  cloned.damage.shield = makeProxy(cloned.damage.shield)
+  // Return the new, cloned and proxied model
+  return cloned as ITowerModel<IProxyExtensions>
+}
+
+
+// Currently called in App.tsx to validate
 export function proxyTest() {
   const struct: IEnemyGeneral = {
     level: 1,
