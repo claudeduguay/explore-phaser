@@ -122,7 +122,7 @@ export function makeTimeline(scene: Scene, hud: Scene,
   }
 
   const enemySpeeds = ENEMY_LIST.map(e => e.general.speed)
-  const maxSpeed = Math.max(...enemySpeeds)
+  const maxSpeed = Math.max(...enemySpeeds) // <<< REQUIRES REFINEMENT AND MORE THOUGHT
   // const minSpeed = Math.min(...enemySpeeds)
   const ONE_SECOND = 1000
   const mainPathLength = mainPath.getLength()
@@ -134,7 +134,7 @@ export function makeTimeline(scene: Scene, hud: Scene,
   const timeline = scene.add.timeline({})
   // Build parameterized run timeline entries for both paths
   const run = (key: string, isLast: boolean = false) => () => {
-    const f = ENEMY_INDEX[key].general.speed / mainSpeed
+    const f = ENEMY_INDEX[key].general.speed / mainSpeed  // <<< REQUIRES REFINEMENT AND MORE THOUGHT
     console.log("Enemy duration fraction:", f)
     const twin = addMainPathFollower(key, scene, health, credits, enemyGroup, mainPath, mainDuration * f, mainDelay)
     // const preview = 
