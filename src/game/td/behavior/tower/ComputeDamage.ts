@@ -12,7 +12,7 @@ export function computeTargetDamage(tower: TDTower, target: TDEnemy, delta: numb
   const value = tower.model.damage.health
   const val = Array.isArray(value.dps) ? randomRange(value.dps) : value.dps
   const dps = (val * delta / 1000 * tower.scene.time.timeScale)
-  const vulnerability = (target.model?.vulnerability[value.type] || target.model?.vulnerability.default)
+  const vulnerability = (target.model?.vulnerability[value.name] || target.model?.vulnerability.default)
   return (dps * vulnerability)
   // console.log(`${value}, (per update: ${dps}) ${key} damage from ${tower.model.name} (resistance: ${resistance})`)
 }

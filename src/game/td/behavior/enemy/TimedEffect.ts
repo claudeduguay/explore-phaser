@@ -10,7 +10,7 @@ export default abstract class TimedEffect implements IBehavior {
     public readonly tower: TDTower,
     public readonly enemy: TDEnemy,
     public readonly timeout: number = tower.model.damage.health.duration || 0,
-    public name: string = tower.model.damage.health.type) {
+    public name: string = tower.model.damage.health.name) {
   }
 
   update(time: number, delta: number): void {

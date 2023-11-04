@@ -7,7 +7,7 @@ export default abstract class InRangeEffect implements IBehavior {
   mark?: number
 
   constructor(public tower: TDTower, public enemy: TDEnemy,
-    public name: string = tower.model.damage.health.type) {
+    public name: string = tower.model.damage.health.name) {
   }
 
   update(time: number, delta: number): void {
