@@ -11,9 +11,10 @@ export interface ITowerGeneral {
   range: number
 }
 
-export interface IModifier {
-  path: "general" | "health" | "shield"
-  effect: IPropertyEffect // Actual property modifier to apply via proxy addEffect
+export interface ITowerEffect {
+  modifier: IPropertyEffect
+  duration?: number
+  cooldown?: number
 }
 
 export interface ITowerDamage {
@@ -21,10 +22,6 @@ export interface ITowerDamage {
   duration?: number
   cooldown?: number
   name: string
-  // Note "health" and "shield" modifiers could become recursive, so this may not be optimal
-  // Problem is that we want to be able to boost dps or extend cooldown, for example
-  // So this property may belong elsewhere or be restricted to "general" for now
-  modifier?: IModifier // Optional property modfier for buff/debuff effects
 }
 
 export interface ITowerModel<E = {}> {
@@ -36,6 +33,7 @@ export interface ITowerModel<E = {}> {
   meta: ITowerMeta
   general: ITowerGeneral & E
   damage: {
+    effect?: ITowerEffect,
     shield: ITowerDamage & E,
     health: ITowerDamage & E
   }
@@ -350,6 +348,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
+      effect: {
+        modifier: { name: "Stun", prop: "speed", formula: (s: number) => 0 },
+        duration: 1000,
+        cooldown: 5000,
+      },
       shield: { dps: 0, duration: 1000, cooldown: 5000, name: "Stun" },
       health: { dps: 0, duration: 1000, cooldown: 5000, name: "Stun" }
     }
@@ -476,6 +479,9 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
+      effect: {
+        modifier: { name: "Slow", prop: "speed", formula: (s: number) => s * 0.5 }
+      },
       shield: { dps: 0, name: "Slow" },
       health: { dps: 0, name: "Slow" }
     }
