@@ -1,3 +1,4 @@
+import { IPropertyEffect } from "../../behavior/enemy/EffectsProxy"
 
 export interface ITowerMeta {
   distribution: "linear" | "radial"  // Weapon distribution
@@ -10,11 +11,20 @@ export interface ITowerGeneral {
   range: number
 }
 
+export interface IModifier {
+  path: "general" | "health" | "shield"
+  effect: IPropertyEffect // Actual property modifier to apply via proxy addEffect
+}
+
 export interface ITowerDamage {
   dps: number | [min: number, max: number]
   duration?: number
   cooldown?: number
   name: string
+  // Note "health" and "shield" modifiers could become recursive, so this may not be optimal
+  // Problem is that we want to be able to boost dps or extend cooldown, for example
+  // So this property may belong elsewhere or be restricted to "general" for now
+  modifier?: IModifier // Optional property modfier for buff/debuff effects
 }
 
 export interface ITowerModel<E = {}> {
