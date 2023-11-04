@@ -15,6 +15,7 @@ export interface ITowerEffect {
   modifier: IPropertyEffect
   duration?: number
   cooldown?: number
+  name: string
 }
 
 export interface ITowerDamage {
@@ -352,6 +353,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
         modifier: { name: "Stun", prop: "speed", formula: (s: number) => 0 },
         duration: 1000,
         cooldown: 5000,
+        name: "Slow"
       },
       shield: { dps: 0, duration: 1000, cooldown: 5000, name: "Stun" },
       health: { dps: 0, duration: 1000, cooldown: 5000, name: "Stun" }
@@ -480,7 +482,8 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     },
     damage: {
       effect: {
-        modifier: { name: "Slow", prop: "speed", formula: (s: number) => s * 0.5 }
+        modifier: { name: "Slow", prop: "speed", formula: (s: number) => s * 0.5 },
+        name: "Stun"
       },
       shield: { dps: 0, name: "Slow" },
       health: { dps: 0, name: "Slow" }
