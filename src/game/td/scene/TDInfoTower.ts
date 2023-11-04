@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import ITowerModel, { ITowerDamage } from "../entity/model/ITowerModel";
+import ITowerModel, { damageFormatter } from "../entity/model/ITowerModel";
 import TDTower, { PreviewType } from "../entity/tower/TDTower";
 import { entitle } from "../../../util/TextUtil"
 import IconButton from "../gui/IconButton";
@@ -84,18 +84,6 @@ export default class TDInfoTower extends TDInfoBase {
     const valueFormatter = (key: string, value: number) => `${value}`
     const buttonFormatter = (key: string, value: number) => `${upgrade[key].text} ($${upgrade[key].cost})`
     this.addTable(270, "General", model.general, valueFormatter, buttonFormatter)
-
-    const damageFormatter = (key: string, damage: ITowerDamage) => {
-      let dps
-      if (Array.isArray(damage.dps)) {
-        const [min, max] = damage.dps
-        dps = `${min}-${max}`
-      } else {
-        dps = `${damage.dps}`
-      }
-      const duration = damage.duration !== undefined ? `${damage.duration}ms` : "in-range"
-      return `${dps} (${duration})`
-    }
 
     this.addTable(430, "Damage (dps per level)", model.damage, damageFormatter)
   }

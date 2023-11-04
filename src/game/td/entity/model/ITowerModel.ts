@@ -13,14 +13,9 @@ export interface ITowerGeneral {
 export interface ITowerDamage {
   dps: number | [min: number, max: number]
   duration?: number
+  cooldown?: number
   type: string
 }
-
-// Need a mechanism to define timeout effect periods
-// Support for literal or random range damage values
-// export interface ITowerDamage {
-//   [key: string]: IDamageSpec
-// }
 
 export interface ITowerModel {
   key: string
@@ -34,6 +29,20 @@ export interface ITowerModel {
     shield: ITowerDamage,
     health: ITowerDamage
   }
+}
+
+// Implements IValueFormatter for tables (key is not used here)
+export function damageFormatter(key: string, damage: ITowerDamage): string {
+  const dps = Array.isArray(damage.dps) ? `${damage.dps[0]}-${damage.dps[1]}` : `${damage.dps}`
+  const timing: string[] = []
+  if (damage.duration) {
+    timing.push(`${damage.duration.toFixed(1)}s`)
+  }
+  if (damage.cooldown) {
+    timing.push(`${damage.cooldown.toFixed(1)}s`)
+  }
+  const times = timing.length > 0 ? ` (${timing.join(", ")}` : ``
+  return `${dps}${times}`
 }
 
 export default ITowerModel

@@ -5,7 +5,7 @@ import { CHANGED_EVENT } from "../value/ObservableValue";
 import TDEnemy from "../entity/enemy/TDEnemy";
 import IEnemyModel from "../entity/model/IEnemyModel";
 import SelectableGroup from "./SelectableGroup";
-import { TOWER_INDEX } from "../entity/model/ITowerModel";
+import { TOWER_INDEX, damageFormatter } from "../entity/model/ITowerModel";
 
 export default class TDInfoEnemy extends TDInfoBase {
 
@@ -102,9 +102,8 @@ export default class TDInfoEnemy extends TDInfoBase {
       this.effectTableObjects.forEach(o => o.destroy())
       const obj: Record<string, string> = {}
       effects.forEach((e: any) => {
-        const dps = TOWER_INDEX[e.name.toLowerCase()].damage.health.dps
-        const duration = TOWER_INDEX[e.name.toLowerCase()].damage.health.duration || 0
-        obj[e.name] = `dps: ${dps}${duration > 0 ? " (" + duration + "ms)" : ""}`
+        const damage = TOWER_INDEX[e.name.toLowerCase()].damage.health
+        obj[e.name] = damageFormatter("", damage)
       })
       // console.log("Effects:", effects.length ? JSON.stringify(obj) : "None")
       if (Object.keys(obj).length > 0) {

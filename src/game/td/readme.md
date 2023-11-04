@@ -197,3 +197,17 @@ Could have traps of various kinds to lay down on the path - Spikes, Trap Doors, 
 
 Need to develop a pivot table with various effects and styles, etc.
 
+| Type | Beam | Spray | Cloud | Gravity | Shoot | Launch | Expand | Effect |
+| ---- | :--: | :---: | :---: | :-----: | :---: | :----: | :----: | :----: |
+| Force | x | x | x | x | x | x | x | x |
+| Light | x | x | x | x | x | x | x | x |
+| Dark | x | x | x | x | x | x | x | x |
+| Fire | x | x | x | x | x | x | x | x |
+| Water | x | x | x | x | x | x | x | x |
+| Electric | x | x | x | x | x | x | x | x |
+| Poison | x | x | x | x | x | x | x | x |
+| Earth | x | x | x | x | x | x | x | x |
+| Ether | x | x | x | x | x | x | x | x |
+| Buff | x | x | x | x | x | x | x | x |
+| Special | x | x | x | x | x | x | x | x |
+
