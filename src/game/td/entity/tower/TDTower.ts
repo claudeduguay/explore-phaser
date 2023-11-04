@@ -34,7 +34,7 @@ import TargetSlowBehavior from "../../behavior/tower/TargetSlowBehavior"
 import TargetStunBehavior from "../../behavior/tower/cloud/TargetStunBehavior"
 import TargetSpikeBehavior from "../../behavior/tower/cloud/TargetSpikeBehavior"
 import TargetRockBehavior from "../../behavior/tower/cloud/TargetRockBehavior"
-import { IProxyExtensions, deepCloneTowerModelAndPartialProxy } from "../../behavior/enemy/EffectsProxy"
+import { IProxyExtensions, deepCloneTowerModelWithProxies } from "../../behavior/enemy/EffectsProxy"
 
 export enum PreviewType {
   Normal,
@@ -81,7 +81,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
   constructor(public scene: Scene, public x: number = 0, public y: number = x,
     model: ITowerModel = TOWER_INDEX.LAZER, public preview: PreviewType = PreviewType.Normal) {
     super(scene)
-    this.model = deepCloneTowerModelAndPartialProxy(model)
+    this.model = deepCloneTowerModelWithProxies(model)
     const range = model.general.range
     this.platform = this.scene.add.sprite(0, 0, `${model.key}-platform`).setInteractive()
       .on(Input.Events.POINTER_OVER, () => {

@@ -6,7 +6,7 @@ import BehaviorList from "../../behavior/core/BehaviorList";
 import { toSceneCoordinates } from "../../../../util/geom/Point";
 import CustomFollower from "./CustomFollower";
 import Direction from "../../../../util/geom/Direction";
-import { IProxyExtensions, deepCloneEnemyModelAndPartialProxy } from "../../behavior/enemy/EffectsProxy";
+import { IProxyExtensions, deepCloneEnemyModelWithProxies } from "../../behavior/enemy/EffectsProxy";
 
 export default class TDEnemy extends CustomFollower implements ISelectable {
 
@@ -29,7 +29,7 @@ export default class TDEnemy extends CustomFollower implements ISelectable {
 
     super(scene, x, y, model, path)
 
-    this.model = deepCloneEnemyModelAndPartialProxy(model)
+    this.model = deepCloneEnemyModelWithProxies(model)
 
     this.setSize(32, 32)
     this.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
