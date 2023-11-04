@@ -9,8 +9,10 @@ import { Scene } from 'phaser'
 import ScanScene from './game/scan/ScanScene'
 import TileScene from './game/tiles/TileScene'
 import TDGame from './game/td/scene/TDGameScene'
+import { proxyTest } from './game/td/behavior/enemy/EffectsProxy'
 
 export default function App() {
+  proxyTest()
   const [scene, setScene] = useState<Scene>(new TDGame())
   const onSelect = (sceneName: string) => {
     switch (sceneName) {

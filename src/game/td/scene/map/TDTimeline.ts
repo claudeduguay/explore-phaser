@@ -135,7 +135,7 @@ export function makeTimeline(scene: Scene, hud: Scene,
   // Build parameterized run timeline entries for both paths
   const run = (key: string, isLast: boolean = false) => () => {
     const f = ENEMY_INDEX[key].general.speed / mainSpeed  // <<< REQUIRES REFINEMENT AND MORE THOUGHT
-    console.log("Enemy duration fraction:", f)
+    // console.log("Enemy duration fraction:", f)
     const twin = addMainPathFollower(key, scene, health, credits, enemyGroup, mainPath, mainDuration * f, mainDelay)
     // const preview = 
     addPreviewFollower(key, hud, previewGroup, previewPath, timeline, previewDuration * f, isLast, twin)

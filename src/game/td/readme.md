@@ -197,9 +197,9 @@ Could have traps of various kinds to lay down on the path - Spikes, Trap Doors, 
 
 Need to develop a pivot table with various effects and styles, w/names, etc.
 
-| Type | Beam | Spray | Cloud | Gravity | Shoot | Launch | Expand | Effect |
+| Damage Type | Shoot | Beam | Spray | Cloud | Gravity | Launch | Expand | Effect |
 | ---- | :--: | :---: | :---: | :-----: | :---: | :----: | :----: | :----: |
-| Force | x | x | x | x | x | x | x | x |
+| Impact | x | x | x | x | x | x | x | x |
 | Light | x | x | x | x | x | x | x | x |
 | Dark | x | x | x | x | x | x | x | x |
 | Fire | x | x | x | x | x | x | x | x |
@@ -208,19 +208,31 @@ Need to develop a pivot table with various effects and styles, w/names, etc.
 | Poison | x | x | x | x | x | x | x | x |
 | Earth | x | x | x | x | x | x | x | x |
 | Ether | x | x | x | x | x | x | x | x |
-| Buff/Debuff | x | x | x | x | x | x | x | x |
+| Speed Debuff | x | x | x | x | x | x | x | x |
+| Shield Debuff | x | x | x | x | x | x | x | x |
+| Value Buff | x | x | x | x | x | x | x | x |
 | Special | x | x | x | x | x | x | x | x |
 
 Delivery mechanisms:
 
+* Shoot - A narrow, single-target, emission of spaced particles
 * Beam - A narrow, single-target beam of particles
 * Spray - A cone, single-target but may affect other targets within the code
 * Cloud - A cloud, multi-target within the towers' range
-* Gravity - Vertical up or down, multi-target within the towers' range (may not differ from the cloud enough to be distinct)
-* Shoot - A narrow, single-target, emission of spaced particles
+* Gravity - Fall or Rise, multi-target within the tower's range
 * Launch - Delayed-action object directed at a single target but with an AOE when it explodes after a delay 
 * Expand - An outward thrust of multiple particles, multi-target within the tower's range
 * Buff/Debufff - A property effect, can act on an enemy's shield, speed, value or other attributes
 
 Note: Buff/Debuff have to be reversible and processing order may matter. Alternately we need a simple proxy
 mechanism we can attach to a property with a stack of efffects to calculate on each lookup 
+
+Questions: What's the distinction between a cloud and Gravity effect. Right now clouds have a timeout while gravity is in-range.
+
+Question: Are Beam and Shoot similar? Beam is continuous while Shot is reduced by hit frequency (both represented as dps).
+
+Poison always has a timeout effect. Maybe the distinction between in-range and timeout should be a the Damage Type-level?
+
+Launch is especially interesting as it could be a Mossile or Grenade effect. Also aiming ahead on the path is a factor. Assuming a grenade is sent ahead on the path at the exit point of the range, detonation may depend on the time of exit for the targeted peep.
+
+Is expand different from Gravity or Cloud. At the moment, expand is In-Range, like the Gravity effect.
