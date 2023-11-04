@@ -195,7 +195,7 @@ Could have traps of various kinds to lay down on the path - Spikes, Trap Doors, 
 
 ### Exploration
 
-Need to develop a pivot table with various effects and styles, etc.
+Need to develop a pivot table with various effects and styles, w/names, etc.
 
 | Type | Beam | Spray | Cloud | Gravity | Shoot | Launch | Expand | Effect |
 | ---- | :--: | :---: | :---: | :-----: | :---: | :----: | :----: | :----: |
@@ -208,6 +208,19 @@ Need to develop a pivot table with various effects and styles, etc.
 | Poison | x | x | x | x | x | x | x | x |
 | Earth | x | x | x | x | x | x | x | x |
 | Ether | x | x | x | x | x | x | x | x |
-| Buff | x | x | x | x | x | x | x | x |
+| Buff/Debuff | x | x | x | x | x | x | x | x |
 | Special | x | x | x | x | x | x | x | x |
 
+Delivery mechanisms:
+
+* Beam - A narrow, single-target beam of particles
+* Spray - A cone, single-target but may affect other targets within the code
+* Cloud - A cloud, multi-target within the towers' range
+* Gravity - Vertical up or down, multi-target within the towers' range (may not differ from the cloud enough to be distinct)
+* Shoot - A narrow, single-target, emission of spaced particles
+* Launch - Delayed-action object directed at a single target but with an AOE when it explodes after a delay 
+* Expand - An outward thrust of multiple particles, multi-target within the tower's range
+* Buff/Debufff - A property effect, can act on an enemy's shield, speed, value or other attributes
+
+Note: Buff/Debuff have to be reversible and processing order may matter. Alternately we need a simple proxy
+mechanism we can attach to a property with a stack of efffects to calculate on each lookup 

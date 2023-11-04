@@ -1,6 +1,6 @@
 import { Curves, GameObjects, Scene, Time } from "phaser"
 import TDEnemy from "../../entity/enemy/TDEnemy"
-import { ENEMY_INDEX } from "../../entity/model/IEnemyModel"
+import IEnemyModel, { ENEMY_INDEX, ENEMY_LIST } from "../../entity/model/IEnemyModel"
 import TDPlayScene from "../TDPlayScene"
 import { defaultWaveModel, IWaveGroup } from "./IWaveModel"
 import ObservableValue from "../../value/ObservableValue"
@@ -47,7 +47,7 @@ export function addMainPathFollower(key: string, scene: Scene,
   // enemy.barContainer.visible = false
   enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
     enemy.removeListener("died")
-    enemy.destroy() // Destroy before removging from group to get destroy event and clear selection
+    enemy.destroy() // Destroy before removing from group to get destroy event and clear any selection
     enemyGroup.remove(enemy)
     if (model) {
       credits.value += (model.general.value || 0)
@@ -59,12 +59,10 @@ export function addMainPathFollower(key: string, scene: Scene,
   enemy.startFollow({
     duration,
     delay,
-    positionOnPath: true,
     from: 0.0,
     to: 1.0,
     yoyo: false,
     repeat: 0,
-    rotateToPath: true,
     onStart: () => {
       enemyGroup.add(enemy)
     },
@@ -93,12 +91,10 @@ export function addPreviewFollower(key: string, scene: Scene, previewGroup: Game
   })
   enemy.startFollow({
     duration,
-    positionOnPath: true,
     from: 0.0,
     to: 1.0,
     yoyo: false,
     repeat: 0,
-    rotateToPath: false,
     onStart: () => {
       previewGroup.add(enemy)
     },
@@ -125,9 +121,12 @@ export function makeTimeline(scene: Scene, hud: Scene,
     previewPath = makeTimelinePreviewPath()
   }
 
+  const enemySpeeds = ENEMY_LIST.map(e => e.general.speed)
+  const maxSpeed = Math.max(...enemySpeeds)
+  // const minSpeed = Math.min(...enemySpeeds)
   const ONE_SECOND = 1000
   const mainPathLength = mainPath.getLength()
-  const mainSpeed = 300 // (pixels per second)
+  const mainSpeed = maxSpeed // 300 // (pixels per second)
   const mainDuration = mainPathLength / mainSpeed * ONE_SECOND
   const previewDuration = mainDuration + (mainDuration * prefixFraction) + (mainDuration * suffixFraction)
   const mainDelay = mainDuration * prefixFraction
@@ -135,9 +134,11 @@ export function makeTimeline(scene: Scene, hud: Scene,
   const timeline = scene.add.timeline({})
   // Build parameterized run timeline entries for both paths
   const run = (key: string, isLast: boolean = false) => () => {
-    const twin = addMainPathFollower(key, scene, health, credits, enemyGroup, mainPath, mainDuration, mainDelay)
+    const f = ENEMY_INDEX[key].general.speed / mainSpeed
+    console.log("Enemy duration fraction:", f)
+    const twin = addMainPathFollower(key, scene, health, credits, enemyGroup, mainPath, mainDuration * f, mainDelay)
     // const preview = 
-    addPreviewFollower(key, hud, previewGroup, previewPath, timeline, previewDuration, isLast, twin)
+    addPreviewFollower(key, hud, previewGroup, previewPath, timeline, previewDuration * f, isLast, twin)
   }
 
   const config: Phaser.Types.Time.TimelineEventConfig[] = []
