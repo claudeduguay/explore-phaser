@@ -2,9 +2,6 @@ import { Scene } from "phaser"
 import { randomPeepOptions } from "../../assets/PeepFactory"
 import { makePeep } from "../../assets/TextureFactory"
 
-export interface IEnemyMeta {
-}
-
 export interface IEnemyGeneral {
   level: number
   health: number
@@ -18,11 +15,10 @@ export interface IEnemyVulnerability {
   [key: string]: number
 }
 
-export interface IEnemyModel<T = {}> {
+export interface IEnemyModel<E = {}> {
   key: string
   name: string
-  meta: IEnemyMeta
-  general: IEnemyGeneral & T
+  general: IEnemyGeneral & E
   vulnerability: IEnemyVulnerability
 }
 
@@ -40,8 +36,6 @@ export function generateEnemies(scene: Scene, count: number = 5) {
     const peep: IEnemyModel = {
       key: `peep_${i}`,
       name: `Level ${i}`,
-      meta: {
-      },
       general: {
         level: i,
         health: 50 * i,

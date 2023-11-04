@@ -68,24 +68,26 @@ export function makeProxy<T extends Record<string | symbol, any>>(target: T): T 
 
 export function deepCloneEnemyModelAndPartialProxy(model: IEnemyModel): IEnemyModel<IProxyExtensions> {
   // Deep clone the model to ensure this instance's model is distinct
-  const cloned = deepClone(model)
+  const clone = deepClone(model)
   // Replace the "general" data structure with a proxied version that can accomodate Property Effects
-  cloned.general = makeProxy(cloned.general)
+  clone.general = makeProxy(clone.general)
+  // Replace the "vulnerability" data structure with a proxied version that can accomodate Property Effects
+  clone.vulnerability = makeProxy(clone.vulnerability)
   // Return the new, cloned and proxied model
-  return cloned as IEnemyModel<IProxyExtensions>
+  return clone as IEnemyModel<IProxyExtensions>
 }
 
 export function deepCloneTowerModelAndPartialProxy(model: ITowerModel): ITowerModel<IProxyExtensions> {
   // Deep clone the model to ensure this instance's model is distinct
-  const cloned = deepClone(model)
+  const clone = deepClone(model)
   // Replace the "general" data structure with a proxied version that can accomodate Property Effects
-  cloned.general = makeProxy(cloned.general)
+  clone.general = makeProxy(clone.general)
   // Replace the "damage.health" data structure with a proxied version that can accomodate Property Effects
-  cloned.damage.health = makeProxy(cloned.damage.health)
+  clone.damage.health = makeProxy(clone.damage.health)
   // Replace the "damage.shield" data structure with a proxied version that can accomodate Property Effects
-  cloned.damage.shield = makeProxy(cloned.damage.shield)
+  clone.damage.shield = makeProxy(clone.damage.shield)
   // Return the new, cloned and proxied model
-  return cloned as ITowerModel<IProxyExtensions>
+  return clone as ITowerModel<IProxyExtensions>
 }
 
 
