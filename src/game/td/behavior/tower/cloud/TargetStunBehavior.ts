@@ -8,6 +8,9 @@ export default class TargeStunBehavior extends BaseTargeCloudBehavior {
   constructor(tower: TDTower) {
     super(tower, "stun", stunEmitter,
       (enemy: TDEnemy) => new TimedStopEffect(
-        tower, enemy, tower.model.damage.health.duration || 0, 5000))
+        tower,
+        enemy,
+        tower.model.damage.health.duration || 0,
+        tower.model.damage.health.cooldown || 0))
   }
 }

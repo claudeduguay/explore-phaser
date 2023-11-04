@@ -36,12 +36,12 @@ export function damageFormatter(key: string, damage: ITowerDamage): string {
   const dps = Array.isArray(damage.dps) ? `${damage.dps[0]}-${damage.dps[1]}` : `${damage.dps}`
   const timing: string[] = []
   if (damage.duration) {
-    timing.push(`${damage.duration.toFixed(1)}s`)
+    timing.push(`${(damage.duration / 1000).toFixed(1)}s`)
   }
   if (damage.cooldown) {
-    timing.push(`${damage.cooldown.toFixed(1)}s`)
+    timing.push(`${(damage.cooldown / 1000).toFixed(1)}s`)
   }
-  const times = timing.length > 0 ? ` (${timing.join(", ")}` : ``
+  const times = timing.length > 0 ? ` (${timing.join(", ")})` : ``
   return `${dps}${times}`
 }
 
@@ -340,8 +340,8 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      shield: { dps: 0, duration: 1000, type: "Stun" },
-      health: { dps: 0, duration: 1000, type: "Stun" }
+      shield: { dps: 0, duration: 1000, cooldown: 5000, type: "Stun" },
+      health: { dps: 0, duration: 1000, cooldown: 5000, type: "Stun" }
     }
   },
 
