@@ -18,11 +18,11 @@ export interface IEnemyVulnerability {
   [key: string]: number
 }
 
-export interface IEnemyModel {
+export interface IEnemyModel<T extends any = {}> {
   key: string
   name: string
   meta: IEnemyMeta
-  general: IEnemyGeneral
+  general: IEnemyGeneral & T
   vulnerability: IEnemyVulnerability
 }
 
