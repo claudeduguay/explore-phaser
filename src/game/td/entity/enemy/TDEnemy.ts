@@ -77,29 +77,28 @@ export default class TDEnemy extends CustomFollower implements ISelectable {
 
   detectDirectionChange() {
     const current = this.anims.currentAnim
-    switch (this.angle) {
-      case -90:
+    switch (this.direction) {
+      case "north":
         if (current?.key !== `north-${this.model.key}`) {
           this.anims.play(`north-${this.model.key}`)
         }
         break
-      case 0:
+      case "east":
         if (current?.key !== `east-${this.model.key}`) {
           this.anims.play(`east-${this.model.key}`)
         }
         break
-      case 90:
+      case "south":
         if (current?.key !== `south-${this.model.key}`) {
           this.anims.play(`south-${this.model.key}`)
         }
         break
-      case 180:
+      case "west":
         if (current?.key !== `west-${this.model.key}`) {
           this.anims.play(`west-${this.model.key}`)
         }
         break
     }
-    this.angle = 0
   }
 
   handleStatusBars() {

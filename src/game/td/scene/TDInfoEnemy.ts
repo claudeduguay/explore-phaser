@@ -85,6 +85,7 @@ export default class TDInfoEnemy extends TDInfoBase {
 
   preUpdate(time: number, delta: number) {
     if (this.enemy) {
+      console.log("Tangent:", this.enemy.direction)
       const effects = [...this.enemy.effects]
       if (this.previousEffects) {
         // Note: This may be a bit expensive, maybe there's a better way to detect changes 
