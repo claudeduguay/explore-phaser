@@ -2,22 +2,22 @@ import { IEnemyGeneral } from "../../entity/model/IEnemyModel"
 
 export const TRACE = true
 
-export interface IEffect {
+export interface IPropertyEffect {
   name: string
   prop: string | symbol
   formula: (value: number) => number
 }
 
 export interface IProxyExtensions {
-  getEffects(): Map<string | symbol, Set<IEffect>>
-  getEffectsSet(prop: string | symbol): Set<IEffect>
-  addEffect(effect: IEffect): void
-  deleteEffect(effect: IEffect): void
+  getEffects(): Map<string | symbol, Set<IPropertyEffect>>
+  getEffectsSet(prop: string | symbol): Set<IPropertyEffect>
+  addEffect(effect: IPropertyEffect): void
+  deleteEffect(effect: IPropertyEffect): void
 }
 
 export default class EffectsProxy<T extends Record<string | symbol, any>> {
 
-  effects = new Map<string | symbol, Set<IEffect>>()
+  effects = new Map<string | symbol, Set<IPropertyEffect>>()
 
   // Presence of this method appears to be critical to avoiding type error
   // Type 'T' is not assignable to type 'T & IProxyExtensions' in "new Proxy: call
@@ -32,16 +32,16 @@ export default class EffectsProxy<T extends Record<string | symbol, any>> {
       return (prop: string | symbol) => this.effects.get(prop)
     }
     if (p === "addEffect") {
-      return (effect: IEffect) => {
+      return (effect: IPropertyEffect) => {
         if (!this.effects.has(effect.prop)) {
-          this.effects.set(effect.prop, new Set<IEffect>())
+          this.effects.set(effect.prop, new Set<IPropertyEffect>())
         }
         console.log(`Add Effect "${effect.name}" to "${effect.prop.toString()}" property using formula: ${effect.formula}`)
         this.effects.get(effect.prop)!.add(effect)
       }
     }
     if (p === "deleteEffect") {
-      return (effect: IEffect) => {
+      return (effect: IPropertyEffect) => {
         console.log(`Remove Effect "${effect.name}" to "${effect.prop.toString()}" property using formula: ${effect.formula}`)
         this.effects.get(effect.prop)?.delete(effect)
       }
