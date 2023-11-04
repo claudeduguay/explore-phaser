@@ -44,7 +44,7 @@ export function generateEnemies(scene: Scene, count: number = 5) {
         level: i,
         health: 50 * i,
         shield: 50 * i,
-        speed: 300 - i * 50,
+        speed: 300 - i * 20,
         value: 10 * i
       },
       vulnerability: {
