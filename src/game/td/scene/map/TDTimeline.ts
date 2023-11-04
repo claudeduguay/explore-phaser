@@ -121,24 +121,18 @@ export function makeTimeline(scene: Scene, hud: Scene,
     previewPath = makeTimelinePreviewPath()
   }
 
-  const enemySpeeds = ENEMY_LIST.map(e => e.general.speed)
-  const maxSpeed = Math.max(...enemySpeeds) // <<< REQUIRES REFINEMENT AND MORE THOUGHT
-  const minSpeed = Math.min(...enemySpeeds)
   const ONE_SECOND = 1000
   const mainPathLength = mainPath.getLength()
-  const mainSpeed = minSpeed // 300 // (pixels per second)
-  const mainDuration = mainPathLength / mainSpeed * ONE_SECOND
-  const previewDuration = mainDuration + (mainDuration * prefixFraction) + (mainDuration * suffixFraction)
-  const mainDelay = mainDuration * prefixFraction
 
   const timeline = scene.add.timeline({})
   // Build parameterized run timeline entries for both paths
   const run = (key: string, isLast: boolean = false) => () => {
-    const f = ENEMY_INDEX[key].general.speed / maxSpeed  // <<< REQUIRES REFINEMENT AND MORE THOUGHT
-    // console.log("Enemy duration fraction:", f)
-    const twin = addMainPathFollower(key, scene, health, credits, enemyGroup, mainPath, mainDuration * f, mainDelay)
-    // const preview = 
-    addPreviewFollower(key, hud, previewGroup, previewPath, timeline, previewDuration * f, isLast, twin)
+    // Compute durations based on Enemy speed
+    const mainDuration = mainPathLength / ENEMY_INDEX[key].general.speed * ONE_SECOND
+    const previewDuration = mainDuration + (mainDuration * prefixFraction) + (mainDuration * suffixFraction)
+    const mainDelay = mainDuration * prefixFraction
+    const twin = addMainPathFollower(key, scene, health, credits, enemyGroup, mainPath, mainDuration, mainDelay)
+    addPreviewFollower(key, hud, previewGroup, previewPath, timeline, previewDuration, isLast, twin)
   }
 
   const config: Phaser.Types.Time.TimelineEventConfig[] = []

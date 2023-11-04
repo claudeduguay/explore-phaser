@@ -35,6 +35,8 @@ export function generateEnemies(scene: Scene, count: number = 5) {
   for (let i = 1; i <= count; i++) {
     // Register assets
     makePeep(scene, `peep_${i}`, 32, 32, randomPeepOptions())
+    const maxSpeed = 75 * (count + 1)
+    const speedUnit = 50
     const peep: IEnemyModel = {
       key: `peep_${i}`,
       name: `Level ${i}`,
@@ -44,7 +46,7 @@ export function generateEnemies(scene: Scene, count: number = 5) {
         level: i,
         health: 50 * i,
         shield: 50 * i,
-        speed: 300 - i * 20,
+        speed: maxSpeed - i * speedUnit,  // Toughter enemies are slower 
         value: 10 * i
       },
       vulnerability: {

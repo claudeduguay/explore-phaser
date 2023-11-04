@@ -466,8 +466,8 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      shield: { dps: 0, duration: 2000, type: "Slow" },
-      health: { dps: 0, duration: 2000, type: "Slow" }
+      shield: { dps: 0, type: "Slow" },
+      health: { dps: 0, type: "Slow" }
     }
   }
 }
