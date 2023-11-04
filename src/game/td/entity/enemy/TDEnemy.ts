@@ -5,6 +5,7 @@ import { ISelectable } from "../../scene/SelectableGroup";
 import BehaviorList from "../../behavior/core/BehaviorList";
 import { toSceneCoordinates } from "../../../../util/geom/Point";
 import CustomFollower from "./CustomFollower";
+import Direction from "../../../../util/geom/Direction";
 
 export default class TDEnemy extends CustomFollower implements ISelectable {
 
@@ -24,6 +25,7 @@ export default class TDEnemy extends CustomFollower implements ISelectable {
     public showStatusBars: boolean = false) {
 
     super(scene, x, y, model, path)
+    this.setSize(32, 32)
     this.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
 
     this.anims.play(`east-${model.key}`)
@@ -78,22 +80,22 @@ export default class TDEnemy extends CustomFollower implements ISelectable {
   detectDirectionChange() {
     const current = this.anims.currentAnim
     switch (this.direction) {
-      case "north":
+      case Direction.North:
         if (current?.key !== `north-${this.model.key}`) {
           this.anims.play(`north-${this.model.key}`)
         }
         break
-      case "east":
+      case Direction.East:
         if (current?.key !== `east-${this.model.key}`) {
           this.anims.play(`east-${this.model.key}`)
         }
         break
-      case "south":
+      case Direction.South:
         if (current?.key !== `south-${this.model.key}`) {
           this.anims.play(`south-${this.model.key}`)
         }
         break
-      case "west":
+      case Direction.West:
         if (current?.key !== `west-${this.model.key}`) {
           this.anims.play(`west-${this.model.key}`)
         }

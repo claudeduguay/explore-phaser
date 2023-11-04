@@ -1,6 +1,7 @@
 import { Curves, GameObjects, Scene, Math as PMath, Tweens, Animations } from "phaser";
 import IEnemyModel from "../model/IEnemyModel";
 import Point from "../../../../util/geom/Point";
+import Direction from "../../../../util/geom/Direction";
 
 export default class CustomFollower extends GameObjects.Container {
   _offset: number = 0
@@ -39,16 +40,16 @@ export default class CustomFollower extends GameObjects.Container {
       if (segment.p0.x === segment.p1.x) {
         // Vertical
         if (segment.p0.y < segment.p1.y) {
-          return "south"
+          return Direction.South
         } else {
-          return "north"
+          return Direction.North
         }
       } else {
         // Horizontal
         if (segment.p0.x < segment.p1.x) {
-          return "east"
+          return Direction.East
         } else {
-          return "west"
+          return Direction.West
         }
       }
     }
