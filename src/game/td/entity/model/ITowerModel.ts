@@ -1,7 +1,7 @@
 import { IPropertyEffect } from "./EffectsProxy"
 
-export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Missile", "Mine", "Grenade", "Burst"]
-export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Fire", "Water", "Earth", "Air", "Poison", "Electric", "Modify"]
+export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Burst", "Missile", "Mine", "Grenade"]
+export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Fire", "Water", "Earth", "Air", "Poison", "Electric", "Buff", "Debuff"]
 
 export type IDeliveryType = typeof TYPES_DELIVERY[number]
 export type IDamageType = typeof TYPES_DAMAGE[number]
@@ -10,14 +10,14 @@ export const deliveryDescriptions: { [key: string]: string } = {
   Projectile: "A narrow, single-target, emission of spaced particles.",
   Beam: "A narrow, single-target continous beam of particles.",
   Spray: "A cone, single-target, but affects other targets within the cone.",
-  Cloud: "A multi-target cloud, covering the towers' range.",
-  Missile: "Targets a single peep and explodes on impact, damaging enemies within range.",
-  Mine: "Target a position ahead on the path and explodes when a peep enters range (or possibly center point).",
-  Grenade: "Target a position ahead on the path and explodes when the timeout elapses.",
+  Cloud: "A multi-target cloud, covering the tower's range.",
   Burst: "Outward burst of multiple particles, multi-target within the tower's range",
+  Missile: "A single-target missile that explodes on impact (causing range damage)",
+  Mine: "Thrown to a path-target ahead. Explodes (causing range damage) when the first enemy crosses its center.",
+  Grenade: "Thrown  to a path-target ahead. Explodes (causing range damage) when the trigger time elapses.",
 }
 
-export const damageColors: { [key: string]: string | string[] } = {
+export const damageColors: { [key: string]: string } = {
   Arrow: "MAGENTA",
   Bullet: "SLATE GRAY",
   Light: "YELLOW",
@@ -28,7 +28,8 @@ export const damageColors: { [key: string]: string | string[] } = {
   Air: "WHITE",
   Poison: "GREEN",
   Electric: "CYAN",
-  Modify: ["GREENISH", "REDISH"]
+  Buff: "GREENISH",
+  Debuff: "REDISH"
 }
 
 export const damageDescriptions: { [key: string]: string } = {
@@ -42,7 +43,8 @@ export const damageDescriptions: { [key: string]: string } = {
   Air: "Wind effects (blow, breeze, storm),",
   Poison: "Poison damage (timed effect),",
   Electric: "Electrical damage (lightning, shock, electrocute),",
-  Modify: "Target's property buff or debuf"
+  Buff: "Modify target's property upward",
+  Debuff: "Modify target's property downward"
 }
 
 export interface ITowerMeta {
@@ -576,7 +578,7 @@ function generatePermutations() {
     TYPES_DAMAGE.forEach((damage: IDamageType) => {
       permutations.push({
         type: `${damage} ${delivery}`,
-        color: ((Array.isArray(damageColors[damage]) ? damageColors[damage] : [damageColors[damage]]) as string[]).join(" | "),
+        color: damageColors[damage],
         damage: damageDescriptions[damage],
         delivery: deliveryDescriptions[delivery]
       })

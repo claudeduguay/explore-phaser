@@ -220,7 +220,8 @@ Damage Types and Coloring:
 * Air - WHITE - Wind effects (blow, breeze, storm)
 * Poison - GREEN - Poison damage (timed effect)
 * Electric - CYAN - Electrical damage (lightning, shock, electrocute)
-* Modify - Buff (GREENISH) and Debuf (REDISH)
+* Buff - GREENISH - Modify target's property upward
+* Debuf - REDISH - Modify target's property downward
 
 Questions: What's the distinction between a Cloud, Gravity and Expand effects. Right now clouds have a timeout while gravity and expand are in-range effects.
 
