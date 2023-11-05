@@ -1,6 +1,6 @@
 import { deepClone } from "../../../../util/ObjectUtil"
-import IEnemyModel, { IEnemyGeneral } from "../../entity/model/IEnemyModel"
-import ITowerModel from "../../entity/model/ITowerModel"
+import IEnemyModel, { IEnemyGeneral } from "./IEnemyModel"
+import ITowerModel from "./ITowerModel"
 
 export const TRACE = true
 

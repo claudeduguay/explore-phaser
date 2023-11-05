@@ -60,26 +60,26 @@ export default class CustomFollower extends GameObjects.Container {
   }
 
   startFollow(config?: Phaser.Types.GameObjects.PathFollower.PathConfig | Phaser.Types.Tweens.NumberTweenBuilderConfig, startAt?: number): this {
-    this._isFollowing = true
     this.tween = this.scene.add.tween({ ...config, targets: this, offset: 1.0 })
+    this._isFollowing = true
     return this
   }
 
   pauseFollow(): this {
-    this._isFollowing = false
     this.tween?.pause()
+    this._isFollowing = false
     return this
   }
 
   resumeFollow(): this {
-    this._isFollowing = true
     this.tween?.resume()
+    this._isFollowing = true
     return this
   }
 
   stopFollow(): this {
-    this._isFollowing = false
     this.tween?.stop()
+    this._isFollowing = false
     return this
   }
 

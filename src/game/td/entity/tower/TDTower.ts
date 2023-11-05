@@ -34,7 +34,8 @@ import TargetSlowBehavior from "../../behavior/tower/TargetSlowBehavior"
 import TargetStunBehavior from "../../behavior/tower/cloud/TargetStunBehavior"
 import TargetSpikeBehavior from "../../behavior/tower/cloud/TargetSpikeBehavior"
 import TargetRockBehavior from "../../behavior/tower/cloud/TargetRockBehavior"
-import { IProxyExtensions, deepCloneTowerModelWithProxies } from "../../behavior/enemy/EffectsProxy"
+import { IProxyExtensions, deepCloneTowerModelWithProxies } from "../model/EffectsProxy"
+import TDPlayScene from "../../scene/TDPlayScene"
 
 export enum PreviewType {
   Normal,
@@ -84,13 +85,13 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     this.model = deepCloneTowerModelWithProxies(model)
     const range = model.general.range
     this.platform = this.scene.add.sprite(0, 0, `${model.key}-platform`).setInteractive()
-      .on(Input.Events.POINTER_OVER, () => {
+      .on(Input.Events.GAMEOBJECT_POINTER_OVER, () => {
         this.showRange.visible = true
         if (this.preview !== PreviewType.Drag) {
           this.showLabel.visible = true
         }
       }, this)
-      .on(Input.Events.POINTER_OUT, () => {
+      .on(Input.Events.GAMEOBJECT_POINTER_OUT, () => {
         this.showRange.visible = false
         if (this.preview !== PreviewType.Drag) {
           this.showLabel.visible = false
@@ -130,7 +131,14 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
   }
 
   addSelectHandler(select: (selection?: TDTower) => void) {
-    this.platform.on(Input.Events.POINTER_DOWN, (pointer: any, x: number, y: number, e: Event) => {
+    this.platform.on(Input.Events.GAMEOBJECT_POINTER_DOWN, (pointer: any, x: number, y: number, e: Event) => {
+      if (pointer.rightButtonDown()) {
+        if (this.scene instanceof TDPlayScene) {
+          e.stopPropagation()
+          this.scene.deleteTower(this)
+        }
+        return
+      }
       if (this.preview === PreviewType.Normal) {
         select(this)
         this.showSelection()

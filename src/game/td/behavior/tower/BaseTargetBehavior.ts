@@ -3,7 +3,7 @@ import TDTower from "../../entity/tower/TDTower"
 import Point from "../../../../util/geom/Point"
 import { pickFirst } from "../../entity/tower/Targeting"
 import TargetEffectsMap from "../core/TargetEffectsMap"
-import InRangeDamageEffect from "../enemy/InRangeDamageEffect"
+import InRangeDamageEffect from "../enemy/DamageEffect"
 
 export interface IEmitter {
   destroy: () => void

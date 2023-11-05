@@ -9,7 +9,7 @@ import { Scene } from 'phaser'
 import ScanScene from './game/scan/ScanScene'
 import TileScene from './game/tiles/TileScene'
 import TDGame from './game/td/scene/TDGameScene'
-import { proxyTest } from './game/td/behavior/enemy/EffectsProxy'
+import { proxyTest } from './game/td/entity/model/EffectsProxy'
 
 export default function App() {
   proxyTest()

@@ -125,6 +125,12 @@ export default class TDPlayScene extends Scene {
 
   }
 
+  deleteTower(tower: TDTower) {
+    this.map.clearTowerMarkAt(tower)
+    this.towerGroup.remove(tower)
+    tower.destroy()
+  }
+
   initGroups() {
     // Used for Peep cleanup on replay events
     this.previewGroup = new GameObjects.Group(this)

@@ -105,6 +105,13 @@ export class TDTileMap extends GameObjects.Container {
     }
   }
 
+  clearTowerMarkAt(pos: IPointLike) {
+    const tilePos = this.map.worldToTileXY(pos.x, pos.y)
+    if (tilePos) {
+      this.markLayer.putTileAt(-1, tilePos.x, tilePos.y)
+    }
+  }
+
   checkCollision(pos: IPointLike) {
     const tilePos = this.map.worldToTileXY(pos.x, pos.y)
     if (tilePos) {

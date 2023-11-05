@@ -1,4 +1,4 @@
-import { IPropertyEffect } from "../../behavior/enemy/EffectsProxy"
+import { IPropertyEffect } from "./EffectsProxy"
 
 export interface ITowerMeta {
   distribution: "linear" | "radial"  // Weapon distribution
@@ -353,7 +353,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
         modifier: { name: "Stun", prop: "speed", formula: (s: number) => 0 },
         duration: 1000,
         cooldown: 5000,
-        name: "Slow"
+        name: "Stun"
       },
       shield: { dps: 0, duration: 1000, cooldown: 5000, name: "Stun" },
       health: { dps: 0, duration: 1000, cooldown: 5000, name: "Stun" }

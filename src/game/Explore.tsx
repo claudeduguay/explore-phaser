@@ -1,6 +1,6 @@
 import { CSSProperties, useEffect, useId } from "react"
 // import ScanScene from "./ScanScene"
-import Phaser, { Scene } from 'phaser'
+import Phaser, { Scene, Types } from 'phaser'
 
 export interface IExploreProps {
   w?: number
@@ -11,8 +11,9 @@ export interface IExploreProps {
 export default function Explore({ w = 1100, h = 800, scene }: IExploreProps) {
   const id = useId()
   useEffect(() => {
-    const config: any = {
+    const config: Types.Core.GameConfig = {
       type: Phaser.AUTO,
+      disableContextMenu: true,
       parent: id,
       width: w,
       height: h,
@@ -34,7 +35,7 @@ export default function Explore({ w = 1100, h = 800, scene }: IExploreProps) {
           debugBodyColor: 0x0000ff,
           debugStaticBodyColor: 0xffffff
           */
-        }
+        },
       }
     }
     const game = new Phaser.Game(config)

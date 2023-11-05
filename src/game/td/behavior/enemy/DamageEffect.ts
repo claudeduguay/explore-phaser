@@ -1,7 +1,7 @@
 import { computeTargetDamage } from "../tower/ComputeDamage";
-import TimedEffect from "./TimedEffect";
+import BaseEffect from "./BaseEffect";
 
-export default class TimedDamageEffect extends TimedEffect {
+export default class DamageEffect extends BaseEffect {
 
   updateEffect(time: number, delta: number): void {
     this.enemy.health -= computeTargetDamage(this.tower, this.enemy, delta)
@@ -9,5 +9,4 @@ export default class TimedDamageEffect extends TimedEffect {
 
   endEffect(time: number, delta: number): void {
   }
-
 }
