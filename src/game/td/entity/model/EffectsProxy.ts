@@ -82,11 +82,11 @@ export function deepCloneTowerModelWithProxies(model: ITowerModel): ITowerModel<
   const clone = deepClone(model)
   // Replace the "general" data structure with a proxied version that can accomodate Property Effects
   clone.general = makeProxy(clone.general)
-  // Replace the "damage.health" data structure with a proxied version that can accomodate Property Effects
-  clone.damage.health = makeProxy(clone.damage.health)
-  // Replace the "damage.shield" data structure with a proxied version that can accomodate Property Effects
-  clone.damage.shield = makeProxy(clone.damage.shield)
-  // Return the new, cloned and proxied model
+  // // Replace the "damage.health" data structure with a proxied version that can accomodate Property Effects
+  // clone.damage.health = makeProxy(clone.damage.health)
+  // // Replace the "damage.shield" data structure with a proxied version that can accomodate Property Effects
+  // clone.damage.shield = makeProxy(clone.damage.shield)
+  // // Return the new, cloned and proxied model
   return clone as ITowerModel<IProxyExtensions>
 }
 

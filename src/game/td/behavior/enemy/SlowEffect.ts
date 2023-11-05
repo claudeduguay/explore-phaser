@@ -3,7 +3,7 @@ import BaseEffect from "./BaseEffect";
 export default class SlowEffect extends BaseEffect {
 
   updateEffect(time: number, delta: number): void {
-    this.enemy.rewind(delta * 1.5)
+    this.enemy.rewind(delta * 0.75)
   }
 
 }

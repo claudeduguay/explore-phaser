@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import ITowerModel, { damageFormatter } from "../entity/model/ITowerModel";
+import ITowerModel, { effectFormatter } from "../entity/model/ITowerModel";
 import TDTower, { PreviewType } from "../entity/tower/TDTower";
 import { entitle } from "../../../util/TextUtil"
 import IconButton from "../gui/IconButton";
@@ -85,6 +85,6 @@ export default class TDInfoTower extends TDInfoBase {
     const buttonFormatter = (key: string, value: number) => `${upgrade[key].text} ($${upgrade[key].cost})`
     this.addTable(270, "General", model.general, valueFormatter, buttonFormatter)
 
-    this.addTable(430, "Damage (dps per level)", model.damage, damageFormatter)
+    this.addTable(430, "Damage (dps per level)", model.damage, effectFormatter)
   }
 }
