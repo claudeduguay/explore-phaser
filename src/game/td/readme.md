@@ -232,6 +232,13 @@ Buff/Debuff damage effects (applied for a limited time). These could be combined
 
 NOTE: NO REAL NEED FOR TOWER BOOSTS IF ENEMIES ARE BUFFED/DEBUFFED CLOSE BY
 
+All damage types could have Conditions such as:
+* In Range - Applied only when within tower's range.
+* Timed:
+  * Posponed - Applied after a given amount of time (good for grenade efffect).
+  * Duration - Applied for a given time duration.
+  * Cooldown - No recurrence permitted until after cooldown.
+
 
 Questions: What's the distinction between a Cloud, Gravity and Expand effects. Right now clouds have a timeout while gravity and expand are in-range effects.
 

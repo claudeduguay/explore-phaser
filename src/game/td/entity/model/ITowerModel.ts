@@ -70,6 +70,7 @@ export interface ITowerGeneral {
 
 // All effects nay have optional duration and cooldown values
 export interface ITowerBaseEffect {
+  posponed?: number
   duration?: number
   cooldown?: number
 }
