@@ -1,15 +1,15 @@
 import { IPropertyEffect } from "./EffectsProxy"
 
-export interface ITowerMeta {
-  distribution: "linear" | "radial"  // Weapon distribution
-  rotation: "target" | number        // Rotation type (aim at target or rotate +/- clockwise each frame)
-}
-
 export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Rise", "Fall", "Missile", "Mine", "Grenade", "Explode"]
 export const TYPES_DAMAGE = ["Impact", "Light", "Dark", "Fire", "Water", "Earth", "Air", "Poison", "Electric", "Buff", "Debuff"]
 
 export type IDeliveryType = typeof TYPES_DELIVERY[number]
 export type IDamageType = typeof TYPES_DAMAGE[number]
+
+export interface ITowerMeta {
+  distribution: "linear" | "radial"  // Weapon distribution
+  rotation: "target" | number        // Rotation type (aim at target or rotate +/- clockwise each frame)
+}
 
 export interface ITowerOrganize {
   effect: "range" | "time"
