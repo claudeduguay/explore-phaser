@@ -72,19 +72,9 @@ export default abstract class BaseEffect implements IBehavior {
     }
   }
 
-  startEffect(time: number, delta: number): void {
-
-  }
-
-  updateEffect(time: number, delta: number): void {
-
-  }
-
-  endEffect(time: number, delta: number): void {
-
-  }
-
-  endCooldown(time: number, delta: number): void {
-
-  }
+  // SUBCLASSES SHOULD OVERRIDE THESE METHODS
+  startEffect(time: number, delta: number): void { }
+  updateEffect(time: number, delta: number): void { }
+  endEffect(time: number, delta: number): void { }
+  endCooldown(time: number, delta: number): void { }
 }
