@@ -38,13 +38,17 @@ export default class EffectsProxy<T extends Record<string | symbol, any>> {
         if (!this.effects.has(effect.prop)) {
           this.effects.set(effect.prop, new Set<IPropertyEffect>())
         }
-        console.log(`Add Effect "${effect.name}" to "${effect.prop.toString()}" property using formula: ${effect.formula}`)
+        if (TRACE) {
+          console.log(`Add Effect "${effect.name}" to "${effect.prop.toString()}" property using formula: ${effect.formula}`)
+        }
         this.effects.get(effect.prop)!.add(effect)
       }
     }
     if (p === "deleteEffect") {
       return (effect: IPropertyEffect) => {
-        console.log(`Remove Effect "${effect.name}" to "${effect.prop.toString()}" property using formula: ${effect.formula}`)
+        if (TRACE) {
+          console.log(`Remove Effect "${effect.name}" to "${effect.prop.toString()}" property using formula: ${effect.formula}`)
+        }
         this.effects.get(effect.prop)?.delete(effect)
       }
     }
@@ -66,7 +70,7 @@ export function makeProxy<T extends Record<string | symbol, any>>(target: T): T 
   return new Proxy(target, new EffectsProxy<T>())
 }
 
-export function deepCloneEnemyModelWithProxies(model: IEnemyModel): IEnemyModel<IProxyExtensions> {
+export function deepCloneEnemyModelAndProxy(model: IEnemyModel): IEnemyModel<IProxyExtensions> {
   // Deep clone the model to ensure this instance's model is distinct
   const clone = deepClone(model)
   // Replace the "general" data structure with a proxied version that can accomodate Property Effects
@@ -77,7 +81,7 @@ export function deepCloneEnemyModelWithProxies(model: IEnemyModel): IEnemyModel<
   return clone as IEnemyModel<IProxyExtensions>
 }
 
-export function deepCloneTowerModelWithProxies(model: ITowerModel): ITowerModel<IProxyExtensions> {
+export function deepCloneTowerModelAndProxy(model: ITowerModel): ITowerModel<IProxyExtensions> {
   // Deep clone the model to ensure this instance's model is distinct
   const clone = deepClone(model)
   // Replace the "general" data structure with a proxied version that can accomodate Property Effects
