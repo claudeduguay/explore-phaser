@@ -197,38 +197,30 @@ Could have traps of various kinds to lay down on the path - Spikes, Trap Doors, 
 
 Need to develop a pivot table with various effects and styles, w/names, etc.
 
-| Damage Type | Shoot | Beam | Spray | Cloud | Gravity | Launch | Expand
-| ---- | :--: | :---: | :---: | :-----: | :---: | :----: | :----: |
-| Impact | x | x | x | x | x | x | x |
-| Light | x | x | x | x | x | x | x |
-| Dark | x | x | x | x | x | x | x |
-| Fire | x | x | x | x | x | x | x |
-| Water | x | x | x | x | x | x | x |
-| Electric | x | x | x | x | x | x | x |
-| Poison | x | x | x | x | x | x | x |
-| Earth | x | x | x | x | x | x | x |
-
 Delivery mechanisms:
 
-* Shoot - A narrow, single-target, emission of spaced particles
-* Beam - A narrow, single-target beam of particles
-* Spray - A cone, single-target but may affect other targets within the cone
-* Cloud - A multi-target cloud, covering the towers' range
-* Gravity - Fall or Rise, multi-target within the tower's range
-* Launch - Delayed-action object launched ahead on path, affects enemies in it's range, after a delay or trigger
-* Expand - An outward thrust of multiple particles, multi-target within the tower's range
+* Projectile - A narrow, single-target, emission of spaced particles.
+* Beam - A narrow, single-target continous beam of particles.
+* Spray - A cone, single-target, but affects other targets within the cone.
+* Cloud - A multi-target cloud, covering the towers' range.
+* Missile - Targets a single peep and explodes on impact, damaging enemies within range.
+* Mine - Target a position ahead on the path and explodes when a peep enters range (or possibly center point).
+* Grenade - Target a position ahead on the path and explodes when the timeout elapses.
+* Burst - Outward burst of multiple particles, multi-target within the tower's range.
 
 Damage Types and Coloring:
 
-* Impact - SLATE GRAY - Physical damage
+* Arrow - MAGENTA - Arrow damage
+* Bullet - SLATE GRAY - Bullet damage
 * Light - YELLOW - Buff general property (value, or tower damage)
 * Dark - ORANGE - Debuff general property (speed, defense)
-* Fire - RED - Fire damage
-* Water - BLUE - Water (rain, snow, ice, freeze)
-* Electric - CYAN - Electrical damage (lightning, shock)
-* Poison - GREEN - Poison damage (should always be a timed effect)
-* Earth - SADDLEBROWN - Physical impact (thrown rocks, dirt)
-* Special - MAGENTA - Affects other towers, cloud be just included in Light/Dark (Buff/Debuff)
+* Fire - RED - Fire damage (heat, fire, flame)
+* Water - BLUE - Water (steam, liquid, rain, snow, ice, freeze)
+* Earth - SADDLEBROWN - Eath (rocks, dirt, sand)
+* Air - WHITE - Wind effects (blow, breeze, storm)
+* Poison - GREEN - Poison damage (timed effect)
+* Electric - CYAN - Electrical damage (lightning, shock, electrocute)
+* Modify - Buff (GREENISH) and Debuf (REDISH)
 
 Questions: What's the distinction between a Cloud, Gravity and Expand effects. Right now clouds have a timeout while gravity and expand are in-range effects.
 
@@ -244,4 +236,4 @@ Need to add missile and grenade options.
 
 * Missiles target a specific peep and explodes on impact.
 * Mines target a position ahead on the path and explodes when a peep enters range.
-* Grenades target a position ahead on the path and explodes when the timeout elapses.
+* Grenades t

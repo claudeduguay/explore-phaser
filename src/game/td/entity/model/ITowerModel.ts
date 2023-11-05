@@ -1,10 +1,49 @@
 import { IPropertyEffect } from "./EffectsProxy"
 
-export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Rise", "Fall", "Missile", "Mine", "Grenade", "Explode"]
-export const TYPES_DAMAGE = ["Impact", "Light", "Dark", "Fire", "Water", "Earth", "Air", "Poison", "Electric", "Buff", "Debuff"]
+export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Missile", "Mine", "Grenade", "Burst"]
+export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Fire", "Water", "Earth", "Air", "Poison", "Electric", "Modify"]
 
 export type IDeliveryType = typeof TYPES_DELIVERY[number]
 export type IDamageType = typeof TYPES_DAMAGE[number]
+
+export const deliveryDescriptions: { [key: string]: string } = {
+  Projectile: "A narrow, single-target, emission of spaced particles.",
+  Beam: "A narrow, single-target continous beam of particles.",
+  Spray: "A cone, single-target, but affects other targets within the cone.",
+  Cloud: "A multi-target cloud, covering the towers' range.",
+  Missile: "Targets a single peep and explodes on impact, damaging enemies within range.",
+  Mine: "Target a position ahead on the path and explodes when a peep enters range (or possibly center point).",
+  Grenade: "Target a position ahead on the path and explodes when the timeout elapses.",
+  Burst: "Outward burst of multiple particles, multi-target within the tower's range",
+}
+
+export const damageColors: { [key: string]: string | string[] } = {
+  Arrow: "MAGENTA",
+  Bullet: "SLATE GRAY",
+  Light: "YELLOW",
+  Dark: "ORANGE",
+  Fire: "RED",
+  Water: "BLUE",
+  Earth: "SADDLEBROWN",
+  Air: "WHITE",
+  Poison: "GREEN",
+  Electric: "CYAN",
+  Modify: ["GREENISH", "REDISH"]
+}
+
+export const damageDescriptions: { [key: string]: string } = {
+  Arrow: "Arrow damage,",
+  Bullet: "Bullet damage,",
+  Light: "Buff general property (value, or tower damage),",
+  Dark: "Debuff general property (speed, defense),",
+  Fire: "Fire damage (heat, fire, flame),",
+  Water: "Water (steam, liquid, rain, snow, ice, freeze),",
+  Earth: "Eath (rocks, dirt, sand),",
+  Air: "Wind effects (blow, breeze, storm),",
+  Poison: "Poison damage (timed effect),",
+  Electric: "Electrical damage (lightning, shock, electrocute),",
+  Modify: "Target's property buff or debuf"
+}
 
 export interface ITowerMeta {
   distribution: "linear" | "radial"  // Weapon distribution
@@ -532,15 +571,20 @@ export const TOWER_GROUPS = TOWER_LIST.reduce((groups: ITowerGroups, tower: ITow
 
 function generatePermutations() {
   // const effectTypes = ["In-Range", "Timed"]
-  const permutations: string[] = []
+  const permutations: any[] = []
   TYPES_DELIVERY.forEach((delivery: IDeliveryType) => {
     TYPES_DAMAGE.forEach((damage: IDamageType) => {
-      permutations.push(`${damage} ${delivery}`)
+      permutations.push({
+        type: `${damage} ${delivery}`,
+        color: ((Array.isArray(damageColors[damage]) ? damageColors[damage] : [damageColors[damage]]) as string[]).join(" | "),
+        damage: damageDescriptions[damage],
+        delivery: deliveryDescriptions[delivery]
+      })
     })
   })
   return permutations
 }
 
 export const PERMUTATIONS = generatePermutations()
+console.log("Permutation count:", PERMUTATIONS.length)
 console.log(JSON.stringify(PERMUTATIONS, null, 2))
-console.log("Permutaiton s count:", PERMUTATIONS.length)
