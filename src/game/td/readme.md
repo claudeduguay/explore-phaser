@@ -203,10 +203,13 @@ Delivery mechanisms:
 * Beam - A narrow, single-target continous beam of particles.
 * Spray - A cone, single-target, but affects other targets within the cone.
 * Cloud - A multi-target cloud, covering the towers' range.
+* Burst - Outward burst of multiple particles, multi-target within the tower's range.
+
+Missile, Mine and Grenade are damage objects, delivered to an enemy or path position:
+
 * Missile - Targets a single peep and explodes on impact, damaging enemies within range.
 * Mine - Target a position ahead on the path and explodes when a peep enters range (or possibly center point).
 * Grenade - Target a position ahead on the path and explodes when the timeout elapses.
-* Burst - Outward burst of multiple particles, multi-target within the tower's range.
 
 Damage Types and Coloring:
 
@@ -220,8 +223,15 @@ Damage Types and Coloring:
 * Air - WHITE - Wind effects (blow, breeze, storm)
 * Poison - GREEN - Poison damage (timed effect)
 * Electric - CYAN - Electrical damage (lightning, shock, electrocute)
-* Buff - GREENISH - Modify target's property upward
-* Debuf - REDISH - Modify target's property downward
+
+Buff/Debuff damage effects (applied for a limited time). These could be combined
+* Health - REDISH/GREEN - Debuffs enemy health
+* Shield - REDISH/ORANGE - Debuffs enemy shield
+* Speed - REDISH/WHITE - Debuffs enemy speed
+* Value - GREENISH - Buffs enemy value
+
+NOTE: NO REAL NEED FOR TOWER BOOSTS IF ENEMIES ARE BUFFED/DEBUFFED CLOSE BY
+
 
 Questions: What's the distinction between a Cloud, Gravity and Expand effects. Right now clouds have a timeout while gravity and expand are in-range effects.
 

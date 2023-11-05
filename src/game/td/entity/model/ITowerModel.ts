@@ -1,13 +1,13 @@
 import { IPropertyEffect } from "./EffectsProxy"
 
 export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Burst", "Missile", "Mine", "Grenade"]
-export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Fire", "Water", "Earth", "Air", "Poison", "Electric", "Buff", "Debuff"]
+export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Fire", "Water", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
 
 export type IDeliveryType = typeof TYPES_DELIVERY[number]
 export type IDamageType = typeof TYPES_DAMAGE[number]
 
 export const deliveryDescriptions: { [key: string]: string } = {
-  Projectile: "A narrow, single-target, emission of spaced particles.",
+  Projectile: "A narrow, single-target, emission of particles, firing at a spaced out interval.",
   Beam: "A narrow, single-target continous beam of particles.",
   Spray: "A cone, single-target, but affects other targets within the cone.",
   Cloud: "A multi-target cloud, covering the tower's range.",
@@ -19,32 +19,36 @@ export const deliveryDescriptions: { [key: string]: string } = {
 
 export const damageColors: { [key: string]: string } = {
   Arrow: "MAGENTA",
-  Bullet: "SLATE GRAY",
+  Bullet: "SLATEGRAY",
   Light: "YELLOW",
-  Dark: "ORANGE",
+  Dark: "BLACKISH",
   Fire: "RED",
   Water: "BLUE",
   Earth: "SADDLEBROWN",
   Air: "WHITE",
   Poison: "GREEN",
   Electric: "CYAN",
-  Buff: "GREENISH",
-  Debuff: "REDISH"
+  Health: "REDISH/GREEN",
+  Shield: "REDISH/ORANGE",
+  Speed: "REDISH/WHITE",
+  Value: "GREENISH"
 }
 
 export const damageDescriptions: { [key: string]: string } = {
-  Arrow: "Arrow damage,",
-  Bullet: "Bullet damage,",
-  Light: "Buff general property (value, or tower damage),",
-  Dark: "Debuff general property (speed, defense),",
-  Fire: "Fire damage (heat, fire, flame),",
-  Water: "Water (steam, liquid, rain, snow, ice, freeze),",
+  Arrow: "Arrow damage (low impact)",
+  Bullet: "Bullet damage (high impact)",
+  Light: "Bright damage (light, shine, radiant)",
+  Dark: "Dark damage (shadow, smoke)",
+  Fire: "Fire damage (fire, flame),",
+  Water: "Water (liquid, steam, rain, snow, ice, freeze, frost),",
   Earth: "Eath (rocks, dirt, sand),",
   Air: "Wind effects (blow, breeze, storm),",
   Poison: "Poison damage (timed effect),",
   Electric: "Electrical damage (lightning, shock, electrocute),",
-  Buff: "Modify target's property upward",
-  Debuff: "Modify target's property downward"
+  Health: "Modify target's Health property down, for a limited time",
+  Shield: "Modify target's Sheuld property down, for a limited time",
+  Speed: "Modify target's Speed property down, for a limited time",
+  Value: "Modify target's Value property up, for a limited time"
 }
 
 export interface ITowerMeta {
