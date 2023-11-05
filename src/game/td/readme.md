@@ -221,7 +221,7 @@ Delivery mechanisms:
 Damage Types and Coloring:
 
 * Impact - SLATE GRAY - Physical damage
-* Light - YELLOW - Buff general property (value, or other tower)
+* Light - YELLOW - Buff general property (value, or tower damage)
 * Dark - ORANGE - Debuff general property (speed, defense)
 * Fire - RED - Fire damage
 * Water - BLUE - Water (rain, snow, ice, freeze)
