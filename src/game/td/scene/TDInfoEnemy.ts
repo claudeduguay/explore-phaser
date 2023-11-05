@@ -73,7 +73,8 @@ export default class TDInfoEnemy extends TDInfoBase {
     this.addText(130, `${model.name} Enemy`, 20, "white")
 
     this.addTable(180, "General", model.general)
-    this.addTable(405, "Vulnerability (dps multiplier)", model.vulnerability)
+    const percentFormatter = (key: string, value: number) => `${(value * 100).toFixed(0)}%`
+    this.addTable(405, "Defense (dps multiplier)", model.defense, percentFormatter)
 
     this.effectTableObjects = [this.addText(500, "No Damage Effects", 20, "orange")]
   }

@@ -35,7 +35,7 @@ export default function EnemyInfo({ scene, enemy: enemyObservable, onClose }: IE
       </div>
       <h4 className="fs-5 border-top p-1 pt-2">{model.name} Enemy</h4>
       <PropsInfo title="General" model={model.general} />
-      <PropsInfo title="Vulnerability (dps multiplier)" model={model.vulnerability} valueFormatter={percentFormatter} />
+      <PropsInfo title="Vulnerability (dps multiplier)" model={model.defense} valueFormatter={percentFormatter} />
     </>}
   </div>
 }

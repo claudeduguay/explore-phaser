@@ -11,20 +11,25 @@ export interface ITowerGeneral {
   range: number
 }
 
-export interface ITowerModifier extends IPropertyEffect {
-  type: "modifier"
+// All effects nay have optional duration and cooldown values
+export interface ITowerBaseEffect {
   duration?: number
   cooldown?: number
 }
 
-export interface ITowerDamage {
+// Modifiers are proxied IPropertyEffects with optional base effect properties
+export interface ITowerModifier extends ITowerBaseEffect, IPropertyEffect {
+  type: "modifier"
+}
+
+// Tower Damage is the common damage effect specfication, with otional base properties
+export interface ITowerDamage extends ITowerBaseEffect {
   type: "damage"
   dps: number | [min: number, max: number]
-  duration?: number
-  cooldown?: number
   name: string
 }
 
+// Tower effects can be either Damage or Modifier effects
 export type ITowerEffect = ITowerDamage | ITowerModifier
 
 export interface ITowerModel<E = {}> {
@@ -58,6 +63,7 @@ export function effectFormatter(key: string, effect: ITowerEffect): string {
   if (effect.type === "modifier") {
     return `${effect.prop.toString()}${times}`
   }
+  return JSON.stringify(effect)
 }
 
 export default ITowerModel

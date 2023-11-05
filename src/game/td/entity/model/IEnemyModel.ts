@@ -19,7 +19,7 @@ export interface IEnemyModel<E = {}> {
   key: string
   name: string
   general: IEnemyGeneral & E
-  vulnerability: IEnemyVulnerability
+  defense: IEnemyVulnerability
 }
 
 export default IEnemyModel
@@ -43,8 +43,8 @@ export function generateEnemies(scene: Scene, count: number = 5) {
         speed: maxSpeed - i * speedUnit,  // Toughter enemies are slower 
         value: 10 * i
       },
-      vulnerability: {
-        default: 1
+      defense: {
+        default: 0
       }
     }
     ENEMY_INDEX[peep.key] = peep

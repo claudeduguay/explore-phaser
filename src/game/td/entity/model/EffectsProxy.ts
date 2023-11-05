@@ -72,7 +72,7 @@ export function deepCloneEnemyModelWithProxies(model: IEnemyModel): IEnemyModel<
   // Replace the "general" data structure with a proxied version that can accomodate Property Effects
   clone.general = makeProxy(clone.general)
   // Replace the "vulnerability" data structure with a proxied version that can accomodate Property Effects
-  clone.vulnerability = makeProxy(clone.vulnerability)
+  clone.defense = makeProxy(clone.defense)
   // Return the new, cloned and proxied model
   return clone as IEnemyModel<IProxyExtensions>
 }
