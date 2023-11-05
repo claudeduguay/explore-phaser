@@ -234,6 +234,7 @@ Questions: What's the distinction between a Cloud, Gravity and Expand effects. R
 
 Question: Are Beam and Shoot similar? Beam is continuous while Shot is reduced by hit frequency (both represented as dps).
 
-Poison always has a timeout effect. Maybe the distinction between in-range and timeout should be at the Damage Type-level?
+Poison should probably always have a timeout effect. Maybe the distinction between in-range and timeout should be at the Damage Type-level?
 
 Launch is especially interesting as it could be a Missile (explodes on impact) or Grenade effect (delayed efffect). Also aiming ahead on the path may be interesting. Assuming a grenade is sent ahead on the path at the exit point of the range, detonation may depend on the time of exit for the targeted peep.
+

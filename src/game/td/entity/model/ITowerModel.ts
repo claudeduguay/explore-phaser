@@ -495,7 +495,13 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     },
     damage: {
       shield: { type: "damage", dps: 0, name: "Slow" },
-      health: { type: "modifier", prop: "speed", formula: v => v * 0.5, name: "Slow" }
+      health: {
+        type: "modifier",
+        prop: "speed",
+        formula: v => v * 0.5,
+        duration: 2000,
+        name: "Slow"
+      }
     }
   }
 }
@@ -509,3 +515,20 @@ export const TOWER_GROUPS = TOWER_LIST.reduce((groups: ITowerGroups, tower: ITow
   groups[tower.group].push(tower)
   return groups
 }, {} as ITowerGroups)
+
+function generatePermutations() {
+  const deliveryType = ["Projectile", "Beam", "Spray", "Cloud", "Rise", "Fall", "Missile", "Grenade", "Explode"]
+  const damageType = ["Impact", "Light", "Dark", "Fire", "Water", "Earth", "Air", "Poison", "Electric", "Buff", "Debuff"]
+  // const effectTypes = ["In-Range", "Timed"]
+  const permutations: string[] = []
+  deliveryType.forEach(delivery => {
+    damageType.forEach(damage => {
+      permutations.push(`${damage} ${delivery}`)
+    })
+  })
+  return permutations
+}
+
+export const PERMUTATIONS = generatePermutations()
+console.log(JSON.stringify(PERMUTATIONS, null, 2))
+console.log("Permutaiton s count:", PERMUTATIONS.length)
