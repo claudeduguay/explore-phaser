@@ -2,7 +2,19 @@ import { IPropertyEffect } from "./EffectsProxy"
 
 export interface ITowerMeta {
   distribution: "linear" | "radial"  // Weapon distribution
-  rotation: "target" | number        // Rotation type
+  rotation: "target" | number        // Rotation type (aim at target or rotate +/- clockwise each frame)
+}
+
+export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Rise", "Fall", "Missile", "Mine", "Grenade", "Explode"]
+export const TYPES_DAMAGE = ["Impact", "Light", "Dark", "Fire", "Water", "Earth", "Air", "Poison", "Electric", "Buff", "Debuff"]
+
+export type IDeliveryType = typeof TYPES_DELIVERY[number]
+export type IDamageType = typeof TYPES_DAMAGE[number]
+
+export interface ITowerOrganize {
+  effect: "range" | "time"
+  delivery: IDeliveryType
+  damage: IDamageType
 }
 
 export interface ITowerGeneral {
@@ -37,8 +49,9 @@ export interface ITowerModel<E = {}> {
   name: string
   group: string
   description: string
-  locked: boolean,
+  locked: boolean
   meta: ITowerMeta
+  organize?: ITowerOrganize
   general: ITowerGeneral & E
   damage: {
     shield: ITowerEffect,
@@ -516,13 +529,12 @@ export const TOWER_GROUPS = TOWER_LIST.reduce((groups: ITowerGroups, tower: ITow
   return groups
 }, {} as ITowerGroups)
 
+
 function generatePermutations() {
-  const deliveryType = ["Projectile", "Beam", "Spray", "Cloud", "Rise", "Fall", "Missile", "Grenade", "Explode"]
-  const damageType = ["Impact", "Light", "Dark", "Fire", "Water", "Earth", "Air", "Poison", "Electric", "Buff", "Debuff"]
   // const effectTypes = ["In-Range", "Timed"]
   const permutations: string[] = []
-  deliveryType.forEach(delivery => {
-    damageType.forEach(damage => {
+  TYPES_DELIVERY.forEach((delivery: IDeliveryType) => {
+    TYPES_DAMAGE.forEach((damage: IDamageType) => {
       permutations.push(`${damage} ${delivery}`)
     })
   })

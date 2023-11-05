@@ -238,3 +238,10 @@ Poison should probably always have a timeout effect. Maybe the distinction betwe
 
 Launch is especially interesting as it could be a Missile (explodes on impact) or Grenade effect (delayed efffect). Also aiming ahead on the path may be interesting. Assuming a grenade is sent ahead on the path at the exit point of the range, detonation may depend on the time of exit for the targeted peep.
 
+## Dev Notes
+
+Need to add missile and grenade options.
+
+* Missiles target a specific peep and explodes on impact.
+* Mines target a position ahead on the path and explodes when a peep enters range.
+* Grenades target a position ahead on the path and explodes when the timeout elapses.

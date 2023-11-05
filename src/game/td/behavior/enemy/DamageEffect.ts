@@ -7,6 +7,4 @@ export default class DamageEffect extends BaseEffect {
     this.enemy.health -= computeHealthDamage(this.tower, this.enemy, delta)
   }
 
-  endEffect(time: number, delta: number): void {
-  }
 }
