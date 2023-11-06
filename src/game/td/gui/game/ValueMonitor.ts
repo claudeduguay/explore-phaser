@@ -5,7 +5,7 @@ import ObservableValue from "../../value/ObservableValue";
 export default class ValueMonitor extends IconLabel {
   constructor(scene: Scene, x: number, y: number,
     icon: string | number, iconColor = "red",
-    public readonly observable: ObservableValue<number>) {
+    public readonly observable: ObservableValue<any>) {
     super(scene, x, y, icon, "", iconColor)
     observable.addListener("changed", (value: number) => {
       // Avoid "TypeError: Cannot read properties of null (reading 'cut')"

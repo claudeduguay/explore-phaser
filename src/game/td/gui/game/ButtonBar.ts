@@ -12,6 +12,7 @@ const ICON_SHIELD = 0xe8e8
 const ICON_BEAKER = 0xea4b
 const ICON_DIALOG = 0xef4c
 const ICON_REPLAY = 0xe042
+const ICON_STYLE = 0xe8b8
 
 const ICONS = [
   { name: "home", icon: ICON_HOME },
@@ -21,6 +22,7 @@ const ICONS = [
   { name: "towers", icon: ICON_SHIELD },
   { name: "tree", icon: ICON_BEAKER },
   { name: "gui", icon: ICON_DIALOG },
+  { name: "style", icon: ICON_STYLE },
 ]
 
 export default class ButtonBar extends GameObjects.Container {

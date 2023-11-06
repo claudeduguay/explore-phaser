@@ -14,10 +14,14 @@ export interface ICorners {
 }
 
 export function corners(all: ICornerType): ICorners
+export function corners(dr: ICornerType, dl: ICornerType): ICorners
 export function corners(nw: ICornerType, ne: ICornerType, se: ICornerType, sw: ICornerType): ICorners
 export function corners(a: ICornerType, b?: ICornerType, c?: ICornerType, d?: ICornerType): ICorners {
   if (a !== undefined && b !== undefined && c !== undefined && d !== undefined) {
     return { nw: a, ne: b, se: c, sw: d }
+  }
+  else if (a !== undefined && b !== undefined) {
+    return { nw: a, ne: b, se: a, sw: b }
   }
   return { nw: a, ne: a, se: a, sw: a }
 }
@@ -39,6 +43,7 @@ export const DEFAULT_PLATFORM_OPTIONS: IPlatformOptions = {
   inset: box(0.2),
   color: ["#CCF", "#336", "#00F"],
   colorBox: BOX.TO_SE,
+  divisions: 8,
   lineWidth: 1
 }
 

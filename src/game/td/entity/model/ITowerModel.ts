@@ -1,7 +1,7 @@
 import { IPropertyEffect } from "./EffectsProxy"
 
-export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Burst", "Missile", "Mine", "Grenade"]
-export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Fire", "Water", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
+export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Burst", "Area", "Missile", "Mine", "Grenade"]
+export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Force", "Fire", "Water", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
 
 export type IDeliveryType = typeof TYPES_DELIVERY[number]
 export type IDamageType = typeof TYPES_DAMAGE[number]
@@ -12,26 +12,28 @@ export const deliveryDescriptions: { [key: string]: string } = {
   Spray: "A cone, single-target, but affects other targets within the cone.",
   Cloud: "A multi-target cloud, covering the tower's range.",
   Burst: "Outward burst of multiple particles, multi-target within the tower's range",
+  Area: "Invisible effect that multi-target within the tower's range",
   Missile: "A single-target missile that explodes on impact (causing range damage)",
   Mine: "Thrown to a path-target ahead. Explodes (causing range damage) when the first enemy crosses its center.",
   Grenade: "Thrown  to a path-target ahead. Explodes (causing range damage) when the trigger time elapses.",
 }
 
-export const damageColors: { [key: string]: string } = {
-  Arrow: "MAGENTA",
-  Bullet: "SLATEGRAY",
-  Light: "YELLOW",
-  Dark: "BLACKISH",
-  Fire: "RED",
-  Water: "BLUE",
-  Earth: "SADDLEBROWN",
-  Air: "WHITE",
-  Poison: "GREEN",
-  Electric: "CYAN",
-  Health: "REDISH/GREEN",
-  Shield: "REDISH/ORANGE",
-  Speed: "REDISH/WHITE",
-  Value: "GREENISH"
+export const damageColors: { [key: string]: { name: string, color: number } } = {
+  Arrow: { name: "MAGENTA", color: 0x990099 },
+  Bullet: { name: "SLATEGRAY", color: 0x778899 },
+  Light: { name: "YELLOW", color: 0x999900 },
+  Dark: { name: "BLACKISH", color: 0x333333 },
+  Force: { name: "WHITEISH", color: 0x999999 },
+  Fire: { name: "RED", color: 0x990000 },
+  Water: { name: "BLUE", color: 0x000099 },
+  Earth: { name: "SADDLEBROWN", color: 0x8B4513 },
+  Air: { name: "WHITE", color: 0x999999 },
+  Poison: { name: "GREEN", color: 0x009900 },
+  Electric: { name: "CYAN", color: 0x009999 },
+  Health: { name: "REDISH/GREEN", color: 0x990000 },
+  Shield: { name: "REDISH/ORANGE", color: 0x990000 },
+  Speed: { name: "REDISH/WHITE", color: 0x990000 },
+  Value: { name: "GREENISH", color: 0x990000 }
 }
 
 export const damageDescriptions: { [key: string]: string } = {
@@ -39,6 +41,7 @@ export const damageDescriptions: { [key: string]: string } = {
   Bullet: "Bullet damage (high impact)",
   Light: "Bright damage (light, shine, radiant)",
   Dark: "Dark damage (shadow, smoke)",
+  Force: "Force damage is an impact hit but uses non-physical emissions.",
   Fire: "Fire damage (fire, flame),",
   Water: "Water (liquid, steam, rain, snow, ice, freeze, frost),",
   Earth: "Eath (rocks, dirt, sand),",
@@ -583,7 +586,7 @@ function generatePermutations() {
     TYPES_DAMAGE.forEach((damage: IDamageType) => {
       permutations.push({
         type: `${damage} ${delivery}`,
-        color: damageColors[damage],
+        color: damageColors[damage].name,
         damage: damageDescriptions[damage],
         delivery: deliveryDescriptions[delivery]
       })

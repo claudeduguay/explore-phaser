@@ -13,6 +13,7 @@ import TDInfoTower from "./TDInfoTower";
 import { sceneSize } from "../../../util/SceneUtil";
 import TDInfoEnemy from "./TDInfoEnemy";
 import TDEnemy from "../entity/enemy/TDEnemy";
+import StylePreview from "../entity/tower/StylePreview";
 
 export default class TDHUDScene extends Scene {
   buttonBar!: ButtonBar
@@ -61,17 +62,21 @@ export default class TDHUDScene extends Scene {
     const towerPreview = new TowerPreview(this, 50, 50)
     const treePreview = new TreePreview(this, 50, 50)
     const guiPreview = new GUIPreview(this, 50, 50)
+    const stylePreview = new StylePreview(this, 50, 50)
     const previews = ["tower_preview", "tree_preview", "gui_preview"]
     const onToggleTowerPreview = this.makeTogglePreviewFunction(towerPreview, "tower_preview", previews)
     const onToggleTreePreview = this.makeTogglePreviewFunction(treePreview, "tree_preview", previews)
     const onToggleGUIPreview = this.makeTogglePreviewFunction(guiPreview, "gui_preview", previews)
+    const onToggleStylePreview = this.makeTogglePreviewFunction(stylePreview, "style_preview", previews)
+    onToggleStylePreview()
 
     // Button bars (right)
     this.add.existing(new SpeedBar(this, 960, -4))
-    this.buttonBar = new ButtonBar(this, 740, -4)
+    this.buttonBar = new ButtonBar(this, 710, -4)
     this.buttonBar.access.towers.onClick = onToggleTowerPreview
     this.buttonBar.access.tree.onClick = onToggleTreePreview
     this.buttonBar.access.gui.onClick = onToggleGUIPreview
+    this.buttonBar.access.style.onClick = onToggleStylePreview
     this.buttonBar.access.replay.onClick = () => this.playScene.createMap()
 
     this.add.existing(this.buttonBar)

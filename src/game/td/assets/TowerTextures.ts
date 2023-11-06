@@ -13,9 +13,9 @@ import { box } from "../../../util/geom/Box"
 export function colors(h: number, s: number = 1, l: number = 0.1) {
   const color = Display.Color.HSLToColor(h, s, l)
   return [
-    color.brighten(25).rgba,
+    color.clone().brighten(25).rgba,
     color.rgba,
-    color.darken(25).rgba
+    color.clone().darken(25).rgba
   ]
 }
 
@@ -59,7 +59,7 @@ interface ITypeAndCorners {
   corners: ICorners
 }
 
-const PLATFORM: Record<string, ITypeAndCorners> = {
+export const PLATFORM: Record<string, ITypeAndCorners> = {
   SPRAY: { type: "box", corners: corners("angle") },
   CLOUD: { type: "box", corners: corners("curve-o") },
   VERTICAL: { type: "ntagon", corners: corners("angle") },

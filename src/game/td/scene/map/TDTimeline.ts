@@ -11,7 +11,7 @@ export function makeTimelinePreviewGraphics(scene: Scene, prefixFraction: number
   const top = 6
   const left = 230
   const height = 34
-  const width = 500
+  const width = 480
   const insetStart = left + width * prefixFraction
   const insetWidth = width * (1.0 - (prefixFraction + suffixFraction))
 
