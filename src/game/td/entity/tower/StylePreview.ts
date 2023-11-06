@@ -19,9 +19,9 @@ export function rgbStringToColors(rgba: number) {
   // color.v = 0.5
   console.log("Color:", color)
   return [
-    color.clone().brighten(35).rgba,
+    color.clone().brighten(30).rgba,
     color.rgba,
-    color.clone().darken(15).rgba
+    color.clone().darken(10).rgba
   ]
 }
 
