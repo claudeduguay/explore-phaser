@@ -14,10 +14,6 @@ import { funnelInsideWeapon, funnelWeapon, pointInsideWeapon, pointWeapon, rectI
 
 export function rgbStringToColors(rgba: number) {
   const color = Display.Color.IntegerToColor(rgba)
-  console.log("Base Color:", "#" + rgba.toString(16))
-  // color.s = 1
-  // color.v = 0.5
-  console.log("Color:", color)
   return [
     color.clone().brighten(30).rgba,
     color.rgba,

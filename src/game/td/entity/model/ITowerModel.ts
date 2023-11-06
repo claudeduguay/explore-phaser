@@ -582,8 +582,8 @@ export const TOWER_GROUPS = TOWER_LIST.reduce((groups: ITowerGroups, tower: ITow
 function generatePermutations() {
   // const effectTypes = ["In-Range", "Timed"]
   const permutations: any[] = []
-  TYPES_DELIVERY.forEach((delivery: IDeliveryType) => {
-    TYPES_DAMAGE.forEach((damage: IDamageType) => {
+  TYPES_DAMAGE.forEach((damage: IDamageType) => {
+    TYPES_DELIVERY.forEach((delivery: IDeliveryType) => {
       permutations.push({
         type: `${damage} ${delivery}`,
         color: damageColors[damage].name,
@@ -596,5 +596,5 @@ function generatePermutations() {
 }
 
 export const PERMUTATIONS = generatePermutations()
-console.log("Permutation count:", PERMUTATIONS.length)
 console.log(JSON.stringify(PERMUTATIONS, null, 2))
+console.log("Permutation count:", PERMUTATIONS.length)
