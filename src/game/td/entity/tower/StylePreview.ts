@@ -19,9 +19,9 @@ export function rgbStringToColors(rgba: number) {
   // color.v = 0.5
   console.log("Color:", color)
   return [
-    color.clone().brighten(25).rgba,
+    color.clone().brighten(35).rgba,
     color.rgba,
-    color.clone().darken(25).rgba
+    color.clone().darken(15).rgba
   ]
 }
 
@@ -56,9 +56,9 @@ export const WEAPON_CONFIG: Record<IDeliveryType, ITextureConfig<IWeaponOptions>
   Cloud: pointInsideWeapon([]),
   Burst: rectInsideWeapon([]),
   Area: funnelInsideWeapon([]),
-  Missile: rectWeapon([]),
+  Missile: rectWeapon([], false, true),
   Mine: funnelWeapon([]),
-  Grenade: pointWeapon([]),
+  Grenade: pointWeapon([], false),
 }
 
 
@@ -189,13 +189,12 @@ export default class StylePreview extends Scene {
       const isRadial =
         TURRET_CONFIG[deliveryChoice.value].options.topSeg === 10 &&
         TURRET_CONFIG[deliveryChoice.value].options.botSeg === 10
-      this.towerContainer = this.add.container(550, 500)
+      this.towerContainer = this.add.container(550, 530)
       this.towerContainer.add(this.add.sprite(0, 0, platformKey))
       this.towerContainer.add(this.add.sprite(0, 0, turretKey))
-      const weapon = this.add.sprite(0, isRadial ? 0 : -12 * 2.5, weaponKey).setOrigin(0.5, 0)
+      const weapon = this.add.sprite(0, isRadial ? 0 : -6 * 4, weaponKey).setOrigin(0.5, 0)
       this.towerContainer.add(weapon)
-      this.towerContainer.scale = 2.5
-
+      this.towerContainer.scale = 4
     }
 
     const generate = () => {

@@ -67,6 +67,7 @@ function ntagon(g: CanvasRenderingContext2D,
       g.lineTo(x, y)
     }
   }
+  g.closePath()
   g.fill()
   if (line) {
     g.lineWidth = lineWidth

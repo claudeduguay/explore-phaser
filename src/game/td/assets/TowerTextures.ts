@@ -120,7 +120,7 @@ export function pointWeapon(color: IColoring, ball = true): ITextureConfig<IWeap
     size: { x: 7, y: 32 },
     options: {
       type: "point", inset: box(0.4), line: "white", color,
-      balls: ball ? { count: 1, color, start: 0 } : undefined
+      balls: ball ? { count: 1, color: "#FCF", start: 0.02 } : undefined
     }
   }
 }
@@ -132,12 +132,13 @@ export function funnelWeapon(color: IColoring): ITextureConfig<IWeaponOptions> {
   }
 }
 
-export function rectWeapon(color: IColoring, ribs = true): ITextureConfig<IWeaponOptions> {
+export function rectWeapon(color: IColoring, ribs = true, rails = false): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 32 },
     options: {
       type: "rect", inset: box(0.4), line: "white", color,
-      ribs: ribs ? { count: 3, color, start: 0.08, step: 0.08 } : undefined
+      ribs: ribs ? { count: 3, color: "white", start: 0.1, step: 0.1 } : undefined,
+      rails: rails ? { color: "white" } : undefined
     }
   }
 }

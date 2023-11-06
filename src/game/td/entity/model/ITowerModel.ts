@@ -19,21 +19,21 @@ export const deliveryDescriptions: { [key: string]: string } = {
 }
 
 export const damageColors: { [key: string]: { name: string, color: number } } = {
-  Arrow: { name: "MAGENTA", color: 0x990099 },
+  Arrow: { name: "ORANGE", color: 0x996600 },
   Bullet: { name: "SLATEGRAY", color: 0x778899 },
-  Light: { name: "YELLOW", color: 0x999900 },
+  Light: { name: "YELLOW", color: 0x888800 },
   Dark: { name: "BLACKISH", color: 0x333333 },
-  Force: { name: "WHITEISH", color: 0x999999 },
-  Fire: { name: "RED", color: 0x990000 },
+  Force: { name: "WHITEISH", color: 0x990099 },
+  Fire: { name: "RED", color: 0x880000 },
   Water: { name: "BLUE", color: 0x000099 },
-  Earth: { name: "SADDLEBROWN", color: 0x8B4513 },
+  Earth: { name: "SADDLEBROWN", color: 0x885511 },
   Air: { name: "WHITE", color: 0x999999 },
-  Poison: { name: "GREEN", color: 0x009900 },
+  Poison: { name: "GREEN", color: 0x008800 },
   Electric: { name: "CYAN", color: 0x009999 },
-  Health: { name: "REDISH/GREEN", color: 0x990000 },
-  Shield: { name: "REDISH/ORANGE", color: 0x990000 },
-  Speed: { name: "REDISH/WHITE", color: 0x990000 },
-  Value: { name: "GREENISH", color: 0x990000 }
+  Health: { name: "LIGHT BLUE", color: 0x666699 },
+  Shield: { name: "LIGHT ORANGE", color: 0x996633 },
+  Speed: { name: "LIGHT RED", color: 0x996666 },
+  Value: { name: "LIGHT GREEN", color: 0x669966 }
 }
 
 export const damageDescriptions: { [key: string]: string } = {

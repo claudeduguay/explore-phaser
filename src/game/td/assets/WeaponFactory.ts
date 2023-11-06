@@ -11,10 +11,11 @@ export interface IWeaponDecorator {
 }
 
 export interface IWeaponOptions extends IMarginInsets {
-  type: IWeaponType;
-  ribs?: IWeaponDecorator;
-  balls?: IWeaponDecorator;
-  supressor?: { pos: number, len: number, color: IColoring };
+  type: IWeaponType
+  ribs?: IWeaponDecorator
+  balls?: IWeaponDecorator
+  supressor?: { pos: number, len: number, color: IColoring }
+  rails?: { color: IColoring }
   color: IColoring
   colorBox: IBox
   line?: string;
@@ -31,20 +32,17 @@ export const DEFAULT_WEAPON_OPTIONS: IWeaponOptions = {
 export function weaponRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IWeaponOptions) {
-  const { type, inset, ribs, balls, supressor, color, colorBox, line } = options
-  const { w, h, margin } = dimensions(g, options)
+  const { type, rails, ribs, balls, supressor, color, colorBox, line } = options
+  const { w, h, margin, inset } = dimensions(g, options)
   const x = margin.x1
   const ww = margin.w
   const hh = margin.h
   const cx = margin.cx
-  const main = { x: ww / 2 - ww * inset.x1, w: ww * inset.x1 * 2 }
 
-  g.fillStyle = colorStyle(g, { x1: x, y1: 0, x2: ww, y2: 0 }, color)
+  g.fillStyle = colorStyle(g, { type: "fraction", x1: x, y1: 0, x2: ww, y2: 0 }, color)
 
   if (type === "rect") {
-    const r = main.x + main.w - 1
-    drawPolygon(g, [[main.x, 0], [r, 0], [r, hh], [main.x, hh]])
-    // g.fillRect(main.x, 0, main.w, h)
+    g.fillRect(inset.x1, 0, inset.w, hh)
   }
   if (type === "point") {
     drawPolygon(g, [[0, hh], [ww, hh], [ww / 2, 0]])
@@ -60,6 +58,21 @@ export function weaponRenderer(g: CanvasRenderingContext2D,
   }
 
   const bounds = scaleBox(colorBox, w, h)
+
+  if (rails) {
+    g.strokeStyle = colorStyle(g, bounds, rails.color)
+    g.lineWidth = 2
+    g.moveTo(x + 1, 0)
+    g.lineTo(x + 1, hh)
+    g.stroke()
+    // g.moveTo(x + ww / 2, 0)
+    // g.lineTo(x + ww / 2, hh)
+    // g.stroke()
+    g.moveTo(ww - 1, 0)
+    g.lineTo(ww - 1, hh)
+    g.stroke()
+  }
+
   if (supressor) {
     g.fillStyle = colorStyle(g, bounds, supressor.color)
     g.rect(x, hh * supressor.pos, ww - 1, hh * supressor.len)
@@ -68,11 +81,12 @@ export function weaponRenderer(g: CanvasRenderingContext2D,
   }
 
   if (ribs) {
+    g.strokeStyle = colorStyle(g, bounds, ribs.color)
+    g.lineWidth = 0.5
     for (let i = 0; i < ribs.count; i++) {
-      g.fillStyle = colorStyle(g, bounds, ribs.color)
       const p = hh * ribs.start + hh * (ribs.step || 0.1) * i
-      g.rect(x, p, ww - 1, hh * 0.05 - 1)
-      g.fill()
+      g.moveTo(x, p)
+      g.lineTo(x + ww - 1, p)
       g.stroke()
     }
   }
@@ -83,7 +97,6 @@ export function weaponRenderer(g: CanvasRenderingContext2D,
       const p = hh * balls.start + hh * 0.1 + hh * (balls.step || 0.25) * i
       drawEllipse(g, cx, p, ww / 2, ww / 2)
       g.fill()
-      g.stroke()
     }
   }
 }

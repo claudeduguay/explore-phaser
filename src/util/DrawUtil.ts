@@ -27,7 +27,7 @@ export function isStop(obj: any): obj is IColorStop {
 export const stop = (offset: number, color: string): IColorStop => ({ offset, color })
 
 export function distributedStops(colors: string[]) {
-  return colors.map((c, i) => stop(i / Math.max(colors.length - 1, 1), c))
+  return colors.map((c, i) => stop(i / Math.max(colors.length, 1), c))
 }
 
 export function linearGradient(g: CanvasRenderingContext2D,
@@ -125,7 +125,7 @@ export function drawArc(g: CanvasRenderingContext2D, cx: number, cy: number, r: 
 
 export function drawArc2(g: CanvasRenderingContext2D, cx: number, cy: number, rx: number, ry: number, startAngle: number, endAngle: number, segments: number = 16) {
   for (let i = 0; i < segments; i++) {
-    const f = i / segments
+    const f = i / (segments - 1)
     const a = toRadians(lerp(startAngle, endAngle, f))
     const x = cx + Math.cos(a) * rx
     const y = cy + Math.sin(a) * ry
