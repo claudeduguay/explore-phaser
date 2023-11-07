@@ -13,9 +13,9 @@ import { box } from "../../../util/geom/Box"
 export function colors(h: number, s: number = 1, l: number = 0.1) {
   const color = Display.Color.HSLToColor(h, s, l)
   return [
-    color.clone().brighten(25).rgba,
+    color.clone().brighten(30).rgba,
     color.rgba,
-    color.clone().darken(25).rgba
+    color.clone().darken(10).rgba
   ]
 }
 

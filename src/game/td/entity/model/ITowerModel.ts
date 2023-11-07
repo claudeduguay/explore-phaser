@@ -1,7 +1,7 @@
 import { IPropertyEffect } from "./EffectsProxy"
 
-export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Burst", "Area", "Missile", "Mine", "Grenade"]
-export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Force", "Fire", "Water", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
+export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Burst", "Vertical", "Area", "Missile", "Mine", "Grenade"]
+export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Force", "Plasma", "Fire", "Water", "Ice", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
 
 export type IDeliveryType = typeof TYPES_DELIVERY[number]
 export type IDamageType = typeof TYPES_DAMAGE[number]
@@ -12,6 +12,7 @@ export const deliveryDescriptions: { [key: string]: string } = {
   Spray: "A cone, single-target, but affects other targets within the cone.",
   Cloud: "A multi-target cloud, covering the tower's range.",
   Burst: "Outward burst of multiple particles, multi-target within the tower's range",
+  Vertical: "Drop or rise of multiple particles, multi-target within the tower's range",
   Area: "Invisible effect that multi-target within the tower's range",
   Missile: "A single-target missile that explodes on impact (causing range damage)",
   Mine: "Thrown to a path-target ahead. Explodes (causing range damage) when the first enemy crosses its center.",
@@ -24,8 +25,10 @@ export const damageColors: { [key: string]: { name: string, color: number } } = 
   Light: { name: "YELLOW", color: 0x888800 },
   Dark: { name: "BLACKISH", color: 0x333333 },
   Force: { name: "WHITEISH", color: 0x990099 },
+  Plasma: { name: "RED", color: 0x448844 },
   Fire: { name: "RED", color: 0x880000 },
   Water: { name: "BLUE", color: 0x000099 },
+  Ice: { name: "BLUE", color: 0x6666CC },
   Earth: { name: "SADDLEBROWN", color: 0x885511 },
   Air: { name: "WHITE", color: 0x999999 },
   Poison: { name: "GREEN", color: 0x008800 },
@@ -42,8 +45,10 @@ export const damageDescriptions: { [key: string]: string } = {
   Light: "Bright damage (light, shine, radiant)",
   Dark: "Dark damage (shadow, smoke)",
   Force: "Force damage is an impact hit but uses non-physical emissions.",
+  Plasma: "Plasma damage,",
   Fire: "Fire damage (fire, flame),",
-  Water: "Water (liquid, steam, rain, snow, ice, freeze, frost),",
+  Water: "Water damage (liquid, steam, rain),",
+  Ice: "Ice damage (snow, ice, freeze, frost),",
   Earth: "Eath (rocks, dirt, sand),",
   Air: "Wind effects (blow, breeze, storm),",
   Poison: "Poison damage (timed effect),",
@@ -60,7 +65,7 @@ export interface ITowerMeta {
 }
 
 export interface ITowerOrganize {
-  effect: "range" | "time"
+  effect?: "range" | "time"
   delivery: IDeliveryType
   damage: IDamageType
 }
@@ -100,7 +105,7 @@ export interface ITowerModel<E = {}> {
   description: string
   locked: boolean
   meta: ITowerMeta
-  organize?: ITowerOrganize
+  organize: ITowerOrganize
   general: ITowerGeneral & E
   damage: {
     shield: ITowerEffect,
@@ -151,6 +156,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
+    organize: {
+      damage: "Fire",
+      delivery: "Beam",
+    },
     general: {
       level: 3,
       cost: 100,
@@ -171,6 +180,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
+    organize: {
+      damage: "Plasma",
+      delivery: "Beam",
+    },
     general: {
       level: 3,
       cost: 100,
@@ -190,6 +203,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     meta: {
       distribution: "linear",
       rotation: "target",
+    },
+    organize: {
+      damage: "Electric",
+      delivery: "Beam",
     },
     general: {
       level: 3,
@@ -213,6 +230,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
+    organize: {
+      damage: "Fire",
+      delivery: "Spray",
+    },
     general: {
       level: 3,
       cost: 100,
@@ -233,6 +254,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
+    organize: {
+      damage: "Ice",
+      delivery: "Spray",
+    },
     general: {
       level: 3,
       cost: 100,
@@ -252,6 +277,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     meta: {
       distribution: "linear",
       rotation: "target",
+    },
+    organize: {
+      damage: "Force",
+      delivery: "Spray",
     },
     general: {
       level: 3,
@@ -275,6 +304,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
+    organize: {
+      damage: "Poison",
+      delivery: "Cloud",
+    },
     general: {
       level: 3,
       cost: 100,
@@ -294,6 +327,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     meta: {
       distribution: "radial",
       rotation: 1,
+    },
+    organize: {
+      damage: "Fire",
+      delivery: "Cloud",
     },
     general: {
       level: 3,
@@ -315,6 +352,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
+    organize: {
+      damage: "Dark",
+      delivery: "Cloud",
+    },
     general: {
       level: 3,
       cost: 100,
@@ -335,6 +376,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
+    organize: {
+      damage: "Electric",
+      delivery: "Cloud",
+    },
     general: {
       level: 3,
       cost: 100,
@@ -354,6 +399,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     meta: {
       distribution: "radial",
       rotation: 1,
+    },
+    organize: {
+      damage: "Ice",
+      delivery: "Cloud",
     },
     general: {
       level: 3,
@@ -377,6 +426,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
+    organize: {
+      damage: "Water",
+      delivery: "Vertical",
+    },
     general: {
       level: 3,
       cost: 100,
@@ -397,6 +450,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
+    organize: {
+      damage: "Ice",
+      delivery: "Vertical",
+    },
     general: {
       level: 3,
       cost: 100,
@@ -416,6 +473,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     meta: {
       distribution: "radial",
       rotation: 1,
+    },
+    organize: {
+      damage: "Force",
+      delivery: "Vertical",
     },
     general: {
       level: 3,
@@ -446,6 +507,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "linear",
       rotation: "target",
     },
+    organize: {
+      damage: "Bullet",
+      delivery: "Projectile",
+    },
     general: {
       level: 3,
       cost: 100,
@@ -465,6 +530,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     meta: {
       distribution: "linear",
       rotation: "target",
+    },
+    organize: {
+      damage: "Fire",
+      delivery: "Missile",
     },
     general: {
       level: 3,
@@ -488,6 +557,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 1,
     },
+    organize: {
+      damage: "Arrow",
+      delivery: "Burst",
+    },
     general: {
       level: 3,
       cost: 100,
@@ -507,6 +580,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     meta: {
       distribution: "radial",
       rotation: 1,
+    },
+    organize: {
+      damage: "Earth",
+      delivery: "Burst",
     },
     general: {
       level: 3,
@@ -530,6 +607,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       distribution: "radial",
       rotation: 4,
     },
+    organize: {
+      damage: "Value",
+      delivery: "Area",
+    },
     general: {
       level: 3,
       cost: 100,
@@ -549,6 +630,10 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     meta: {
       distribution: "radial",
       rotation: -1,
+    },
+    organize: {
+      damage: "Speed",
+      delivery: "Area",
     },
     general: {
       level: 3,

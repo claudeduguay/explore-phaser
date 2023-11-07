@@ -1,9 +1,10 @@
 import { IColoring, colorStyle, drawArc2 } from "../../../util/DrawUtil";
-import { toRadians } from "../../../util/MathUtil";
+import { lerp, toRadians } from "../../../util/MathUtil";
 import { canvasSize, dimensions, IMarginInsets } from "../../../util/RenderUtil";
 import { BOX, IBox, box, scaleBox } from "../../../util/geom/Box";
 
 export type IPlatformType = "box" | "ntagon"
+
 export type ICornerType = "angle" | "curve-o" | "curve-i" | "box-o" | "box-i"
 
 export interface ICorners {
@@ -26,9 +27,32 @@ export function corners(a: ICornerType, b?: ICornerType, c?: ICornerType, d?: IC
   return { nw: a, ne: a, se: a, sw: a }
 }
 
+export type IEdgeType = "line" | "curve" | "groove"
+
+export interface IEdges {
+  north: IEdgeType
+  south: IEdgeType
+  east: IEdgeType
+  west: IEdgeType
+}
+
+export function edges(all: IEdgeType): IEdges
+export function edges(horz: IEdgeType, vert: IEdgeType): IEdges
+export function edges(north: IEdgeType, south: IEdgeType, east: IEdgeType, west: IEdgeType): IEdges
+export function edges(a: IEdgeType, b?: IEdgeType, c?: IEdgeType, d?: IEdgeType): IEdges {
+  if (a !== undefined && b !== undefined && c !== undefined && d !== undefined) {
+    return { north: a, south: b, east: c, west: d }
+  }
+  else if (a !== undefined && b !== undefined) {
+    return { north: a, south: a, east: b, west: b }
+  }
+  return { north: a, south: a, east: a, west: a }
+}
+
 export interface IPlatformOptions extends IMarginInsets {
   type: IPlatformType
   corners: ICorners
+  edges: IEdges
   color: IColoring
   colorBox: IBox
   divisions?: number
@@ -39,6 +63,7 @@ export interface IPlatformOptions extends IMarginInsets {
 export const DEFAULT_PLATFORM_OPTIONS: IPlatformOptions = {
   type: "box",
   corners: corners("angle"),
+  edges: edges("curve"),
   margin: box(0),
   inset: box(0.2),
   color: ["#CCF", "#336", "#00F"],
@@ -172,6 +197,72 @@ function swCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   }
 }
 
+export type IInterpolator = (f: number) => number
+const curves: Record<string, IInterpolator> = {
+  line: (f: number) => 0,
+  curve: (f: number) => Math.sin(Math.PI * f),
+  groove: (f: number) => f > 0.5 ? (1.0 - f) * 2 : f * 2
+}
+
+
+// Interpolates curve across X or Y (vert or horz) from start to end with a given offset and variance
+function curve(g: CanvasRenderingContext2D,
+  start: number, end: number,
+  offset: number, variance: number,
+  dir: "vert" | "horz",
+  interpolator: IInterpolator) {
+  const n = 10
+  for (let i = 0; i <= n; i++) {
+    let xx = offset + interpolator(i / n) * variance
+    let yy = lerp(start, end, i / n)
+    if (dir === "horz") {
+      xx = lerp(start, end, i / n)
+      yy = offset + interpolator(i / n) * variance
+    }
+    g.lineTo(xx, yy)
+  }
+}
+
+function northEdge(g: CanvasRenderingContext2D, options: IPlatformOptions) {
+  const { edges } = options
+  const { margin, inset } = dimensions(g, options)
+  const x = margin.x1
+  const y = margin.y1
+  const ww = margin.w
+  const { x1, x2 } = inset
+  curve(g, x + x1, ww - x2, y, x1 / 2, "horz", curves[edges.north])
+}
+
+function southEdge(g: CanvasRenderingContext2D, options: IPlatformOptions) {
+  const { edges } = options
+  const { margin, inset } = dimensions(g, options)
+  const x = margin.x1
+  const ww = margin.w
+  const hh = margin.h
+  const { x1, x2 } = inset
+  curve(g, ww - x2, x + x1, hh, -x1 / 2, "horz", curves[edges.south])
+}
+
+function eastEdge(g: CanvasRenderingContext2D, options: IPlatformOptions) {
+  const { edges } = options
+  const { margin, inset } = dimensions(g, options)
+  const y = margin.y1
+  const ww = margin.w
+  const hh = margin.h
+  const { x2, y1, y2 } = inset
+  curve(g, y + y1, hh - y2, ww, -x2 / 2, "vert", curves[edges.east])
+}
+
+function westEdge(g: CanvasRenderingContext2D, options: IPlatformOptions) {
+  const { edges } = options
+  const { margin, inset } = dimensions(g, options)
+  const x = margin.x1
+  const y = margin.y1
+  const hh = margin.h
+  const { x1, y1, y2 } = inset
+  curve(g, hh - y2, y + y1, x, x1 / 2, "vert", curves[edges.west])
+}
+
 export function baseRenderer(g: CanvasRenderingContext2D,
   frameIndexFraction: number, // Ignored but compatible
   options: IPlatformOptions
@@ -180,21 +271,24 @@ export function baseRenderer(g: CanvasRenderingContext2D,
   const { w, h, margin, inset } = dimensions(g, options)
   const x = margin.x1
   const y = margin.y1
-  const ww = margin.w
-  const hh = margin.h
+  // const ww = margin.w
+  // const hh = margin.h
   const i = inset.x1
   const bounds = scaleBox(colorBox, w, h)
   g.fillStyle = colorStyle(g, bounds, color)
   g.beginPath()
   g.moveTo(x, y + i)
   nwCorner(g, options)
-  g.lineTo(ww - i, y)
+  northEdge(g, options)
   neCorner(g, options)
-  g.lineTo(ww, hh - i)
+  eastEdge(g, options)
+  // g.lineTo(ww, hh - i)
   seCorner(g, options)
-  g.lineTo(x + i, hh)
+  southEdge(g, options)
+  // g.lineTo(x + i, hh)
   swCorner(g, options)
-  g.lineTo(x, y + i)
+  westEdge(g, options)
+  // g.lineTo(x, y + i)
   g.closePath()
   g.fill()
   if (line) {

@@ -7,7 +7,7 @@ import { Label } from "../../gui/Label";
 import ObservableValue from "../../value/ObservableValue";
 import ValueMonitor from "../../gui/game/ValueMonitor";
 import { ITextureConfig, makePlatform, makeTurret, makeWeapon } from "../../assets/TextureFactory";
-import { IPlatformOptions, corners } from "../../assets/PlatformFactory";
+import { ICornerType, IPlatformOptions, IPlatformType, corners } from "../../assets/PlatformFactory";
 import { ITurretOptions } from "../../assets/TurretFactory";
 import { IWeaponOptions } from "../../assets/WeaponFactory";
 import { funnelInsideWeapon, funnelWeapon, pointInsideWeapon, pointWeapon, rectInsideWeapon, rectWeapon, roundBackTurret, roundFrontTurret, roundTurret, smallTurret } from "../../assets/TowerTextures";
@@ -21,16 +21,28 @@ export function rgbStringToColors(rgba: number) {
   ]
 }
 
-export const PLATFORM_OPTIONS: Record<IDeliveryType, Partial<IPlatformOptions>> = {
-  Projectile: { type: "ntagon", corners: corners("angle") },
-  Beam: { type: "box", corners: corners("curve-i") },
-  Spray: { type: "box", corners: corners("angle") },
-  Cloud: { type: "box", corners: corners("curve-o") },
-  Burst: { type: "ntagon", corners: corners("angle") },
-  Area: { type: "box", corners: corners("box-o") },
-  Missile: { type: "box", corners: corners("curve-i") },
-  Mine: { type: "box", corners: corners("curve-i") },
-  Grenade: { type: "box", corners: corners("curve-i") },
+function typeAndCorners(type: IPlatformType, cornerType: ICornerType, special: Partial<IPlatformOptions> = {}) {
+  return {
+    size: { x: 64, y: 64 },
+    options: {
+      type,
+      corners: corners(cornerType),
+      ...special
+    }
+  }
+}
+
+export const PLATFORM_OPTIONS: Record<IDeliveryType, ITextureConfig<IPlatformOptions>> = {
+  Projectile: typeAndCorners("box", "angle"),
+  Beam: typeAndCorners("box", "curve-i"),
+  Spray: typeAndCorners("box", "curve-o"),
+  Cloud: typeAndCorners("ntagon", "curve-o", { divisions: 8 }),
+  Burst: typeAndCorners("ntagon", "angle", { divisions: 10 }),
+  Vertical: typeAndCorners("ntagon", "angle", { divisions: 12 }),
+  Area: typeAndCorners("ntagon", "angle", { divisions: 30 }),
+  Missile: typeAndCorners("box", "box-o"),
+  Mine: typeAndCorners("box", "curve-i", { corners: corners("curve-o", "box-o") }),
+  Grenade: typeAndCorners("box", "curve-i", { corners: corners("box-o", "curve-o") }),
 }
 
 export const TURRET_CONFIG: Record<IDeliveryType, ITextureConfig<ITurretOptions>> = {
@@ -39,6 +51,7 @@ export const TURRET_CONFIG: Record<IDeliveryType, ITextureConfig<ITurretOptions>
   Spray: roundFrontTurret([]),
   Cloud: roundTurret([]),
   Burst: roundTurret([]),
+  Vertical: roundTurret([]),
   Area: roundTurret([]),
   Missile: smallTurret([]),
   Mine: smallTurret([]),
@@ -51,6 +64,7 @@ export const WEAPON_CONFIG: Record<IDeliveryType, ITextureConfig<IWeaponOptions>
   Spray: funnelWeapon([]),
   Cloud: pointInsideWeapon([]),
   Burst: rectInsideWeapon([], false),
+  Vertical: funnelInsideWeapon([]),
   Area: funnelInsideWeapon([], false),
   Missile: rectWeapon([], false, true),
   Mine: funnelWeapon([]),
@@ -119,11 +133,11 @@ export default class StylePreview extends Scene {
     const createPlatform = () => {
       const platformKey = `${damageChoice.value}-${deliveryChoice.value}-platform`.toLowerCase()
       const baseColor = damageColors[damageChoice.value].color
-      const color = rgbStringToColors(baseColor)
+      console.log("Base color:", damageChoice.value, baseColor.toString(16))
       const platformConfig: ITextureConfig<Partial<IPlatformOptions>> = {
-        size: { x: 64, y: 64 },
-        options: { ...PLATFORM_OPTIONS[deliveryChoice.value], color }
+        ...PLATFORM_OPTIONS[deliveryChoice.value]
       }
+      platformConfig.options.color = rgbStringToColors(baseColor)
 
       if (!this.textures.exists(platformKey)) {
         makePlatform(this, platformKey, platformConfig)

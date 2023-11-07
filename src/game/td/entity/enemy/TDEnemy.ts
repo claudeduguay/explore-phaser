@@ -48,18 +48,21 @@ export default class TDEnemy extends CustomFollower implements ISelectable {
       this.healthBar = new HealthBar(scene, this, 0, 3, 30, 5, 0x00ff00)
       scene.add.existing(this.healthBar)
 
+      // NOTE: barContainer should be added to ourselvesfor proper disposal
       this.barContainer = scene.add.container()
       this.barContainer.add(this.healthBar)
       this.barContainer.add(this.shieldBar)
+      this.add(this.barContainer)
     }
   }
 
-  preDestroy() {
-    this.effects.clear()
-    if (this.barContainer) {
-      this.barContainer.destroy()
-    }
-  }
+  // NOTE: barContainer should be added to ourselvesfor proper disposal
+  // preDestroy() {
+  //   this.effects.clear()
+  //   if (this.barContainer) {
+  //     this.barContainer.destroy()
+  //   }
+  // }
 
   addSelectHandler(select: (selection?: TDEnemy) => void) {
     this.on(Input.Events.POINTER_DOWN, (pointer: any, x: number, y: number, e: Event) => {
@@ -112,16 +115,18 @@ export default class TDEnemy extends CustomFollower implements ISelectable {
   handleStatusBars() {
     if (this.showStatusBars) {
       if (this.health < 1) {
-        this.barContainer.destroy()  // Make sure we don't leave lingering bar parts behind
+        // this.barContainer.destroy()  // Make sure we don't leave lingering bar parts behind
         this.emit("died", this)
       }
       const healthFraction = this.health / this.model.general.health
       const shieldFraction = this.shield / this.model.general.shield
       this.shieldBar.fraction = shieldFraction
       this.healthBar.fraction = healthFraction
-      const bounds = this.getBounds()
-      const x = this.x - this.healthBar.width / 2
-      const y = this.y - bounds.height - this.healthBar.h * 2
+      // const x = this.x - this.healthBar.width / 2
+      // const y = this.y - bounds.height - this.healthBar.h * 2
+      // this.barContainer.setPosition(x, y)
+      const x = -this.healthBar.width / 2
+      const y = -this.height - this.barContainer.height //- this.healthBar.h * 2
       this.barContainer.setPosition(x, y)
     }
   }

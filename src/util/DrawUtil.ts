@@ -26,8 +26,8 @@ export function isStop(obj: any): obj is IColorStop {
 // Function to create IColorStop using a simple: stop(p, c) syntax
 export const stop = (offset: number, color: string): IColorStop => ({ offset, color })
 
-export function distributedStops(colors: string[]) {
-  return colors.map((c, i) => stop(i / Math.max(colors.length, 1), c))
+export function distributedStops(colors: string[]): IColorStop[] {
+  return colors.map((c, i) => stop(i / Math.max(colors.length - 1, 1), c))
 }
 
 export function linearGradient(g: CanvasRenderingContext2D,
