@@ -130,6 +130,9 @@ export default class StylePreview extends Scene {
       return sprite
     }
 
+    const top = 230
+    const left = 365
+
     const createPlatform = () => {
       const platformKey = `${damageChoice.value}-${deliveryChoice.value}-platform`.toLowerCase()
       const baseColor = damageColors[damageChoice.value].color
@@ -146,7 +149,7 @@ export default class StylePreview extends Scene {
       if (this.platformSprite) {
         this.platformSprite.setTexture(platformKey)
       } else {
-        this.platformSprite = createLabeledSprite(330, 210, platformKey, "Platform")
+        this.platformSprite = createLabeledSprite(left, top, platformKey, "Platform")
       }
     }
 
@@ -165,7 +168,7 @@ export default class StylePreview extends Scene {
       if (this.turretSprite) {
         this.turretSprite.setTexture(turretKey)
       } else {
-        this.turretSprite = createLabeledSprite(550, 210, turretKey, "Turret")
+        this.turretSprite = createLabeledSprite(left + 240, top, turretKey, "Turret")
       }
     }
 
@@ -184,7 +187,7 @@ export default class StylePreview extends Scene {
       if (this.weaponSprite) {
         this.weaponSprite.setTexture(weaponKey)
       } else {
-        this.weaponSprite = createLabeledSprite(730, 210, weaponKey, "Weapon")
+        this.weaponSprite = createLabeledSprite(left + 420, top, weaponKey, "Weapon")
       }
     }
 
@@ -199,7 +202,7 @@ export default class StylePreview extends Scene {
       const isRadial =
         TURRET_CONFIG[deliveryChoice.value].options.topSeg === 10 &&
         TURRET_CONFIG[deliveryChoice.value].options.botSeg === 10
-      this.towerContainer = this.add.container(550, 530)
+      this.towerContainer = this.add.container(550, 555)
       this.towerContainer.add(this.add.sprite(0, 0, platformKey))
       this.towerContainer.add(this.add.sprite(0, 0, turretKey))
       const weapon = this.add.sprite(0, isRadial ? 0 : -6 * 4, weaponKey).setOrigin(0.5, 0)
