@@ -199,6 +199,7 @@ function swCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
 
 export type IInterpolator = (f: number) => number
 const curves: Record<string, IInterpolator> = {
+  // "line" is wasteful since we draw 10 lines but only happens at texture creation
   line: (f: number) => 0,
   curve: (f: number) => Math.sin(Math.PI * f),
   groove: (f: number) => f > 0.5 ? (1.0 - f) * 2 : f * 2
