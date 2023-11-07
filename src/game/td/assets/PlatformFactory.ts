@@ -1,3 +1,4 @@
+import { Math as PMath } from "phaser";
 import { IColoring, colorStyle, drawArc2 } from "../../../util/DrawUtil";
 import { lerp, toRadians } from "../../../util/MathUtil";
 import { canvasSize, dimensions, IMarginInsets } from "../../../util/RenderUtil";
@@ -27,7 +28,18 @@ export function corners(a: ICornerType, b?: ICornerType, c?: ICornerType, d?: IC
   return { nw: a, ne: a, se: a, sw: a }
 }
 
-export type IEdgeType = "line" | "curve" | "groove"
+export type IInterpolator = (f: number) => number
+
+const CURVES: Record<string, IInterpolator> = {
+  // "line" is wasteful since we draw 10 lines but only happens at texture creation
+  line: (f: number) => 0,
+  curve: (f: number) => Math.sin(Math.PI * f),
+  groove: (f: number) => f > 0.5 ? (1.0 - f) * 2 : f * 2,
+  spike: (f: number) => PMath.Interpolation.Linear([0, 1, 1, 0, 1, 1, 0], f),
+  wave: (f: number) => PMath.Interpolation.CatmullRom([0, 1, 0, 1, 0], f)
+}
+
+export type IEdgeType = keyof typeof CURVES
 
 export interface IEdges {
   north: IEdgeType
@@ -63,7 +75,7 @@ export interface IPlatformOptions extends IMarginInsets {
 export const DEFAULT_PLATFORM_OPTIONS: IPlatformOptions = {
   type: "box",
   corners: corners("angle"),
-  edges: edges("curve"),
+  edges: edges("wave"),
   margin: box(0),
   inset: box(0.2),
   color: ["#CCF", "#336", "#00F"],
@@ -197,22 +209,14 @@ function swCorner(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   }
 }
 
-export type IInterpolator = (f: number) => number
-const curves: Record<string, IInterpolator> = {
-  // "line" is wasteful since we draw 10 lines but only happens at texture creation
-  line: (f: number) => 0,
-  curve: (f: number) => Math.sin(Math.PI * f),
-  groove: (f: number) => f > 0.5 ? (1.0 - f) * 2 : f * 2
-}
-
 
 // Interpolates curve across X or Y (vert or horz) from start to end with a given offset and variance
-function curve(g: CanvasRenderingContext2D,
+function drawCurve(g: CanvasRenderingContext2D,
   start: number, end: number,
   offset: number, variance: number,
   dir: "vert" | "horz",
   interpolator: IInterpolator) {
-  const n = 10
+  const n = 20
   for (let i = 0; i <= n; i++) {
     let xx = offset + interpolator(i / n) * variance
     let yy = lerp(start, end, i / n)
@@ -231,7 +235,7 @@ function northEdge(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const y = margin.y1
   const ww = margin.w
   const { x1, x2 } = inset
-  curve(g, x + x1, ww - x2, y, x1 / 2, "horz", curves[edges.north])
+  drawCurve(g, x + x1, ww - x2, y, x1 / 2, "horz", CURVES[edges.north])
 }
 
 function southEdge(g: CanvasRenderingContext2D, options: IPlatformOptions) {
@@ -241,7 +245,7 @@ function southEdge(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const ww = margin.w
   const hh = margin.h
   const { x1, x2 } = inset
-  curve(g, ww - x2, x + x1, hh, -x1 / 2, "horz", curves[edges.south])
+  drawCurve(g, ww - x2, x + x1, hh, -x1 / 2, "horz", CURVES[edges.south])
 }
 
 function eastEdge(g: CanvasRenderingContext2D, options: IPlatformOptions) {
@@ -251,7 +255,7 @@ function eastEdge(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const ww = margin.w
   const hh = margin.h
   const { x2, y1, y2 } = inset
-  curve(g, y + y1, hh - y2, ww, -x2 / 2, "vert", curves[edges.east])
+  drawCurve(g, y + y1, hh - y2, ww, -x2 / 2, "vert", CURVES[edges.east])
 }
 
 function westEdge(g: CanvasRenderingContext2D, options: IPlatformOptions) {
@@ -261,7 +265,7 @@ function westEdge(g: CanvasRenderingContext2D, options: IPlatformOptions) {
   const y = margin.y1
   const hh = margin.h
   const { x1, y1, y2 } = inset
-  curve(g, hh - y2, y + y1, x, x1 / 2, "vert", curves[edges.west])
+  drawCurve(g, hh - y2, y + y1, x, x1 / 2, "vert", CURVES[edges.west])
 }
 
 export function baseRenderer(g: CanvasRenderingContext2D,
