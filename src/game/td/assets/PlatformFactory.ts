@@ -75,7 +75,7 @@ export interface IPlatformOptions extends IMarginInsets {
 export const DEFAULT_PLATFORM_OPTIONS: IPlatformOptions = {
   type: "box",
   corners: corners("angle"),
-  edges: edges("wave"),
+  edges: edges("line"),
   margin: box(0),
   inset: box(0.2),
   color: ["#CCF", "#336", "#00F"],

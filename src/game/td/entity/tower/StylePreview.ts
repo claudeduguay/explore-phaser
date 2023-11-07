@@ -7,7 +7,7 @@ import { Label } from "../../gui/Label";
 import ObservableValue from "../../value/ObservableValue";
 import ValueMonitor from "../../gui/game/ValueMonitor";
 import { ITextureConfig, makePlatform, makeTurret, makeWeapon } from "../../assets/TextureFactory";
-import { ICornerType, IPlatformOptions, IPlatformType, corners } from "../../assets/PlatformFactory";
+import { ICornerType, IPlatformOptions, IPlatformType, corners, edges } from "../../assets/PlatformFactory";
 import { ITurretOptions } from "../../assets/TurretFactory";
 import { IWeaponOptions } from "../../assets/WeaponFactory";
 import { funnelInsideWeapon, funnelWeapon, pointInsideWeapon, pointWeapon, rectInsideWeapon, rectWeapon, roundBackTurret, roundFrontTurret, roundTurret, smallTurret } from "../../assets/TowerTextures";
@@ -34,15 +34,15 @@ function typeAndCorners(type: IPlatformType, cornerType: ICornerType, special: P
 
 export const PLATFORM_OPTIONS: Record<IDeliveryType, ITextureConfig<IPlatformOptions>> = {
   Projectile: typeAndCorners("box", "angle"),
-  Beam: typeAndCorners("box", "curve-i"),
-  Spray: typeAndCorners("box", "curve-o"),
+  Beam: typeAndCorners("box", "curve-o"),
+  Spray: typeAndCorners("box", "curve-i"),
   Cloud: typeAndCorners("ntagon", "curve-o", { divisions: 8 }),
   Burst: typeAndCorners("ntagon", "angle", { divisions: 10 }),
   Vertical: typeAndCorners("ntagon", "angle", { divisions: 12 }),
   Area: typeAndCorners("ntagon", "angle", { divisions: 30 }),
-  Missile: typeAndCorners("box", "box-o"),
-  Mine: typeAndCorners("box", "curve-i", { corners: corners("curve-o", "box-o") }),
-  Grenade: typeAndCorners("box", "curve-i", { corners: corners("box-o", "curve-o") }),
+  Missile: typeAndCorners("box", "box-o", { edges: edges("curve") }),
+  Mine: typeAndCorners("box", "angle", { edges: edges("curve") }),
+  Grenade: typeAndCorners("box", "curve-o", { edges: edges("curve") }),
 }
 
 export const TURRET_CONFIG: Record<IDeliveryType, ITextureConfig<ITurretOptions>> = {
