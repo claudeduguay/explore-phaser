@@ -34,8 +34,8 @@ function typeAndCorners(type: IPlatformType, cornerType: ICornerType, special: P
 
 export const PLATFORM_OPTIONS: Record<IDeliveryType, ITextureConfig<IPlatformOptions>> = {
   Projectile: typeAndCorners("box", "angle"),
-  Beam: typeAndCorners("box", "curve-o"),
-  Spray: typeAndCorners("box", "curve-i"),
+  Beam: typeAndCorners("box", "curve-i"),
+  Spray: typeAndCorners("box", "curve-o"),
   Cloud: typeAndCorners("ntagon", "curve-o", { divisions: 8 }),
   Burst: typeAndCorners("ntagon", "angle", { divisions: 10 }),
   Vertical: typeAndCorners("ntagon", "angle", { divisions: 12 }),

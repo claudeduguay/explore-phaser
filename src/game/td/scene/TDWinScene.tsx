@@ -2,6 +2,10 @@ import TDGameScene from "./TDGameScene"
 import TDNavScene from "./TDNavScene"
 import { transitionTo } from "../../../util/SceneUtil"
 
+// Good example of Fireworks: https://codepen.io/samme/pen/mdpXqNj
+// Also: https://codepen.io/satya4satyanm/pen/YzRMXGd
+// Discussion Thread: https://phaser.discourse.group/t/fireworks/10579/7
+
 export default class TDHomeScene extends TDNavScene {
   constructor(public readonly main: TDGameScene) {
     super("win", main)
