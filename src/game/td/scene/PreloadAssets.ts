@@ -10,6 +10,7 @@ import { registerEnemyFactory } from "../entity/enemy/TDEnemy"
 import { registerIconFactory } from "../gui/Icon"
 import { makePanelTextures, registerPanelFactory } from "../gui/Panel"
 import { registerStateMachineFactory } from "../../../util/StateMachine"
+import { registerParagraphFactory } from "../gui/Paragraph"
 
 // Intreresting repo: https://github.com/samme/phaser-plugin-loader
 // Also interesting repo: https://phaserplugins.com/
@@ -48,6 +49,7 @@ export function registerObjectFactories() {
   registerLayoutFactory()
   registerPanelFactory()
   registerButtonFactory()
+  registerParagraphFactory()
   registerLabelFactory()
   registerIconFactory()
 

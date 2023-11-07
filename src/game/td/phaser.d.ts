@@ -14,6 +14,7 @@ declare namespace Phaser.GameObjects {
     layout(x: number, y: number, layout: ILayout): LayoutContainer
     panel(x: number, y: number, w: number, h: number, stylePrefix?: string): Panel
     button(x: number, y: number, w: number, h: number, text?: string, public stylePrefix?: string, onClick?: () => void): Button
+    paragraph(x: number, y: number, w: number, text: string, style?: Types.GameObjects.Text.TextStyle): Label
     label(x: number, y: number, text: string, style?: Types.GameObjects.Text.TextStyle): Label
     icon(x: number, y: number, code: string | number, style?: Types.GameObjects.Text.TextStyle): Icon
 

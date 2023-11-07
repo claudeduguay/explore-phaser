@@ -1,5 +1,5 @@
 import { Display, GameObjects, Scene } from "phaser";
-import { IDeliveryType, TYPES_DAMAGE, TYPES_DELIVERY, damageColors } from "../model/ITowerModel";
+import { IDeliveryType, TYPES_DAMAGE, TYPES_DELIVERY, damageColors, damageDescriptions, deliveryDescriptions } from "../model/ITowerModel";
 import Button from "../../gui/Button";
 import { VBoxLayout } from "../../gui/layout/ILayout";
 import Point from "../../../../util/geom/Point";
@@ -80,6 +80,8 @@ export default class StylePreview extends Scene {
   turretSprite!: GameObjects.Sprite
   weaponSprite!: GameObjects.Sprite
   towerContainer!: GameObjects.Container
+  damageText!: GameObjects.Text
+  deliveryText!: GameObjects.Text
 
   constructor(public main: Scene, public x: number = 0, public y: number = x) {
     super("style_preview")
@@ -130,7 +132,7 @@ export default class StylePreview extends Scene {
       return sprite
     }
 
-    const top = 230
+    const top = 210
     const left = 365
 
     const createPlatform = () => {
@@ -202,7 +204,7 @@ export default class StylePreview extends Scene {
       const isRadial =
         TURRET_CONFIG[deliveryChoice.value].options.topSeg === 10 &&
         TURRET_CONFIG[deliveryChoice.value].options.botSeg === 10
-      this.towerContainer = this.add.container(550, 555)
+      this.towerContainer = this.add.container(550, 505)
       this.towerContainer.add(this.add.sprite(0, 0, platformKey))
       this.towerContainer.add(this.add.sprite(0, 0, turretKey))
       const weapon = this.add.sprite(0, isRadial ? 0 : -6 * 4, weaponKey).setOrigin(0.5, 0)
@@ -210,11 +212,16 @@ export default class StylePreview extends Scene {
       this.towerContainer.scale = 4
     }
 
+    this.damageText = this.add.paragraph(550, 660, 750, `${damageDescriptions[damageChoice.value]}`)
+    this.deliveryText = this.add.paragraph(550, 695, 750, `${deliveryChoice.value}: ${deliveryDescriptions[deliveryChoice.value]}`)
+
     const generate = () => {
       createPlatform()
       createTurret()
       createWeapon()
       createTower()
+      this.damageText.text = `${damageDescriptions[damageChoice.value]}`
+      this.deliveryText.text = `${deliveryChoice.value}: ${deliveryDescriptions[deliveryChoice.value]}`
     }
 
     damageChoice.addListener("changed", generate)
