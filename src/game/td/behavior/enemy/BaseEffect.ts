@@ -5,7 +5,7 @@ import IBehavior from "../core/IBehavior"
 
 
 /* 
-Generalize Effect-handler Base (abstract) class.
+Generalized Effect-handler Base (abstract) class.
 Lifecycle is based on the existence of absence of duration, cooldown values
 If cooldown is missing, assigned the same value as duration so, in thsi case, 
 both endEffect and endCooldown are called in sequence in the same frame.

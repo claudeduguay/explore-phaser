@@ -1,5 +1,5 @@
 
-import Noise from "noisejs"
+// import Noise from "noisejs"
 
 // Great artticle: https://www.redblobgames.com/maps/terrain-from-noise/
 // https://medium.com/nerd-for-tech/generating-digital-worlds-using-perlin-noise-5d11237c29e9
@@ -9,10 +9,10 @@ export default class Landscape {
   }
 
   generate() {
-    const noise = new Noise(Math.random())
+    // const noise = new Noise(Math.random())
     for (let y = 0; y < this.h; y++) {
       for (let x = 0; x < this.w; x++) {
-        const value = noise.simplex2(x / this.w, y / this.h);
+        // const value = noise.simplex2(x / this.w, y / this.h);
       }
     }
   }
