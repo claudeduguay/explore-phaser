@@ -115,7 +115,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       rotation: "target",
     },
     organize: {
-      damage: "Fire",
+      damage: "Force",
       delivery: "Beam",
     },
     general: {

@@ -22,7 +22,7 @@ const hexColors = {
   teal: 0x39cccc,
   white: 0xffffff,
   yellow: 0xffdc00
-};
+}
 
 const {
   red,
@@ -34,7 +34,7 @@ const {
   blue,
   fuchsia,
   purple
-} = hexColors;
+} = hexColors
 
 const tints = [
   red,
@@ -60,7 +60,7 @@ const emitterConfig: any = {
   reserve: 500,
   rotate: { min: 0, max: 45 },
   speed: { min: 0, max: 256 }
-};
+}
 
 export class Fireworks extends Scene {
 
@@ -85,13 +85,9 @@ export class Fireworks extends Scene {
     })
   }
 
-  randomFrequency() {
-    return 1000 + 2000 * Math.random()
-  }
-
   addEmitter(): GameObjects.Particles.ParticleEmitter {
     const emitter = this.make.particles({ key: "rocket", config: emitterConfig }, false)
-    const freq = this.randomFrequency()
+    const freq = 1000 + 2000 * Math.random()
     this.time.addEvent({
       delay: freq,
       startAt: Between(0, freq),
