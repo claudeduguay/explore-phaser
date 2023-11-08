@@ -16,13 +16,10 @@ import TDEnemy from "../entity/enemy/TDEnemy";
 import StylePreview from "../entity/tower/StylePreview";
 
 export default class TDHUDScene extends Scene {
+
   buttonBar!: ButtonBar
-  selectors: TowerSelector[] = []
-  // towerPreview!: TowerPreview
-  // treePreview!: TreePreview
-  // guiPreview!: GUIPreview
-  // stylePreview!: StylePreview
   placement!: TowerPlacement
+  selectors: TowerSelector[] = []
 
   constructor(public readonly playScene: TDPlayScene) {
     super("hud")
