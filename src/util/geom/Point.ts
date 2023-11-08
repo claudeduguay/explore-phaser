@@ -1,13 +1,10 @@
-import { GameObjects } from "phaser"
+
+import { GameObjects, Math as PMath } from "phaser"
 import { bezier, lerp } from "../MathUtil"
 
 export interface IPointLike {
   x: number
   y: number
-}
-
-export function getSceneRelativePosition(object: GameObjects.GameObject) {
-  // const parent = object.parentContainer
 }
 
 export default class Point {
@@ -69,6 +66,12 @@ export default class Point {
 
   length() {
     return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
+  }
+
+  polar(p: IPointLike = new Point(0, 0)) {
+    const angle = PMath.Angle.BetweenPoints(this, p)
+    const distance = PMath.Distance.BetweenPoints(this, p)
+    return { angle, distance }
   }
 
   lerp(p: IPointLike, f: number) {
