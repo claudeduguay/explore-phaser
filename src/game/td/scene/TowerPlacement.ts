@@ -1,10 +1,10 @@
 import { Math as PMath, GameObjects } from "phaser";
 import TDTower, { PreviewType } from "../entity/tower/TDTower";
 import ITowerModel from "../entity/model/ITowerModel";
+import { play } from "../../../util/SceneUtil";
 import Point from "../../../util/geom/Point";
 import TDPlayScene from "./TDPlayScene";
 import TDHUDScene from "./TDHUDScene";
-import { play } from "../../../util/SceneUtil";
 
 export default class TowerPlacement extends GameObjects.GameObject {
 
