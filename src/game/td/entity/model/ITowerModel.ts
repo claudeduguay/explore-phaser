@@ -60,6 +60,17 @@ export interface ITowerModel<E = {}> {
   }
 }
 
+export default ITowerModel
+
+export interface ITowerGroups {
+  [key: string]: ITowerModel[]
+}
+
+
+// ------------------------------------------------------------------
+// UTILITIES
+// ------------------------------------------------------------------
+
 // Implements IValueFormatter for tables (key is not used here)
 export function effectFormatter(key: string, effect: ITowerEffect): string {
   const timing: string[] = []
@@ -80,11 +91,11 @@ export function effectFormatter(key: string, effect: ITowerEffect): string {
   return JSON.stringify(effect)
 }
 
-export default ITowerModel
+export const prefixKey = ({ damage, delivery }: ITowerOrganize) => `${damage}-${delivery}`.toLowerCase()
+export const platformKey = (organize: ITowerOrganize) => `${prefixKey(organize)}-platform`.toLowerCase()
+export const turretKey = (organize: ITowerOrganize) => `${prefixKey(organize)}-turret`.toLowerCase()
+export const weaponKey = (organize: ITowerOrganize) => `${prefixKey(organize)}-weapon`.toLowerCase()
 
-export interface ITowerGroups {
-  [key: string]: ITowerModel[]
-}
 
 // ------------------------------------------------------------------
 // INSTANCES
@@ -479,7 +490,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       rotation: "target",
     },
     organize: {
-      damage: "Fire",
+      damage: "Force",
       delivery: "Missile",
     },
     general: {

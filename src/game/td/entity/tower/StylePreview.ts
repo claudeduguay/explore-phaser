@@ -1,5 +1,5 @@
-import { Display, GameObjects, Scene } from "phaser";
-import { IDeliveryType, TYPES_DAMAGE, TYPES_DELIVERY } from "../model/ITowerModel";
+import { GameObjects, Scene } from "phaser";
+import { ITowerOrganize, TYPES_DAMAGE, TYPES_DELIVERY, platformKey, turretKey, weaponKey } from "../model/ITowerModel";
 import Button from "../../gui/Button";
 import { VBoxLayout } from "../../gui/layout/ILayout";
 import Point from "../../../../util/geom/Point";
@@ -7,70 +7,11 @@ import { Label } from "../../gui/Label";
 import ObservableValue from "../../value/ObservableValue";
 import ValueMonitor from "../../gui/game/ValueMonitor";
 import { ITextureConfig, makePlatform, makeTurret, makeWeapon } from "../../assets/TextureFactory";
-import { ICornerType, IPlatformOptions, IPlatformType, corners, edges } from "../../assets/PlatformFactory";
+import { IPlatformOptions } from "../../assets/PlatformFactory";
 import { ITurretOptions } from "../../assets/TurretFactory";
 import { IWeaponOptions } from "../../assets/WeaponFactory";
-import { funnelInsideWeapon, funnelWeapon, pointInsideWeapon, pointWeapon, rectInsideWeapon, rectWeapon, roundBackTurret, roundFrontTurret, roundTurret, smallTurret } from "../../assets/TowerTextures";
+import { PLATFORM_CONFIG, TURRET_CONFIG, WEAPON_CONFIG, rgbStringToColors } from "../../assets/TowerTextures";
 import { DAMAGE_DATA, DELIVERY_DATA } from "../model/ITowerData";
-
-export function rgbStringToColors(rgba: number) {
-  const color = Display.Color.IntegerToColor(rgba)
-  return [
-    color.clone().brighten(30).rgba,
-    color.rgba,
-    color.clone().darken(10).rgba
-  ]
-}
-
-function typeAndCorners(type: IPlatformType, cornerType: ICornerType, special: Partial<IPlatformOptions> = {}) {
-  return {
-    size: { x: 64, y: 64 },
-    options: {
-      type,
-      corners: corners(cornerType),
-      ...special
-    }
-  }
-}
-
-export const PLATFORM_OPTIONS: Record<IDeliveryType, ITextureConfig<IPlatformOptions>> = {
-  Projectile: typeAndCorners("box", "angle"),
-  Beam: typeAndCorners("box", "curve-i"),
-  Spray: typeAndCorners("box", "curve-o"),
-  Cloud: typeAndCorners("ntagon", "curve-o", { divisions: 8 }),
-  Burst: typeAndCorners("ntagon", "angle", { divisions: 10 }),
-  Vertical: typeAndCorners("ntagon", "angle", { divisions: 12 }),
-  Area: typeAndCorners("ntagon", "angle", { divisions: 30 }),
-  Missile: typeAndCorners("box", "box-o", { edges: edges("curve") }),
-  Mine: typeAndCorners("box", "angle", { edges: edges("curve") }),
-  Grenade: typeAndCorners("box", "curve-o", { edges: edges("curve") }),
-}
-
-export const TURRET_CONFIG: Record<IDeliveryType, ITextureConfig<ITurretOptions>> = {
-  Projectile: roundBackTurret([]),
-  Beam: smallTurret([]),
-  Spray: roundFrontTurret([]),
-  Cloud: roundTurret([]),
-  Burst: roundTurret([]),
-  Vertical: roundTurret([]),
-  Area: roundTurret([]),
-  Missile: smallTurret([]),
-  Mine: smallTurret([]),
-  Grenade: smallTurret([]),
-}
-
-export const WEAPON_CONFIG: Record<IDeliveryType, ITextureConfig<IWeaponOptions>> = {
-  Projectile: rectWeapon([]),
-  Beam: pointWeapon([]),
-  Spray: funnelWeapon([]),
-  Cloud: pointInsideWeapon([]),
-  Burst: rectInsideWeapon([], false),
-  Vertical: funnelInsideWeapon([]),
-  Area: funnelInsideWeapon([], false),
-  Missile: rectWeapon([], false, true),
-  Mine: funnelWeapon([]),
-  Grenade: pointWeapon([], false),
-}
 
 
 // Note: May need to make this a scene to manage the fact that 
@@ -83,6 +24,7 @@ export default class StylePreview extends Scene {
   towerContainer!: GameObjects.Container
   damageText!: GameObjects.Text
   deliveryText!: GameObjects.Text
+  organize!: ITowerOrganize;
 
   constructor(public main: Scene, public x: number = 0, public y: number = x) {
     super("style_preview")
@@ -137,68 +79,66 @@ export default class StylePreview extends Scene {
     const left = 365
 
     const createPlatform = () => {
-      const platformKey = `${damageChoice.value}-${deliveryChoice.value}-platform`.toLowerCase()
-      const baseColor = DAMAGE_DATA[damageChoice.value].color.value
-      console.log("Base color:", damageChoice.value, baseColor.toString(16))
-      const platformConfig: ITextureConfig<Partial<IPlatformOptions>> = {
-        ...PLATFORM_OPTIONS[deliveryChoice.value]
-      }
-      platformConfig.options.color = rgbStringToColors(baseColor)
+      const key = platformKey(this.organize)
 
-      if (!this.textures.exists(platformKey)) {
-        makePlatform(this, platformKey, platformConfig)
+      if (!this.textures.exists(key)) {
+        const platformConfig: ITextureConfig<Partial<IPlatformOptions>> = {
+          ...PLATFORM_CONFIG[deliveryChoice.value]
+        }
+        const baseColor = DAMAGE_DATA[damageChoice.value].color.value
+        platformConfig.options.color = rgbStringToColors(baseColor)
+        makePlatform(this, key, platformConfig)
       }
 
       if (this.platformSprite) {
-        this.platformSprite.setTexture(platformKey)
+        this.platformSprite.setTexture(key)
       } else {
-        this.platformSprite = createLabeledSprite(left, top, platformKey, "Platform")
+        this.platformSprite = createLabeledSprite(left, top, key, "Platform")
       }
     }
 
     const createTurret = () => {
-      const turretKey = `${damageChoice.value}-${deliveryChoice.value}-turret`.toLowerCase()
-      const baseColor = DAMAGE_DATA[damageChoice.value].color.value
-      const turretConfig: ITextureConfig<Partial<ITurretOptions>> = {
-        ...TURRET_CONFIG[deliveryChoice.value]
-      }
-      turretConfig.options.color = rgbStringToColors(baseColor)
+      const key = turretKey(this.organize)
 
-      if (!this.textures.exists(turretKey)) {
-        makeTurret(this, turretKey, turretConfig)
+      if (!this.textures.exists(key)) {
+        const baseColor = DAMAGE_DATA[damageChoice.value].color.value
+        const turretConfig: ITextureConfig<Partial<ITurretOptions>> = {
+          ...TURRET_CONFIG[deliveryChoice.value]
+        }
+        turretConfig.options.color = rgbStringToColors(baseColor)
+        makeTurret(this, key, turretConfig)
       }
 
       if (this.turretSprite) {
-        this.turretSprite.setTexture(turretKey)
+        this.turretSprite.setTexture(key)
       } else {
-        this.turretSprite = createLabeledSprite(left + 240, top, turretKey, "Turret")
+        this.turretSprite = createLabeledSprite(left + 240, top, key, "Turret")
       }
     }
 
     const createWeapon = () => {
-      const weaponKey = `${damageChoice.value}-${deliveryChoice.value}-weapon`.toLowerCase()
-      const baseColor = DAMAGE_DATA[damageChoice.value].color.value
-      const weaponConfig: ITextureConfig<Partial<IWeaponOptions>> = {
-        ...WEAPON_CONFIG[deliveryChoice.value]
-      }
-      weaponConfig.options.color = rgbStringToColors(baseColor)
+      const key = weaponKey(this.organize)
 
-      if (!this.textures.exists(weaponKey)) {
-        makeWeapon(this, weaponKey, weaponConfig)
+      if (!this.textures.exists(key)) {
+        const baseColor = DAMAGE_DATA[damageChoice.value].color.value
+        const weaponConfig: ITextureConfig<Partial<IWeaponOptions>> = {
+          ...WEAPON_CONFIG[deliveryChoice.value]
+        }
+        weaponConfig.options.color = rgbStringToColors(baseColor)
+        makeWeapon(this, key, weaponConfig)
       }
 
       if (this.weaponSprite) {
-        this.weaponSprite.setTexture(weaponKey)
+        this.weaponSprite.setTexture(key)
       } else {
-        this.weaponSprite = createLabeledSprite(left + 420, top, weaponKey, "Weapon")
+        this.weaponSprite = createLabeledSprite(left + 420, top, key, "Weapon")
       }
     }
 
     const createTower = () => {
-      const prefix = `${damageChoice.value}-${deliveryChoice.value}`.toLowerCase()
-      const platformKey = `${prefix}-platform`
-      const turretKey = `${prefix}-turret`
-      const weaponKey = `${prefix}-weapon`
+      const pKey = platformKey(this.organize)
+      const tKey = turretKey(this.organize)
+      const wKey = weaponKey(this.organize)
       if (this.towerContainer) {
         this.towerContainer.destroy()
       }
@@ -206,17 +146,21 @@ export default class StylePreview extends Scene {
         TURRET_CONFIG[deliveryChoice.value].options.topSeg === 10 &&
         TURRET_CONFIG[deliveryChoice.value].options.botSeg === 10
       this.towerContainer = this.add.container(550, 505)
-      this.towerContainer.add(this.add.sprite(0, 0, platformKey))
-      this.towerContainer.add(this.add.sprite(0, 0, turretKey))
-      const weapon = this.add.sprite(0, isRadial ? 0 : -6 * 4, weaponKey).setOrigin(0.5, 0)
+      this.towerContainer.add(this.add.sprite(0, 0, pKey))
+      this.towerContainer.add(this.add.sprite(0, 0, tKey))
+      const weapon = this.add.sprite(0, isRadial ? 0 : -6 * 4, wKey).setOrigin(0.5, 0)
       this.towerContainer.add(weapon)
       this.towerContainer.scale = 4
     }
 
-    this.damageText = this.add.paragraph(550, 660, 750, `${DAMAGE_DATA[damageChoice.value].description}`)
-    this.deliveryText = this.add.paragraph(550, 695, 750, `${deliveryChoice.value}: ${DELIVERY_DATA[deliveryChoice.value].description}`)
+    this.damageText = this.add.paragraph(550, 660, 750, ``)
+    this.deliveryText = this.add.paragraph(550, 695, 750, ``)
 
     const generate = () => {
+      this.organize = {
+        damage: damageChoice.value,
+        delivery: deliveryChoice.value
+      }
       createPlatform()
       createTurret()
       createWeapon()

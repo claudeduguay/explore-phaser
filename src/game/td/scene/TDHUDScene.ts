@@ -68,7 +68,6 @@ export default class TDHUDScene extends Scene {
     const onToggleTreePreview = this.makeTogglePreviewFunction(treePreview, "tree_preview", previews)
     const onToggleGUIPreview = this.makeTogglePreviewFunction(guiPreview, "gui_preview", previews)
     const onToggleStylePreview = this.makeTogglePreviewFunction(stylePreview, "style_preview", previews)
-    onToggleStylePreview()
 
     // Button bars (right)
     this.add.existing(new SpeedBar(this, 960, -4))

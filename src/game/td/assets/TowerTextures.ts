@@ -1,13 +1,15 @@
 import { Display, Scene } from "phaser"
 import { IColoring } from "../../../util/DrawUtil"
-import { IPlatformOptions, IPlatformType, ICorners, corners } from "./PlatformFactory"
+import { IPlatformOptions, IPlatformType, ICorners, corners, ICornerType, edges } from "./PlatformFactory"
 import { IWeaponOptions } from "./WeaponFactory"
 import { ITurretOptions } from "./TurretFactory"
 import { ITextureConfig, makePlatform, makeWeapon, makeTurret } from "./TextureFactory"
 import { box } from "../../../util/geom/Box"
+import { IDeliveryType, TOWER_INDEX } from "../entity/model/ITowerModel"
+import { DAMAGE_DATA } from "../entity/model/ITowerData"
 
 // ------------------------------------------------------------------
-// COLOR STYLES
+// OLD COLOR STYLES
 // ------------------------------------------------------------------
 
 export function colors(h: number, s: number = 1, l: number = 0.1) {
@@ -51,7 +53,7 @@ export const COLORS: { [key: string]: IColoring } = {
 
 
 // ------------------------------------------------------------------
-// PLATFORM STYLES
+// OLD PLATFORM STYLES
 // ------------------------------------------------------------------
 
 interface ITypeAndCorners {
@@ -69,7 +71,11 @@ export const PLATFORM: Record<string, ITypeAndCorners> = {
   AREA: { type: "box", corners: corners("box-o") }
 }
 
-export function platformConfig({ type, corners }: ITypeAndCorners, color: IColoring, divisions: number = 8) {
+// ------------------------------------------------------------------
+// PLATFORM CONFIG GENERATION
+// ------------------------------------------------------------------
+
+export function platformConfig({ type, corners }: ITypeAndCorners, color?: IColoring, divisions: number = 8) {
   return {
     size: { x: 64, y: 64 },
     options: { type, corners, divisions, color }
@@ -78,10 +84,10 @@ export function platformConfig({ type, corners }: ITypeAndCorners, color: IColor
 
 
 // ------------------------------------------------------------------
-// TURRET STYLES
+// TURRET CONFIG GENERATION
 // ------------------------------------------------------------------
 
-export function smallTurret(color: IColoring) {
+export function smallTurret(color?: IColoring) {
   return {
     size: { x: 48, y: 30 },
     options: { ratio: 0.6, topSeg: 3, botSeg: 10, color }
@@ -89,21 +95,21 @@ export function smallTurret(color: IColoring) {
   }
 }
 
-export function roundTurret(color: IColoring) {
+export function roundTurret(color?: IColoring) {
   return {
     size: { x: 38, y: 38 },
     options: { ratio: 0.5, topSeg: 10, botSeg: 10, color }
   }
 }
 
-export function roundFrontTurret(color: IColoring) {
+export function roundFrontTurret(color?: IColoring) {
   return {
     size: { x: 42, y: 36 },
     options: { ratio: 0.33, topSeg: 10, botSeg: 3, color }
   }
 }
 
-export function roundBackTurret(color: IColoring) {
+export function roundBackTurret(color?: IColoring) {
   return {
     size: { x: 42, y: 36 },
     options: { ratio: 0.66, topSeg: 3, botSeg: 10, color }
@@ -112,10 +118,10 @@ export function roundBackTurret(color: IColoring) {
 
 
 // ------------------------------------------------------------------
-// WEAPON STYLES
+// WEAPON CONFIG GENERATION
 // ------------------------------------------------------------------
 
-export function pointWeapon(color: IColoring, ball = true): ITextureConfig<IWeaponOptions> {
+export function pointWeapon(color?: IColoring, ball = true): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 32 },
     options: {
@@ -125,14 +131,14 @@ export function pointWeapon(color: IColoring, ball = true): ITextureConfig<IWeap
   }
 }
 
-export function funnelWeapon(color: IColoring): ITextureConfig<IWeaponOptions> {
+export function funnelWeapon(color?: IColoring): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 32 },
     options: { type: "funnel", inset: box(0.33), line: "white", color }
   }
 }
 
-export function rectWeapon(color: IColoring, ribs = true, rails = false): ITextureConfig<IWeaponOptions> {
+export function rectWeapon(color?: IColoring, ribs = true, rails = false): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 32 },
     options: {
@@ -143,14 +149,14 @@ export function rectWeapon(color: IColoring, ribs = true, rails = false): ITextu
   }
 }
 
-export function pointInsideWeapon(color: IColoring): ITextureConfig<IWeaponOptions> {
+export function pointInsideWeapon(color?: IColoring): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 18 },
     options: { type: "point", inset: box(0.0), line: "white", color }
   }
 }
 
-export function funnelInsideWeapon(color: IColoring, ball = true): ITextureConfig<IWeaponOptions> {
+export function funnelInsideWeapon(color?: IColoring, ball = true): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 18 },
     options: {
@@ -160,7 +166,7 @@ export function funnelInsideWeapon(color: IColoring, ball = true): ITextureConfi
   }
 }
 
-export function rectInsideWeapon(color: IColoring, ball = true): ITextureConfig<IWeaponOptions> {
+export function rectInsideWeapon(color?: IColoring, ball = true): ITextureConfig<IWeaponOptions> {
   return {
     size: { x: 7, y: 18 },
     options: {
@@ -299,11 +305,96 @@ const TOWERS: Record<string, ITextureConfigs> = {
   }
 }
 
-export default function registerTowerTextures(scene: Scene) {
+export function registerTowerTexturesOld(scene: Scene) {
   for (let [key, { platform, turret, weapon }] of Object.entries(TOWERS)) {
     key = key.toLowerCase()
     makePlatform(scene, `${key}-platform`, platform)
     makeTurret(scene, `${key}-turret`, turret)
     makeWeapon(scene, `${key}-weapon`, weapon)
+  }
+}
+
+
+// ------------------------------------------------------------------
+// NEW APPROACH (BASED ON DELIVERY SHAPES AND DAMAGE COLORS)
+// ------------------------------------------------------------------
+
+export function rgbStringToColors(rgba: number) {
+  const color = Display.Color.IntegerToColor(rgba)
+  return [
+    color.clone().brighten(30).rgba,
+    color.rgba,
+    color.clone().darken(10).rgba
+  ]
+}
+
+function typeAndCorners(type: IPlatformType, cornerType: ICornerType, special: Partial<IPlatformOptions> = {}) {
+  return {
+    size: { x: 64, y: 64 },
+    options: {
+      type,
+      corners: corners(cornerType),
+      ...special
+    }
+  }
+}
+
+export const PLATFORM_CONFIG: Record<IDeliveryType, ITextureConfig<IPlatformOptions>> = {
+  Projectile: typeAndCorners("box", "angle"),
+  Beam: typeAndCorners("box", "curve-i"),
+  Spray: typeAndCorners("box", "curve-o"),
+  Cloud: typeAndCorners("ntagon", "curve-o", { divisions: 8 }),
+  Burst: typeAndCorners("ntagon", "angle", { divisions: 10 }),
+  Vertical: typeAndCorners("ntagon", "angle", { divisions: 12 }),
+  Area: typeAndCorners("ntagon", "angle", { divisions: 30 }),
+  Missile: typeAndCorners("box", "box-o", { edges: edges("curve") }),
+  Mine: typeAndCorners("box", "angle", { edges: edges("curve") }),
+  Grenade: typeAndCorners("box", "curve-o", { edges: edges("curve") }),
+}
+
+export const TURRET_CONFIG: Record<IDeliveryType, ITextureConfig<ITurretOptions>> = {
+  Projectile: roundBackTurret(),
+  Beam: smallTurret(),
+  Spray: roundFrontTurret(),
+  Cloud: roundTurret(),
+  Burst: roundTurret(),
+  Vertical: roundTurret(),
+  Area: roundTurret(),
+  Missile: smallTurret(),
+  Mine: smallTurret(),
+  Grenade: smallTurret(),
+}
+
+export const WEAPON_CONFIG: Record<IDeliveryType, ITextureConfig<IWeaponOptions>> = {
+  Projectile: rectWeapon(),
+  Beam: pointWeapon(),
+  Spray: funnelWeapon(),
+  Cloud: pointInsideWeapon(),
+  Burst: rectInsideWeapon(undefined, false),
+  Vertical: funnelInsideWeapon(),
+  Area: funnelInsideWeapon(undefined, false),
+  Missile: rectWeapon(undefined, false, true),
+  Mine: funnelWeapon(),
+  Grenade: pointWeapon(undefined, false),
+}
+
+
+export default function registerTowerTextures(scene: Scene) {
+  // We still generate based on defined ITowerModel's TOWER_INDEX
+  for (let [key, { organize: { damage, delivery } }] of Object.entries(TOWER_INDEX)) {
+    // Shape and coloring is now based on organize structure
+    const color = rgbStringToColors(DAMAGE_DATA[damage].color.value)
+
+    const platform = PLATFORM_CONFIG[delivery]
+    platform.options.color = color
+    makePlatform(scene, `${key.toLowerCase()}-platform`, platform)
+
+    const turret = TURRET_CONFIG[delivery]
+    turret.options.color = color
+    makeTurret(scene, `${key.toLowerCase()}-turret`, turret)
+
+    const weapon = WEAPON_CONFIG[delivery]
+    weapon.options.color = color
+    makeWeapon(scene, `${key.toLowerCase()}-weapon`, weapon)
   }
 }
