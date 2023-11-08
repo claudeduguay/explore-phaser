@@ -214,7 +214,7 @@ export default class StylePreview extends Scene {
     }
 
     this.damageText = this.add.paragraph(550, 660, 750, `${DAMAGE_DATA[damageChoice.value].description}`)
-    this.deliveryText = this.add.paragraph(550, 695, 750, `${deliveryChoice.value}: ${DELIVERY_DATA[deliveryChoice.value]}`)
+    this.deliveryText = this.add.paragraph(550, 695, 750, `${deliveryChoice.value}: ${DELIVERY_DATA[deliveryChoice.value].description}`)
 
     const generate = () => {
       createPlatform()
@@ -222,7 +222,7 @@ export default class StylePreview extends Scene {
       createWeapon()
       createTower()
       this.damageText.text = `${DAMAGE_DATA[damageChoice.value].description}`
-      this.deliveryText.text = `${deliveryChoice.value}: ${DELIVERY_DATA[deliveryChoice.value]}`
+      this.deliveryText.text = `${deliveryChoice.value}: ${DELIVERY_DATA[deliveryChoice.value].description}`
     }
 
     damageChoice.addListener("changed", generate)

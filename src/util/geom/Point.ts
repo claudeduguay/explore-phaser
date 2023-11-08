@@ -2,6 +2,11 @@
 import { GameObjects, Math as PMath } from "phaser"
 import { bezier, lerp } from "../MathUtil"
 
+export interface IPolar {
+  angle: number
+  distance: number
+}
+
 export interface IPointLike {
   x: number
   y: number
@@ -68,10 +73,11 @@ export default class Point {
     return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
   }
 
-  polar(p: IPointLike = new Point(0, 0)) {
-    const angle = PMath.Angle.BetweenPoints(this, p)
-    const distance = PMath.Distance.BetweenPoints(this, p)
-    return { angle, distance }
+  polar(p: IPointLike = new Point(0, 0)): IPolar {
+    return {
+      angle: PMath.Angle.BetweenPoints(this, p),
+      distance: PMath.Distance.BetweenPoints(this, p)
+    }
   }
 
   lerp(p: IPointLike, f: number) {

@@ -7,7 +7,7 @@ export interface IBaseColor {
 
 export interface IDamageData {
   color: IBaseColor
-  description?: string
+  description: string
 }
 
 export const DAMAGE_DATA: { [key: IDamageType]: IDamageData } = {
@@ -81,17 +81,21 @@ export const DAMAGE_DATA: { [key: IDamageType]: IDamageData } = {
   }
 }
 
-export const DELIVERY_DATA: { [key: IDeliveryType]: string } = {
-  Projectile: "A narrow, single-target, emission of particles, firing at a spaced out interval",
-  Beam: "A narrow, single-target continous beam of particles",
-  Spray: "A cone, single-target, but affects other targets within the cone",
-  Cloud: "A multi-target cloud, covering the tower's range, effects last for a given time",
-  Burst: "Outward burst of multiple particles, multi-target within the tower's range",
-  Vertical: "Drop or rise of multiple particles, multi-target within the tower's range",
-  Area: "Invisible effect that affects multiple target within the tower's range",
-  Missile: "A single-target missile that explodes on impact (causing range damage)",
-  Mine: "Thrown to a headward path-target. Explodes (causing range damage) when the first enemy crosses its center",
-  Grenade: "Thrown to a headward path-target. Explodes (causing range damage) when the trigger time elapses",
+export interface IDeliveryData {
+  description: string
+}
+
+export const DELIVERY_DATA: { [key: IDeliveryType]: IDeliveryData } = {
+  Projectile: { description: "A narrow, single-target, emission of particles, firing at a spaced out interval" },
+  Beam: { description: "A narrow, single-target continous beam of particles" },
+  Spray: { description: "A cone, single-target, but affects other targets within the cone" },
+  Cloud: { description: "A multi-target cloud, covering the tower's range, effects last for a given time" },
+  Burst: { description: "Outward burst of multiple particles, multi-target within the tower's range" },
+  Vertical: { description: "Drop or rise of multiple particles, multi-target within the tower's range" },
+  Area: { description: "Invisible effect that affects multiple target within the tower's range" },
+  Missile: { description: "A single-target missile that explodes on impact (causing range damage)" },
+  Mine: { description: "Thrown to a headward path-target. Explodes (causing range damage) when the first enemy crosses its center" },
+  Grenade: { description: "Thrown to a headward path-target. Explodes (causing range damage) when the trigger time elapses" },
 }
 
 function generatePermutations() {
@@ -103,7 +107,7 @@ function generatePermutations() {
         type: `${damage} ${delivery}`,
         color: DAMAGE_DATA[damage].color.name,
         damage: DAMAGE_DATA[damage].description,
-        delivery: DELIVERY_DATA[delivery]
+        delivery: DELIVERY_DATA[delivery].description
       })
     })
   })
