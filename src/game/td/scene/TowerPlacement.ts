@@ -20,7 +20,6 @@ export default class TowerPlacement extends GameObjects.GameObject {
 
   onAddTower = (model: ITowerModel) => {
     const { x, y } = this.hudScene.input
-    // const { x: tx, y: ty } = this.playScene.cameras.main.getWorldPoint(x, y)
     this.placingTower = this.playScene.add.tower(x, y, model)
     if (this.placingTower) {
       this.placingTower.preview = PreviewType.Drag
@@ -41,8 +40,10 @@ export default class TowerPlacement extends GameObjects.GameObject {
           this.timer = undefined
           const selected = this.playScene.towerGroup.selected.value
           if (selected) {
-            this.playScene.towerGroup.select(undefined)
             this.placingTower = selected
+            this.placingTower.preview = PreviewType.Drag
+            this.placingTower.showRange.visible = true
+            this.playScene.towerGroup.select(undefined)
             setTimeout(() => this.dragging = true, 1000)
           }
         }
