@@ -160,10 +160,10 @@ export default class TDPlayScene extends Scene {
     })
     // >>> PAN HANDLER <<<
     this.input.on(Input.Events.POINTER_MOVE, (pointer: Input.Pointer) => {
-      if (pointer.isDown) {
+      if (pointer.isDown && !this.hud.placement.placingTower) {
         const camera = this.cameras.main
-        camera.scrollX -= (pointer.x - pointer.prevPosition.x) / camera.zoom;
-        camera.scrollY -= (pointer.y - pointer.prevPosition.y) / camera.zoom;
+        camera.scrollX -= (pointer.x - pointer.prevPosition.x) / camera.zoom
+        camera.scrollY -= (pointer.y - pointer.prevPosition.y) / camera.zoom
       }
     })
     // >>> HOME (RESET CAMERA) HANDLER <<<

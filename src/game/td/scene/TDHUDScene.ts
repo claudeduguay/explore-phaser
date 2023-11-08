@@ -18,9 +18,11 @@ import StylePreview from "../entity/tower/StylePreview";
 export default class TDHUDScene extends Scene {
   buttonBar!: ButtonBar
   selectors: TowerSelector[] = []
-  towerPreview!: TowerPreview
-  treePreview!: TreePreview
-  guiPreview!: GUIPreview
+  // towerPreview!: TowerPreview
+  // treePreview!: TreePreview
+  // guiPreview!: GUIPreview
+  // stylePreview!: StylePreview
+  placement!: TowerPlacement
 
   constructor(public readonly playScene: TDPlayScene) {
     super("hud")
@@ -102,18 +104,18 @@ export default class TDHUDScene extends Scene {
   }
 
   addSelectors() {
-    const placement = new TowerPlacement(this.playScene, this)
-    this.playScene.add.existing(placement)
+    this.placement = new TowerPlacement(this.playScene, this)
+    this.playScene.add.existing(this.placement)
 
     // Need to capture onAddTower in play scene
     this.selectors = [
-      new TowerSelector(this, 0, 100, this.playScene.credits, "eject", placement.onAddTower),
-      new TowerSelector(this, 0, 200, this.playScene.credits, "beam", placement.onAddTower),
-      new TowerSelector(this, 0, 300, this.playScene.credits, "spray", placement.onAddTower),
-      new TowerSelector(this, 0, 400, this.playScene.credits, "cloud", placement.onAddTower),
-      new TowerSelector(this, 0, 500, this.playScene.credits, "vertical", placement.onAddTower),
-      new TowerSelector(this, 0, 600, this.playScene.credits, "expand", placement.onAddTower),
-      new TowerSelector(this, 0, 700, this.playScene.credits, "area", placement.onAddTower)
+      new TowerSelector(this, 0, 100, this.playScene.credits, "eject", this.placement.onAddTower),
+      new TowerSelector(this, 0, 200, this.playScene.credits, "beam", this.placement.onAddTower),
+      new TowerSelector(this, 0, 300, this.playScene.credits, "spray", this.placement.onAddTower),
+      new TowerSelector(this, 0, 400, this.playScene.credits, "cloud", this.placement.onAddTower),
+      new TowerSelector(this, 0, 500, this.playScene.credits, "vertical", this.placement.onAddTower),
+      new TowerSelector(this, 0, 600, this.playScene.credits, "expand", this.placement.onAddTower),
+      new TowerSelector(this, 0, 700, this.playScene.credits, "area", this.placement.onAddTower)
     ]
     for (let selector of this.selectors) {
       selector.setScrollFactor(0) // Doesn't seem to help
