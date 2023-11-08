@@ -6,59 +6,6 @@ export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Force", "Plasm
 export type IDeliveryType = typeof TYPES_DELIVERY[number]
 export type IDamageType = typeof TYPES_DAMAGE[number]
 
-export const deliveryDescriptions: { [key: string]: string } = {
-  Projectile: "A narrow, single-target, emission of particles, firing at a spaced out interval",
-  Beam: "A narrow, single-target continous beam of particles",
-  Spray: "A cone, single-target, but affects other targets within the cone",
-  Cloud: "A multi-target cloud, covering the tower's range, effects last for a given time",
-  Burst: "Outward burst of multiple particles, multi-target within the tower's range",
-  Vertical: "Drop or rise of multiple particles, multi-target within the tower's range",
-  Area: "Invisible effect that affects multiple target within the tower's range",
-  Missile: "A single-target missile that explodes on impact (causing range damage)",
-  Mine: "Thrown to a headward path-target. Explodes (causing range damage) when the first enemy crosses its center",
-  Grenade: "Thrown to a headward path-target. Explodes (causing range damage) when the trigger time elapses",
-}
-
-export const damageColors: { [key: string]: { name: string, color: number } } = {
-  Arrow: { name: "TAN", color: 0xCCAA77 },
-  Bullet: { name: "SLATEGRAY", color: 0x778899 },
-  Light: { name: "YELLOW", color: 0xAAAA00 },
-  Dark: { name: "BLACK", color: 0x333333 },
-  Force: { name: "TEAL", color: 0x007777 },
-  Plasma: { name: "PURPLE", color: 0x770077 },
-  Fire: { name: "RED", color: 0x880000 },
-  Water: { name: "BLUE", color: 0x000099 },
-  Ice: { name: "LIGHTBLUE", color: 0x6666CC },
-  Earth: { name: "SADDLEBROWN", color: 0x885511 },
-  Air: { name: "WHITE", color: 0x9999BB },
-  Poison: { name: "GREEN", color: 0x008800 },
-  Electric: { name: "CYAN", color: 0x009999 },
-  Health: { name: "LIGHT BLUE", color: 0x666699 },
-  Shield: { name: "LIGHT ORANGE", color: 0xAA8844 },
-  Speed: { name: "LIGHT RED", color: 0x996666 },
-  Value: { name: "LIGHT GREEN", color: 0x669966 }
-}
-
-export const damageDescriptions: { [key: string]: string } = {
-  Arrow: "Arrow damage (low impact)",
-  Bullet: "Bullet damage (high impact)",
-  Light: "Bright damage (light, shine, radiant)",
-  Dark: "Dark damage (shadow, smoke)",
-  Force: "Force damage has impact but limited visibility",
-  Plasma: "Plasma damage",
-  Fire: "Fire damage (fire, flame)",
-  Water: "Water damage (liquid, steam, rain)",
-  Ice: "Ice damage (snow, ice, freeze, frost)",
-  Earth: "Eath (rocks, dirt, sand)",
-  Air: "Air effects (wind, blow, breeze, storm)",
-  Poison: "Poison damage (timed effect)",
-  Electric: "Electrical damage (lightning, shock, electrocute)",
-  Health: "Decrease target's Health property, while afffected",
-  Shield: "Decrease target's Shield property, while afffected",
-  Speed: "Decrease target's Speed property, while afffected",
-  Value: "Increase target's Value property, while afffected"
-}
-
 export interface ITowerMeta {
   distribution: "linear" | "radial"  // Weapon distribution
   rotation: "target" | number        // Rotation type (aim at target or rotate +/- clockwise each frame)
@@ -662,24 +609,3 @@ export const TOWER_GROUPS = TOWER_LIST.reduce((groups: ITowerGroups, tower: ITow
   groups[tower.group].push(tower)
   return groups
 }, {} as ITowerGroups)
-
-
-function generatePermutations() {
-  // const effectTypes = ["In-Range", "Timed"]
-  const permutations: any[] = []
-  TYPES_DAMAGE.forEach((damage: IDamageType) => {
-    TYPES_DELIVERY.forEach((delivery: IDeliveryType) => {
-      permutations.push({
-        type: `${damage} ${delivery}`,
-        color: damageColors[damage].name,
-        damage: damageDescriptions[damage],
-        delivery: deliveryDescriptions[delivery]
-      })
-    })
-  })
-  return permutations
-}
-
-export const PERMUTATIONS = generatePermutations()
-console.log(JSON.stringify(PERMUTATIONS, null, 2))
-console.log("Permutation count:", PERMUTATIONS.length)

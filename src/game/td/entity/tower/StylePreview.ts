@@ -1,5 +1,5 @@
 import { Display, GameObjects, Scene } from "phaser";
-import { IDeliveryType, TYPES_DAMAGE, TYPES_DELIVERY, damageColors, damageDescriptions, deliveryDescriptions } from "../model/ITowerModel";
+import { IDeliveryType, TYPES_DAMAGE, TYPES_DELIVERY } from "../model/ITowerModel";
 import Button from "../../gui/Button";
 import { VBoxLayout } from "../../gui/layout/ILayout";
 import Point from "../../../../util/geom/Point";
@@ -11,6 +11,7 @@ import { ICornerType, IPlatformOptions, IPlatformType, corners, edges } from "..
 import { ITurretOptions } from "../../assets/TurretFactory";
 import { IWeaponOptions } from "../../assets/WeaponFactory";
 import { funnelInsideWeapon, funnelWeapon, pointInsideWeapon, pointWeapon, rectInsideWeapon, rectWeapon, roundBackTurret, roundFrontTurret, roundTurret, smallTurret } from "../../assets/TowerTextures";
+import { DAMAGE_DATA, DELIVERY_DATA } from "../model/ITowerData";
 
 export function rgbStringToColors(rgba: number) {
   const color = Display.Color.IntegerToColor(rgba)
@@ -137,7 +138,7 @@ export default class StylePreview extends Scene {
 
     const createPlatform = () => {
       const platformKey = `${damageChoice.value}-${deliveryChoice.value}-platform`.toLowerCase()
-      const baseColor = damageColors[damageChoice.value].color
+      const baseColor = DAMAGE_DATA[damageChoice.value].color.value
       console.log("Base color:", damageChoice.value, baseColor.toString(16))
       const platformConfig: ITextureConfig<Partial<IPlatformOptions>> = {
         ...PLATFORM_OPTIONS[deliveryChoice.value]
@@ -157,7 +158,7 @@ export default class StylePreview extends Scene {
 
     const createTurret = () => {
       const turretKey = `${damageChoice.value}-${deliveryChoice.value}-turret`.toLowerCase()
-      const baseColor = damageColors[damageChoice.value].color
+      const baseColor = DAMAGE_DATA[damageChoice.value].color.value
       const turretConfig: ITextureConfig<Partial<ITurretOptions>> = {
         ...TURRET_CONFIG[deliveryChoice.value]
       }
@@ -176,7 +177,7 @@ export default class StylePreview extends Scene {
 
     const createWeapon = () => {
       const weaponKey = `${damageChoice.value}-${deliveryChoice.value}-weapon`.toLowerCase()
-      const baseColor = damageColors[damageChoice.value].color
+      const baseColor = DAMAGE_DATA[damageChoice.value].color.value
       const weaponConfig: ITextureConfig<Partial<IWeaponOptions>> = {
         ...WEAPON_CONFIG[deliveryChoice.value]
       }
@@ -212,16 +213,16 @@ export default class StylePreview extends Scene {
       this.towerContainer.scale = 4
     }
 
-    this.damageText = this.add.paragraph(550, 660, 750, `${damageDescriptions[damageChoice.value]}`)
-    this.deliveryText = this.add.paragraph(550, 695, 750, `${deliveryChoice.value}: ${deliveryDescriptions[deliveryChoice.value]}`)
+    this.damageText = this.add.paragraph(550, 660, 750, `${DAMAGE_DATA[damageChoice.value].description}`)
+    this.deliveryText = this.add.paragraph(550, 695, 750, `${deliveryChoice.value}: ${DELIVERY_DATA[deliveryChoice.value]}`)
 
     const generate = () => {
       createPlatform()
       createTurret()
       createWeapon()
       createTower()
-      this.damageText.text = `${damageDescriptions[damageChoice.value]}`
-      this.deliveryText.text = `${deliveryChoice.value}: ${deliveryDescriptions[deliveryChoice.value]}`
+      this.damageText.text = `${DAMAGE_DATA[damageChoice.value].description}`
+      this.deliveryText.text = `${deliveryChoice.value}: ${DELIVERY_DATA[deliveryChoice.value]}`
     }
 
     damageChoice.addListener("changed", generate)
