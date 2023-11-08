@@ -18,15 +18,19 @@ export default class TowerPlacement extends GameObjects.GameObject {
     super(playScene, "placement")
   }
 
-  onAddTower = (model: ITowerModel) => {
-    const { x, y } = this.hudScene.input
-    this.placingTower = this.playScene.add.tower(x, y, model)
+  startDrag() {
     if (this.placingTower) {
       this.placingTower.preview = PreviewType.Drag
       this.placingTower.showRange.visible = true
       this.playScene.towerGroup.select(undefined)
       setTimeout(() => this.dragging = true, 1000) // do this to avoid immediate mouse down 
     }
+  }
+
+  onAddTower = (model: ITowerModel) => {
+    const { x, y } = this.hudScene.input
+    this.placingTower = this.playScene.add.tower(x, y, model)
+    this.startDrag()
   }
 
   preUpdate(time: number, delta: number): void {
@@ -41,10 +45,7 @@ export default class TowerPlacement extends GameObjects.GameObject {
           const selected = this.playScene.towerGroup.selected.value
           if (selected) {
             this.placingTower = selected
-            this.placingTower.preview = PreviewType.Drag
-            this.placingTower.showRange.visible = true
-            this.playScene.towerGroup.select(undefined)
-            setTimeout(() => this.dragging = true, 1000)
+            this.startDrag()
           }
         }
       }
