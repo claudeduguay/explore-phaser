@@ -1,6 +1,6 @@
 
-export const TYPES_DELIVERY = ["Shot", "Beam", "Spray", "Cloud", "Burst", "Vertical", "Area", "Missile", "Mine", "Grenade"]
-export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Force", "Plasma", "Fire", "Water", "Ice", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
+export const TYPES_DELIVERY = ["Arrow", "Bullet", "Beam", "Spray", "Cloud", "Burst", "Vertical", "Area", "Missile", "Mine", "Grenade"]
+export const TYPES_DAMAGE = ["Kinetic", "Light", "Dark", "Force", "Plasma", "Fire", "Water", "Ice", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
 
 export type IDeliveryType = typeof TYPES_DELIVERY[number]
 export type IDamageType = typeof TYPES_DAMAGE[number]
@@ -16,11 +16,11 @@ export interface IDamageData {
 }
 
 export const DAMAGE_DATA: { [key: IDamageType]: IDamageData } = {
-  Arrow: {
-    color: { name: "TAN", value: 0xBB9966 },
-    description: "Arrow damage (low target impact)"
-  },
-  Bullet: {
+  // Arrow: {
+  //   color: { name: "TAN", value: 0xBB9966 },
+  //   description: "Arrow damage (low target impact)"
+  // },
+  Kinetic: {
     color: { name: "SLATEGRAY", value: 0x778899 },
     description: "Bullet damage (high target impact)"
   },
@@ -91,7 +91,8 @@ export interface IDeliveryData {
 }
 
 export const DELIVERY_DATA: { [key: IDeliveryType]: IDeliveryData } = {
-  Shot: { description: "A narrow, single-target, emission of particles, firing at a spaced out interval" },
+  Arrow: { description: "A, single-target, arrow, firing at intervals" },
+  Bullet: { description: "A, single-target,  bullet, firing at intervals" },
   Beam: { description: "A narrow, single-target continous beam of particles" },
   Spray: { description: "A cone, single-target, but affects other targets within the cone" },
   Cloud: { description: "A multi-target cloud, covering the tower's range, effects last for a given time" },

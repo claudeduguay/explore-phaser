@@ -200,7 +200,7 @@ export interface ITextureConfig<T> {
 export function makeArrow(scene: Scene, key: string, config: ITextureConfig<{ color: string }>) {
   const { x: w, y: h } = config.size
   const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
-    g.lineWidth = 1
+    g.lineWidth = 2
     const color = config.options.color || "white"
     drawLine(g, w / 2, 0, w / 2, h, color)
     drawLine(g, w / 2, 0, 0, h / 3, color)

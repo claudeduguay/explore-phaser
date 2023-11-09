@@ -108,11 +108,11 @@ export function preloadImages(scene: Scene) {
 
 // Note: Tower textures need to be loaded by TPlayScene
 export function preloadTextures(scene: Scene) {
-  makeArrow(scene, "arrow-default", { size: { x: 10, y: 16 }, options: { color: "orange" } })
-  makeBullet(scene, "bullet-default", { size: { x: 6, y: 15 }, options: { color: "orange" } })
-  makeMissile(scene, "missile-default", { size: { x: 10, y: 24 }, options: { color: "orange" } })
-  makeMine(scene, "mine-default", { size: { x: 15, y: 15 }, options: { color: "orange", center: "black" } })
-  makeGrenade(scene, "grenade-default", { size: { x: 10, y: 15 }, options: { color: "orange", top: "black" } })
+  makeArrow(scene, "arrow-default", { size: { x: 10, y: 16 }, options: { color: "white" } })
+  makeBullet(scene, "bullet-default", { size: { x: 7, y: 16 }, options: { color: "white" } })
+  makeMissile(scene, "missile-default", { size: { x: 15, y: 30 }, options: { color: "white" } })
+  makeMine(scene, "mine-default", { size: { x: 16, y: 16 }, options: { color: "white", center: "black" } })
+  makeGrenade(scene, "grenade-default", { size: { x: 12, y: 16 }, options: { color: "white", top: "black" } })
   makePathTiles(scene, "path_tiles", 64, 64)
   makeHeightRects(scene, "height_cells", 64, 64, 10)
   makeLandscapeTile(scene, "landscape", { size: { x: 64, y: 64 }, options: { type: "grass" } })

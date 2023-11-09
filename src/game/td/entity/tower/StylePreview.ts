@@ -26,6 +26,7 @@ export default class StylePreview extends Scene {
   damageText!: GameObjects.Text
   deliveryText!: GameObjects.Text
   organize!: ITowerOrganize;
+  projectiles!: GameObjects.Sprite[]
 
   constructor(public main: Scene, public x: number = 0, public y: number = x) {
     super("style_preview")
@@ -41,7 +42,7 @@ export default class StylePreview extends Scene {
     g.strokeRoundedRect(this.x, this.y, hBox * 6, vBox * 4 + 20)
     this.add.existing(g)
 
-    const damageChoice = new ObservableValue<string>("Arrow")
+    const damageChoice = new ObservableValue<string>("Kinetic")
     const damageMonitor = new ValueMonitor(this, hBox * 3 - 70, 60, 0xe1eb, "#FF0000", damageChoice)
     this.add.existing(damageMonitor)
 
@@ -55,7 +56,7 @@ export default class StylePreview extends Scene {
     const damageLayout = new VBoxLayout(new Point(5, 5))
     damageLayout.apply(damage)
 
-    const deliveryChoice = new ObservableValue<string>("Shot")
+    const deliveryChoice = new ObservableValue<string>("Arrow")
     const deliveryMonitor = new ValueMonitor(this, hBox * 3 + 70, 60, 0xe558, "#009900", deliveryChoice)
     this.add.existing(deliveryMonitor)
 
@@ -161,6 +162,15 @@ export default class StylePreview extends Scene {
     this.damageText = this.add.paragraph(550, 660, 750, ``)
     this.deliveryText = this.add.paragraph(550, 695, 750, ``)
 
+    this.add.label(300, 595, "Projectiles").setOrigin(0.5)
+    this.projectiles = [
+      this.add.sprite(200, 630, "arrow-default"),
+      this.add.sprite(250, 630, "bullet-default"),
+      this.add.sprite(300, 630, "missile-default"),
+      this.add.sprite(350, 630, "mine-default"),
+      this.add.sprite(400, 630, "grenade-default")
+    ]
+
     const generate = () => {
       this.organize = {
         damage: damageChoice.value,
@@ -170,6 +180,7 @@ export default class StylePreview extends Scene {
       createTurret()
       createWeapon()
       createTower()
+      this.projectiles.forEach(p => p.setTint(DAMAGE_DATA[damageChoice.value].color.value))
       this.damageText.text = `${DAMAGE_DATA[damageChoice.value].description}`
       this.deliveryText.text = `${deliveryChoice.value}: ${DELIVERY_DATA[deliveryChoice.value].description}`
     }
@@ -178,13 +189,6 @@ export default class StylePreview extends Scene {
     deliveryChoice.addListener("changed", generate)
 
     generate()
-
-    this.add.label(900, 565, "Projectiles").setOrigin(0.5)
-    this.add.sprite(800, 600, "arrow-default")
-    this.add.sprite(850, 600, "bullet-default")
-    this.add.sprite(900, 600, "missile-default")
-    this.add.sprite(950, 600, "mine-default")
-    this.add.sprite(1000, 600, "grenade-default")
 
 
     // TOWER_LIST.forEach((model, i) => {

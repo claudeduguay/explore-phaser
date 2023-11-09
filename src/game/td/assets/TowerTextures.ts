@@ -340,7 +340,8 @@ function typeAndCorners(type: IPlatformType, cornerType: ICornerType, special: P
 }
 
 export const PLATFORM_CONFIG: Record<IDeliveryType, ITextureConfig<IPlatformOptions>> = {
-  Shot: typeAndCorners("box", "angle"),
+  Arrow: typeAndCorners("box", "angle"),
+  Bullet: typeAndCorners("box", "angle", { edges: edges("curve") }),
   Beam: typeAndCorners("box", "curve-i"),
   Spray: typeAndCorners("box", "curve-o"),
   Cloud: typeAndCorners("ntagon", "curve-o", { divisions: 8 }),
@@ -349,11 +350,12 @@ export const PLATFORM_CONFIG: Record<IDeliveryType, ITextureConfig<IPlatformOpti
   Area: typeAndCorners("ntagon", "angle", { divisions: 30 }),
   Missile: typeAndCorners("box", "box-o", { edges: edges("curve") }),
   Mine: typeAndCorners("box", "angle", { edges: edges("curve") }),
-  Grenade: typeAndCorners("box", "curve-o", { edges: edges("curve") }),
+  Grenade: typeAndCorners("box", "curve-o", { edges: edges("wave") }),
 }
 
 export const TURRET_CONFIG: Record<IDeliveryType, ITextureConfig<ITurretOptions>> = {
-  Shot: roundBackTurret(),
+  Arrow: smallTurret(),
+  Bullet: roundBackTurret(),
   Beam: smallTurret(),
   Spray: roundFrontTurret(),
   Cloud: roundTurret(),
@@ -366,7 +368,8 @@ export const TURRET_CONFIG: Record<IDeliveryType, ITextureConfig<ITurretOptions>
 }
 
 export const WEAPON_CONFIG: Record<IDeliveryType, ITextureConfig<IWeaponOptions>> = {
-  Shot: rectWeapon(),
+  Arrow: pointWeapon(undefined, false),
+  Bullet: rectWeapon(),
   Beam: pointWeapon(),
   Spray: funnelWeapon(),
   Cloud: pointInsideWeapon(),
@@ -380,6 +383,7 @@ export const WEAPON_CONFIG: Record<IDeliveryType, ITextureConfig<IWeaponOptions>
 
 
 export function registerTower(scene: Scene, key: string, { damage, delivery }: ITowerOrganize) {
+  console.log("Damage:", damage, ", Delivery:", delivery)
   const color = rgbStringToColors(DAMAGE_DATA[damage].color.value)
 
   const platform = PLATFORM_CONFIG[delivery]

@@ -510,8 +510,8 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       rotation: "target",
     },
     organize: {
-      damage: "Bullet",
-      delivery: "Shot",
+      damage: "Kinetic",
+      delivery: "Bullet",
     },
     general: {
       level: 3,
@@ -519,8 +519,8 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      shield: { type: "damage", dps: 25, name: "Bullet" },
-      health: { type: "damage", dps: 25, name: "Bullet" }
+      shield: { type: "damage", dps: 25, name: "Kinetic" },
+      health: { type: "damage", dps: 25, name: "Kinetic" }
     }
   },
   missile: {
@@ -560,7 +560,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       rotation: 1,
     },
     organize: {
-      damage: "Arrow",
+      damage: "Kinetic",
       delivery: "Burst",
     },
     general: {
