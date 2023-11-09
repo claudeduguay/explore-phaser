@@ -5,7 +5,7 @@ import { IWeaponOptions } from "./WeaponFactory"
 import { ITurretOptions } from "./TurretFactory"
 import { ITextureConfig, makePlatform, makeWeapon, makeTurret } from "./TextureFactory"
 import { box } from "../../../util/geom/Box"
-import { TOWER_INDEX } from "../entity/model/ITowerModel"
+import { ITowerOrganize, TOWER_INDEX } from "../entity/model/ITowerModel"
 import { DAMAGE_DATA, IDeliveryType } from "../entity/model/ITowerData"
 
 // ------------------------------------------------------------------
@@ -340,7 +340,7 @@ function typeAndCorners(type: IPlatformType, cornerType: ICornerType, special: P
 }
 
 export const PLATFORM_CONFIG: Record<IDeliveryType, ITextureConfig<IPlatformOptions>> = {
-  Projectile: typeAndCorners("box", "angle"),
+  Shot: typeAndCorners("box", "angle"),
   Beam: typeAndCorners("box", "curve-i"),
   Spray: typeAndCorners("box", "curve-o"),
   Cloud: typeAndCorners("ntagon", "curve-o", { divisions: 8 }),
@@ -353,7 +353,7 @@ export const PLATFORM_CONFIG: Record<IDeliveryType, ITextureConfig<IPlatformOpti
 }
 
 export const TURRET_CONFIG: Record<IDeliveryType, ITextureConfig<ITurretOptions>> = {
-  Projectile: roundBackTurret(),
+  Shot: roundBackTurret(),
   Beam: smallTurret(),
   Spray: roundFrontTurret(),
   Cloud: roundTurret(),
@@ -366,7 +366,7 @@ export const TURRET_CONFIG: Record<IDeliveryType, ITextureConfig<ITurretOptions>
 }
 
 export const WEAPON_CONFIG: Record<IDeliveryType, ITextureConfig<IWeaponOptions>> = {
-  Projectile: rectWeapon(),
+  Shot: rectWeapon(),
   Beam: pointWeapon(),
   Spray: funnelWeapon(),
   Cloud: pointInsideWeapon(),
@@ -378,23 +378,26 @@ export const WEAPON_CONFIG: Record<IDeliveryType, ITextureConfig<IWeaponOptions>
   Grenade: pointWeapon(undefined, false),
 }
 
+export function registerTower(scene: Scene, key: string, { damage, delivery }: ITowerOrganize) {
+  const color = rgbStringToColors(DAMAGE_DATA[damage].color.value)
+
+  const platform = PLATFORM_CONFIG[delivery]
+  platform.options.color = color
+  makePlatform(scene, `${key.toLowerCase()}-platform`, platform)
+
+  const turret = TURRET_CONFIG[delivery]
+  turret.options.color = color
+  makeTurret(scene, `${key.toLowerCase()}-turret`, turret)
+
+  const weapon = WEAPON_CONFIG[delivery]
+  weapon.options.color = color
+  makeWeapon(scene, `${key.toLowerCase()}-weapon`, weapon)
+}
 
 export default function registerTowerTextures(scene: Scene) {
-  // We still generate based on defined ITowerModel's TOWER_INDEX
-  for (let [key, { organize: { damage, delivery } }] of Object.entries(TOWER_INDEX)) {
+  // We generate based on defined ITowerModels in TOWER_INDEX
+  for (let { key, organize } of Object.values(TOWER_INDEX)) {
     // Shape and coloring is now based on organize structure
-    const color = rgbStringToColors(DAMAGE_DATA[damage].color.value)
-
-    const platform = PLATFORM_CONFIG[delivery]
-    platform.options.color = color
-    makePlatform(scene, `${key.toLowerCase()}-platform`, platform)
-
-    const turret = TURRET_CONFIG[delivery]
-    turret.options.color = color
-    makeTurret(scene, `${key.toLowerCase()}-turret`, turret)
-
-    const weapon = WEAPON_CONFIG[delivery]
-    weapon.options.color = color
-    makeWeapon(scene, `${key.toLowerCase()}-weapon`, weapon)
+    registerTower(scene, key, organize)
   }
 }

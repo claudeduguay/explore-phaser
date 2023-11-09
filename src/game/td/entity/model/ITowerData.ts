@@ -1,5 +1,5 @@
 
-export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Burst", "Vertical", "Area", "Missile", "Mine", "Grenade"]
+export const TYPES_DELIVERY = ["Shot", "Beam", "Spray", "Cloud", "Burst", "Vertical", "Area", "Missile", "Mine", "Grenade"]
 export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Force", "Plasma", "Fire", "Water", "Ice", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
 
 export type IDeliveryType = typeof TYPES_DELIVERY[number]
@@ -91,7 +91,7 @@ export interface IDeliveryData {
 }
 
 export const DELIVERY_DATA: { [key: IDeliveryType]: IDeliveryData } = {
-  Projectile: { description: "A narrow, single-target, emission of particles, firing at a spaced out interval" },
+  Shot: { description: "A narrow, single-target, emission of particles, firing at a spaced out interval" },
   Beam: { description: "A narrow, single-target continous beam of particles" },
   Spray: { description: "A cone, single-target, but affects other targets within the cone" },
   Cloud: { description: "A multi-target cloud, covering the tower's range, effects last for a given time" },

@@ -1,5 +1,5 @@
 import { GameObjects, Scene } from "phaser";
-import { GENERATED_INDEX, ITowerOrganize, platformKey, prefixKey, turretKey, weaponKey } from "../model/ITowerModel";
+import { ITowerOrganize, platformKey, turretKey, weaponKey } from "../model/ITowerModel";
 import { TYPES_DAMAGE, TYPES_DELIVERY } from "../model/ITowerData"
 import Button from "../../gui/Button";
 import { VBoxLayout } from "../../gui/layout/ILayout";
@@ -13,7 +13,6 @@ import { ITurretOptions } from "../../assets/TurretFactory";
 import { IWeaponOptions } from "../../assets/WeaponFactory";
 import { PLATFORM_CONFIG, TURRET_CONFIG, WEAPON_CONFIG, rgbStringToColors } from "../../assets/TowerTextures";
 import { DAMAGE_DATA, DELIVERY_DATA } from "../model/ITowerData";
-import TDTower from "./TDTower";
 
 
 // Note: May need to make this a scene to manage the fact that 
@@ -56,7 +55,7 @@ export default class StylePreview extends Scene {
     const damageLayout = new VBoxLayout(new Point(5, 5))
     damageLayout.apply(damage)
 
-    const deliveryChoice = new ObservableValue<string>("Projectile")
+    const deliveryChoice = new ObservableValue<string>("Shot")
     const deliveryMonitor = new ValueMonitor(this, hBox * 3 + 70, 60, 0xe558, "#009900", deliveryChoice)
     this.add.existing(deliveryMonitor)
 

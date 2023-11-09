@@ -199,7 +199,7 @@ Need to develop a pivot table with various effects and styles, w/names, etc.
 
 Delivery mechanisms:
 
-* Projectile - A narrow, single-target, emission of spaced particles.
+* Shoot - A narrow, single-target, emission of spaced particles.
 * Beam - A narrow, single-target continous beam of particles.
 * Spray - A cone, single-target, but affects other targets within the cone.
 * Cloud - A multi-target cloud, covering the towers' range.
