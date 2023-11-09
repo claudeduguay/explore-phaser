@@ -127,7 +127,7 @@ export function modelGenerator(organize: ITowerOrganize): ITowerModel {
 export const GENERATED_INDEX: Record<string, ITowerModel> = {}
 export const GENERATED_GROUPS: Record<string, ITowerModel[]> = {}
 
-export const GENERATED = Object.keys(DAMAGE_DATA).map((damage: IDamageType) =>
+export const GENERATED_LIST = Object.keys(DAMAGE_DATA).map((damage: IDamageType) =>
   Object.keys(DELIVERY_DATA).map((delivery: IDeliveryType) => {
     const model = modelGenerator({ damage, delivery })
     GENERATED_INDEX[model.key] = model

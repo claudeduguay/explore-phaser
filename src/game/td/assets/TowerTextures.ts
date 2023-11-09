@@ -5,7 +5,7 @@ import { IWeaponOptions } from "./WeaponFactory"
 import { ITurretOptions } from "./TurretFactory"
 import { ITextureConfig, makePlatform, makeWeapon, makeTurret } from "./TextureFactory"
 import { box } from "../../../util/geom/Box"
-import { ITowerOrganize, TOWER_INDEX } from "../entity/model/ITowerModel"
+import { ITowerOrganize, TOWER_INDEX, TOWER_LIST } from "../entity/model/ITowerModel"
 import { DAMAGE_DATA, IDeliveryType } from "../entity/model/ITowerData"
 
 // ------------------------------------------------------------------
@@ -378,6 +378,7 @@ export const WEAPON_CONFIG: Record<IDeliveryType, ITextureConfig<IWeaponOptions>
   Grenade: pointWeapon(undefined, false),
 }
 
+
 export function registerTower(scene: Scene, key: string, { damage, delivery }: ITowerOrganize) {
   const color = rgbStringToColors(DAMAGE_DATA[damage].color.value)
 
@@ -396,7 +397,7 @@ export function registerTower(scene: Scene, key: string, { damage, delivery }: I
 
 export default function registerTowerTextures(scene: Scene) {
   // We generate based on defined ITowerModels in TOWER_INDEX
-  for (let { key, organize } of Object.values(TOWER_INDEX)) {
+  for (let { key, organize } of TOWER_LIST) {
     // Shape and coloring is now based on organize structure
     registerTower(scene, key, organize)
   }
