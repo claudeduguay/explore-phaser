@@ -5,8 +5,8 @@ import { IWeaponOptions } from "./WeaponFactory"
 import { ITurretOptions } from "./TurretFactory"
 import { ITextureConfig, makePlatform, makeWeapon, makeTurret } from "./TextureFactory"
 import { box } from "../../../util/geom/Box"
-import { IDeliveryType, TOWER_INDEX } from "../entity/model/ITowerModel"
-import { DAMAGE_DATA } from "../entity/model/ITowerData"
+import { TOWER_INDEX } from "../entity/model/ITowerModel"
+import { DAMAGE_DATA, IDeliveryType } from "../entity/model/ITowerData"
 
 // ------------------------------------------------------------------
 // OLD COLOR STYLES

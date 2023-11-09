@@ -1,5 +1,6 @@
 import { GameObjects, Scene } from "phaser";
-import { ITowerOrganize, TYPES_DAMAGE, TYPES_DELIVERY, platformKey, turretKey, weaponKey } from "../model/ITowerModel";
+import { GENERATED_INDEX, ITowerOrganize, platformKey, prefixKey, turretKey, weaponKey } from "../model/ITowerModel";
+import { TYPES_DAMAGE, TYPES_DELIVERY } from "../model/ITowerData"
 import Button from "../../gui/Button";
 import { VBoxLayout } from "../../gui/layout/ILayout";
 import Point from "../../../../util/geom/Point";
@@ -12,6 +13,7 @@ import { ITurretOptions } from "../../assets/TurretFactory";
 import { IWeaponOptions } from "../../assets/WeaponFactory";
 import { PLATFORM_CONFIG, TURRET_CONFIG, WEAPON_CONFIG, rgbStringToColors } from "../../assets/TowerTextures";
 import { DAMAGE_DATA, DELIVERY_DATA } from "../model/ITowerData";
+import TDTower from "./TDTower";
 
 
 // Note: May need to make this a scene to manage the fact that 
@@ -136,6 +138,10 @@ export default class StylePreview extends Scene {
     }
 
     const createTower = () => {
+      // const key = prefixKey(this.organize)
+      // const model = GENERATED_INDEX[key]
+      // this.towerContainer = this.add.tower(550, 505, model)
+
       const pKey = platformKey(this.organize)
       const tKey = turretKey(this.organize)
       const wKey = weaponKey(this.organize)

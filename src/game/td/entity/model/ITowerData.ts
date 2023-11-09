@@ -1,4 +1,9 @@
-import { IDamageType, IDeliveryType, TYPES_DAMAGE, TYPES_DELIVERY } from "./ITowerModel"
+
+export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Burst", "Vertical", "Area", "Missile", "Mine", "Grenade"]
+export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Force", "Plasma", "Fire", "Water", "Ice", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
+
+export type IDeliveryType = typeof TYPES_DELIVERY[number]
+export type IDamageType = typeof TYPES_DAMAGE[number]
 
 export interface IBaseColor {
   name: string,

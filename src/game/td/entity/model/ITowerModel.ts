@@ -1,10 +1,5 @@
 import { IPropertyEffect } from "./EffectsProxy"
-
-export const TYPES_DELIVERY = ["Projectile", "Beam", "Spray", "Cloud", "Burst", "Vertical", "Area", "Missile", "Mine", "Grenade"]
-export const TYPES_DAMAGE = ["Arrow", "Bullet", "Light", "Dark", "Force", "Plasma", "Fire", "Water", "Ice", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
-
-export type IDeliveryType = typeof TYPES_DELIVERY[number]
-export type IDamageType = typeof TYPES_DAMAGE[number]
+import { IDamageType, IDeliveryType, DAMAGE_DATA, DELIVERY_DATA } from "./ITowerData"
 
 export interface ITowerMeta {
   distribution: "linear" | "radial"  // Weapon distribution
@@ -95,6 +90,53 @@ export const prefixKey = ({ damage, delivery }: ITowerOrganize) => `${damage}-${
 export const platformKey = (organize: ITowerOrganize) => `${prefixKey(organize)}-platform`.toLowerCase()
 export const turretKey = (organize: ITowerOrganize) => `${prefixKey(organize)}-turret`.toLowerCase()
 export const weaponKey = (organize: ITowerOrganize) => `${prefixKey(organize)}-weapon`.toLowerCase()
+
+
+// ------------------------------------------------------------------
+// GENERATOR
+// ------------------------------------------------------------------
+
+export const RADIAL: IDeliveryType[] = ["Area", "Burst", "Cloud", "Vertical"]
+
+export function modelGenerator(organize: ITowerOrganize): ITowerModel {
+  const { damage, delivery } = organize
+  return {
+    key: prefixKey(organize),
+    group: delivery.toLowerCase(),
+    name: `${damage} ${delivery}`,
+    description: "Fires a lazer beam at a single enemy within range.",
+    locked: true,
+    meta: {
+      distribution: RADIAL.includes(delivery) ? "radial" : "linear",
+      rotation: RADIAL.includes(delivery) ? RADIAL.indexOf(delivery) - 1 : "target",
+    },
+    organize,
+    general: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
+    damage: {
+      shield: { type: "damage", dps: 25, name: damage },
+      health: { type: "damage", dps: 25, name: damage }
+    }
+  }
+}
+
+
+export const GENERATED_INDEX: Record<string, ITowerModel> = {}
+export const GENERATED_GROUPS: Record<string, ITowerModel[]> = {}
+
+export const GENERATED = Object.keys(DAMAGE_DATA).map((damage: IDamageType) =>
+  Object.keys(DELIVERY_DATA).map((delivery: IDeliveryType) => {
+    const model = modelGenerator({ damage, delivery })
+    GENERATED_INDEX[model.key] = model
+    if (!GENERATED_GROUPS[model.group]) {
+      GENERATED_GROUPS[model.group] = []
+    }
+    GENERATED_GROUPS[model.group].push(model)
+    return model
+  }))
 
 
 // ------------------------------------------------------------------
