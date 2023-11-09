@@ -1,6 +1,6 @@
 import { GameObjects, Scene } from "phaser";
 import { ITowerOrganize, platformKey, turretKey, weaponKey } from "../model/ITowerModel";
-import { TYPES_DAMAGE, TYPES_DELIVERY } from "../model/ITowerData"
+import { IDamageType, IDeliveryType, TYPES_DAMAGE, TYPES_DELIVERY } from "../model/ITowerData"
 import Button from "../../gui/Button";
 import { VBoxLayout } from "../../gui/layout/ILayout";
 import Point from "../../../../util/geom/Point";
@@ -48,10 +48,18 @@ export default class StylePreview extends Scene {
 
     const damage = this.add.container(75, 70)
     damage.add(new Label(this, 0, 0, "Damage"))
-    TYPES_DAMAGE.forEach((type: string) => {
-      const button = new Button(this, 0, 0, 75, 25, type, "flat")
+    TYPES_DAMAGE.forEach((type: IDamageType) => {
+      const item = this.add.container()
+      item.setSize(100, 25)
+      const button = new Button(this, -10, 0, 75, 25, type, "flat")
       button.onClick = () => damageChoice.value = type
-      damage.add(button)
+      item.add(button)
+      const spriteKey = `${type.toLowerCase()}-default`
+      if (this.textures.exists(spriteKey)) {
+        const sprite = this.add.sprite(50, 0, spriteKey)
+        item.add(sprite)
+      }
+      damage.add(item)
     })
     const damageLayout = new VBoxLayout(new Point(5, 5))
     damageLayout.apply(damage)
@@ -62,10 +70,18 @@ export default class StylePreview extends Scene {
 
     const delivery = this.add.container(hBox * 6 - 75, 70)
     delivery.add(new Label(this, 0, 0, "Delivery"))
-    TYPES_DELIVERY.forEach((type: string) => {
-      const button = new Button(this, 0, 0, 75, 25, type, "flat")
+    TYPES_DELIVERY.forEach((type: IDeliveryType) => {
+      const item = this.add.container()
+      item.setSize(100, 25)
+      const spriteKey = `${type.toLowerCase()}-default`
+      if (this.textures.exists(spriteKey)) {
+        const sprite = this.add.sprite(-70, 0, spriteKey)
+        item.add(sprite)
+      }
+      const button = new Button(this, -10, 0, 75, 25, type, "flat")
       button.onClick = () => deliveryChoice.value = type
-      delivery.add(button)
+      item.add(button)
+      delivery.add(item)
     })
     const deliveryLayout = new VBoxLayout(new Point(5, 5))
     deliveryLayout.apply(delivery)
