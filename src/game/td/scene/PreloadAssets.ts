@@ -1,5 +1,5 @@
 import { Loader, Scene } from "phaser"
-import { makeHeightRects, makeLandscapeTile, makeNineSlice, makePathTiles } from "../assets/TextureFactory"
+import { makeArrow, makeHeightRects, makeLandscapeTile, makeNineSlice, makePathTiles, makeMissile, makeMine } from "../assets/TextureFactory"
 import { generateEnemies } from "../entity/model/IEnemyModel"
 import FontFaceObserver from "fontfaceobserver"
 import { makeButtonTextures, registerButtonFactory } from "../gui/Button"
@@ -108,6 +108,9 @@ export function preloadImages(scene: Scene) {
 
 // Note: Tower textures need to be loaded by TPlayScene
 export function preloadTextures(scene: Scene) {
+  makeArrow(scene, "arrow-default", { size: { x: 10, y: 16 }, options: { color: "orange" } })
+  makeMissile(scene, "missile-default", { size: { x: 10, y: 24 }, options: { color: "orange" } })
+  makeMine(scene, "mine-default", { size: { x: 15, y: 15 }, options: { color: "orange", center: "black" } })
   makePathTiles(scene, "path_tiles", 64, 64)
   makeHeightRects(scene, "height_cells", 64, 64, 10)
   makeLandscapeTile(scene, "landscape", { size: { x: 64, y: 64 }, options: { type: "grass" } })

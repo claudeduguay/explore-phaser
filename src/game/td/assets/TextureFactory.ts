@@ -3,7 +3,7 @@ import { Scene } from "phaser"
 import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal"
 import IRenderFunction from "../../../util/IRenderFunction"
 import { IPlatformOptions, platformRendererFunctionFactory } from "./PlatformFactory"
-import { drawEllipse, rotated } from "../../../util/DrawUtil"
+import { NumberPair, drawEllipse, drawLine, drawPolygon, rotated } from "../../../util/DrawUtil"
 import { ITurretOptions, turretRendererFunctionFactory } from "./TurretFactory"
 import { IWeaponOptions, weaponRendererFunctionFactory } from "./WeaponFactory"
 import { pathRendererFunctionFactory } from "./PathFactory"
@@ -195,6 +195,42 @@ export function makeEllipse(scene: Scene, key: string, w: number, h: number,
 export interface ITextureConfig<T> {
   size: { x: number, y: number },
   options: Partial<T>
+}
+
+export function makeArrow(scene: Scene, key: string, config: ITextureConfig<{ color: string }>) {
+  const { x: w, y: h } = config.size
+  const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
+    g.lineWidth = 1
+    const color = config.options.color || "white"
+    drawLine(g, w / 2, 0, w / 2, h, color)
+    drawLine(g, w / 2, 0, 0, h / 3, color)
+    drawLine(g, w / 2, 0, w, h / 3, color)
+  }
+  renderCanvas(scene, key, config.size.x, config.size.y, render)
+}
+
+export function makeMissile(scene: Scene, key: string, config: ITextureConfig<{ color: string }>) {
+  const { x: w, y: h } = config.size
+  const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
+    const polygon: NumberPair[] = [[w / 2, 0], [0, h], [w / 2, h - h / 3], [w, h]]
+    drawPolygon(g, polygon)
+    g.fillStyle = config.options.color || "white"
+    g.fill()
+  }
+  renderCanvas(scene, key, config.size.x, config.size.y, render)
+}
+
+export function makeMine(scene: Scene, key: string, config: ITextureConfig<{ color: string, center: string }>) {
+  const { x: w, y: h } = config.size
+  const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
+    drawEllipse(g, w / 2, h / 2, w / 2, h / 2)
+    g.fillStyle = config.options.color || "black"
+    g.fill()
+    drawEllipse(g, w / 2, h / 2, w / 4, h / 4)
+    g.fillStyle = config.options.center || "white"
+    g.fill()
+  }
+  renderCanvas(scene, key, config.size.x, config.size.y, render)
 }
 
 export function makeNineSlice(scene: Scene, key: string, config: ITextureConfig<Partial<INineSliceOptions>>) {

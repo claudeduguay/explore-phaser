@@ -179,6 +179,11 @@ export default class StylePreview extends Scene {
 
     generate()
 
+    this.add.sprite(200, 550, "arrow-default")
+    this.add.sprite(250, 550, "missile-default")
+    this.add.sprite(300, 550, "mine-default")
+
+
     // TOWER_LIST.forEach((model, i) => {
     //   const row = Math.floor(i / 6)
     //   const col = i % 6
