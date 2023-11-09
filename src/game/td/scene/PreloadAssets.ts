@@ -1,5 +1,5 @@
 import { Loader, Scene } from "phaser"
-import { makeArrow, makeHeightRects, makeLandscapeTile, makeNineSlice, makePathTiles, makeMissile, makeMine, makeBullet, makeGrenade } from "../assets/TextureFactory"
+import { makeArrow, makeHeightRects, makeLandscapeTile, makeNineSlice, makePathTiles, makeMissile, makeMine, makeBullet, makeGrenade, makeCone } from "../assets/TextureFactory"
 import { generateEnemies } from "../entity/model/IEnemyModel"
 import FontFaceObserver from "fontfaceobserver"
 import { makeButtonTextures, registerButtonFactory } from "../gui/Button"
@@ -100,6 +100,11 @@ export function preloadImages(scene: Scene) {
   scene.load.image('circle', 'assets/particles/circle_01.png')
   scene.load.image('kinetic', 'assets/particles/scorch_01.png')
   scene.load.image('water', 'assets/particles/flame_02.png')
+  scene.load.image('earth', 'assets/particles/dirt_02.png')
+  scene.load.image('burst', 'assets/particles/star_09.png')
+  scene.load.image('beam', 'assets/particles/trace_06.png')
+  scene.load.image('cloud', 'assets/particles/circle_05.png')
+  scene.load.image('area', 'assets/particles/star_09.png')
 
   // First Explosion image is 583x536, but they are not all the same size
   // Todo: Consider making a (smaller, already capturing frames) tilesheet
@@ -112,6 +117,7 @@ export function preloadImages(scene: Scene) {
 
 // Note: Tower textures need to be loaded by TPlayScene
 export function preloadTextures(scene: Scene) {
+  makeCone(scene, "spray-default", { size: { x: 10, y: 16 }, options: { color: "white" } })
   makeArrow(scene, "arrow-default", { size: { x: 10, y: 16 }, options: { color: "white" } })
   makeBullet(scene, "bullet-default", { size: { x: 7, y: 16 }, options: { color: "white" } })
   makeMissile(scene, "missile-default", { size: { x: 15, y: 30 }, options: { color: "white" } })

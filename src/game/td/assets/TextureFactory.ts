@@ -197,6 +197,17 @@ export interface ITextureConfig<T> {
   options: Partial<T>
 }
 
+export function makeCone(scene: Scene, key: string, config: ITextureConfig<{ color: string }>) {
+  const { x: w, y: h } = config.size
+  const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
+    const polygon: NumberPair[] = [[w / 2, h], [0, 0], [w, 0]]
+    drawPolygon(g, polygon)
+    g.fillStyle = config.options.color || "white"
+    g.fill()
+  }
+  renderCanvas(scene, key, config.size.x, config.size.y, render)
+}
+
 export function makeArrow(scene: Scene, key: string, config: ITextureConfig<{ color: string }>) {
   const { x: w, y: h } = config.size
   const render: IRenderFunction = (g: CanvasRenderingContext2D) => {

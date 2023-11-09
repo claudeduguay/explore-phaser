@@ -14,7 +14,6 @@ import { IWeaponOptions } from "../../assets/WeaponFactory";
 import { PLATFORM_CONFIG, TURRET_CONFIG, WEAPON_CONFIG, rgbStringToColors } from "../../assets/TowerTextures";
 import { DAMAGE_DATA, DELIVERY_DATA } from "../model/ITowerData";
 
-const d = ["Kinetic", "Light", "Dark", "Force", "Plasma", "Fire", "Water", "Ice", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
 const iconMap: Record<string, { key: string, scale?: number }> = {
   // Damage
   "kinetic-default": { key: "kinetic", scale: 0.075 },
@@ -25,7 +24,7 @@ const iconMap: Record<string, { key: string, scale?: number }> = {
   "fire-default": { key: "fire", scale: 0.075 },
   "water-default": { key: "water", scale: 0.075 },
   "ice-default": { key: "ice", scale: 0.075 },
-  "earth-default": { key: "rock", scale: 0.05 },
+  "earth-default": { key: "earth", scale: 0.05 },
   "air-default": { key: "stun", scale: 0.075 },
   "poison-default": { key: "smoke", scale: 0.075 },
   "electric-default": { key: "spark", scale: 0.075 },
@@ -34,12 +33,12 @@ const iconMap: Record<string, { key: string, scale?: number }> = {
   "speed-default": { key: "circle", scale: 0.05 },
   "value-default": { key: "circle", scale: 0.05 },
   // Delivery
-  "beam-default": { key: "circle", scale: 0.05 },
-  "spray-default": { key: "circle", scale: 0.05 },
-  "cloud-default": { key: "circle", scale: 0.05 },
-  "burst-default": { key: "circle", scale: 0.05 },
-  "vertical-default": { key: "circle", scale: 0.05 },
-  "area-default": { key: "circle", scale: 0.05 },
+  "beam-default": { key: "beam", scale: 0.075 },
+  // "spray-default": { key: "circle", scale: 0.05 },
+  "cloud-default": { key: "cloud", scale: 0.075 },
+  "burst-default": { key: "burst", scale: 0.075 },
+  "vertical-default": { key: "rain", scale: 0.1 },
+  "area-default": { key: "area", scale: 0.05 },
 }
 
 // Note: May need to make this a scene to manage the fact that 
