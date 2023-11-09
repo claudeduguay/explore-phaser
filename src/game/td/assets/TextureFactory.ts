@@ -209,10 +209,21 @@ export function makeArrow(scene: Scene, key: string, config: ITextureConfig<{ co
   renderCanvas(scene, key, config.size.x, config.size.y, render)
 }
 
+export function makeBullet(scene: Scene, key: string, config: ITextureConfig<{ color: string }>) {
+  const { x: w, y: h } = config.size
+  const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
+    const polygon: NumberPair[] = [[w / 2, 0], [0, h / 4], [0, h], [w, h], [w, h / 4]]
+    drawPolygon(g, polygon)
+    g.fillStyle = config.options.color || "white"
+    g.fill()
+  }
+  renderCanvas(scene, key, config.size.x, config.size.y, render)
+}
+
 export function makeMissile(scene: Scene, key: string, config: ITextureConfig<{ color: string }>) {
   const { x: w, y: h } = config.size
   const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
-    const polygon: NumberPair[] = [[w / 2, 0], [0, h], [w / 2, h - h / 3], [w, h]]
+    const polygon: NumberPair[] = [[w / 2, 0], [0, h], [w / 3, h - h / 3], [w - w / 3, h - h / 3], [w, h]]
     drawPolygon(g, polygon)
     g.fillStyle = config.options.color || "white"
     g.fill()
@@ -228,6 +239,19 @@ export function makeMine(scene: Scene, key: string, config: ITextureConfig<{ col
     g.fill()
     drawEllipse(g, w / 2, h / 2, w / 4, h / 4)
     g.fillStyle = config.options.center || "white"
+    g.fill()
+  }
+  renderCanvas(scene, key, config.size.x, config.size.y, render)
+}
+
+export function makeGrenade(scene: Scene, key: string, config: ITextureConfig<{ color: string, top: string }>) {
+  const { x: w, y: h } = config.size
+  const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
+    drawEllipse(g, w / 2, h / 2, w / 2, h / 2)
+    g.fillStyle = config.options.color || "black"
+    g.fill()
+    drawEllipse(g, w / 2, h / 2.5, w / 3.5, h / 3)
+    g.fillStyle = config.options.top || "white"
     g.fill()
   }
   renderCanvas(scene, key, config.size.x, config.size.y, render)
