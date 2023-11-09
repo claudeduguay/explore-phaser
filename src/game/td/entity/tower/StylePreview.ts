@@ -179,11 +179,12 @@ export default class StylePreview extends Scene {
 
     generate()
 
-    this.add.sprite(200, 550, "arrow-default")
-    this.add.sprite(250, 550, "bullet-default")
-    this.add.sprite(300, 550, "missile-default")
-    this.add.sprite(350, 550, "mine-default")
-    this.add.sprite(400, 550, "grenade-default")
+    this.add.label(900, 565, "Projectiles").setOrigin(0.5)
+    this.add.sprite(800, 600, "arrow-default")
+    this.add.sprite(850, 600, "bullet-default")
+    this.add.sprite(900, 600, "missile-default")
+    this.add.sprite(950, 600, "mine-default")
+    this.add.sprite(1000, 600, "grenade-default")
 
 
     // TOWER_LIST.forEach((model, i) => {
