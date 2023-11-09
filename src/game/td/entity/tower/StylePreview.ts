@@ -14,6 +14,33 @@ import { IWeaponOptions } from "../../assets/WeaponFactory";
 import { PLATFORM_CONFIG, TURRET_CONFIG, WEAPON_CONFIG, rgbStringToColors } from "../../assets/TowerTextures";
 import { DAMAGE_DATA, DELIVERY_DATA } from "../model/ITowerData";
 
+const d = ["Kinetic", "Light", "Dark", "Force", "Plasma", "Fire", "Water", "Ice", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
+const iconMap: Record<string, { key: string, scale?: number }> = {
+  // Damage
+  "kinetic-default": { key: "kinetic", scale: 0.075 },
+  "light-default": { key: "light", scale: 0.05 },
+  "dark-default": { key: "smoke", scale: 0.075 },
+  "force-default": { key: "slash", scale: 0.075 },
+  "plasma-default": { key: "spark", scale: 0.075 },
+  "fire-default": { key: "fire", scale: 0.075 },
+  "water-default": { key: "water", scale: 0.075 },
+  "ice-default": { key: "ice", scale: 0.075 },
+  "earth-default": { key: "rock", scale: 0.05 },
+  "air-default": { key: "stun", scale: 0.075 },
+  "poison-default": { key: "smoke", scale: 0.075 },
+  "electric-default": { key: "spark", scale: 0.075 },
+  "health-default": { key: "circle", scale: 0.05 },
+  "shield-default": { key: "circle", scale: 0.05 },
+  "speed-default": { key: "circle", scale: 0.05 },
+  "value-default": { key: "circle", scale: 0.05 },
+  // Delivery
+  "beam-default": { key: "circle", scale: 0.05 },
+  "spray-default": { key: "circle", scale: 0.05 },
+  "cloud-default": { key: "circle", scale: 0.05 },
+  "burst-default": { key: "circle", scale: 0.05 },
+  "vertical-default": { key: "circle", scale: 0.05 },
+  "area-default": { key: "circle", scale: 0.05 },
+}
 
 // Note: May need to make this a scene to manage the fact that 
 // behaviors add elements relative to the tower position in the scene
@@ -54,9 +81,15 @@ export default class StylePreview extends Scene {
       const button = new Button(this, -10, 0, 75, 25, type, "flat")
       button.onClick = () => damageChoice.value = type
       item.add(button)
-      const spriteKey = `${type.toLowerCase()}-default`
+      let spriteKey = `${type.toLowerCase()}-default`
+      let scale = 1
+      if (iconMap[spriteKey]) {
+        scale = iconMap[spriteKey].scale || 1
+        spriteKey = iconMap[spriteKey].key
+      }
       if (this.textures.exists(spriteKey)) {
         const sprite = this.add.sprite(50, 0, spriteKey)
+        sprite.setScale(scale)
         item.add(sprite)
       }
       damage.add(item)
@@ -73,9 +106,15 @@ export default class StylePreview extends Scene {
     TYPES_DELIVERY.forEach((type: IDeliveryType) => {
       const item = this.add.container()
       item.setSize(100, 25)
-      const spriteKey = `${type.toLowerCase()}-default`
+      let spriteKey = `${type.toLowerCase()}-default`
+      let scale = 1
+      if (iconMap[spriteKey]) {
+        scale = iconMap[spriteKey].scale || 1
+        spriteKey = iconMap[spriteKey].key
+      }
       if (this.textures.exists(spriteKey)) {
         const sprite = this.add.sprite(-70, 0, spriteKey)
+        sprite.setScale(scale)
         item.add(sprite)
       }
       const button = new Button(this, -10, 0, 75, 25, type, "flat")

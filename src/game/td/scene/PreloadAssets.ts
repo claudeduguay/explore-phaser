@@ -96,6 +96,10 @@ export function preloadImages(scene: Scene) {
   scene.load.image('spark', 'assets/particles/spark_04.png')
   scene.load.image('slash', 'assets/particles/slash_03.png')
   scene.load.image('muzzle', 'assets/particles/muzzle_01.png')
+  scene.load.image('light', 'assets/particles/light_01.png')
+  scene.load.image('circle', 'assets/particles/circle_01.png')
+  scene.load.image('kinetic', 'assets/particles/scorch_01.png')
+  scene.load.image('water', 'assets/particles/flame_02.png')
 
   // First Explosion image is 583x536, but they are not all the same size
   // Todo: Consider making a (smaller, already capturing frames) tilesheet
