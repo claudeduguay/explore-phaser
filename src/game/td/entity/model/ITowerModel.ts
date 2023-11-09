@@ -124,12 +124,14 @@ export function modelGenerator(organize: ITowerOrganize): ITowerModel {
 }
 
 
+export const GENERATED_LIST: ITowerModel[] = []
 export const GENERATED_INDEX: Record<string, ITowerModel> = {}
 export const GENERATED_GROUPS: Record<string, ITowerModel[]> = {}
 
-export const GENERATED_LIST = Object.keys(DAMAGE_DATA).map((damage: IDamageType) =>
-  Object.keys(DELIVERY_DATA).map((delivery: IDeliveryType) => {
+Object.keys(DAMAGE_DATA).forEach((damage: IDamageType) =>
+  Object.keys(DELIVERY_DATA).forEach((delivery: IDeliveryType) => {
     const model = modelGenerator({ damage, delivery })
+    GENERATED_LIST.push(model)
     GENERATED_INDEX[model.key] = model
     if (!GENERATED_GROUPS[model.group]) {
       GENERATED_GROUPS[model.group] = []

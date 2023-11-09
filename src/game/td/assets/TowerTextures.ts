@@ -5,7 +5,7 @@ import { IWeaponOptions } from "./WeaponFactory"
 import { ITurretOptions } from "./TurretFactory"
 import { ITextureConfig, makePlatform, makeWeapon, makeTurret } from "./TextureFactory"
 import { box } from "../../../util/geom/Box"
-import { ITowerOrganize, TOWER_INDEX, TOWER_LIST } from "../entity/model/ITowerModel"
+import { TOWER_LIST, GENERATED_LIST, ITowerOrganize } from "../entity/model/ITowerModel"
 import { DAMAGE_DATA, IDeliveryType } from "../entity/model/ITowerData"
 
 // ------------------------------------------------------------------
@@ -398,7 +398,12 @@ export function registerTower(scene: Scene, key: string, { damage, delivery }: I
 export default function registerTowerTextures(scene: Scene) {
   // We generate based on defined ITowerModels in TOWER_INDEX
   for (let { key, organize } of TOWER_LIST) {
-    // Shape and coloring is now based on organize structure
+    registerTower(scene, key, organize)
+  }
+
+  // >>> Likely wasteful since not all permutations may be needed
+  for (let { key, name, organize } of GENERATED_LIST) {
+    console.log(`Generate texture for: ${name} (${key})`)
     registerTower(scene, key, organize)
   }
 }
