@@ -28,7 +28,7 @@ const iconMap: Record<string, { key: string, scale?: number }> = {
   "air-default": { key: "stun", scale: 0.075 },
   "poison-default": { key: "smoke", scale: 0.075 },
   "electric-default": { key: "spark", scale: 0.075 },
-  "health-default": { key: "circle", scale: 0.05 },
+  "health-default": { key: "heart", scale: 1 },
   "shield-default": { key: "circle", scale: 0.05 },
   "speed-default": { key: "circle", scale: 0.05 },
   "value-default": { key: "circle", scale: 0.05 },
@@ -67,6 +67,12 @@ export default class StylePreview extends Scene {
     g.fillRoundedRect(this.x, this.y, hBox * 6, vBox * 4 + 20)
     g.strokeRoundedRect(this.x, this.y, hBox * 6, vBox * 4 + 20)
     this.add.existing(g)
+
+    // this.add.rectangle(hBox * 2 - 70, 85, 32, 32, 0xFFFFFF, 1.0)
+    // const rect = new GameObjects.Rectangle(this, hBox * 2 - 70, 85, 32, 32, 0xFFFFFF, 1.0)
+    // this.add.existing(rect)
+    console.log("Has texture:", this.textures.exists("heart"))
+    this.add.sprite(hBox * 2 - 70, 85, "heart")
 
     const damageChoice = new ObservableValue<string>("Kinetic")
     const damageMonitor = new ValueMonitor(this, hBox * 3 - 70, 60, 0xe1eb, "#FF0000", damageChoice)

@@ -1,5 +1,5 @@
 import { Loader, Scene } from "phaser"
-import { makeArrow, makeHeightRects, makeLandscapeTile, makeNineSlice, makePathTiles, makeMissile, makeMine, makeBullet, makeGrenade, makeCone } from "../assets/TextureFactory"
+import { makeArrow, makeHeightRects, makeLandscapeTile, makeNineSlice, makePathTiles, makeMissile, makeMine, makeBullet, makeGrenade, makeCone, makeIcon } from "../assets/TextureFactory"
 import { generateEnemies } from "../entity/model/IEnemyModel"
 import FontFaceObserver from "fontfaceobserver"
 import { makeButtonTextures, registerButtonFactory } from "../gui/Button"
@@ -117,6 +117,7 @@ export function preloadImages(scene: Scene) {
 
 // Note: Tower textures need to be loaded by TPlayScene
 export function preloadTextures(scene: Scene) {
+  makeIcon(scene, "heart", { size: { x: 32, y: 32 }, options: { color: "white", code: 0xe87d } })
   makeCone(scene, "spray-default", { size: { x: 10, y: 16 }, options: { color: "white" } })
   makeArrow(scene, "arrow-default", { size: { x: 10, y: 16 }, options: { color: "white" } })
   makeBullet(scene, "bullet-default", { size: { x: 7, y: 16 }, options: { color: "white" } })

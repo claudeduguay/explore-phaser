@@ -1,5 +1,5 @@
 
-import { Scene } from "phaser"
+import { GameObjects, Scene, Textures } from "phaser"
 import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal"
 import IRenderFunction from "../../../util/IRenderFunction"
 import { IPlatformOptions, platformRendererFunctionFactory } from "./PlatformFactory"
@@ -10,6 +10,7 @@ import { pathRendererFunctionFactory } from "./PathFactory"
 import { ILandscapeOptions, landscapeRendererFunctionFactory } from "./LandscapeFactory"
 import { IPeepOptions, peepRendererFunctionFactory } from "./PeepFactory"
 import { INineSliceOptions, nineSliceRendererFunctionFactory } from "./NineSliceFactory"
+import { Icon } from "../gui/Icon"
 
 // Render to a TextureCanvas using ...renderers
 export function renderCanvas(scene: Scene, key: string, w: number, h: number, ...renderers: IRenderFunction[]) {
@@ -195,6 +196,26 @@ export function makeEllipse(scene: Scene, key: string, w: number, h: number,
 export interface ITextureConfig<T> {
   size: { x: number, y: number },
   options: Partial<T>
+}
+
+export function makeIcon(scene: Scene, key: string, config: ITextureConfig<{ color: string, code: string | number }>) {
+  const { x: w, y: h } = config.size
+  const code = config.options.code || 0xe87d
+  // NOTE: Not working ATM
+  const texture = new GameObjects.RenderTexture(scene, 0, 0, w, h)
+  const rect = new GameObjects.Rectangle(scene, 0, 0, w, h, 0x666666, 1.0).setOrigin(0)
+  texture.draw(rect)
+  const text = new Icon(scene, 0, 0, code, { fontSize: w, padding: { x: 0, y: 0 } })
+  texture.draw(text)
+  scene.textures.addRenderTexture(key, texture)
+
+  // const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
+  //   g.font = "24px Material Icons Outlined"
+  //   // g.fillStyle = config.options.color || "white"
+  //   g.fillStyle = "white"
+  //   g.fillText(icon, w / 2, h / 2)
+  // }
+  // renderCanvas(scene, key, config.size.x, config.size.y, render)
 }
 
 export function makeCone(scene: Scene, key: string, config: ITextureConfig<{ color: string }>) {

@@ -383,7 +383,7 @@ export const WEAPON_CONFIG: Record<IDeliveryType, ITextureConfig<IWeaponOptions>
 
 
 export function registerTower(scene: Scene, key: string, { damage, delivery }: ITowerOrganize) {
-  console.log("Damage:", damage, ", Delivery:", delivery)
+  // console.log("Damage:", damage, ", Delivery:", delivery)
   const color = rgbStringToColors(DAMAGE_DATA[damage].color.value)
 
   const platform = PLATFORM_CONFIG[delivery]
