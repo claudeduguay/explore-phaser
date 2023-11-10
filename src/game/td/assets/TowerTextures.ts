@@ -406,8 +406,7 @@ export default function registerTowerTextures(scene: Scene) {
   }
 
   // >>> Likely wasteful since not all permutations may be needed
-  for (let { key, name, organize } of GENERATED_LIST) {
-    console.log(`Generate texture for: ${name} (${key})`)
+  for (let { key, organize } of GENERATED_LIST) {
     registerTower(scene, key, organize)
   }
 }
