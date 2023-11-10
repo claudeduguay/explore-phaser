@@ -19,7 +19,7 @@ export default class Button extends GameObjects.Container {
     const key = makeKey(stylePrefix, "button")
     this.background = scene.add.nineslice(0, 0, key, undefined, w, h, 10, 10, 10, 10)
     this.background.setSize(w, h)
-    this.setSize(w, h)// Set bounds
+    this.setSize(w, h)
     // this.setDisplaySize(w, h)
     this.add(this.background)
     if (text && text.length > 0) {

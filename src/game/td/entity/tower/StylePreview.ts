@@ -1,8 +1,8 @@
 import { GameObjects, Scene } from "phaser";
-import { ITowerOrganize, platformKey, turretKey, weaponKey } from "../model/ITowerModel";
+import { GENERATED_INDEX, ITowerOrganize, platformKey, prefixKey, turretKey, weaponKey } from "../model/ITowerModel";
 import { IDamageType, IDeliveryType, TYPES_DAMAGE, TYPES_DELIVERY } from "../model/ITowerData"
 import Button from "../../gui/Button";
-import { VBoxLayout } from "../../gui/layout/ILayout";
+import { HBoxLayout, VBoxLayout } from "../../gui/layout/ILayout";
 import Point from "../../../../util/geom/Point";
 import { Label } from "../../gui/Label";
 import ObservableValue from "../../value/ObservableValue";
@@ -13,6 +13,9 @@ import { ITurretOptions } from "../../assets/TurretFactory";
 import { IWeaponOptions } from "../../assets/WeaponFactory";
 import { PLATFORM_CONFIG, TURRET_CONFIG, WEAPON_CONFIG, rgbStringToColors } from "../../assets/TowerTextures";
 import { DAMAGE_DATA, DELIVERY_DATA } from "../model/ITowerData";
+import TDTower, { PreviewType } from "./TDTower";
+import { ENEMY_LIST } from "../model/IEnemyModel";
+import TDEnemy from "../enemy/TDEnemy";
 
 const iconMap: Record<string, { key: string, scale?: number }> = {
   // Damage
@@ -48,7 +51,7 @@ export default class StylePreview extends Scene {
   platformSprite!: GameObjects.Sprite
   turretSprite!: GameObjects.Sprite
   weaponSprite!: GameObjects.Sprite
-  towerContainer!: GameObjects.Container
+  tower!: TDTower
   damageText!: GameObjects.Text
   deliveryText!: GameObjects.Text
   organize!: ITowerOrganize;
@@ -81,11 +84,10 @@ export default class StylePreview extends Scene {
     const damage = this.add.container(75, 70)
     damage.add(new Label(this, 0, 0, "Damage"))
     TYPES_DAMAGE.forEach((type: IDamageType) => {
-      const item = this.add.container()
-      item.setSize(100, 25)
+      const row = this.add.container()
       const button = new Button(this, -10, 0, 75, 25, type, "flat")
       button.onClick = () => damageChoice.value = type
-      item.add(button)
+      row.add(button)
       let spriteKey = `${type.toLowerCase()}-default`
       let scale = 1
       if (iconMap[spriteKey]) {
@@ -95,9 +97,13 @@ export default class StylePreview extends Scene {
       if (this.textures.exists(spriteKey)) {
         const sprite = this.add.sprite(50, 0, spriteKey)
         sprite.setScale(scale)
-        item.add(sprite)
+        sprite.setSize(25, 25)
+        row.add(sprite)
       }
-      damage.add(item)
+      // const rowLayout = new HBoxLayout()
+      // rowLayout.apply(row)
+      row.setSize(100, 25)
+      damage.add(row)
     })
     const damageLayout = new VBoxLayout(new Point(5, 5))
     damageLayout.apply(damage)
@@ -109,8 +115,7 @@ export default class StylePreview extends Scene {
     const delivery = this.add.container(hBox * 6 - 75, 70)
     delivery.add(new Label(this, 0, 0, "Delivery"))
     TYPES_DELIVERY.forEach((type: IDeliveryType) => {
-      const item = this.add.container()
-      item.setSize(100, 25)
+      const row = this.add.container()
       let spriteKey = `${type.toLowerCase()}-default`
       let scale = 1
       if (iconMap[spriteKey]) {
@@ -120,12 +125,15 @@ export default class StylePreview extends Scene {
       if (this.textures.exists(spriteKey)) {
         const sprite = this.add.sprite(-70, 0, spriteKey)
         sprite.setScale(scale)
-        item.add(sprite)
+        row.add(sprite)
       }
       const button = new Button(this, -10, 0, 75, 25, type, "flat")
       button.onClick = () => deliveryChoice.value = type
-      item.add(button)
-      delivery.add(item)
+      row.add(button)
+      // const rowLayout = new HBoxLayout()
+      // rowLayout.apply(row)
+      row.setSize(100, 25)
+      delivery.add(row)
     })
     const deliveryLayout = new VBoxLayout(new Point(5, 5))
     deliveryLayout.apply(delivery)
@@ -198,25 +206,32 @@ export default class StylePreview extends Scene {
     }
 
     const createTower = () => {
-      // const key = prefixKey(this.organize)
       // const model = GENERATED_INDEX[key]
       // this.towerContainer = this.add.tower(550, 505, model)
 
-      const pKey = platformKey(this.organize)
-      const tKey = turretKey(this.organize)
-      const wKey = weaponKey(this.organize)
-      if (this.towerContainer) {
-        this.towerContainer.destroy()
+      if (this.tower) {
+        this.tower.destroy()
       }
-      const isRadial =
-        TURRET_CONFIG[deliveryChoice.value].options.topSeg === 10 &&
-        TURRET_CONFIG[deliveryChoice.value].options.botSeg === 10
-      this.towerContainer = this.add.container(550, 505)
-      this.towerContainer.add(this.add.sprite(0, 0, pKey))
-      this.towerContainer.add(this.add.sprite(0, 0, tKey))
-      const weapon = this.add.sprite(0, isRadial ? 0 : -6 * 4, wKey).setOrigin(0.5, 0)
-      this.towerContainer.add(weapon)
-      this.towerContainer.scale = 4
+      const key = prefixKey(this.organize)
+      const model = GENERATED_INDEX[key]
+
+      this.tower = this.add.tower(550, 500, model)
+      this.tower.preview = PreviewType.Drag
+      this.tower.scale = 1.5
+      // this.tower.showLabel.visible = true
+      this.tower.targeting.current = [new TDEnemy(this, 550, 355, ENEMY_LIST[0])]
+      // const pKey = platformKey(this.organize)
+      // const tKey = turretKey(this.organize)
+      // const wKey = weaponKey(this.organize)
+      // const isRadial =
+      //   TURRET_CONFIG[deliveryChoice.value].options.topSeg === 10 &&
+      //   TURRET_CONFIG[deliveryChoice.value].options.botSeg === 10
+      // this.towerContainer = this.add.container(550, 505)
+      // this.towerContainer.add(this.add.sprite(0, 0, pKey))
+      // this.towerContainer.add(this.add.sprite(0, 0, tKey))
+      // const weapon = this.add.sprite(0, isRadial ? 0 : -6 * 4, wKey).setOrigin(0.5, 0)
+      // this.towerContainer.add(weapon)
+      // this.towerContainer.scale = 4
     }
 
     this.damageText = this.add.paragraph(550, 660, 750, ``)

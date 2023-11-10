@@ -10,7 +10,7 @@ export interface IMax {
 }
 
 export interface ILayout {
-  apply(container: GameObjects.Container): void
+  apply(container: GameObjects.Container, resizeContainer?: boolean): void
 }
 export default ILayout
 
@@ -59,20 +59,21 @@ export abstract class AbstractLayout implements ILayout {
     return max
   }
 
-  resizeBackground(container: GameObjects.Container, max: { w: number, h: number }) {
+  resizeBackground(container: GameObjects.Container, max: { w: number, h: number }, resizeContainer = true) {
     if (hasBackground(container)) {
-      // const b = container.getBounds()
-      // console.log("Bounds:", b, ", Max:", max)
       if (hasSize(container.background)) {
         container.background.setSize(max.w, max.h)
+      }
+      if (resizeContainer) {
+        container.setSize(max.w, max.h)
       }
     }
   }
 
-  apply(container: GameObjects.Container): void {
+  apply(container: GameObjects.Container, resizeContainer = true): void {
     const children = container.list.filter(this.makeFilterBackground(container))
     const max = this.doLayout(container, children)
-    this.resizeBackground(container, max)
+    this.resizeBackground(container, max, resizeContainer)
   }
 
   abstract doLayout(container: GameObjects.Container, children: GameObjects.GameObject[]): ISize
@@ -165,3 +166,4 @@ export class VBoxLayout extends AbstractLayout implements ILayout {
     return max
   }
 }
+

@@ -1,5 +1,5 @@
 
-import { GameObjects, Scene, Textures } from "phaser"
+import { GameObjects, Scene } from "phaser"
 import { BITS_EAST, BITS_NORTH, BITS_SOUTH, BITS_WEST } from "../../../util/Cardinal"
 import IRenderFunction from "../../../util/IRenderFunction"
 import { IPlatformOptions, platformRendererFunctionFactory } from "./PlatformFactory"
@@ -198,16 +198,17 @@ export interface ITextureConfig<T> {
   options: Partial<T>
 }
 
+// This one is not Canvas-based and may belong in a different module
 export function makeIcon(scene: Scene, key: string, config: ITextureConfig<{ color: string, code: string | number }>) {
   const { x: w, y: h } = config.size
-  const code = config.options.code || 0xe87d
   // NOTE: Not working ATM
-  const texture = new GameObjects.RenderTexture(scene, 0, 0, w, h)
-  const rect = new GameObjects.Rectangle(scene, 0, 0, w, h, 0x666666, 1.0).setOrigin(0)
-  texture.draw(rect)
-  const text = new Icon(scene, 0, 0, code, { fontSize: w, padding: { x: 0, y: 0 } })
-  texture.draw(text)
-  scene.textures.addRenderTexture(key, texture)
+  const renderTexture = new GameObjects.RenderTexture(scene, 0, 0, w, h)
+  const rect = new GameObjects.Rectangle(scene, 0, 0, w, h, 0x666666, 1.0)
+  renderTexture.draw(rect)
+  // const code = config.options.code || 0xe87d
+  // const text = new Icon(scene, 0, 0, code, { fontSize: w, padding: { x: 0, y: 0 } })
+  // renderTexture.draw(text)
+  scene.textures.addRenderTexture(key, renderTexture)
 
   // const render: IRenderFunction = (g: CanvasRenderingContext2D) => {
   //   g.font = "24px Material Icons Outlined"

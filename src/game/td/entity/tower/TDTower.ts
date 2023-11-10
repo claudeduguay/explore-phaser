@@ -37,10 +37,18 @@ import TargetRockBehavior from "../../behavior/tower/cloud/TargetRockBehavior"
 import { IProxyExtensions, deepCloneTowerModelAndProxy } from "../model/EffectsProxy"
 import TDPlayScene from "../../scene/TDPlayScene"
 
+import BeamBehavior from "../../behavior/tower/delivery/BeamBehavior"
+import BulletBehavior from "../../behavior/tower/delivery/BulletBehavior"
+
 export enum PreviewType {
   Normal,
   Preview,
   Drag
+}
+
+const DELIVERY_BEHAVIORS: Record<string, any> = {
+  Beam: BeamBehavior,
+  Bullet: BulletBehavior
 }
 
 const TOWER_BEHAVIORS: Record<string, any> = {
@@ -126,8 +134,14 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     if (model.meta.rotation === "target") {
       this.behavior.add(new TargetAimBehavior(this))
     }
-    this.behavior.add(new TOWER_BEHAVIORS[model.key](this))
+    const DamageBehavior = DELIVERY_BEHAVIORS[model.organize.delivery] || BeamBehavior
+    const TargetBehavior = TOWER_BEHAVIORS[model.key] || DamageBehavior
+    this.behavior.add(new TargetBehavior(this))
     this.behavior.add(new ClearTargetsBehavior(this))
+  }
+
+  preDestroy() {
+    this.behavior.clear()
   }
 
   addSelectHandler(select: (selection?: TDTower) => void) {
