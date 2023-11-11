@@ -39,6 +39,8 @@ import TDPlayScene from "../../scene/TDPlayScene"
 
 import BeamBehavior from "../../behavior/tower/delivery/BeamBehavior"
 import BulletBehavior from "../../behavior/tower/delivery/BulletBehavior"
+import CloudBehavior from "../../behavior/tower/delivery/CloudBehavior"
+import SprayBehavior from "../../behavior/tower/delivery/SprayBehavior"
 
 export enum PreviewType {
   Normal,
@@ -48,7 +50,9 @@ export enum PreviewType {
 
 const DELIVERY_BEHAVIORS: Record<string, any> = {
   Beam: BeamBehavior,
-  Bullet: BulletBehavior
+  Bullet: BulletBehavior,
+  Spray: SprayBehavior,
+  Cloud: CloudBehavior,
 }
 
 const TOWER_BEHAVIORS: Record<string, any> = {

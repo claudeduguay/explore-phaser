@@ -1,11 +1,11 @@
 import { GameObjects, Math as PMath } from "phaser"
-import BaseTargetBehavior from "../BaseTargetBehavior"
+import BaseBehavior from "./BaseBehavior"
 import TDTower from "../../../entity/tower/TDTower"
 import Point from "../../../../../util/geom/Point"
 import { pickFirst } from "../../../entity/tower/Targeting"
 // import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 
-export default class BulletBehavior extends BaseTargetBehavior<GameObjects.Sprite> {
+export default class BulletBehavior extends BaseBehavior<GameObjects.Sprite> {
 
   constructor(tower: TDTower) {
     super(tower, true)

@@ -1,11 +1,11 @@
 import { GameObjects } from "phaser"
-import BaseTargetBehavior from "../BaseTargetBehavior"
+import BaseBehavior from "./BaseBehavior"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import TDTower from "../../../entity/tower/TDTower"
 import { pickFirst } from "../../../entity/tower/Targeting"
 
-export default class BeamBehavior extends BaseTargetBehavior<GameObjects.Graphics> {
+export default class BeamBehavior extends BaseBehavior<GameObjects.Graphics> {
 
   constructor(tower: TDTower) {
     super(tower, true)
