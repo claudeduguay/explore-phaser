@@ -30,6 +30,7 @@ export class WebFontLoader extends Loader.LoaderPlugin {
     if (file.type === 'webfont' && typeof file.url === "string") {
       // note: file.url contains font name
       const font = new FontFaceObserver(file.url)
+      // May be able to do this via FontFace API? See: https://developer.mozilla.org/en-US/docs/Web/API/FontFace
       font.load(null, 10000).then(() => this.fileProcessComplete(file))
     }
   }

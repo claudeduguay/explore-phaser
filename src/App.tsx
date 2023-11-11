@@ -10,11 +10,10 @@ import ScanScene from './game/scan/ScanScene'
 import TileScene from './game/tiles/TileScene'
 import TDGame from './game/td/scene/TDGameScene'
 import { Fireworks } from './game/fireworks/Fireworks'
-// import { proxyTest } from './game/td/entity/model/EffectsProxy'
+import Geography from './game/geography/Geography'
 
 export default function App() {
-  // proxyTest()
-  const [scene, setScene] = useState<Scene>(new TDGame())
+  const [scene, setScene] = useState<Scene>(new Geography())
   const onSelect = (sceneName: string) => {
     switch (sceneName) {
       case "dungeon":
@@ -32,6 +31,9 @@ export default function App() {
       case "fireworks":
         setScene(new Fireworks())
         break
+      case "geography":
+        setScene(new Geography())
+        break
     }
   }
   return (
@@ -44,6 +46,7 @@ export default function App() {
           <button className="btn btn-primary" onClick={() => onSelect("tile")}>Tile Scene</button>
           <button className="btn btn-primary" onClick={() => onSelect("td")}>Tower Defense</button>
           <button className="btn btn-primary" onClick={() => onSelect("fireworks")}>Fireworks</button>
+          <button className="btn btn-primary" onClick={() => onSelect("geography")}>Geography</button>
         </nav>
         <h1 className="p-4">Explore Phaser 3 in React</h1>
         <p>The Explore component encapsulates the <b><code>Phaser.Game</code></b> initialization.</p>
