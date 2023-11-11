@@ -3,6 +3,7 @@ import { sceneSize } from "../../util/SceneUtil";
 import IRenderFunction from "../../util/IRenderFunction";
 import { renderCanvas } from "../td/assets/TextureFactory";
 import { NoiseFunction2D, createNoise2D } from 'simplex-noise';
+import Button, { makeButtonTextures } from "../td/gui/Button";
 
 // Great article: https://www.redblobgames.com/maps/terrain-from-noise/
 // https://medium.com/nerd-for-tech/generating-digital-worlds-using-perlin-noise-5d11237c29e9
@@ -117,6 +118,7 @@ export default class Geography extends Scene {
   }
 
   preload() {
+    makeButtonTextures(this)
     this.load.image("biome", "biome-lookup-smooth.png")
     this.createGeo()
   }
@@ -140,11 +142,20 @@ export default class Geography extends Scene {
       }
       g.putImageData(imageData, 0, 0)
     }
+    if (this.textures.exists("geo")) {
+      this.textures.remove("geo")
+    }
     renderCanvas(this, "geo", w, h, renderer)
   }
 
   create() {
     const { w, h } = sceneSize(this)
-    this.add.sprite(w / 2, h / 2, "geo")
+    const sprite = this.add.sprite(w / 2, h / 2, "geo")
+    const button = new Button(this, 60, 25, 100, 30, "Generate")
+    button.onClick = () => {
+      this.createGeo()
+      sprite.setTexture("geo")
+    }
+    this.add.existing(button)
   }
 }
