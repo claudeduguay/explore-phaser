@@ -51,13 +51,13 @@ const Vs = [
   BIOMES.TEMPERATE_DESERT,
   // BIOMES.TAIGA,
   BIOMES.SNOW,
-  BIOMES.SNOW,
-  BIOMES.SNOW,
-  BIOMES.SNOW,
-  BIOMES.SNOW,
-  BIOMES.SNOW,
-  BIOMES.SNOW,
-  BIOMES.SNOW,
+  // BIOMES.SNOW,
+  // BIOMES.SNOW,
+  // BIOMES.SNOW,
+  // BIOMES.SNOW,
+  // BIOMES.SNOW,
+  // BIOMES.SNOW,
+  // BIOMES.SNOW,
 ]
 const Rs = Vs.map(v => v[0])
 const Gs = Vs.map(v => v[1])

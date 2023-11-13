@@ -70,7 +70,6 @@ export default class Geography extends Scene {
   create() {
     const { w, h } = sceneSize(this)
     const sprite = this.add.sprite(w / 2, h / 2, "geo")
-    // sprite.scale = 3
     const button = new Button(this, 60, 25, 100, 30, "Generate")
     button.onClick = () => {
       this.generate()
