@@ -1,10 +1,10 @@
-import { Scene, Math as PMath } from "phaser";
+import { Scene } from "phaser";
 import { sceneSize } from "../../util/SceneUtil";
 import IRenderFunction from "../../util/IRenderFunction";
 import { renderCanvas } from "../td/assets/TextureFactory";
 import { NoiseFunction2D, createNoise2D } from 'simplex-noise';
 import Button, { makeButtonTextures } from "../td/gui/Button";
-import { IRGB, setRGB } from "./ImageUtil";
+import { setRGB } from "./ImageUtil";
 import { diamondSquare } from "./DiamondSquare";
 import { getBiome } from "./Altitude";
 
@@ -41,7 +41,7 @@ export default class Geography extends Scene {
     this.generate()
   }
 
-  makeLandscape(key: string) {
+  generateGeography(key: string) {
     const { w, h } = sceneSize(this)
     const noise = createNoise2D()
     const renderer: IRenderFunction = (g: CanvasRenderingContext2D): void => {
@@ -63,8 +63,12 @@ export default class Geography extends Scene {
     if (this.textures.exists("geo")) {
       this.textures.remove("geo")
     }
-    diamondSquare(this, "geo")
-    // this.makeLandscape("geo")
+    const useDiamongSquare = false
+    if (useDiamongSquare) {
+      diamondSquare(this, "geo")
+    } else {
+      this.generateGeography("geo")
+    }
   }
 
   create() {
