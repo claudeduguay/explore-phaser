@@ -28,7 +28,6 @@ export default class StylePreview extends Scene {
   damageText!: GameObjects.Text
   deliveryText!: GameObjects.Text
   organize!: ITowerOrganize;
-  projectiles!: GameObjects.Sprite[]
 
   constructor(public main: Scene, public x: number = 0, public y: number = x) {
     super("style_preview")
@@ -200,15 +199,6 @@ export default class StylePreview extends Scene {
     this.damageText = this.add.paragraph(550, 660, 750, ``)
     this.deliveryText = this.add.paragraph(550, 695, 750, ``)
 
-    this.add.label(300, 595, "Projectiles").setOrigin(0.5)
-    this.projectiles = [
-      this.add.sprite(200, 630, "arrow-default"),
-      this.add.sprite(250, 630, "bullet-default"),
-      this.add.sprite(300, 630, "missile-default"),
-      this.add.sprite(350, 630, "mine-default"),
-      this.add.sprite(400, 630, "grenade-default")
-    ]
-
     const generate = () => {
       this.organize = {
         damage: damageChoice.value,
@@ -218,7 +208,6 @@ export default class StylePreview extends Scene {
       createTurret()
       createWeapon()
       createTower()
-      this.projectiles.forEach(p => p.setTint(DAMAGE_DATA[damageChoice.value].color.value))
       this.damageText.text = `${DAMAGE_DATA[damageChoice.value].description}`
       this.deliveryText.text = `${deliveryChoice.value}: ${DELIVERY_DATA[deliveryChoice.value].description}`
     }
