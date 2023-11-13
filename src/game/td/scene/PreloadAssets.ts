@@ -119,12 +119,12 @@ export function preloadImages(scene: Scene) {
 // Note: Tower textures need to be loaded by TPlayScene
 export function preloadTextures(scene: Scene) {
   makeIcon(scene, "heart", { size: { x: 32, y: 32 }, options: { color: "white", code: 0xe87d } })
-  makeCone(scene, "spray-default", { size: { x: 10, y: 16 }, options: { color: "white" } })
-  makeArrow(scene, "arrow-default", { size: { x: 10, y: 16 }, options: { color: "white" } })
-  makeBullet(scene, "bullet-default", { size: { x: 7, y: 16 }, options: { color: "white" } })
-  makeMissile(scene, "missile-default", { size: { x: 15, y: 30 }, options: { color: "white" } })
-  makeMine(scene, "mine-default", { size: { x: 16, y: 16 }, options: { color: "white", center: "black" } })
-  makeGrenade(scene, "grenade-default", { size: { x: 12, y: 16 }, options: { color: "white", top: "black" } })
+  makeCone(scene, "spray", { size: { x: 10, y: 16 }, options: { color: "white" } })
+  makeArrow(scene, "arrow", { size: { x: 10, y: 16 }, options: { color: "white" } })
+  makeBullet(scene, "bullet", { size: { x: 7, y: 16 }, options: { color: "white" } })
+  makeMissile(scene, "missile", { size: { x: 15, y: 30 }, options: { color: "white" } })
+  makeMine(scene, "mine", { size: { x: 16, y: 16 }, options: { color: "white", center: "black" } })
+  makeGrenade(scene, "grenade", { size: { x: 12, y: 16 }, options: { color: "white", top: "black" } })
   makePathTiles(scene, "path_tiles", 64, 64)
   makeHeightRects(scene, "height_cells", 64, 64, 10)
   makeLandscapeTile(scene, "landscape", { size: { x: 64, y: 64 }, options: { type: "grass" } })

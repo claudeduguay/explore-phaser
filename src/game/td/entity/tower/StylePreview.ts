@@ -2,7 +2,7 @@ import { GameObjects, Scene } from "phaser";
 import { GENERATED_INDEX, ITowerOrganize, platformKey, prefixKey, turretKey, weaponKey } from "../model/ITowerModel";
 import { IDamageType, IDeliveryType, TYPES_DAMAGE, TYPES_DELIVERY } from "../model/ITowerData"
 import Button from "../../gui/Button";
-import { HBoxLayout, VBoxLayout } from "../../gui/layout/ILayout";
+import { VBoxLayout } from "../../gui/layout/ILayout";
 import Point from "../../../../util/geom/Point";
 import { Label } from "../../gui/Label";
 import ObservableValue from "../../value/ObservableValue";
@@ -16,33 +16,6 @@ import { DAMAGE_DATA, DELIVERY_DATA } from "../model/ITowerData";
 import TDTower, { PreviewType } from "./TDTower";
 import { ENEMY_LIST } from "../model/IEnemyModel";
 import TDEnemy from "../enemy/TDEnemy";
-
-const iconMap: Record<string, { key: string, scale?: number }> = {
-  // Damage
-  "kinetic-default": { key: "kinetic", scale: 0.075 },
-  "light-default": { key: "light", scale: 0.05 },
-  "dark-default": { key: "smoke", scale: 0.075 },
-  "force-default": { key: "slash", scale: 0.075 },
-  "plasma-default": { key: "spark", scale: 0.075 },
-  "fire-default": { key: "fire", scale: 0.075 },
-  "water-default": { key: "water", scale: 0.075 },
-  "ice-default": { key: "ice", scale: 0.075 },
-  "earth-default": { key: "earth", scale: 0.05 },
-  "air-default": { key: "stun", scale: 0.075 },
-  "poison-default": { key: "smoke", scale: 0.075 },
-  "electric-default": { key: "spark", scale: 0.075 },
-  "health-default": { key: "heart", scale: 1 },
-  "shield-default": { key: "circle", scale: 0.05 },
-  "speed-default": { key: "circle", scale: 0.05 },
-  "value-default": { key: "circle", scale: 0.05 },
-  // Delivery
-  "beam-default": { key: "beam", scale: 0.075 },
-  // "spray-default": { key: "circle", scale: 0.05 },
-  "cloud-default": { key: "cloud", scale: 0.075 },
-  "burst-default": { key: "burst", scale: 0.075 },
-  "vertical-default": { key: "rain", scale: 0.1 },
-  "area-default": { key: "area", scale: 0.05 },
-}
 
 // Note: May need to make this a scene to manage the fact that 
 // behaviors add elements relative to the tower position in the scene
@@ -88,14 +61,9 @@ export default class StylePreview extends Scene {
       const button = new Button(this, -10, 0, 75, 25, type, "flat")
       button.onClick = () => damageChoice.value = type
       row.add(button)
-      let spriteKey = `${type.toLowerCase()}-default`
-      let scale = 1
-      if (iconMap[spriteKey]) {
-        scale = iconMap[spriteKey].scale || 1
-        spriteKey = iconMap[spriteKey].key
-      }
-      if (this.textures.exists(spriteKey)) {
-        const sprite = this.add.sprite(50, 0, spriteKey)
+      const { key, scale } = DAMAGE_DATA[type].sprite
+      if (this.textures.exists(key)) {
+        const sprite = this.add.sprite(50, 0, key)
         sprite.setScale(scale)
         sprite.setSize(25, 25)
         row.add(sprite)
@@ -116,14 +84,9 @@ export default class StylePreview extends Scene {
     delivery.add(new Label(this, 0, 0, "Delivery"))
     TYPES_DELIVERY.forEach((type: IDeliveryType) => {
       const row = this.add.container()
-      let spriteKey = `${type.toLowerCase()}-default`
-      let scale = 1
-      if (iconMap[spriteKey]) {
-        scale = iconMap[spriteKey].scale || 1
-        spriteKey = iconMap[spriteKey].key
-      }
-      if (this.textures.exists(spriteKey)) {
-        const sprite = this.add.sprite(-70, 0, spriteKey)
+      const { key, scale } = DELIVERY_DATA[type].sprite
+      if (this.textures.exists(key)) {
+        const sprite = this.add.sprite(-70, 0, key)
         sprite.setScale(scale)
         row.add(sprite)
       }
@@ -216,7 +179,7 @@ export default class StylePreview extends Scene {
       const model = GENERATED_INDEX[key]
 
       this.tower = this.add.tower(550, 500, model)
-      this.tower.preview = PreviewType.Drag
+      this.tower.preview = PreviewType.Preview
       this.tower.scale = 1.5
       // this.tower.showLabel.visible = true
       this.tower.targeting.current = [new TDEnemy(this, 550, 355, ENEMY_LIST[0])]
