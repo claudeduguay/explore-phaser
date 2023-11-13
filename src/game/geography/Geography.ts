@@ -38,8 +38,7 @@ export default class Geography extends Scene {
 
   preload() {
     makeButtonTextures(this)
-    // this.load.image("biome", "assets/biome-lookup-smooth.png")
-    this.createGeo()
+    this.generate()
   }
 
   makeLandscape(key: string) {
@@ -60,37 +59,21 @@ export default class Geography extends Scene {
     renderCanvas(this, key, w, h, renderer)
   }
 
-  createGeo() {
+  generate() {
     if (this.textures.exists("geo")) {
       this.textures.remove("geo")
     }
-    // diamondSquare(this, "geo")
-    this.makeLandscape("geo")
-
-    // const { w, h } = sceneSize(this)
-    // const noise = createNoise2D()
-    // const renderer: IRenderFunction = (g: CanvasRenderingContext2D): void => {
-    //   const eFrequencies = [1, 2, 4, 8, 16]
-    //   const eRatios = eFrequencies.reduce((a, v) => a += 1 / v, 0)
-    //   const imageData = g.getImageData(0, 0, w, h)
-    //   for (let y = 0; y < h; y++) {
-    //     for (let x = 0; x < w; x++) {
-    //       let f = computeOctaves(noise, eFrequencies, eRatios, x, y, w, h)
-    //       setBiome(imageData, x, y, f, 0)
-    //     }
-    //   }
-    //   g.putImageData(imageData, 0, 0)
-    // }
-    // renderCanvas(this, "geo", w, h, renderer)
-
+    diamondSquare(this, "geo")
+    // this.makeLandscape("geo")
   }
 
   create() {
     const { w, h } = sceneSize(this)
     const sprite = this.add.sprite(w / 2, h / 2, "geo")
+    // sprite.scale = 3
     const button = new Button(this, 60, 25, 100, 30, "Generate")
     button.onClick = () => {
-      this.createGeo()
+      this.generate()
       sprite.setTexture("geo")
     }
     this.add.existing(button)
