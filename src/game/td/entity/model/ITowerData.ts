@@ -182,5 +182,7 @@ function generatePermutations() {
 
 export const PERMUTATIONS = generatePermutations()
 // console.log(JSON.stringify(PERMUTATIONS, null, 2))
+console.log("Damage Type count:", TYPES_DAMAGE.length)
+console.log("Delivery type count:", TYPES_DELIVERY.length)
 console.log("Permutation count:", PERMUTATIONS.length)
 
