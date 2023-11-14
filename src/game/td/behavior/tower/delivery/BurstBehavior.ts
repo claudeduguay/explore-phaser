@@ -9,7 +9,7 @@ import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 
 export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
-export function fallEmitter(tower: TDTower): GameObjects.Particles.ParticleEmitter {
+export function busrtEmitter(tower: TDTower): GameObjects.Particles.ParticleEmitter {
   const range = tower.model.general.range
   const { damage } = tower.model.organize
   const { color, sprite } = DAMAGE_DATA[damage]
@@ -33,7 +33,7 @@ export function fallEmitter(tower: TDTower): GameObjects.Particles.ParticleEmitt
     })
 }
 
-export default class FallBehavior implements IBehavior {
+export default class BurstBehavior implements IBehavior {
 
   cloud?: GameObjects.Particles.ParticleEmitter
   targetInstanceMap = new TargetEffectsMap()
@@ -46,7 +46,7 @@ export default class FallBehavior implements IBehavior {
 
   update(time: number, delta: number) {
     if (!this.cloud && this.tower.preview !== PreviewType.Drag) {
-      this.cloud = fallEmitter(this.tower)
+      this.cloud = busrtEmitter(this.tower)
       this.cloud.stop()
       // Push effect behind the tower
       if (this.tower instanceof GameObjects.Container) {

@@ -45,6 +45,7 @@ import LaunchBehavior from "../../behavior/tower/delivery/LaunchBehavior"
 import FallBehavior from "../../behavior/tower/delivery/FallBehavior"
 import RiseBehavior from "../../behavior/tower/delivery/RiseBehavior"
 import AreaBehavior from "../../behavior/tower/delivery/AreaBehavior"
+import BurstBehavior from "../../behavior/tower/delivery/BurstBehavior"
 
 export enum PreviewType {
   Normal,
@@ -58,6 +59,7 @@ const DELIVERY_BEHAVIORS: Record<string, any> = {
   Beam: BeamBehavior,
   Spray: SprayBehavior,
   Cloud: CloudBehavior,
+  Burst: BurstBehavior,
   Fall: FallBehavior,
   Rise: RiseBehavior,
   Area: AreaBehavior,

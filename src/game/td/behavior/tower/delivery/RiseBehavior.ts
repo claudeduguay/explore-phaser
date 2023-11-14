@@ -33,7 +33,7 @@ export function fallEmitter(tower: TDTower): GameObjects.Particles.ParticleEmitt
     })
 }
 
-export default class CloudBehavior implements IBehavior {
+export default class RiseBehavior implements IBehavior {
 
   cloud?: GameObjects.Particles.ParticleEmitter
   targetInstanceMap = new TargetEffectsMap()
