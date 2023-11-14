@@ -23,10 +23,8 @@ export default class BeamBehavior extends BaseBehavior<GameObjects.Graphics> {
 
   draw(g: GameObjects.Graphics, source: Point, target: IPointLike) {
     const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
-    const x1 = source.x - this.tower.x
-    const y1 = source.y - this.tower.y
-    const x2 = target.x - this.tower.x
-    const y2 = target.y - this.tower.y
+    const { x: x1, y: y1 } = this.asRelative(source)
+    const { x: x2, y: y2 } = this.asRelative(target)
     g.lineStyle(3, color, 1.0)
     g.lineBetween(x1, y1, x2, y2)
   }

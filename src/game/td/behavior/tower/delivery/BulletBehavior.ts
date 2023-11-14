@@ -17,13 +17,15 @@ export default class BulletBehavior extends BaseBehavior<GameObjects.Sprite> {
     if (target && show) {
       // const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
       const angle = PMath.Angle.BetweenPoints(target, this.tower) + Math.PI / 2
-      const emitter = this.tower.scene.add.sprite(source.x, source.y, "muzzle")
+      const { x, y } = this.asRelative(source)
+      const emitter = this.tower.scene.add.sprite(x, y, "muzzle")
+      this.tower.effect.add(emitter)
       // emitter.setTint(color)
       emitter.setOrigin(0.5, 0.9)
+      emitter.rotation = angle - Math.PI
       emitter.setScale(0.075)
       emitter.alpha = 0.75
-      emitter.rotation = angle - Math.PI
-      this.emitters?.push(emitter)
+      // this.emitters?.push(emitter)
     }
   }
 }

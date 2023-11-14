@@ -50,8 +50,8 @@ export default class CloudBehavior implements IBehavior {
       this.cloud.stop()
       // Push effect behind the tower
       if (this.tower instanceof GameObjects.Container) {
-        this.tower.add(this.cloud)
-        this.tower.sendToBack(this.cloud)
+        this.tower.effect.add(this.cloud)
+        this.tower.effect.sendToBack(this.cloud)
       }
     }
     if (this.tower.targeting.current.length) {

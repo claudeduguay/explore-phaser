@@ -1,16 +1,12 @@
 import IBehavior from "../../core/IBehavior"
 import TDTower from "../../../entity/tower/TDTower"
-import Point from "../../../../../util/geom/Point"
+import Point, { IPointLike } from "../../../../../util/geom/Point"
 import { pickFirst } from "../../../entity/tower/Targeting"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
 import InRangeDamageEffect from "../../enemy/DamageEffect"
 import { GameObjects } from "phaser"
 
 export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
-// export interface IEmitter {
-//   destroy: () => void
-//   stop?: () => void
-// }
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
 export default abstract class BaseTargetBehavior<T extends IEmitter> implements IBehavior {
@@ -22,6 +18,10 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
     public tower: TDTower,
     public destroyEachFrame: boolean = true,
     public singleTarget: boolean = true) {
+  }
+
+  asRelative(pos: IPointLike) {
+    return new Point(pos.x - this.tower.x, pos.y - this.tower.y)
   }
 
   update(time: number, delta: number) {

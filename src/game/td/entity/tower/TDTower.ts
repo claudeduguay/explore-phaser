@@ -41,6 +41,7 @@ import BeamBehavior from "../../behavior/tower/delivery/BeamBehavior"
 import BulletBehavior from "../../behavior/tower/delivery/BulletBehavior"
 import CloudBehavior from "../../behavior/tower/delivery/CloudBehavior"
 import SprayBehavior from "../../behavior/tower/delivery/SprayBehavior"
+import LaunchBehavior from "../../behavior/tower/delivery/LaunchBehavior"
 
 export enum PreviewType {
   Normal,
@@ -49,10 +50,14 @@ export enum PreviewType {
 }
 
 const DELIVERY_BEHAVIORS: Record<string, any> = {
+  Arrow: LaunchBehavior,
   Beam: BeamBehavior,
   Bullet: BulletBehavior,
   Spray: SprayBehavior,
   Cloud: CloudBehavior,
+  Missile: LaunchBehavior,
+  Mine: LaunchBehavior,
+  Grenade: LaunchBehavior,
 }
 
 const TOWER_BEHAVIORS: Record<string, any> = {
