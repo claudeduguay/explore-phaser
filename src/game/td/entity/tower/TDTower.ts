@@ -51,10 +51,11 @@ export enum PreviewType {
 
 const DELIVERY_BEHAVIORS: Record<string, any> = {
   Arrow: LaunchBehavior,
-  Beam: BeamBehavior,
   Bullet: BulletBehavior,
+  Beam: BeamBehavior,
   Spray: SprayBehavior,
   Cloud: CloudBehavior,
+
   Missile: LaunchBehavior,
   Mine: LaunchBehavior,
   Grenade: LaunchBehavior,

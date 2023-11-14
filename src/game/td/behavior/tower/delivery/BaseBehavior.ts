@@ -11,7 +11,6 @@ export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEm
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
 export default abstract class BaseTargetBehavior<T extends IEmitter> implements IBehavior {
 
-  emitters: T[] = []
   targetInstanceMap = new TargetEffectsMap()
 
   constructor(
@@ -25,11 +24,7 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
   }
 
   update(time: number, delta: number) {
-    if (this.destroyEachFrame && this.emitters?.length) {
-      for (let emitter of this.emitters) {
-        emitter.destroy()
-      }
-      this.emitters = []
+    if (this.destroyEachFrame) {
       this.tower.effect.removeAll()
     }
     if (this.tower.targeting.current.length) {
@@ -53,16 +48,16 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
   abstract addEmitter(index: number, emissionPoint: Point, time: number): void
 
   removeOrStopEmitters(): void {
-    if (this.emitters?.length) {
-      for (let emitter of this.emitters) {
+
+    if (this.tower.effect.list.length) {
+      for (let emitter of this.tower.effect.list) {
         if (this.destroyEachFrame) {
           emitter.destroy()
         } else if ("stop" in emitter) {
-          emitter.stop()
+          (emitter as GameObjects.Particles.ParticleEmitter).stop()
         }
       }
       if (this.destroyEachFrame) {
-        this.emitters = []
         this.tower.effect.removeAll()
       }
     }

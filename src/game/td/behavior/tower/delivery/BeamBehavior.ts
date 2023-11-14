@@ -17,7 +17,6 @@ export default class BeamBehavior extends BaseBehavior<GameObjects.Graphics> {
       const emitter = this.tower.scene.add.graphics()
       this.tower.effect.add(emitter)
       this.draw(emitter, emissionPoint, target)
-      this.emitters!.push(emitter)
     }
   }
 
