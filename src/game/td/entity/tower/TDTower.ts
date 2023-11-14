@@ -37,15 +37,15 @@ import TargetRockBehavior from "../../behavior/tower/cloud/TargetRockBehavior"
 import { IProxyExtensions, deepCloneTowerModelAndProxy } from "../model/EffectsProxy"
 import TDPlayScene from "../../scene/TDPlayScene"
 
-import BeamBehavior from "../../behavior/tower/delivery/BeamBehavior"
-import BulletBehavior from "../../behavior/tower/delivery/BulletBehavior"
-import CloudBehavior from "../../behavior/tower/delivery/CloudBehavior"
-import SprayBehavior from "../../behavior/tower/delivery/SprayBehavior"
 import LaunchBehavior from "../../behavior/tower/delivery/LaunchBehavior"
+import BulletBehavior from "../../behavior/tower/delivery/BulletBehavior"
+import BeamBehavior from "../../behavior/tower/delivery/BeamBehavior"
+import SprayBehavior from "../../behavior/tower/delivery/SprayBehavior"
+import CloudBehavior from "../../behavior/tower/delivery/CloudBehavior"
+import BurstBehavior from "../../behavior/tower/delivery/BurstBehavior"
 import FallBehavior from "../../behavior/tower/delivery/FallBehavior"
 import RiseBehavior from "../../behavior/tower/delivery/RiseBehavior"
 import AreaBehavior from "../../behavior/tower/delivery/AreaBehavior"
-import BurstBehavior from "../../behavior/tower/delivery/BurstBehavior"
 
 export enum PreviewType {
   Normal,
