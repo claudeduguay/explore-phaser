@@ -1,6 +1,6 @@
 import { GameObjects, Math as PMath, Display } from "phaser"
 import IBehavior from "../../core/IBehavior"
-import { IEmitterConfig, circleEmitZone, rangeDeathZone } from "../../../emitter/ParticleConfig"
+import { circleEmitZone, rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
