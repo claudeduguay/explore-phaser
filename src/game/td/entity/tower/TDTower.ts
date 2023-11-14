@@ -121,7 +121,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     this.add(this.turret)
 
     // >>> To be used to apply visual efffects relative to this GameObject <<<
-    this.effect = scene.add.container()
+    this.effect = scene.add.container(0, 0)
     this.add(this.effect)
 
     this.showRange = scene.add.existing(new TDRange(scene, 0, 0, model.name, model.general.range))
@@ -179,18 +179,21 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     this.platform.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
   }
 
-  emissionPoint(index: number = 1) {
+  emissionPoint(index: number = 1, relative = false) {
     if (this.model.meta.rotation === "target") {
       const i = clamp(index, 0, this.turret.weapon.length - 1)
       const weapon = this.turret.weapon[i]
+      if (relative) {
+        return new Point(weapon.x, weapon.y)
+      }
       return toSceneCoordinates(weapon)
     } else {
       return new Point(this.x, this.y)
     }
   }
 
-  emissionPoints() {
-    return this.turret.weapon.map((p, i) => this.emissionPoint(i))
+  emissionPoints(relative = false) {
+    return this.turret.weapon.map((p, i) => this.emissionPoint(i, relative))
   }
 
 }

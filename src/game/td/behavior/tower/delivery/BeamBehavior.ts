@@ -15,6 +15,7 @@ export default class BeamBehavior extends BaseBehavior<GameObjects.Graphics> {
     const target = pickFirst(this.tower.targeting.current)
     if (target) {
       const emitter = this.tower.scene.add.graphics()
+      this.tower.effect.add(emitter)
       this.draw(emitter, emissionPoint, target)
       this.emitters!.push(emitter)
     }
@@ -22,7 +23,11 @@ export default class BeamBehavior extends BaseBehavior<GameObjects.Graphics> {
 
   draw(g: GameObjects.Graphics, source: Point, target: IPointLike) {
     const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
+    const x1 = source.x - this.tower.x
+    const y1 = source.y - this.tower.y
+    const x2 = target.x - this.tower.x
+    const y2 = target.y - this.tower.y
     g.lineStyle(3, color, 1.0)
-    g.lineBetween(source.x, source.y, target.x, target.y)
+    g.lineBetween(x1, y1, x2, y2)
   }
 }

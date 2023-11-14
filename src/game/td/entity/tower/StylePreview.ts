@@ -50,7 +50,7 @@ export default class StylePreview extends Scene {
     this.add.sprite(hBox * 2 - 70, 85, "heart")
 
     const damageChoice = new ObservableValue<string>("Kinetic")
-    const damageMonitor = new ValueMonitor(this, hBox * 3 - 70, 60, 0xe1eb, "#FF0000", damageChoice)
+    const damageMonitor = new ValueMonitor(this, hBox * 3 - 70, 60, 0xe1eb, "#FFFFFF", damageChoice)
     this.add.existing(damageMonitor)
 
     const damage = this.add.container(75, 70)
@@ -76,7 +76,7 @@ export default class StylePreview extends Scene {
     damageLayout.apply(damage)
 
     const deliveryChoice = new ObservableValue<string>("Arrow")
-    const deliveryMonitor = new ValueMonitor(this, hBox * 3 + 70, 60, 0xe558, "#009900", deliveryChoice)
+    const deliveryMonitor = new ValueMonitor(this, hBox * 3 + 70, 60, 0xe558, "#FFFFFF", deliveryChoice)
     this.add.existing(deliveryMonitor)
 
     const delivery = this.add.container(hBox * 6 - 75, 70)
@@ -179,21 +179,9 @@ export default class StylePreview extends Scene {
 
       this.tower = this.add.tower(550, 500, model)
       this.tower.preview = PreviewType.Preview
-      this.tower.scale = 1.5
+      // this.tower.scale = 1.5
       // this.tower.showLabel.visible = true
-      this.tower.targeting.current = [new TDEnemy(this, 550, 355, ENEMY_LIST[0])]
-      // const pKey = platformKey(this.organize)
-      // const tKey = turretKey(this.organize)
-      // const wKey = weaponKey(this.organize)
-      // const isRadial =
-      //   TURRET_CONFIG[deliveryChoice.value].options.topSeg === 10 &&
-      //   TURRET_CONFIG[deliveryChoice.value].options.botSeg === 10
-      // this.towerContainer = this.add.container(550, 505)
-      // this.towerContainer.add(this.add.sprite(0, 0, pKey))
-      // this.towerContainer.add(this.add.sprite(0, 0, tKey))
-      // const weapon = this.add.sprite(0, isRadial ? 0 : -6 * 4, wKey).setOrigin(0.5, 0)
-      // this.towerContainer.add(weapon)
-      // this.towerContainer.scale = 4
+      this.tower.targeting.current = [new TDEnemy(this, 550, 500 - model.general.range, ENEMY_LIST[0])]
     }
 
     this.damageText = this.add.paragraph(550, 660, 750, ``)

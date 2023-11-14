@@ -4,11 +4,13 @@ import Point from "../../../../../util/geom/Point"
 import { pickFirst } from "../../../entity/tower/Targeting"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
 import InRangeDamageEffect from "../../enemy/DamageEffect"
+import { GameObjects } from "phaser"
 
-export interface IEmitter {
-  destroy: () => void
-  stop?: () => void
-}
+export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
+// export interface IEmitter {
+//   destroy: () => void
+//   stop?: () => void
+// }
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
 export default abstract class BaseTargetBehavior<T extends IEmitter> implements IBehavior {
@@ -16,7 +18,10 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
   emitters: T[] = []
   targetInstanceMap = new TargetEffectsMap()
 
-  constructor(public tower: TDTower, public destroyEachFrame: boolean = true, public singleTarget: boolean = true) {
+  constructor(
+    public tower: TDTower,
+    public destroyEachFrame: boolean = true,
+    public singleTarget: boolean = true) {
   }
 
   update(time: number, delta: number) {
@@ -25,9 +30,10 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
         emitter.destroy()
       }
       this.emitters = []
+      this.tower.effect.removeAll()
     }
     if (this.tower.targeting.current.length) {
-      this.tower.emissionPoints().forEach((point, i) => this.addEmitter(i, point, time))
+      this.tower.emissionPoints(false).forEach((point, i) => this.addEmitter(i, point, time))
       if (this.singleTarget) {
         const target = pickFirst(this.tower.targeting.current)
         if (target) {
@@ -51,12 +57,13 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
       for (let emitter of this.emitters) {
         if (this.destroyEachFrame) {
           emitter.destroy()
-        } else if (emitter.stop) {
+        } else if ("stop" in emitter) {
           emitter.stop()
         }
       }
       if (this.destroyEachFrame) {
         this.emitters = []
+        this.tower.effect.removeAll()
       }
     }
 
