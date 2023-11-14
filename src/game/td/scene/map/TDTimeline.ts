@@ -43,7 +43,8 @@ export function addMainPathFollower(key: string, scene: Scene,
   health: ObservableValue<number>, credits: ObservableValue<number>,
   enemyGroup: GameObjects.Group, path: Curves.Path, duration: number, delay: number) {
   let wasDestroyed = false // onComplete triggers even if destroyed, track status
-  const enemy = scene.add.enemy(0, 0, ENEMY_INDEX[key], path, true)
+  const pos = path.getPoint(0)
+  const enemy = scene.add.enemy(pos.x, pos.y, ENEMY_INDEX[key], path, true)
   // enemy.barContainer.visible = false
   enemy.addListener("died", ({ x, y, model }: TDEnemy) => {
     enemy.removeListener("died")
@@ -82,7 +83,8 @@ export function addMainPathFollower(key: string, scene: Scene,
 
 // Add preview follower to the proview path, reset timeline after last is finished
 export function addPreviewFollower(key: string, scene: Scene, previewGroup: GameObjects.Group, path: Curves.Path, timeline: Time.Timeline, duration: number, isLast: boolean, twin: TDEnemy) {
-  const enemy = scene.add.enemy(0, 0, ENEMY_INDEX[key], path, false)
+  const pos = path.getPoint(0)
+  const enemy = scene.add.enemy(pos.x, pos.y, ENEMY_INDEX[key], path, false)
   twin.twin = enemy // Track this enemy from it's twin
   twin.addListener("died", ({ x, y, model }: TDEnemy) => {
     enemy.removeListener("died")
