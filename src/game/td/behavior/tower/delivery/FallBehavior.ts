@@ -1,6 +1,6 @@
 import { GameObjects, Math as PMath, Display } from "phaser"
 import IBehavior from "../../core/IBehavior"
-import { circleEmitZone, rangeDeathZone } from "../../../emitter/ParticleConfig"
+import { rangeDeathZone, topEmitZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
@@ -14,22 +14,22 @@ export function fallEmitter(tower: TDTower): GameObjects.Particles.ParticleEmitt
   const { damage } = tower.model.organize
   const { color, sprite } = DAMAGE_DATA[damage]
   const c = Display.Color.IntegerToColor(color.value)
-  const darker = color.value
-  const brighter = c.brighten(100).color
+  const brighter = c.brighten(50).color
   return tower.scene.add.particles(0, 0, sprite.key,
     {
       colorEase: PMath.Easing.Linear.name,
       advance: 0,
       lifespan: 3000,
-      angle: { min: 0, max: 360 },
-      rotate: { min: 0, max: 360 },
-      speed: 0.1,
-      blendMode: 'NORMAL',
-      emitZone: circleEmitZone(range, tower),
+      angle: 90,
+      rotate: 0,
+      speed: 100,
+      emitZone: topEmitZone(range, tower),
       deathZone: rangeDeathZone(range, tower),
-      alpha: { start: 0.2, end: 0 },
-      color: [darker, brighter, darker],
-      scale: { start: sprite.scale * 2, end: sprite.scale * 5, ease: 'sine.out' },
+      alpha: 1.0,
+      color: [brighter],
+      scale: sprite.scale,
+      blendMode: 'ADD',
+      frequency: 10
     })
 }
 
