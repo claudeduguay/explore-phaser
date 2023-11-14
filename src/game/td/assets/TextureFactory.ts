@@ -10,7 +10,7 @@ import { pathRendererFunctionFactory } from "./PathFactory"
 import { ILandscapeOptions, landscapeRendererFunctionFactory } from "./LandscapeFactory"
 import { IPeepOptions, peepRendererFunctionFactory } from "./PeepFactory"
 import { INineSliceOptions, nineSliceRendererFunctionFactory } from "./NineSliceFactory"
-import { Icon } from "../gui/Icon"
+// import { Icon } from "../gui/Icon"
 
 // Render to a TextureCanvas using ...renderers
 export function renderCanvas(scene: Scene, key: string, w: number, h: number, ...renderers: IRenderFunction[]) {
