@@ -1,6 +1,6 @@
 import { GameObjects, Curves, Math as PMath } from "phaser"
 import BaseBehavior from "./BaseBehavior"
-import Point, { IPointLike } from "../../../../../util/geom/Point"
+import Point from "../../../../../util/geom/Point"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import TDTower from "../../../entity/tower/TDTower"
 import { pickFirst } from "../../../entity/tower/Targeting"

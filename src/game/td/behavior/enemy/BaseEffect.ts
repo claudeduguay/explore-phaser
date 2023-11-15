@@ -19,9 +19,9 @@ export default abstract class BaseEffect implements IBehavior {
   isStarted?: boolean
   startTime?: number
 
-  posponed?: number
-  duration?: number
-  cooldown?: number
+  posponed!: number
+  duration!: number
+  cooldown!: number
 
   constructor(
     public readonly tower: TDTower,
@@ -29,8 +29,8 @@ export default abstract class BaseEffect implements IBehavior {
     public name: string = tower.model.damage.health.name) {
     const { posponed, duration, cooldown } = tower.model.damage.health
     this.posponed = posponed || 0 // Not yet accounted for
-    this.duration = duration
-    this.cooldown = cooldown || duration
+    this.duration = duration || 0
+    this.cooldown = cooldown || this.duration
   }
 
   isInRange() {
@@ -51,7 +51,7 @@ export default abstract class BaseEffect implements IBehavior {
     if (!this.startTime) {
       this.startTime = time
     }
-    // Destroy effect if past the cooldowntime
+    // Destroy effect if past the cooldown time
     if (this.isTimeout(time, this.cooldown)) {
       if (this.duration === this.cooldown) {
         this.endEffect(time, delta)
@@ -60,12 +60,12 @@ export default abstract class BaseEffect implements IBehavior {
       this.enemy.effects.delete(this)
       this.startTime = undefined
     } else {
-      // Not started yet? Run startEffect
-      if (!this.isStarted) {
+      // Not started yet? Run startEffect if past posponed value (0 by default)
+      if (!this.isStarted && this.isTimeout(time, this.posponed)) {
         this.startEffect(time, delta)
         this.isStarted = true
       } else {
-        if (this.isTimeout(time, this.duration)) {
+        if (this.isTimeout(time, this.posponed + this.duration)) {
           this.endEffect(time, delta)
         } else {
           this.updateEffect(time, delta)
