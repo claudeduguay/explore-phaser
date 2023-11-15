@@ -30,12 +30,12 @@ export default class BeamBehavior extends BaseBehavior<GameObjects.Graphics> {
           this.drawPlasma(emitter, source, this.asRelative(target))
           break
         default:
-          this.draw(emitter, source, this.asRelative(target))
+          this.drawLine(emitter, source, this.asRelative(target))
       }
     }
   }
 
-  draw(g: GameObjects.Graphics, source: Point, target: Point) {
+  drawLine(g: GameObjects.Graphics, source: Point, target: Point) {
     const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
     const { x: x1, y: y1 } = source
     const { x: x2, y: y2 } = target
