@@ -28,6 +28,7 @@ export default class TDEnemy extends CustomFollower implements ISelectable {
     public showStatusBars: boolean = false) {
 
     super(scene, x, y, model, path)
+    this.enemy = this
 
     this.model = deepCloneEnemyModelAndProxy(model)
 
@@ -87,25 +88,56 @@ export default class TDEnemy extends CustomFollower implements ISelectable {
   }
 
   detectDirectionChange() {
+    if (!this.scene) {
+      return
+    }
     const current = this.anims.currentAnim
-    switch (this.direction) {
+    switch (this.dir) {
       case Direction.North:
         if (current?.key !== `north-${this.model.key}`) {
+          // if (!this.scene.anims.exists(`north-${this.model.key}`)) {
+          //   console.log(`north-${this.model.key} animation does not exist, creating`)
+          //   this.scene.anims.create({
+          //     key: `north-${this.model.key}`, frameRate: 20, repeat: -1,
+          //     frames: this.anims.generateFrameNumbers(this.model.key, { start: 48, end: 63 }),
+          //   })
+          // }
           this.anims.play(`north-${this.model.key}`)
         }
         break
       case Direction.East:
         if (current?.key !== `east-${this.model.key}`) {
+          // if (!this.scene.anims.exists(`east-${this.model.key}`)) {
+          //   console.log(`east-${this.model.key} animation does not exist, creating`)
+          //   this.scene.anims.create({
+          //     key: `east-${this.model.key}`, frameRate: 20, repeat: -1,
+          //     frames: this.scene.anims.generateFrameNumbers(this.model.key, { start: 0, end: 15 }),
+          //   })
+          // }
           this.anims.play(`east-${this.model.key}`)
         }
         break
       case Direction.South:
         if (current?.key !== `south-${this.model.key}`) {
+          // if (!this.scene.anims.exists(`south-${this.model.key}`)) {
+          //   console.log(`south-${this.model.key} animation does not exist, creating`)
+          //   this.scene.anims.create({
+          //     key: `south-${this.model.key}`, frameRate: 20, repeat: -1,
+          //     frames: this.scene.anims.generateFrameNumbers(this.model.key, { start: 16, end: 31 }),
+          //   })
+          // }
           this.anims.play(`south-${this.model.key}`)
         }
         break
       case Direction.West:
         if (current?.key !== `west-${this.model.key}`) {
+          // if (!this.scene.anims.exists(`west-${this.model.key}`)) {
+          //   console.log(`west-${this.model.key} animation does not exist, creating`)
+          //   this.scene.anims.create({
+          //     key: `west-${this.model.key}`, frameRate: 20, repeat: -1,
+          //     frames: this.scene.anims.generateFrameNumbers(this.model.key, { start: 32, end: 47 }),
+          //   })
+          // }
           this.anims.play(`west-${this.model.key}`)
         }
         break
@@ -132,6 +164,7 @@ export default class TDEnemy extends CustomFollower implements ISelectable {
   }
 
   preUpdate(time: number, delta: number): void {
+    super.preUpdate(time, delta)
     this.frameCount += 1
     // if (this.isFollowing()) {
     //   super.preUpdate(time, delta)

@@ -60,10 +60,6 @@ export function addMainPathFollower(key: string, scene: Scene,
   enemy.startFollow({
     duration,
     delay,
-    from: 0.0,
-    to: 1.0,
-    yoyo: false,
-    repeat: 0,
     onStart: () => {
       enemyGroup.add(enemy)
     },
@@ -90,13 +86,12 @@ export function addPreviewFollower(key: string, scene: Scene, previewGroup: Game
     enemy.removeListener("died")
     previewGroup.remove(enemy)
     enemy.destroy()
+    if (isLast) {
+      setTimeout(() => timeline.reset(), 1000)
+    }
   })
   enemy.startFollow({
     duration,
-    from: 0.0,
-    to: 1.0,
-    yoyo: false,
-    repeat: 0,
     onStart: () => {
       previewGroup.add(enemy)
     },
