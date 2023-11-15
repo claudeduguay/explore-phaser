@@ -14,26 +14,26 @@ import { addLabel } from "../../../../util/TextUtil"
 import Targeting from "./Targeting"
 
 import TargetSpinBehavior from "../../behavior/tower/targeting/TargetSpinBehavior"
-import TargetLaserBehavior from "../../behavior/tower/TargetLazerBehavior"
-import TargetPlasmaBehavior from "../../behavior/tower/TargetPlasmaBehavior"
-import TargetLightningBehavior from "../../behavior/tower/TargetLightningBehavior"
-import TargetFlameBehavior from "../../behavior/tower/spray/TargetFlameBehavior"
-import TargetFreezeBehavior from "../../behavior/tower/spray/TargetFreezeBehavior"
-import TargeForceBehavior from "../../behavior/tower/spray/TargeForceBehavior"
-import TargePoisonBehavior from "../../behavior/tower/cloud/TargetPoisonBehavior"
-import TargetFireBehavior from "../../behavior/tower/cloud/TargetFireBehavior"
-import TargetSmokeBehavior from "../../behavior/tower/cloud/TargetSmokeBehavior"
-import TargetShockBehavior from "../../behavior/tower/cloud/TargetShockBehavior"
-import TargetIceBehavior from "../../behavior/tower/cloud/TargetIceBehavior"
-import TargetRainBehavior from "../../behavior/tower/cloud/TargetRainBehavior"
-import TargetSnowBehavior from "../../behavior/tower/cloud/TargetSnowBehavior"
-import TargetBulletBehavior from "../../behavior/tower/TargetBulletBehavior"
-import TargetMissileBehavior from "../../behavior/tower/TargetMissileBehavior"
-import TargetBoostBehavior from "../../behavior/tower/TargetBoostBehavior"
-import TargetSlowBehavior from "../../behavior/tower/TargetSlowBehavior"
-import TargetStunBehavior from "../../behavior/tower/cloud/TargetStunBehavior"
-import TargetSpikeBehavior from "../../behavior/tower/cloud/TargetSpikeBehavior"
-import TargetRockBehavior from "../../behavior/tower/cloud/TargetRockBehavior"
+// import TargetLaserBehavior from "../../behavior/tower/TargetLazerBehavior"
+// import TargetPlasmaBehavior from "../../behavior/tower/TargetPlasmaBehavior"
+// import TargetLightningBehavior from "../../behavior/tower/TargetLightningBehavior"
+// import TargetFlameBehavior from "../../behavior/tower/spray/TargetFlameBehavior"
+// import TargetFreezeBehavior from "../../behavior/tower/spray/TargetFreezeBehavior"
+// import TargeForceBehavior from "../../behavior/tower/spray/TargeForceBehavior"
+// import TargePoisonBehavior from "../../behavior/tower/cloud/TargetPoisonBehavior"
+// import TargetFireBehavior from "../../behavior/tower/cloud/TargetFireBehavior"
+// import TargetSmokeBehavior from "../../behavior/tower/cloud/TargetSmokeBehavior"
+// import TargetShockBehavior from "../../behavior/tower/cloud/TargetShockBehavior"
+// import TargetIceBehavior from "../../behavior/tower/cloud/TargetIceBehavior"
+// import TargetRainBehavior from "../../behavior/tower/cloud/TargetRainBehavior"
+// import TargetSnowBehavior from "../../behavior/tower/cloud/TargetSnowBehavior"
+// import TargetBulletBehavior from "../../behavior/tower/TargetBulletBehavior"
+// import TargetMissileBehavior from "../../behavior/tower/TargetMissileBehavior"
+// import TargetBoostBehavior from "../../behavior/tower/TargetBoostBehavior"
+// import TargetSlowBehavior from "../../behavior/tower/TargetSlowBehavior"
+// import TargetStunBehavior from "../../behavior/tower/cloud/TargetStunBehavior"
+// import TargetSpikeBehavior from "../../behavior/tower/cloud/TargetSpikeBehavior"
+// import TargetRockBehavior from "../../behavior/tower/cloud/TargetRockBehavior"
 import { IProxyExtensions, deepCloneTowerModelAndProxy } from "../model/EffectsProxy"
 import TDPlayScene from "../../scene/TDPlayScene"
 
@@ -68,28 +68,28 @@ const DELIVERY_BEHAVIORS: Record<string, any> = {
   Grenade: LaunchBehavior,
 }
 
-const TOWER_BEHAVIORS: Record<string, any> = {
-  lazer: TargetLaserBehavior,
-  plasma: TargetPlasmaBehavior,
-  lightning: TargetLightningBehavior,
-  flame: TargetFlameBehavior,
-  freeze: TargetFreezeBehavior,
-  force: TargeForceBehavior,
-  poison: TargePoisonBehavior,
-  fire: TargetFireBehavior,
-  smoke: TargetSmokeBehavior,
-  shock: TargetShockBehavior,
-  ice: TargetIceBehavior,
-  rain: TargetRainBehavior,
-  snow: TargetSnowBehavior,
-  stun: TargetStunBehavior,
-  spike: TargetSpikeBehavior,
-  rock: TargetRockBehavior,
-  bullet: TargetBulletBehavior,
-  missile: TargetMissileBehavior,
-  boost: TargetBoostBehavior,
-  slow: TargetSlowBehavior,
-}
+// const TOWER_BEHAVIORS: Record<string, any> = {
+//   lazer: TargetLaserBehavior,
+//   plasma: TargetPlasmaBehavior,
+//   lightning: TargetLightningBehavior,
+//   flame: TargetFlameBehavior,
+//   freeze: TargetFreezeBehavior,
+//   force: TargeForceBehavior,
+//   poison: TargePoisonBehavior,
+//   fire: TargetFireBehavior,
+//   smoke: TargetSmokeBehavior,
+//   shock: TargetShockBehavior,
+//   ice: TargetIceBehavior,
+//   rain: TargetRainBehavior,
+//   snow: TargetSnowBehavior,
+//   stun: TargetStunBehavior,
+//   spike: TargetSpikeBehavior,
+//   rock: TargetRockBehavior,
+//   bullet: TargetBulletBehavior,
+//   missile: TargetMissileBehavior,
+//   boost: TargetBoostBehavior,
+//   slow: TargetSlowBehavior,
+// }
 
 
 
@@ -152,8 +152,8 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
       this.behavior.add(new TargetAimBehavior(this))
     }
     const DamageBehavior = DELIVERY_BEHAVIORS[model.organize.delivery] || BeamBehavior
-    const TargetBehavior = TOWER_BEHAVIORS[model.key] || DamageBehavior
-    this.behavior.add(new TargetBehavior(this))
+    // const TargetBehavior = TOWER_BEHAVIORS[model.key] || DamageBehavior
+    this.behavior.add(new DamageBehavior(this))
     this.behavior.add(new ClearTargetsBehavior(this))
   }
 
