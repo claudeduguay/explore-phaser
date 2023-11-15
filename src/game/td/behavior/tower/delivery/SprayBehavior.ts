@@ -35,7 +35,7 @@ export function sprayEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
   })
 }
 
-export default class SprayBehavior extends BaseBehavior<GameObjects.Particles.ParticleEmitter> {
+export default class SprayBehavior extends BaseBehavior {
 
   targetInstanceMap = new TargetEffectsMap()
 

@@ -5,7 +5,7 @@ import TDTower from "../../../entity/tower/TDTower"
 import { pickFirst } from "../../../entity/tower/Targeting"
 import { DAMAGE_DATA, DELIVERY_DATA } from "../../../entity/model/ITowerData"
 
-export default class LaunchBehavior extends BaseBehavior<GameObjects.Graphics> {
+export default class LaunchBehavior extends BaseBehavior {
 
   fraction: number[] = []
 

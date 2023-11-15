@@ -5,7 +5,7 @@ import Point from "../../../../../util/geom/Point"
 import { pickFirst } from "../../../entity/tower/Targeting"
 // import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 
-export default class BulletBehavior extends BaseBehavior<GameObjects.Sprite> {
+export default class BulletBehavior extends BaseBehavior {
 
   constructor(tower: TDTower) {
     super(tower, true)

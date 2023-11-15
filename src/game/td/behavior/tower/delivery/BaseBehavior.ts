@@ -9,7 +9,7 @@ import { GameObjects } from "phaser"
 export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
-export default abstract class BaseTargetBehavior<T extends IEmitter> implements IBehavior {
+export default abstract class BaseBehavior implements IBehavior {
 
   targetInstanceMap = new TargetEffectsMap()
 

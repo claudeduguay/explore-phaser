@@ -10,7 +10,7 @@ function perpendicular({ x, y }: Point, angle: number, r: number, pos: boolean =
   return rotation(x, y, r, r, angle + (pos ? 0 : -Math.PI))
 }
 
-export default class BeamBehavior extends BaseBehavior<GameObjects.Graphics> {
+export default class BeamBehavior extends BaseBehavior {
 
   constructor(tower: TDTower) {
     super(tower, true)
