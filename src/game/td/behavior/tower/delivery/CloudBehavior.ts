@@ -14,8 +14,8 @@ export function cloudEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
   const { damage } = tower.model.organize
   const { color, sprite } = DAMAGE_DATA[damage]
   const c = Display.Color.IntegerToColor(color.value)
-  const darker = color.value
-  const brighter = c.brighten(100).color
+  const darker = c.darken(50).color
+  const brighter = c.brighten(50).color
   return tower.scene.add.particles(0, 0, sprite.key,
     {
       colorEase: PMath.Easing.Linear.name,
@@ -24,11 +24,11 @@ export function cloudEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
       angle: { min: 0, max: 360 },
       rotate: { min: 0, max: 360 },
       speed: 0.1,
-      blendMode: 'NORMAL',
+      blendMode: 'ADD',
       emitZone: circleEmitZone(range, tower),
       deathZone: rangeDeathZone(range, tower),
       alpha: { start: 0.2, end: 0 },
-      color: [darker, brighter, darker],
+      color: [brighter, color.value, darker],
       scale: { start: sprite.scale * 2, end: sprite.scale * 5, ease: 'sine.out' },
     })
 }
