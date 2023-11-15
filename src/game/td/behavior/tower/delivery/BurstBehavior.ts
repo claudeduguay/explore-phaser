@@ -17,17 +17,20 @@ export function burstEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
   const c = Display.Color.IntegerToColor(color.value)
   // const darker = color.value
   const brighter = c.brighten(50).color
+  const speed = 120
+  const travelPerSecond = speed / 1000
+  const lifespan = range / travelPerSecond
   return tower.scene.add.particles(0, 0, sprite.key,
     {
       colorEase: PMath.Easing.Linear.name,
       advance: 0,
-      lifespan: 3000,
+      lifespan,
       angle: { min: 0, max: 360 },
-      speed: 100,
+      speed,
       blendMode: 'ADD',
       deathZone: rangeDeathZone(range, tower),
-      alpha: 1,
-      color: [brighter],
+      alpha: { start: 1, end: 0 },
+      color: [color.value, brighter],
       scale: sprite.scale,
       rotate: {
         // Align particle sprite with the velocity direction
@@ -38,10 +41,7 @@ export function burstEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
           return toDegrees(Math.atan2(particle.velocityY, particle.velocityX) - Math.PI / 2)
         },
       },
-      quantity: 3
-      // alpha: { start: 0.2, end: 0 },
-      // color: [darker, brighter, darker],
-      // scale: { start: sprite.scale * 2, end: sprite.scale * 5, ease: 'sine.out' },
+      quantity: 2
     })
 }
 
