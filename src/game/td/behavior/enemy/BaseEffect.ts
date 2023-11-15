@@ -19,6 +19,7 @@ export default abstract class BaseEffect implements IBehavior {
   isStarted?: boolean
   startTime?: number
 
+  posponed?: number
   duration?: number
   cooldown?: number
 
@@ -26,7 +27,8 @@ export default abstract class BaseEffect implements IBehavior {
     public readonly tower: TDTower,
     public readonly enemy: TDEnemy,
     public name: string = tower.model.damage.health.name) {
-    const { duration, cooldown } = tower.model.damage.health
+    const { posponed, duration, cooldown } = tower.model.damage.health
+    this.posponed = posponed || 0 // Not yet accounted for
     this.duration = duration
     this.cooldown = cooldown || duration
   }
