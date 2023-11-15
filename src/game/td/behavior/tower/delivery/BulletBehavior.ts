@@ -1,4 +1,4 @@
-import { GameObjects, Math as PMath } from "phaser"
+import { Math as PMath } from "phaser"
 import BaseBehavior from "./BaseBehavior"
 import TDTower from "../../../entity/tower/TDTower"
 import Point from "../../../../../util/geom/Point"
