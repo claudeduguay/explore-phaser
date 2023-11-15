@@ -48,7 +48,6 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
   abstract addEmitter(index: number, emissionPoint: Point, time: number): void
 
   removeOrStopEmitters(): void {
-
     if (this.tower.effect.list.length) {
       for (let emitter of this.tower.effect.list) {
         if (this.destroyEachFrame) {
@@ -57,9 +56,9 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
           (emitter as GameObjects.Particles.ParticleEmitter).stop()
         }
       }
-      if (this.destroyEachFrame) {
-        this.tower.effect.removeAll()
-      }
+    }
+    if (this.destroyEachFrame) {
+      this.tower.effect.removeAll()
     }
 
   }
