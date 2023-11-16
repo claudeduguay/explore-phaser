@@ -1,6 +1,7 @@
 import { Scene } from "phaser"
 import { randomPeepOptions } from "../../assets/PeepFactory"
 import { makePeep } from "../../assets/TextureFactory"
+import { DAMAGE_DATA } from "./ITowerData"
 
 export interface IEnemyGeneral {
   level: number
@@ -30,7 +31,8 @@ export const ENEMY_INDEX: { [key: string]: IEnemyModel } = {}
 export function generateEnemies(scene: Scene, count: number = 5) {
   for (let i = 1; i <= count; i++) {
     // Register assets
-    makePeep(scene, `peep_${i}`, 32, 32, randomPeepOptions())
+    const options = randomPeepOptions()
+    makePeep(scene, `peep_${i}`, 32, 32, options)
     const maxSpeed = 75 * (count + 1)
     const speedUnit = 50
     const peep: IEnemyModel = {
@@ -44,8 +46,14 @@ export function generateEnemies(scene: Scene, count: number = 5) {
         value: 10 * i
       },
       defense: {
-        default: 0
+        default: 0,
       }
+    }
+    const defense = Object.entries(DAMAGE_DATA)
+      .find(([key, data]: any) => data.color.value === options.colorChoice)
+    console.log("Peep defense:", defense)
+    if (defense?.[0]) {
+      peep.defense[defense[0]] = 1.0
     }
     ENEMY_INDEX[peep.key] = peep
     ENEMY_LIST.push(peep)

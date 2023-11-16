@@ -50,16 +50,18 @@ export function randomBodyColor() {
   return Display.Color.HSLToColor(Math.random(), 1, 0.33).rgba
 }
 
-export function randomPeepOptions(): Partial<IPeepOptions> {
+export function randomPeepOptions(): Partial<IPeepOptions & { colorChoice: number }> {
   // Use Damage colors to indicate resistance (need to match on generation side)
-  const colors = Object.values(DAMAGE_DATA).map(data => Display.Color.IntegerToColor(data.color.value).rgba)
+  const colors = Object.values(DAMAGE_DATA).map(data => data.color.value)
+  const colorChoice = randomChoice(colors)
   return {
     headWidth: randomRange(HEAD_WIDTH_RANGE),
     headHeight: randomRange(HEAD_HEIGHT_RANGE),
     bodyWidth: randomRange(BODY_WIDTH_RANGE),
     bodyHeight: randomRange(BODY_HEIGHT_RANGE),
     headColor: randomChoice(SKIN_LIST),
-    bodyColor: randomChoice(colors),
+    bodyColor: Display.Color.IntegerToColor(colorChoice).rgba,
+    colorChoice
     // bodyColor: randomBodyColor(),
   }
 }

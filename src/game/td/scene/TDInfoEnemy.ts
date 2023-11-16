@@ -13,7 +13,7 @@ export default class TDInfoEnemy extends TDInfoBase {
 
   constructor(scene: Scene, x: number, y: number,
     public group: SelectableGroup<TDEnemy>) {
-    super(scene, x, y, 350, 650)
+    super(scene, x, y, 350, 685)
 
     group.selected.addListener(CHANGED_EVENT, this.setEnemy)
     group.infoVisible.addListener(CHANGED_EVENT, this.setVisibility)
@@ -76,7 +76,7 @@ export default class TDInfoEnemy extends TDInfoBase {
     const percentFormatter = (key: string, value: number) => `${(value * 100).toFixed(0)}%`
     this.addTable(405, "Defense (dps multiplier)", model.defense, percentFormatter)
 
-    this.effectTableObjects = [this.addText(500, "No Damage Effects", 20, "orange")]
+    this.effectTableObjects = [this.addText(535, "No Damage Effects", 20, "orange")]
   }
 
   // Track objects added by the Effect table for later removal
@@ -108,9 +108,9 @@ export default class TDInfoEnemy extends TDInfoBase {
       })
       // console.log("Effects:", effects.length ? JSON.stringify(obj) : "None")
       if (Object.keys(obj).length > 0) {
-        this.effectTableObjects = this.addTable(500, "Applied Effects", obj)
+        this.effectTableObjects = this.addTable(535, "Applied Effects", obj)
       } else {
-        this.effectTableObjects = [this.addText(500, "No Current Effects", 20, "orange")]
+        this.effectTableObjects = [this.addText(535, "No Current Effects", 20, "orange")]
       }
     }
   }
