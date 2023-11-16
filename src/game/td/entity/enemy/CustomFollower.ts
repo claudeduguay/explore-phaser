@@ -76,7 +76,6 @@ export default class CustomFollower extends GameObjects.Container {
   }
 
   preUpdate(time: number, delta: number) {
-    // console.log("Follower update")
     if (this.config) {
       if (!this.startTime) {
         this.startTime = time
@@ -84,14 +83,12 @@ export default class CustomFollower extends GameObjects.Container {
       if (!this._isFollowing && time - this.startTime > (this.config.delay || 0)) {
         this._isFollowing = true
         if (this.config?.onStart) {
-          console.log("Run onStart()")
           this.config.onStart()
         }
       }
       if (this.offset >= 1) {
         this._isFollowing = false
         if (this.config?.onComplete) {
-          console.log("Run onComplete()")
           this.config.onComplete()
         }
       }
@@ -104,11 +101,9 @@ export default class CustomFollower extends GameObjects.Container {
           // Number of pixels / count of total milliseconds = pixels/millisecond
           const unit = (pathLength / duration) // / ONE_SECOND * speed
           const offsetFraction = unit / pathLength
-          console.log("Path length:", pathLength)
           fraction = offsetFraction * delta * f
         }
         this.offset += fraction
-        // console.log("Update offset to:", this.offset)
       }
     }
   }
