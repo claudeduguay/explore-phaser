@@ -45,7 +45,7 @@ export default class LaunchBehavior extends BaseBehavior {
     const pos = s.lerp(t, this.fraction[i])
     emitter.setPosition(pos.x, pos.y)
     emitter.rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI / 2
-    this.fraction[i] += 0.03
+    this.fraction[i] += 0.04
     if (this.fraction[i] > 1) {
       this.fraction[i] = 0
     }
