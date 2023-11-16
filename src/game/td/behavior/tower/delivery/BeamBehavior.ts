@@ -13,7 +13,11 @@ function perpendicular({ x, y }: Point, angle: number, r: number, pos: boolean =
 export default class BeamBehavior extends BaseBehavior {
 
   constructor(tower: TDTower) {
-    super(tower, true)
+    super(tower, {
+      destroyEachFrame: true,
+      singleEmitter: false,
+      singleTarget: true
+    })
   }
 
   updateEmitter(i: number, emissionPoint: IPointLike, time: number): void {

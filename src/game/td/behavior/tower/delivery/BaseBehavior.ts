@@ -8,6 +8,12 @@ import { GameObjects, Math as PMath } from "phaser"
 
 export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
 
+export interface IBaseEffectOptions {
+  destroyEachFrame: boolean
+  singleEmitter: boolean
+  singleTarget: boolean
+}
+
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
 export default abstract class BaseBehavior implements IBehavior {
 
@@ -15,9 +21,11 @@ export default abstract class BaseBehavior implements IBehavior {
 
   constructor(
     public tower: TDTower,
-    public destroyEachFrame: boolean = true,
-    public singleEmitter: boolean = false,
-    public singleTarget: boolean = true) {
+    public options: IBaseEffectOptions = {
+      destroyEachFrame: true,
+      singleEmitter: false,
+      singleTarget: true
+    }) {
   }
 
   asRelative(pos: IPointLike) {
@@ -41,16 +49,18 @@ export default abstract class BaseBehavior implements IBehavior {
 
   update(time: number, delta: number) {
     this.maybeRotate()
-    if (this.destroyEachFrame) {
+    if (this.options.destroyEachFrame) {
       this.tower.effect.removeAll()
     }
-    const emissionPoints = this.singleEmitter ? [this.tower] : this.tower.emissionPoints(false)
+    // If singleEmitter, the tower is the the only emissionPoint, else collect weapon points
+    const emissionPoints = this.options.singleEmitter ? [this.tower] : this.tower.emissionPoints(false)
     if (!this.tower.effect.list.length) {
       emissionPoints.forEach((point, i) => this.initEmitter(i, point, time))
     }
+    // Has a target
     if (this.tower.targeting.current.length) {
       emissionPoints.forEach((point, i) => this.updateEmitter(i, point, time))
-      if (this.singleTarget) {
+      if (this.options.singleTarget) {
         const target = pickFirst(this.tower.targeting.current)
         if (target) {
           this.targetInstanceMap.apply(target, () => (new InRangeDamageEffect(this.tower, target)))
@@ -81,14 +91,14 @@ export default abstract class BaseBehavior implements IBehavior {
   removeOrStopEmitters(): void {
     if (this.tower.effect.list.length) {
       for (let emitter of this.tower.effect.list) {
-        if (this.destroyEachFrame) {
+        if (this.options.destroyEachFrame) {
           emitter.destroy()
         } else if ("stop" in emitter) {
           (emitter as GameObjects.Particles.ParticleEmitter).stop()
         }
       }
     }
-    if (this.destroyEachFrame) {
+    if (this.options.destroyEachFrame) {
       this.tower.effect.removeAll()
     }
 

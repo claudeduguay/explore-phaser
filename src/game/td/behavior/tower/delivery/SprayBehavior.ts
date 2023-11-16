@@ -3,7 +3,6 @@ import BaseBehavior from "./BaseBehavior"
 import { rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
 import { IPointLike } from "../../../../../util/geom/Point"
-import TargetEffectsMap from "../../core/TargetEffectsMap"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 // import InRangeDamageEffect from "../../enemy/InRangeDamageEffect"
 
@@ -37,10 +36,12 @@ export function sprayEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
 
 export default class SprayBehavior extends BaseBehavior {
 
-  targetInstanceMap = new TargetEffectsMap()
-
-  constructor(tower: TDTower, public key: string = "fire") {
-    super(tower, false)
+  constructor(tower: TDTower) {
+    super(tower, {
+      destroyEachFrame: false,
+      singleEmitter: false,
+      singleTarget: true
+    })
   }
 
   updateEmitter(i: number, pos: IPointLike, time: number): void {
@@ -56,8 +57,6 @@ export default class SprayBehavior extends BaseBehavior {
       emitter.setPosition(x, y)
       emitter.rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI
       emitter.start()
-    } else {
-      this.targetInstanceMap.clear()
     }
   }
 

@@ -8,7 +8,11 @@ import { pickFirst } from "../../../entity/tower/Targeting"
 export default class BulletBehavior extends BaseBehavior {
 
   constructor(tower: TDTower) {
-    super(tower, true)
+    super(tower, {
+      destroyEachFrame: true,
+      singleEmitter: false,
+      singleTarget: true
+    })
   }
 
   updateEmitter(i: number, source: IPointLike, time: number): void {

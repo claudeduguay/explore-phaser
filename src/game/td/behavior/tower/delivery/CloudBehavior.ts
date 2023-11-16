@@ -3,9 +3,10 @@ import IBehavior from "../../core/IBehavior"
 import { circleEmitZone, rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
-import TargetEffectsMap from "../../core/TargetEffectsMap"
 import DamageEffect from "../../enemy/DamageEffect"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
+import { IPointLike } from "../../../../../util/geom/Point"
+import BaseBehavior from "./BaseBehavior"
 
 export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
@@ -33,18 +34,22 @@ export function cloudEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
     })
 }
 
-export default class CloudBehavior implements IBehavior {
+export default class CloudBehavior extends BaseBehavior {
 
   cloud?: GameObjects.Particles.ParticleEmitter
-  targetInstanceMap = new TargetEffectsMap()
 
-  constructor(public tower: TDTower, public effect?: IDamageEffectBuilder) {
+  constructor(tower: TDTower) {
+    super(tower, {
+      destroyEachFrame: false,
+      singleEmitter: true,
+      singleTarget: false
+    })
   }
 
   // We know that if a tower has no duration it's a range effect
   damageEffectBuilder: IDamageEffectBuilder = (target: TDEnemy) => new DamageEffect(this.tower, target)
 
-  update(time: number, delta: number) {
+  updateEmitter(i: number, emissionPoint: IPointLike, time: number) {
     if (!this.cloud && this.tower.preview !== PreviewType.Drag) {
       this.cloud = cloudEmitter(this.tower)
       this.cloud.stop()
@@ -57,11 +62,10 @@ export default class CloudBehavior implements IBehavior {
     if (this.tower.targeting.current.length) {
       this.cloud?.start()
       for (let target of this.tower.targeting.current) {
-        const effectBuilder = this.effect ?? this.damageEffectBuilder
+        const effectBuilder = this.damageEffectBuilder
         this.targetInstanceMap.apply(target, () => effectBuilder(target))
       }
     } else { // No target
-      this.targetInstanceMap.clear()
       this.cloud?.stop()
     }
   }

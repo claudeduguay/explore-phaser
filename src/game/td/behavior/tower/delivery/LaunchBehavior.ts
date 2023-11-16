@@ -10,7 +10,11 @@ export default class LaunchBehavior extends BaseBehavior {
   fraction: number[] = []
 
   constructor(tower: TDTower) {
-    super(tower, true)
+    super(tower, {
+      destroyEachFrame: true,
+      singleEmitter: false,
+      singleTarget: true
+    })
   }
 
   updateEmitter(i: number, { x, y }: IPointLike, time: number): void {

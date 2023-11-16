@@ -1,19 +1,25 @@
-import IBehavior from "../../core/IBehavior"
 import TDTower from "../../../entity/tower/TDTower"
 import TimedSlowEffect from "../../enemy/SlowEffect"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { Display, GameObjects } from "phaser"
+import BaseBehavior from "./BaseBehavior"
+import { IPointLike } from "../../../../../util/geom/Point"
 
-export default class PulseBehavior implements IBehavior {
+export default class PulseBehavior extends BaseBehavior {
 
   targetInstanceMap = new TargetEffectsMap()
   twinInstanceMap = new TargetEffectsMap()
 
-  constructor(public tower: TDTower) {
+  constructor(tower: TDTower) {
+    super(tower, {
+      destroyEachFrame: false,
+      singleEmitter: true,
+      singleTarget: false
+    })
   }
 
-  update(time: number, delta: number) {
+  updateEmitter(i: number, emissionPoint: IPointLike, time: number) {
     if (this.tower.targeting.current.length > 0) {
       if (this.tower.effect.list.length === 0) {
         const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value

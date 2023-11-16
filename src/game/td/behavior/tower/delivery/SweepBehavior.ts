@@ -3,29 +3,36 @@ import { toRadians } from "../../../../../util/MathUtil"
 import BaseBehavior from "./BaseBehavior"
 import { IPointLike } from "../../../../../util/geom/Point"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
+import TDTower from "../../../entity/tower/TDTower"
 
 export default class SweepBehavior extends BaseBehavior {
 
-  g?: GameObjects.Graphics
+  constructor(tower: TDTower) {
+    super(tower, {
+      destroyEachFrame: false,
+      singleEmitter: true,
+      singleTarget: false
+    })
+  }
+
+  initEmitter(i: number, emissionPoint: IPointLike, time: number) {
+    const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
+    const c = Display.Color.IntegerToColor(color)
+    const brighter = c.brighten(50).color
+    const g = this.tower.scene.add.graphics({ fillStyle: { color: brighter, alpha: 0.1 } })
+    this.tower.effect.add(g)
+    this.tower.sendToBack(this.tower.effect)
+    const slice = 20
+    // const f = time % 1000 / 1000
+    for (let a = 0; a < 360; a += slice * 2) {
+      const startAngle = toRadians(this.tower.turret.angle + a)
+      const endAngle = toRadians(this.tower.turret.angle + a + slice)
+      g.slice(0, 0, this.tower.model.general.range, startAngle, endAngle).fill()
+    }
+  }
 
   updateEmitter(i: number, emissionPoint: IPointLike, time: number) {
-    if (this.g) {
-      this.g.destroy()
-    }
-    if (this.tower.targeting.current.length > 0) {
-      const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
-      const c = Display.Color.IntegerToColor(color)
-      const brighter = c.brighten(50).color
-      const slice = 20
-      this.g = this.tower.scene.add.graphics({ fillStyle: { color: brighter, alpha: 0.1 } })
-      this.tower.effect.add(this.g)
-      this.tower.sendToBack(this.tower.effect)
-      // const f = time % 1000 / 1000
-      for (let a = 0; a < 360; a += slice * 2) {
-        const startAngle = toRadians(this.tower.turret.angle + a)
-        const endAngle = toRadians(this.tower.turret.angle + a + slice)
-        this.g?.slice(0, 0, this.tower.model.general.range, startAngle, endAngle).fill()
-      }
-    }
+    const g = this.tower.effect.list[0] as GameObjects.Graphics
+    g.angle = this.tower.turret.angle
   }
 }
