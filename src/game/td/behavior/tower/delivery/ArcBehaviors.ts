@@ -10,6 +10,8 @@ import BaseBehavior from "./BaseBehavior"
 
 export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
+// BUG: Something is wrong with this class as direction is not set correctly
+
 export function arcEmitter(tower: TDTower, angle: number): GameObjects.Particles.ParticleEmitter {
   const range = tower.model.general.range
   const { damage } = tower.model.organize
