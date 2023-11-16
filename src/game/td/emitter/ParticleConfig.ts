@@ -74,6 +74,46 @@ export const bottomEmitZone =
     }
   }
 
+export const eastEmitZone =
+  (range: number, pos: IPointLike): IEmitterEdgeZoneConfig => {
+    return {
+      type: 'edge',
+      quantity: 200,
+      source: {
+        getPoints: (quantity: number) => {
+          const points = []
+          for (let i = 0; i < quantity; i++) {
+            const a = lerp(Math.PI / 2, -Math.PI / 2, Math.random())
+            const x = Math.cos(a) * range
+            const y = Math.sin(a) * range
+            points.push(new Point(x, y))
+          }
+          return points
+        }
+      }
+    }
+  }
+
+export const westEmitZone =
+  (range: number, pos: IPointLike): IEmitterEdgeZoneConfig => {
+    return {
+      type: 'edge',
+      quantity: 200,
+      source: {
+        getPoints: (quantity: number) => {
+          const points = []
+          for (let i = 0; i < quantity; i++) {
+            const a = lerp(Math.PI * 2 - Math.PI / 2, Math.PI / 2, Math.random())
+            const x = Math.cos(a) * range
+            const y = Math.sin(a) * range
+            points.push(new Point(x, y))
+          }
+          return points
+        }
+      }
+    }
+  }
+
 // Points appear to be relative to the scene, not the emitter, so this is a problem w/o access to the emitter position
 // Reported at: https://github.com/photonstorm/phaser/issues/6371
 export const rangeDeathZone =

@@ -46,6 +46,8 @@ import BurstBehavior from "../../behavior/tower/delivery/BurstBehavior"
 import FallBehavior from "../../behavior/tower/delivery/FallBehavior"
 import RiseBehavior from "../../behavior/tower/delivery/RiseBehavior"
 import AreaBehavior from "../../behavior/tower/delivery/AreaBehavior"
+import PullBehavior from "../../behavior/tower/delivery/PullBehavior"
+import PushBehavior from "../../behavior/tower/delivery/PushBehavior"
 
 export enum PreviewType {
   Normal,
@@ -62,6 +64,8 @@ const DELIVERY_BEHAVIORS: Record<string, any> = {
   Burst: BurstBehavior,
   Fall: FallBehavior,
   Rise: RiseBehavior,
+  Pull: PullBehavior,
+  Push: PushBehavior,
   Area: AreaBehavior,
   Missile: LaunchBehavior,
   Mine: LaunchBehavior,
@@ -128,9 +132,9 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     }
 
     this.turret = new TDTurret(scene, 0, 0, model)
-    if (model.meta.rotation !== "target") {
-      this.behavior.add(new TargetSpinBehavior(this, model.meta.rotation))
-    }
+    // if (model.meta.rotation !== "target") {
+    //   this.behavior.add(new TargetSpinBehavior(this, model.meta.rotation))
+    // }
     this.add(this.turret)
 
     // >>> To be used to apply visual efffects relative to this GameObject <<<
@@ -148,13 +152,13 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
 
     this.setSize(range * 2, range * 2) // Sets bounding box
 
-    if (model.meta.rotation === "target") {
-      this.behavior.add(new TargetAimBehavior(this))
-    }
+    // if (model.meta.rotation === "target") {
+    //   this.behavior.add(new TargetAimBehavior(this))
+    // }
     const DamageBehavior = DELIVERY_BEHAVIORS[model.organize.delivery] || BeamBehavior
     // const TargetBehavior = TOWER_BEHAVIORS[model.key] || DamageBehavior
     this.behavior.add(new DamageBehavior(this))
-    this.behavior.add(new ClearTargetsBehavior(this))
+    // this.behavior.add(new ClearTargetsBehavior(this))
   }
 
   preDestroy() {

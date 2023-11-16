@@ -43,7 +43,10 @@ export default class SprayBehavior extends BaseBehavior {
     super(tower, false)
   }
 
-  addEmitter(i: number, pos: Point, time: number): void {
+  initEmitter(i: number, emissionPoint: Point, time: number): void {
+  }
+
+  updateEmitter(i: number, pos: Point, time: number): void {
     if (this.tower.effect.list.length < i + 1) {
       const emitter = sprayEmitter(this.tower)
       emitter.stop()
@@ -60,4 +63,8 @@ export default class SprayBehavior extends BaseBehavior {
       this.targetInstanceMap.clear()
     }
   }
+
+  clearEmitter(i: number, emissionPoint: Point, time: number): void {
+  }
+
 }

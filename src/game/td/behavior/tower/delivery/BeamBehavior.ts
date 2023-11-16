@@ -16,7 +16,10 @@ export default class BeamBehavior extends BaseBehavior {
     super(tower, true)
   }
 
-  addEmitter(i: number, emissionPoint: Point, time: number): void {
+  initEmitter(i: number, emissionPoint: Point, time: number): void {
+  }
+
+  updateEmitter(i: number, emissionPoint: Point, time: number): void {
     const target = pickFirst(this.tower.targeting.current)
     if (target) {
       const emitter = this.tower.scene.add.graphics()
@@ -33,6 +36,9 @@ export default class BeamBehavior extends BaseBehavior {
           this.drawLine(emitter, source, this.asRelative(target))
       }
     }
+  }
+
+  clearEmitter(i: number, emissionPoint: Point, time: number): void {
   }
 
   drawLine(g: GameObjects.Graphics, source: Point, target: Point) {

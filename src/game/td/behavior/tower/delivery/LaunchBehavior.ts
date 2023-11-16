@@ -13,7 +13,10 @@ export default class LaunchBehavior extends BaseBehavior {
     super(tower, true)
   }
 
-  addEmitter(i: number, { x, y }: Point, time: number): void {
+  initEmitter(i: number, emissionPoint: Point, time: number): void {
+  }
+
+  updateEmitter(i: number, { x, y }: Point, time: number): void {
     const target = pickFirst(this.tower.targeting.current)
     if (target) {
       const key = DELIVERY_DATA[this.tower.model.organize.delivery].sprite.key
@@ -26,6 +29,9 @@ export default class LaunchBehavior extends BaseBehavior {
       this.tower.effect.add(emitter)
       this.draw(i, emitter, new Point(x, y), new Point(target.x, target.y), time)
     }
+  }
+
+  clearEmitter(i: number, emissionPoint: Point, time: number): void {
   }
 
   draw(i: number, emitter: GameObjects.Sprite, source: Point, target: Point, time: number) {

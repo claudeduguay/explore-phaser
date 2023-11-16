@@ -1,5 +1,5 @@
 
-export const TYPES_DELIVERY = ["Arrow", "Bullet", "Beam", "Spray", "Cloud", "Burst", "Fall", "Rise", "Area", "Missile", "Mine", "Grenade"]
+export const TYPES_DELIVERY = ["Arrow", "Bullet", "Beam", "Spray", "Cloud", "Burst", "Fall", "Rise", "Pull", "Push", "Area", "Missile", "Mine", "Grenade"]
 export const TYPES_DAMAGE = ["Kinetic", "Light", "Dark", "Force", "Plasma", "Fire", "Water", "Ice", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
 
 export type IDeliveryType = typeof TYPES_DELIVERY[number]
@@ -145,6 +145,14 @@ export const DELIVERY_DATA: { [key: IDeliveryType]: IDeliveryData } = {
   Rise: {
     sprite: { key: "rain", scale: 0.1 },
     description: "Multiple particles rise from below, multi-target within the tower's range"
+  },
+  Pull: {
+    sprite: { key: "rain", scale: 0.1 },
+    description: "Multiple particles are pulled from the right, multi-target within the tower's range"
+  },
+  Push: {
+    sprite: { key: "rain", scale: 0.1 },
+    description: "Multiple particles ae pushed to the right, multi-target within the tower's range"
   },
   Area: {
     sprite: { key: "area", scale: 0.05 },
