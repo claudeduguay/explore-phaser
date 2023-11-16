@@ -51,7 +51,6 @@ export function generateEnemies(scene: Scene, count: number = 5) {
     }
     const defense = Object.entries(DAMAGE_DATA)
       .find(([key, data]: any) => data.color.value === options.colorChoice)
-    console.log("Peep defense:", defense)
     if (defense?.[0]) {
       peep.defense[defense[0]] = 1.0
     }
