@@ -10,32 +10,26 @@ import BaseBehavior from "./BaseBehavior"
 
 export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
-// BUG: Something is wrong with this class as direction is not set correctly
-
 export function arcEmitter(tower: TDTower, angle: number): GameObjects.Particles.ParticleEmitter {
   const range = tower.model.general.range
   const { damage } = tower.model.organize
   const { color, sprite } = DAMAGE_DATA[damage]
   const c = Display.Color.IntegerToColor(color.value)
   const brighter = c.brighten(50).color
-  let emitZone // = topEmitZone(range, tower)
+  let emitZone = topEmitZone(range, tower)
   switch (angle) {
     case 0:
       emitZone = westEmitZone(range, tower)
-      console.log("Created:", angle, "west")
       break
     case 90:
       emitZone = topEmitZone(range, tower)
-      console.log("Created:", angle, "top")
       break
     case 180:
       emitZone = eastEmitZone(range, tower)
-      console.log("Created:", angle, "east")
       break
     case 270:
     case -90:
       emitZone = bottomEmitZone(range, tower)
-      console.log("Created:", angle, "bottom")
       break
   }
   return tower.scene.add.particles(0, 0, sprite.key,
@@ -60,7 +54,7 @@ export default class ArcBehaviors extends BaseBehavior {
 
   cloud?: GameObjects.Particles.ParticleEmitter
 
-  constructor(scene: Scene, public tower: TDTower, public angle: number) {
+  constructor(scene: Scene, public tower: TDTower, public dirAngle: number) {
     super(scene, tower, {
       destroyEachFrame: false,
       singleEmitter: true,
@@ -73,7 +67,7 @@ export default class ArcBehaviors extends BaseBehavior {
 
   initEmitter(i: number, emissionPoint: IPointLike, time: number) {
     if (this.tower.preview !== PreviewType.Drag) {
-      const cloud = arcEmitter(this.tower, this.angle)
+      const cloud = arcEmitter(this.tower, this.dirAngle)
       cloud.stop()
       this.add(cloud)
       this.tower.sendToBack(this)
