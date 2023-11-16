@@ -1,6 +1,6 @@
 import { GameObjects, Curves, Math as PMath } from "phaser"
 import BaseBehavior from "./BaseBehavior"
-import Point from "../../../../../util/geom/Point"
+import Point, { IPointLike } from "../../../../../util/geom/Point"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import TDTower from "../../../entity/tower/TDTower"
 import { pickFirst } from "../../../entity/tower/Targeting"
@@ -16,10 +16,7 @@ export default class BeamBehavior extends BaseBehavior {
     super(tower, true)
   }
 
-  initEmitter(i: number, emissionPoint: Point, time: number): void {
-  }
-
-  updateEmitter(i: number, emissionPoint: Point, time: number): void {
+  updateEmitter(i: number, emissionPoint: IPointLike, time: number): void {
     const target = pickFirst(this.tower.targeting.current)
     if (target) {
       const emitter = this.tower.scene.add.graphics()
@@ -36,9 +33,6 @@ export default class BeamBehavior extends BaseBehavior {
           this.drawLine(emitter, source, this.asRelative(target))
       }
     }
-  }
-
-  clearEmitter(i: number, emissionPoint: Point, time: number): void {
   }
 
   drawLine(g: GameObjects.Graphics, source: Point, target: Point) {

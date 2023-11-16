@@ -2,7 +2,7 @@ import { Display, GameObjects, Math as PMath } from "phaser"
 import BaseBehavior from "./BaseBehavior"
 import { rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
-import Point from "../../../../../util/geom/Point"
+import { IPointLike } from "../../../../../util/geom/Point"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 // import InRangeDamageEffect from "../../enemy/InRangeDamageEffect"
@@ -43,10 +43,7 @@ export default class SprayBehavior extends BaseBehavior {
     super(tower, false)
   }
 
-  initEmitter(i: number, emissionPoint: Point, time: number): void {
-  }
-
-  updateEmitter(i: number, pos: Point, time: number): void {
+  updateEmitter(i: number, pos: IPointLike, time: number): void {
     if (this.tower.effect.list.length < i + 1) {
       const emitter = sprayEmitter(this.tower)
       emitter.stop()
@@ -62,9 +59,6 @@ export default class SprayBehavior extends BaseBehavior {
     } else {
       this.targetInstanceMap.clear()
     }
-  }
-
-  clearEmitter(i: number, emissionPoint: Point, time: number): void {
   }
 
 }

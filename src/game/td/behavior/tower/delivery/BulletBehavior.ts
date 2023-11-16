@@ -1,7 +1,7 @@
 import { Math as PMath } from "phaser"
 import BaseBehavior from "./BaseBehavior"
 import TDTower from "../../../entity/tower/TDTower"
-import Point from "../../../../../util/geom/Point"
+import { IPointLike } from "../../../../../util/geom/Point"
 import { pickFirst } from "../../../entity/tower/Targeting"
 // import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 
@@ -11,10 +11,7 @@ export default class BulletBehavior extends BaseBehavior {
     super(tower, true)
   }
 
-  initEmitter(i: number, emissionPoint: Point, time: number): void {
-  }
-
-  updateEmitter(i: number, source: Point, time: number): void {
+  updateEmitter(i: number, source: IPointLike, time: number): void {
     const target = pickFirst(this.tower.targeting.current)
     const show = time % 150 > 75 //  Visible half of every 150ms
     if (target && show) {
@@ -30,8 +27,5 @@ export default class BulletBehavior extends BaseBehavior {
       emitter.alpha = 0.75
       // this.emitters?.push(emitter)
     }
-  }
-
-  clearEmitter(i: number, emissionPoint: Point, time: number): void {
   }
 }

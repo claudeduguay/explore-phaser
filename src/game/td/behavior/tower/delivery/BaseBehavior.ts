@@ -16,6 +16,7 @@ export default abstract class BaseBehavior implements IBehavior {
   constructor(
     public tower: TDTower,
     public destroyEachFrame: boolean = true,
+    public singleEmitter: boolean = false,
     public singleTarget: boolean = true) {
   }
 
@@ -43,11 +44,12 @@ export default abstract class BaseBehavior implements IBehavior {
     if (this.destroyEachFrame) {
       this.tower.effect.removeAll()
     }
+    const emissionPoints = this.singleEmitter ? [this.tower] : this.tower.emissionPoints(false)
     if (!this.tower.effect.list.length) {
-      this.tower.emissionPoints(false).forEach((point, i) => this.initEmitter(i, point, time))
+      emissionPoints.forEach((point, i) => this.initEmitter(i, point, time))
     }
     if (this.tower.targeting.current.length) {
-      this.tower.emissionPoints(false).forEach((point, i) => this.updateEmitter(i, point, time))
+      emissionPoints.forEach((point, i) => this.updateEmitter(i, point, time))
       if (this.singleTarget) {
         const target = pickFirst(this.tower.targeting.current)
         if (target) {
@@ -59,20 +61,20 @@ export default abstract class BaseBehavior implements IBehavior {
         })
       }
     } else {
-      this.tower.emissionPoints(false).forEach((point, i) => this.clearEmitter(i, point, time))
+      emissionPoints.forEach((point, i) => this.clearEmitter(i, point, time))
       this.targetInstanceMap.clear()
       this.removeOrStopEmitters()
     }
     this.clearTargeting()
   }
 
-  initEmitter(index: number, emissionPoint: Point, time: number): void {
+  initEmitter(index: number, emissionPoint: IPointLike, time: number): void {
 
   }
 
-  abstract updateEmitter(index: number, emissionPoint: Point, time: number): void
+  abstract updateEmitter(index: number, emissionPoint: IPointLike, time: number): void
 
-  clearEmitter(index: number, emissionPoint: Point, time: number): void {
+  clearEmitter(index: number, emissionPoint: IPointLike, time: number): void {
 
   }
 

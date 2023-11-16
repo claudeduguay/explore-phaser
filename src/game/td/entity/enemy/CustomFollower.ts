@@ -2,7 +2,7 @@ import { Curves, GameObjects, Scene, Animations } from "phaser";
 import IEnemyModel from "../model/IEnemyModel";
 import Direction from "../../../../util/geom/Direction";
 
-const ONE_SECOND = 1000
+// const ONE_SECOND = 1000
 
 export interface IFollowConfig {
   speed: number
