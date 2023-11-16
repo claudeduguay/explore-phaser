@@ -2,6 +2,7 @@ import { Display } from "phaser";
 import { drawEllipse } from "../../../util/DrawUtil";
 import { IRange, randomChoice, randomRange } from "../../../util/Random";
 import { canvasSize } from "../../../util/RenderUtil";
+import { DAMAGE_DATA } from "../entity/model/ITowerData";
 
 
 // https://www.vecteezy.com/vector-art/6683568-skin-tones-palette-by-color-codes-different-types-human-skin-flat-icon-set-vector
@@ -50,13 +51,16 @@ export function randomBodyColor() {
 }
 
 export function randomPeepOptions(): Partial<IPeepOptions> {
+  // Use Damage colors to indicate resistance (need to match on generation side)
+  const colors = Object.values(DAMAGE_DATA).map(data => Display.Color.IntegerToColor(data.color.value).rgba)
   return {
     headWidth: randomRange(HEAD_WIDTH_RANGE),
     headHeight: randomRange(HEAD_HEIGHT_RANGE),
     bodyWidth: randomRange(BODY_WIDTH_RANGE),
     bodyHeight: randomRange(BODY_HEIGHT_RANGE),
     headColor: randomChoice(SKIN_LIST),
-    bodyColor: randomBodyColor(),
+    bodyColor: randomChoice(colors),
+    // bodyColor: randomBodyColor(),
   }
 }
 
