@@ -44,20 +44,18 @@ export default class SprayBehavior extends BaseBehavior {
     })
   }
 
-  updateEmitter(i: number, pos: IPointLike, time: number): void {
-    if (this.tower.effect.list.length < i + 1) {
-      const emitter = sprayEmitter(this.tower)
-      emitter.stop()
-      this.tower.effect.add(emitter)
-    }
-    if (this.tower.targeting.current.length) {
-      const target = this.tower.targeting.current[0]
-      const { x, y } = this.asRelative(pos)
-      const emitter = this.tower.effect.list[i] as GameObjects.Particles.ParticleEmitter
-      emitter.setPosition(x, y)
-      emitter.rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI
-      emitter.start()
-    }
+  initEmitter(i: number, pos: IPointLike, time: number): void {
+    const emitter = sprayEmitter(this.tower)
+    emitter.stop()
+    this.tower.effect.add(emitter)
   }
 
+  updateEmitter(i: number, pos: IPointLike, time: number): void {
+    const target = this.tower.targeting.current[0]
+    const { x, y } = this.asRelative(pos)
+    const emitter = this.tower.effect.list[i] as GameObjects.Particles.ParticleEmitter
+    emitter.setPosition(x, y)
+    emitter.rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI
+    emitter.start()
+  }
 }

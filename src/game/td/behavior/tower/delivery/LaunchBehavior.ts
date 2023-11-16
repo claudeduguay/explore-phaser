@@ -17,17 +17,24 @@ export default class LaunchBehavior extends BaseBehavior {
     })
   }
 
-  updateEmitter(i: number, { x, y }: IPointLike, time: number): void {
+  initEmitter(i: number, { x, y }: IPointLike, time: number): void {
     const target = pickFirst(this.tower.targeting.current)
     if (target) {
       const key = DELIVERY_DATA[this.tower.model.organize.delivery].sprite.key
       const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
-      const emitter = this.tower.scene.add.sprite(0, 0, key)
+      const emitter = this.tower.scene.add.sprite(x, y, key)
       if (this.fraction.length < i + 1) {
         this.fraction.push(0)
       }
       emitter.setTint(color)
       this.tower.effect.add(emitter)
+    }
+  }
+
+  updateEmitter(i: number, { x, y }: IPointLike, time: number): void {
+    const target = pickFirst(this.tower.targeting.current)
+    if (target) {
+      const emitter = this.tower.effect.list[i] as GameObjects.Sprite
       this.draw(i, emitter, new Point(x, y), new Point(target.x, target.y), time)
     }
   }

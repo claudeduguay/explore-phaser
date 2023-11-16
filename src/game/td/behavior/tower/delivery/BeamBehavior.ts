@@ -20,11 +20,15 @@ export default class BeamBehavior extends BaseBehavior {
     })
   }
 
+  initEmitter(i: number, emissionPoint: IPointLike, time: number): void {
+    const emitter = this.tower.scene.add.graphics()
+    this.tower.effect.add(emitter)
+  }
+
   updateEmitter(i: number, emissionPoint: IPointLike, time: number): void {
+    const emitter = this.tower.effect.list[i] as GameObjects.Graphics
     const target = pickFirst(this.tower.targeting.current)
     if (target) {
-      const emitter = this.tower.scene.add.graphics()
-      this.tower.effect.add(emitter)
       const source = this.asRelative(emissionPoint)
       switch (this.tower.model.organize.damage) {
         case "Electric":

@@ -36,8 +36,6 @@ export function cloudEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
 
 export default class CloudBehavior extends BaseBehavior {
 
-  cloud?: GameObjects.Particles.ParticleEmitter
-
   constructor(tower: TDTower) {
     super(tower, {
       destroyEachFrame: false,
@@ -49,24 +47,25 @@ export default class CloudBehavior extends BaseBehavior {
   // We know that if a tower has no duration it's a range effect
   damageEffectBuilder: IDamageEffectBuilder = (target: TDEnemy) => new DamageEffect(this.tower, target)
 
-  updateEmitter(i: number, emissionPoint: IPointLike, time: number) {
-    if (!this.cloud && this.tower.preview !== PreviewType.Drag) {
-      this.cloud = cloudEmitter(this.tower)
-      this.cloud.stop()
-      // Push effect behind the tower
-      if (this.tower instanceof GameObjects.Container) {
-        this.tower.effect.add(this.cloud)
-        this.tower.sendToBack(this.tower.effect)
-      }
+  initEmitter(i: number, emissionPoint: IPointLike, time: number) {
+    if (this.tower.preview !== PreviewType.Drag) {
+      const cloud = cloudEmitter(this.tower)
+      cloud.stop()
+      this.tower.effect.add(cloud)
+      this.tower.sendToBack(this.tower.effect)
     }
+  }
+
+  updateEmitter(i: number, emissionPoint: IPointLike, time: number) {
+    const cloud = this.tower.effect.list[0] as GameObjects.Particles.ParticleEmitter
     if (this.tower.targeting.current.length) {
-      this.cloud?.start()
+      cloud.start()
       for (let target of this.tower.targeting.current) {
         const effectBuilder = this.damageEffectBuilder
         this.targetInstanceMap.apply(target, () => effectBuilder(target))
       }
     } else { // No target
-      this.cloud?.stop()
+      cloud?.stop()
     }
   }
 }
