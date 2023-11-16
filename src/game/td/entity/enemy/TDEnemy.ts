@@ -28,9 +28,9 @@ export default class TDEnemy extends CustomFollower implements ISelectable {
     public showStatusBars: boolean = false) {
 
     super(scene, x, y, model, path)
-    this.enemy = this
 
     this.model = deepCloneEnemyModelAndProxy(model)
+    this.currentSpeed = this.model.general.speed
 
     this.setSize(32, 32)
     this.postFX.addShadow(0.2, 1.1, 0.2, 1, 0x000000, 3, 0.5)
@@ -164,6 +164,7 @@ export default class TDEnemy extends CustomFollower implements ISelectable {
   }
 
   preUpdate(time: number, delta: number): void {
+    this.currentSpeed = this.model.general.speed
     super.preUpdate(time, delta)
     this.frameCount += 1
     // if (this.isFollowing()) {

@@ -58,6 +58,7 @@ export function addMainPathFollower(key: string, scene: Scene,
     wasDestroyed = true
   })
   enemy.startFollow({
+    speed: enemy.model.general.speed,
     duration,
     delay,
     onStart: () => {
@@ -91,6 +92,7 @@ export function addPreviewFollower(key: string, scene: Scene, previewGroup: Game
     }
   })
   enemy.startFollow({
+    speed: enemy.model.general.speed,
     duration,
     onStart: () => {
       previewGroup.add(enemy)

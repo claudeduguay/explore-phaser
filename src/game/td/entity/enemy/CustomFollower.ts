@@ -1,24 +1,29 @@
 import { Curves, GameObjects, Scene, Animations } from "phaser";
 import IEnemyModel from "../model/IEnemyModel";
 import Direction from "../../../../util/geom/Direction";
-import TDEnemy from "./TDEnemy";
 
 const ONE_SECOND = 1000
 
 export interface IFollowConfig {
-  delay?: number
+  speed: number
   duration: number
+  delay?: number
   onStart?: () => void
   onComplete?: () => void
 }
 
 export default class CustomFollower extends GameObjects.Container {
+
   _offset: number = 0
   _isFollowing = false
+
   sprite: GameObjects.Sprite
   anims: Animations.AnimationState
   dir?: Direction
-  enemy?: TDEnemy
+
+  currentSpeed!: number
+  startTime?: number
+  config?: IFollowConfig
 
   constructor(scene: Scene,
     public x: number, public y: number,
@@ -70,17 +75,13 @@ export default class CustomFollower extends GameObjects.Container {
     return this._isFollowing
   }
 
-  startTime?: number
-  config?: IFollowConfig
-
-  // Wa want to update the offset here rather than using a tween
   preUpdate(time: number, delta: number) {
     // console.log("Follower update")
     if (this.config) {
       if (!this.startTime) {
         this.startTime = time
       }
-      if (!this._isFollowing && time - this.startTime > (this.config?.delay || 0)) {
+      if (!this._isFollowing && time - this.startTime > (this.config.delay || 0)) {
         this._isFollowing = true
         if (this.config?.onStart) {
           console.log("Run onStart()")
@@ -89,18 +90,22 @@ export default class CustomFollower extends GameObjects.Container {
       }
       if (this.offset >= 1) {
         this._isFollowing = false
-      }
-      if (this.config?.onComplete && this.offset >= 1) {
-        console.log("Run onComplete()")
-        this.config.onComplete()
+        if (this.config?.onComplete) {
+          console.log("Run onComplete()")
+          this.config.onComplete()
+        }
       }
       if (this._isFollowing) {
         let fraction = 0.002
-        if (this.enemy) {
-          const speed = this.enemy.model.general.speed
-          const length = this.path.getLength()
-          console.log("Path length:", length)
-          fraction = (speed / length) * (delta / ONE_SECOND)
+        if (this.currentSpeed) {
+          const pathLength = this.path.getLength()
+          const { duration, speed } = this.config
+          const f = this.currentSpeed / speed
+          // Number of pixels / count of total milliseconds = pixels/millisecond
+          const unit = (pathLength / duration) // / ONE_SECOND * speed
+          const offsetFraction = unit / pathLength
+          console.log("Path length:", pathLength)
+          fraction = offsetFraction * delta * f
         }
         this.offset += fraction
         // console.log("Update offset to:", this.offset)
@@ -108,7 +113,7 @@ export default class CustomFollower extends GameObjects.Container {
     }
   }
 
-  startFollow(config?: Phaser.Types.GameObjects.PathFollower.PathConfig | Phaser.Types.Tweens.NumberTweenBuilderConfig, startAt?: number): this {
+  startFollow(config?: IFollowConfig, startAt?: number): this {
     this.config = config as IFollowConfig
     // this.tween = this.scene.add.tween({ ...config, targets: this, offset: 1.0 })
     // this._isFollowing = true
