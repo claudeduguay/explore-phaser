@@ -1,4 +1,4 @@
-import { GameObjects, Math as PMath, Display } from "phaser"
+import { GameObjects, Math as PMath, Display, Scene } from "phaser"
 import IBehavior from "../../core/IBehavior"
 import { rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
@@ -48,8 +48,8 @@ export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
 export default class BurstBehavior extends BaseBehavior {
 
-  constructor(public tower: TDTower, public effect?: IDamageEffectBuilder) {
-    super(tower, {
+  constructor(scene: Scene, public tower: TDTower, public effect?: IDamageEffectBuilder) {
+    super(scene, tower, {
       destroyEachFrame: false,
       singleEmitter: true,
       singleTarget: false
@@ -63,13 +63,13 @@ export default class BurstBehavior extends BaseBehavior {
     if (this.tower.preview !== PreviewType.Drag) {
       const cloud = burstEmitter(this.tower)
       cloud.stop()
-      this.tower.effect.add(cloud)
-      this.tower.sendToBack(this.tower.effect)
+      this.add(cloud)
+      this.tower.sendToBack(this)
     }
   }
 
   updateEmitter(i: number, emissionPoint: IPointLike, time: number) {
-    const cloud = this.tower.effect.list[0] as GameObjects.Particles.ParticleEmitter
+    const cloud = this.list[0] as GameObjects.Particles.ParticleEmitter
     if (this.tower.targeting.current.length) {
       cloud.start()
       for (let target of this.tower.targeting.current) {

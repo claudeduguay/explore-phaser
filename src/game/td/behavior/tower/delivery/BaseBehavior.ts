@@ -1,10 +1,9 @@
-import IBehavior from "../../core/IBehavior"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
 import { pickFirst } from "../../../entity/tower/Targeting"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
 import InRangeDamageEffect from "../../enemy/DamageEffect"
-import { GameObjects, Math as PMath } from "phaser"
+import { GameObjects, Math as PMath, Scene } from "phaser"
 
 export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
 
@@ -15,17 +14,19 @@ export interface IBaseEffectOptions {
 }
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
-export default abstract class BaseBehavior implements IBehavior {
+export default abstract class BaseBehavior extends GameObjects.Container {
 
   targetInstanceMap = new TargetEffectsMap()
 
-  constructor(
+  constructor(scene: Scene,
     public tower: TDTower,
     public options: IBaseEffectOptions = {
       destroyEachFrame: true,
       singleEmitter: false,
       singleTarget: true
     }) {
+    super(scene)
+    this.addToUpdateList()
   }
 
   asRelative(pos: IPointLike) {
@@ -47,14 +48,14 @@ export default abstract class BaseBehavior implements IBehavior {
     }
   }
 
-  update(time: number, delta: number) {
+  preUpdate(time: number, delta: number) {
     this.maybeRotate()
     if (this.options.destroyEachFrame) {
-      this.tower.effect.removeAll()
+      this.removeAll()
     }
     // If singleEmitter, the tower is the the only emissionPoint, else collect weapon points
     const emissionPoints = this.options.singleEmitter ? [this.tower] : this.tower.emissionPoints(false)
-    if (!this.tower.effect.list.length) {
+    if (!this.list.length) {
       emissionPoints.forEach((point, i) => this.initEmitter(i, point, time))
     }
     // Has a target
@@ -89,8 +90,8 @@ export default abstract class BaseBehavior implements IBehavior {
   }
 
   removeOrStopEmitters(): void {
-    if (this.tower.effect.list.length) {
-      for (let emitter of this.tower.effect.list) {
+    if (this.list.length) {
+      for (let emitter of this.list) {
         if (this.options.destroyEachFrame) {
           emitter.destroy()
         } else if ("stop" in emitter) {
@@ -99,7 +100,7 @@ export default abstract class BaseBehavior implements IBehavior {
       }
     }
     if (this.options.destroyEachFrame) {
-      this.tower.effect.removeAll()
+      this.removeAll()
     }
 
   }

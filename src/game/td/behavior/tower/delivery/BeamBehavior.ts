@@ -1,4 +1,4 @@
-import { GameObjects, Curves, Math as PMath } from "phaser"
+import { GameObjects, Curves, Math as PMath, Scene } from "phaser"
 import BaseBehavior from "./BaseBehavior"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
@@ -12,8 +12,8 @@ function perpendicular({ x, y }: Point, angle: number, r: number, pos: boolean =
 
 export default class BeamBehavior extends BaseBehavior {
 
-  constructor(tower: TDTower) {
-    super(tower, {
+  constructor(scene: Scene, tower: TDTower) {
+    super(scene, tower, {
       destroyEachFrame: true,
       singleEmitter: false,
       singleTarget: true
@@ -21,12 +21,12 @@ export default class BeamBehavior extends BaseBehavior {
   }
 
   initEmitter(i: number, emissionPoint: IPointLike, time: number): void {
-    const emitter = this.tower.scene.add.graphics()
-    this.tower.effect.add(emitter)
+    const emitter = this.scene.add.graphics()
+    this.add(emitter)
   }
 
   updateEmitter(i: number, emissionPoint: IPointLike, time: number): void {
-    const emitter = this.tower.effect.list[i] as GameObjects.Graphics
+    const emitter = this.list[i] as GameObjects.Graphics
     const target = pickFirst(this.tower.targeting.current)
     if (target) {
       const source = this.asRelative(emissionPoint)

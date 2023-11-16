@@ -1,4 +1,4 @@
-import { Display, GameObjects } from "phaser"
+import { Display, GameObjects, Scene } from "phaser"
 import { toRadians } from "../../../../../util/MathUtil"
 import BaseBehavior from "./BaseBehavior"
 import { IPointLike } from "../../../../../util/geom/Point"
@@ -7,8 +7,8 @@ import TDTower from "../../../entity/tower/TDTower"
 
 export default class SweepBehavior extends BaseBehavior {
 
-  constructor(tower: TDTower) {
-    super(tower, {
+  constructor(scene: Scene, tower: TDTower) {
+    super(scene, tower, {
       destroyEachFrame: false,
       singleEmitter: true,
       singleTarget: false
@@ -19,9 +19,9 @@ export default class SweepBehavior extends BaseBehavior {
     const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
     const c = Display.Color.IntegerToColor(color)
     const brighter = c.brighten(50).color
-    const g = this.tower.scene.add.graphics({ fillStyle: { color: brighter, alpha: 0.1 } })
-    this.tower.effect.add(g)
-    this.tower.sendToBack(this.tower.effect)
+    const g = this.scene.add.graphics({ fillStyle: { color: brighter, alpha: 0.1 } })
+    this.add(g)
+    this.tower.sendToBack(this)
     const slice = 20
     // const f = time % 1000 / 1000
     for (let a = 0; a < 360; a += slice * 2) {
@@ -32,7 +32,7 @@ export default class SweepBehavior extends BaseBehavior {
   }
 
   updateEmitter(i: number, emissionPoint: IPointLike, time: number) {
-    const g = this.tower.effect.list[0] as GameObjects.Graphics
+    const g = this.list[0] as GameObjects.Graphics
     g.angle = this.tower.turret.angle
   }
 }

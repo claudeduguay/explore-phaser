@@ -1,4 +1,4 @@
-import { Math as PMath } from "phaser"
+import { Math as PMath, Scene } from "phaser"
 import BaseBehavior from "./BaseBehavior"
 import TDTower from "../../../entity/tower/TDTower"
 import { IPointLike } from "../../../../../util/geom/Point"
@@ -7,8 +7,8 @@ import { pickFirst } from "../../../entity/tower/Targeting"
 
 export default class BulletBehavior extends BaseBehavior {
 
-  constructor(tower: TDTower) {
-    super(tower, {
+  constructor(scene: Scene, tower: TDTower) {
+    super(scene, tower, {
       destroyEachFrame: true,
       singleEmitter: false,
       singleTarget: true
@@ -22,8 +22,8 @@ export default class BulletBehavior extends BaseBehavior {
       // const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
       const angle = PMath.Angle.BetweenPoints(target, this.tower) + Math.PI / 2
       const { x, y } = this.asRelative(source)
-      const emitter = this.tower.scene.add.sprite(x, y, "muzzle")
-      this.tower.effect.add(emitter)
+      const emitter = this.scene.add.sprite(x, y, "muzzle")
+      this.add(emitter)
       // emitter.setTint(color)
       emitter.setOrigin(0.5, 0.9)
       emitter.rotation = angle - Math.PI

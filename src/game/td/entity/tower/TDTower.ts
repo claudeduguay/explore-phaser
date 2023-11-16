@@ -98,7 +98,7 @@ const DELIVERY_BEHAVIORS: Record<string, any> = {
 
 export default class TDTower extends BehaviorContainer implements ISelectable {
 
-  effect: GameObjects.Container
+  // effect: GameObjects.Container
   platform: GameObjects.Sprite
   turret: TDTurret
   targeting = new Targeting()
@@ -137,8 +137,8 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     this.add(this.turret)
 
     // >>> To be used to apply visual efffects relative to this GameObject <<<
-    this.effect = scene.add.container(0, 0)
-    this.add(this.effect)
+    // const effect = scene.add.container(0, 0)
+    // this.add(effect)
 
     this.showRange = scene.add.existing(new TDRange(scene, 0, 0, model.name, model.general.range))
     this.showRange.visible = false
@@ -154,9 +154,9 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     // if (model.meta.rotation === "target") {
     //   this.behavior.add(new TargetAimBehavior(this))
     // }
-    const DamageBehavior = DELIVERY_BEHAVIORS[model.organize.delivery] || BeamBehavior
+    const DeliveryBehavior = DELIVERY_BEHAVIORS[model.organize.delivery] || BeamBehavior
     // const TargetBehavior = TOWER_BEHAVIORS[model.key] || DamageBehavior
-    this.behavior.add(new DamageBehavior(this))
+    this.add(new DeliveryBehavior(scene, this))
     // this.behavior.add(new ClearTargetsBehavior(this))
   }
 

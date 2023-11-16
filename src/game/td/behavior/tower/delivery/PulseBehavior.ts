@@ -2,7 +2,7 @@ import TDTower from "../../../entity/tower/TDTower"
 import TimedSlowEffect from "../../enemy/SlowEffect"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
-import { Display, GameObjects } from "phaser"
+import { Display, GameObjects, Scene } from "phaser"
 import BaseBehavior from "./BaseBehavior"
 import { IPointLike } from "../../../../../util/geom/Point"
 
@@ -10,8 +10,8 @@ export default class PulseBehavior extends BaseBehavior {
 
   twinInstanceMap = new TargetEffectsMap() // Needed for slow effect
 
-  constructor(tower: TDTower) {
-    super(tower, {
+  constructor(scene: Scene, tower: TDTower) {
+    super(scene, tower, {
       destroyEachFrame: false,
       singleEmitter: true,
       singleTarget: false
@@ -22,16 +22,16 @@ export default class PulseBehavior extends BaseBehavior {
     const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
     const c = Display.Color.IntegerToColor(color)
     const brighter = c.brighten(50).color
-    const emitter = this.tower.scene.add.graphics({
+    const emitter = this.scene.add.graphics({
       fillStyle: { color: brighter, alpha: 0.05 },
       lineStyle: { color: brighter, alpha: 0.2, width: 2 }
     })
-    this.tower.effect.add(emitter)
+    this.add(emitter)
   }
 
   updateEmitter(i: number, emissionPoint: IPointLike, time: number) {
     if (this.tower.targeting.current.length) {
-      const emitter = this.tower.effect.list[0] as GameObjects.Graphics
+      const emitter = this.list[0] as GameObjects.Graphics
       emitter.clear()
       const f = time % 1000 / 1000
       const r1 = this.tower.model.general.range * f

@@ -1,4 +1,4 @@
-import { Display, GameObjects, Math as PMath } from "phaser"
+import { Display, GameObjects, Math as PMath, Scene } from "phaser"
 import BaseBehavior from "./BaseBehavior"
 import { rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
@@ -36,8 +36,8 @@ export function sprayEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
 
 export default class SprayBehavior extends BaseBehavior {
 
-  constructor(tower: TDTower) {
-    super(tower, {
+  constructor(scene: Scene, tower: TDTower) {
+    super(scene, tower, {
       destroyEachFrame: false,
       singleEmitter: false,
       singleTarget: true
@@ -47,13 +47,13 @@ export default class SprayBehavior extends BaseBehavior {
   initEmitter(i: number, pos: IPointLike, time: number): void {
     const emitter = sprayEmitter(this.tower)
     emitter.stop()
-    this.tower.effect.add(emitter)
+    this.add(emitter)
   }
 
   updateEmitter(i: number, pos: IPointLike, time: number): void {
     const target = this.tower.targeting.current[0]
     const { x, y } = this.asRelative(pos)
-    const emitter = this.tower.effect.list[i] as GameObjects.Particles.ParticleEmitter
+    const emitter = this.list[i] as GameObjects.Particles.ParticleEmitter
     emitter.setPosition(x, y)
     emitter.rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI
     emitter.start()

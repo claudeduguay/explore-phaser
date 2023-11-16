@@ -1,4 +1,4 @@
-import { GameObjects, Math as PMath } from "phaser"
+import { GameObjects, Math as PMath, Scene } from "phaser"
 import BaseBehavior from "./BaseBehavior"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
 import TDTower from "../../../entity/tower/TDTower"
@@ -9,8 +9,8 @@ export default class LaunchBehavior extends BaseBehavior {
 
   fraction: number[] = []
 
-  constructor(tower: TDTower) {
-    super(tower, {
+  constructor(scene: Scene, tower: TDTower) {
+    super(scene, tower, {
       destroyEachFrame: true,
       singleEmitter: false,
       singleTarget: true
@@ -22,19 +22,19 @@ export default class LaunchBehavior extends BaseBehavior {
     if (target) {
       const key = DELIVERY_DATA[this.tower.model.organize.delivery].sprite.key
       const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
-      const emitter = this.tower.scene.add.sprite(x, y, key)
+      const emitter = this.scene.add.sprite(x, y, key)
       if (this.fraction.length < i + 1) {
         this.fraction.push(0)
       }
       emitter.setTint(color)
-      this.tower.effect.add(emitter)
+      this.add(emitter)
     }
   }
 
   updateEmitter(i: number, { x, y }: IPointLike, time: number): void {
     const target = pickFirst(this.tower.targeting.current)
     if (target) {
-      const emitter = this.tower.effect.list[i] as GameObjects.Sprite
+      const emitter = this.list[i] as GameObjects.Sprite
       this.draw(i, emitter, new Point(x, y), new Point(target.x, target.y), time)
     }
   }
