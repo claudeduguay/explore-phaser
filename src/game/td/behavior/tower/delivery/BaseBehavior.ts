@@ -66,9 +66,15 @@ export default abstract class BaseBehavior implements IBehavior {
     this.clearTargeting()
   }
 
-  abstract initEmitter(index: number, emissionPoint: Point, time: number): void
+  initEmitter(index: number, emissionPoint: Point, time: number): void {
+
+  }
+
   abstract updateEmitter(index: number, emissionPoint: Point, time: number): void
-  abstract clearEmitter(index: number, emissionPoint: Point, time: number): void
+
+  clearEmitter(index: number, emissionPoint: Point, time: number): void {
+
+  }
 
   removeOrStopEmitters(): void {
     if (this.tower.effect.list.length) {

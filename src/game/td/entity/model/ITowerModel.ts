@@ -96,7 +96,7 @@ export const weaponKey = (organize: ITowerOrganize) => `${prefixKey(organize)}-w
 // GENERATOR
 // ------------------------------------------------------------------
 
-export const RADIAL: IDeliveryType[] = ["Area", "Burst", "Cloud", "Fall", "Rise"]
+export const RADIAL: IDeliveryType[] = ["Pulse", "Burst", "Cloud", "Sweep", "Fall", "Rise", "Pull", "Push"]
 
 export function modelGenerator(organize: ITowerOrganize): ITowerModel {
   const { damage, delivery } = organize
@@ -611,7 +611,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     },
     organize: {
       damage: "Value",
-      delivery: "Area",
+      delivery: "Pulse",
     },
     general: {
       level: 3,
@@ -635,7 +635,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     },
     organize: {
       damage: "Speed",
-      delivery: "Area",
+      delivery: "Pulse",
     },
     general: {
       level: 3,

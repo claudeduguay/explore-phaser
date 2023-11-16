@@ -5,7 +5,7 @@ import TargetEffectsMap from "../../core/TargetEffectsMap"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { Display, GameObjects } from "phaser"
 
-export default class AreaBehavior implements IBehavior {
+export default class PulseBehavior implements IBehavior {
 
   targetInstanceMap = new TargetEffectsMap()
   twinInstanceMap = new TargetEffectsMap()

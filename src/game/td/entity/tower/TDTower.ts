@@ -43,11 +43,9 @@ import BeamBehavior from "../../behavior/tower/delivery/BeamBehavior"
 import SprayBehavior from "../../behavior/tower/delivery/SprayBehavior"
 import CloudBehavior from "../../behavior/tower/delivery/CloudBehavior"
 import BurstBehavior from "../../behavior/tower/delivery/BurstBehavior"
-import FallBehavior from "../../behavior/tower/delivery/FallBehavior"
-import RiseBehavior from "../../behavior/tower/delivery/RiseBehavior"
-import AreaBehavior from "../../behavior/tower/delivery/AreaBehavior"
-import PullBehavior from "../../behavior/tower/delivery/PullBehavior"
-import PushBehavior from "../../behavior/tower/delivery/PushBehavior"
+import PulseBehavior from "../../behavior/tower/delivery/PulseBehavior"
+import { FallBehavior, PushBehavior, RiseBehavior, PullBehavior } from "../../behavior/tower/delivery/ArcBehaviors"
+import SweepBehavior from "../../behavior/tower/delivery/SweepBehavior"
 
 export enum PreviewType {
   Normal,
@@ -66,7 +64,8 @@ const DELIVERY_BEHAVIORS: Record<string, any> = {
   Rise: RiseBehavior,
   Pull: PullBehavior,
   Push: PushBehavior,
-  Area: AreaBehavior,
+  Pulse: PulseBehavior,
+  Sweep: SweepBehavior,
   Missile: LaunchBehavior,
   Mine: LaunchBehavior,
   Grenade: LaunchBehavior,
