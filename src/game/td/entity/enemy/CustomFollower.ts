@@ -99,7 +99,7 @@ export default class CustomFollower extends GameObjects.Container {
           const { duration, speed } = this.config
           const f = this.currentSpeed / speed
           // Number of pixels / count of total milliseconds = pixels/millisecond
-          const unit = (pathLength / duration) // / ONE_SECOND * speed
+          const unit = (pathLength / duration)
           const offsetFraction = unit / pathLength
           fraction = offsetFraction * delta * f
         }

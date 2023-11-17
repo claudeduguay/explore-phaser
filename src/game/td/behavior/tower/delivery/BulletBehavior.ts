@@ -13,7 +13,7 @@ export default class BulletBehavior extends BaseBehavior {
   }
 
   initEmitter(i: number, source: IPointLike, time: number): void {
-    const target = this.pickStrategy(this.tower)
+    const target = this.singlePickStrategy(this.tower)
     if (target) {
       // const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
       const { x, y } = this.asRelative(source)
@@ -28,7 +28,7 @@ export default class BulletBehavior extends BaseBehavior {
   }
 
   updateEmitter(i: number, source: IPointLike, time: number): void {
-    const target = this.pickStrategy(this.tower)
+    const target = this.singlePickStrategy(this.tower)
     if (target) {
       const emitter = this.getAt<GameObjects.Sprite>(i)
       const { x, y } = this.asRelative(source)

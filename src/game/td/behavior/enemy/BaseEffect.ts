@@ -19,16 +19,16 @@ export default abstract class BaseEffect implements IBehavior {
   isStarted?: boolean
   startTime?: number
 
-  posponed!: number
+  delay?: number
   duration!: number
-  cooldown!: number
+  cooldown?: number
 
   constructor(
     public readonly tower: TDTower,
     public readonly enemy: TDEnemy,
     public name: string = tower.model.damage.name) {
-    const { posponed, duration, cooldown } = tower.model.damage
-    this.posponed = posponed || 0 // Not yet accounted for
+    const { delay, duration, cooldown } = tower.model.damage
+    this.delay = delay // Not yet accounted for
     this.duration = duration || 0
     this.cooldown = cooldown || this.duration
   }
@@ -61,11 +61,11 @@ export default abstract class BaseEffect implements IBehavior {
       this.startTime = undefined
     } else {
       // Not started yet? Run startEffect if past posponed value (0 by default)
-      if (!this.isStarted && this.isTimeout(time, this.posponed)) {
+      if (!this.isStarted && this.isTimeout(time, this.delay)) {
         this.startEffect(time, delta)
         this.isStarted = true
       } else {
-        if (this.isTimeout(time, this.posponed + this.duration)) {
+        if (this.isTimeout(time, (this.delay || 0) + this.duration)) {
           this.endEffect(time, delta)
         } else {
           this.updateEffect(time, delta)

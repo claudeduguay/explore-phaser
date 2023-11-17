@@ -13,7 +13,7 @@ import { Fireworks } from './game/fireworks/Fireworks'
 import Geography from './game/geography/Geography'
 
 export default function App() {
-  const [scene, setScene] = useState<Scene>(new Geography())
+  const [scene, setScene] = useState<Scene>(new TDGame())
   const onSelect = (sceneName: string) => {
     switch (sceneName) {
       case "dungeon":

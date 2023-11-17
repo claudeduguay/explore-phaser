@@ -59,10 +59,10 @@ export default class CloudBehavior extends BaseBehavior {
     const cloud = this.getAt<GameObjects.Particles.ParticleEmitter>(0)
     if (this.tower.targeting.current.length) {
       cloud.start()
-      for (let target of this.tower.targeting.current) {
-        const effectBuilder = this.damageEffectBuilder
-        this.targetInstanceMap.apply(target, () => effectBuilder(target))
-      }
+      // for (let target of this.tower.targeting.current) {
+      //   const effectBuilder = this.damageEffectBuilder
+      //   this.targetInstanceMap.apply(target, () => effectBuilder(target))
+      // }
     } else { // No target
       cloud?.stop()
     }

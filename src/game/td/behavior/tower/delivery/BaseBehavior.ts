@@ -1,15 +1,26 @@
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
-import { ISingleTargetStrategy, pickFirst } from "../../../entity/tower/Targeting"
+import { ISingleTargetStrategy, pickFirst, pickAll, IMultiTargetStrategy } from "../../../entity/tower/Targeting"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
-import InRangeDamageEffect from "../../enemy/DamageEffect"
+import DamageEffect from "../../enemy/DamageEffect"
 import { GameObjects, Math as PMath, Scene } from "phaser"
+import { isPropDamage } from "../../../entity/model/ITowerModel"
+import ModifierEffect from "../../enemy/PropEffect"
+import TDEnemy from "../../../entity/enemy/TDEnemy"
 
 export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
 
 export interface IBaseEffectOptions {
   singleEmitter: boolean
   singleTarget: boolean
+}
+
+export function effectFactory(tower: TDTower, target: TDEnemy) {
+  if (isPropDamage(tower.model.damage)) {
+    return new ModifierEffect(tower, target, tower.model.damage.name)
+  } else {
+    return new DamageEffect(tower, target)
+  }
 }
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
@@ -23,7 +34,8 @@ export default abstract class BaseBehavior extends GameObjects.Container {
       singleEmitter: false,
       singleTarget: true
     },
-    public pickStrategy: ISingleTargetStrategy = pickFirst) {
+    public singlePickStrategy: ISingleTargetStrategy = pickFirst,
+    public multiPickStrategy: IMultiTargetStrategy = pickAll) {
     super(scene)
     this.addToUpdateList()
   }
@@ -36,7 +48,7 @@ export default abstract class BaseBehavior extends GameObjects.Container {
     if (this.tower.model.meta.rotation !== "target") {
       this.tower.turret.angle += this.tower.model.meta.rotation
     } else if (this.tower.targeting.current.length) {
-      const target = this.pickStrategy(this.tower)!
+      const target = this.singlePickStrategy(this.tower)!
       this.tower.turret.rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI / 2
     }
   }
@@ -63,10 +75,12 @@ export default abstract class BaseBehavior extends GameObjects.Container {
       // Update individual emitters 
       emissionPoints.forEach((point, i) => this.updateEmitter(i, point, time))
       // Apply enemy Damage Effect
-      const targets = this.options.singleTarget ? [this.pickStrategy(this.tower)!] : current
-      targets.forEach(target => {
-        this.targetInstanceMap.apply(target, () => (new InRangeDamageEffect(this.tower, target)))
-      })
+      const targets = this.options.singleTarget ?
+        [this.singlePickStrategy(this.tower)!] :
+        this.multiPickStrategy(this.tower)
+      targets.forEach(target =>
+        this.targetInstanceMap.apply(target, () => (effectFactory(this.tower, target)))
+      )
     } else {
       emissionPoints.forEach((point, i) => this.clearEmitter(i, point, time))
       this.targetInstanceMap.clear()

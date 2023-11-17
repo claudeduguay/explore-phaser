@@ -16,7 +16,7 @@ export default class LaunchBehavior extends BaseBehavior {
   }
 
   initEmitter(i: number, { x, y }: IPointLike, time: number): void {
-    const target = this.pickStrategy(this.tower)
+    const target = this.singlePickStrategy(this.tower)
     if (target) {
       const key = DELIVERY_DATA[this.tower.model.organize.delivery].sprite.key
       const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
@@ -30,7 +30,7 @@ export default class LaunchBehavior extends BaseBehavior {
   }
 
   updateEmitter(i: number, emissionPoint: IPointLike, time: number): void {
-    const target = this.pickStrategy(this.tower)
+    const target = this.singlePickStrategy(this.tower)
     if (target) {
       const emitter = this.getAt<GameObjects.Sprite>(i)
       this.draw(i, emitter, emissionPoint, target, time)
@@ -43,10 +43,18 @@ export default class LaunchBehavior extends BaseBehavior {
     }
   }
 
+  clearEmitter(i: number, emissionPoint: IPointLike, time: number): void {
+    const emitter = this.getAt<GameObjects.Sprite>(i)
+    if (emitter) {
+      emitter.visible = false
+    }
+  }
+
   draw(i: number, emitter: GameObjects.Sprite, source: IPointLike, target: IPointLike, time: number) {
     const s = this.asRelative(source)
     const t = this.asRelative(target)
     const pos = s.lerp(t, this.fraction[i])
+    emitter.visible = true
     emitter.setPosition(pos.x, pos.y)
     emitter.rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI / 2
   }
