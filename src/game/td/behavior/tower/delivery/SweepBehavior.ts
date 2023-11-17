@@ -34,4 +34,9 @@ export default class SweepBehavior extends BaseBehavior {
     const g = this.getAt<GameObjects.Graphics>(0)
     g.angle = this.tower.turret.angle
   }
+
+  clearEmitter(i: number, emissionPoint: IPointLike, time: number): void {
+    const emitter = this.getAt<GameObjects.Graphics>(0)
+    emitter.clear()
+  }
 }

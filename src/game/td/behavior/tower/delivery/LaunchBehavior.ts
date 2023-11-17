@@ -1,6 +1,6 @@
 import { GameObjects, Math as PMath, Scene } from "phaser"
 import BaseBehavior from "./BaseBehavior"
-import Point, { IPointLike } from "../../../../../util/geom/Point"
+import { IPointLike } from "../../../../../util/geom/Point"
 import TDTower from "../../../entity/tower/TDTower"
 import { pickFirst } from "../../../entity/tower/Targeting"
 import { DAMAGE_DATA, DELIVERY_DATA } from "../../../entity/model/ITowerData"
@@ -34,7 +34,7 @@ export default class LaunchBehavior extends BaseBehavior {
     const target = pickFirst(this.tower.targeting.current)
     if (target) {
       const emitter = this.getAt<GameObjects.Sprite>(i)
-      this.draw(i, emitter, emissionPoint, new Point(target.x, target.y), time)
+      this.draw(i, emitter, emissionPoint, target, time)
       this.fraction[i] += 0.04
       if (this.fraction[i] > 1) {
         this.fraction[i] = 0
@@ -44,7 +44,7 @@ export default class LaunchBehavior extends BaseBehavior {
     }
   }
 
-  draw(i: number, emitter: GameObjects.Sprite, source: IPointLike, target: Point, time: number) {
+  draw(i: number, emitter: GameObjects.Sprite, source: IPointLike, target: IPointLike, time: number) {
     const s = this.asRelative(source)
     const t = this.asRelative(target)
     const pos = s.lerp(t, this.fraction[i])

@@ -47,6 +47,11 @@ export default class BeamBehavior extends BaseBehavior {
     }
   }
 
+  clearEmitter(i: number, emissionPoint: IPointLike, time: number): void {
+    const emitter = this.getAt<GameObjects.Graphics>(0)
+    emitter.clear()
+  }
+
   drawLine(g: GameObjects.Graphics, source: Point, target: Point) {
     const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
     const { x: x1, y: y1 } = source

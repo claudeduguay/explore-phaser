@@ -53,4 +53,9 @@ export default class PulseBehavior extends BaseBehavior {
       this.twinInstanceMap.clear()
     }
   }
+
+  clearEmitter(i: number, emissionPoint: IPointLike, time: number): void {
+    const emitter = this.getAt<GameObjects.Graphics>(0)
+    emitter.clear()
+  }
 }

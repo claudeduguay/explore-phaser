@@ -40,4 +40,11 @@ export default class BulletBehavior extends BaseBehavior {
       emitter.visible = show
     }
   }
+
+  clearEmitter(i: number, source: IPointLike, time: number): void {
+    const emitter = this.getAt<GameObjects.Sprite>(i)
+    if (emitter) {
+      emitter.visible = false
+    }
+  }
 }
