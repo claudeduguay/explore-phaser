@@ -30,7 +30,7 @@ export default class BeamBehavior extends BaseBehavior {
     if (i === 0) {
       emitter.clear()
     }
-    const target = this.pickStrategy(this.tower.targeting.current)
+    const target = this.pickStrategy(this.tower)
     if (target) {
       const source = this.asRelative(emissionPoint)
       switch (this.tower.model.organize.damage) {

@@ -36,7 +36,7 @@ export default abstract class BaseBehavior extends GameObjects.Container {
     if (this.tower.model.meta.rotation !== "target") {
       this.tower.turret.angle += this.tower.model.meta.rotation
     } else if (this.tower.targeting.current.length) {
-      const target = pickFirst(this.tower.targeting.current)!
+      const target = this.pickStrategy(this.tower)!
       this.tower.turret.rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI / 2
     }
   }
@@ -63,7 +63,7 @@ export default abstract class BaseBehavior extends GameObjects.Container {
       // Update individual emitters 
       emissionPoints.forEach((point, i) => this.updateEmitter(i, point, time))
       // Apply enemy Damage Effect
-      const targets = this.options.singleTarget ? [this.pickStrategy(current)!] : current
+      const targets = this.options.singleTarget ? [this.pickStrategy(this.tower)!] : current
       targets.forEach(target => {
         this.targetInstanceMap.apply(target, () => (new InRangeDamageEffect(this.tower, target)))
       })

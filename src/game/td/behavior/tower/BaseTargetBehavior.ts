@@ -29,7 +29,7 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
     if (this.tower.targeting.current.length) {
       this.tower.emissionPoints().forEach((point, i) => this.addEmitter(i, point, time))
       if (this.singleTarget) {
-        const target = pickFirst(this.tower.targeting.current)
+        const target = pickFirst(this.tower)
         if (target) {
           this.targetInstanceMap.apply(target, () => (new InRangeDamageEffect(this.tower, target)))
         }
