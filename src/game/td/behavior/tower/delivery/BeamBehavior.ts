@@ -3,7 +3,6 @@ import BaseBehavior from "./BaseBehavior"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import TDTower from "../../../entity/tower/TDTower"
-import { pickFirst } from "../../../entity/tower/Targeting"
 import { rotation } from "../../../../../util/MathUtil"
 
 function perpendicular({ x, y }: Point, angle: number, r: number, pos: boolean = true) {
@@ -31,7 +30,7 @@ export default class BeamBehavior extends BaseBehavior {
     if (i === 0) {
       emitter.clear()
     }
-    const target = pickFirst(this.tower.targeting.current)
+    const target = this.pickStrategy(this.tower.targeting.current)
     if (target) {
       const source = this.asRelative(emissionPoint)
       switch (this.tower.model.organize.damage) {

@@ -2,7 +2,6 @@ import { GameObjects, Math as PMath, Scene } from "phaser"
 import BaseBehavior from "./BaseBehavior"
 import { IPointLike } from "../../../../../util/geom/Point"
 import TDTower from "../../../entity/tower/TDTower"
-import { pickFirst } from "../../../entity/tower/Targeting"
 import { DAMAGE_DATA, DELIVERY_DATA } from "../../../entity/model/ITowerData"
 
 export default class LaunchBehavior extends BaseBehavior {
@@ -17,7 +16,7 @@ export default class LaunchBehavior extends BaseBehavior {
   }
 
   initEmitter(i: number, { x, y }: IPointLike, time: number): void {
-    const target = pickFirst(this.tower.targeting.current)
+    const target = this.pickStrategy(this.tower.targeting.current)
     if (target) {
       const key = DELIVERY_DATA[this.tower.model.organize.delivery].sprite.key
       const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
@@ -31,7 +30,7 @@ export default class LaunchBehavior extends BaseBehavior {
   }
 
   updateEmitter(i: number, emissionPoint: IPointLike, time: number): void {
-    const target = pickFirst(this.tower.targeting.current)
+    const target = this.pickStrategy(this.tower.targeting.current)
     if (target) {
       const emitter = this.getAt<GameObjects.Sprite>(i)
       this.draw(i, emitter, emissionPoint, target, time)

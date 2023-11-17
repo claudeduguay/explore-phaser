@@ -1,6 +1,6 @@
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
-import { pickFirst } from "../../../entity/tower/Targeting"
+import { ITargetingStrategy, pickFirst } from "../../../entity/tower/Targeting"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
 import InRangeDamageEffect from "../../enemy/DamageEffect"
 import { GameObjects, Math as PMath, Scene } from "phaser"
@@ -22,7 +22,8 @@ export default abstract class BaseBehavior extends GameObjects.Container {
     public options: IBaseEffectOptions = {
       singleEmitter: false,
       singleTarget: true
-    }) {
+    },
+    public pickStrategy: ITargetingStrategy = pickFirst) {
     super(scene)
     this.addToUpdateList()
   }
@@ -62,7 +63,7 @@ export default abstract class BaseBehavior extends GameObjects.Container {
       // Update individual emitters 
       emissionPoints.forEach((point, i) => this.updateEmitter(i, point, time))
       // Apply enemy Damage Effect
-      const targets = this.options.singleTarget ? [pickFirst(current)!] : current
+      const targets = this.options.singleTarget ? [this.pickStrategy(current)!] : current
       targets.forEach(target => {
         this.targetInstanceMap.apply(target, () => (new InRangeDamageEffect(this.tower, target)))
       })
@@ -74,15 +75,11 @@ export default abstract class BaseBehavior extends GameObjects.Container {
     this.clearTargeting()
   }
 
-  initEmitter(index: number, emissionPoint: IPointLike, time: number): void {
-
-  }
+  initEmitter(index: number, emissionPoint: IPointLike, time: number): void { }
 
   abstract updateEmitter(index: number, emissionPoint: IPointLike, time: number): void
 
-  clearEmitter(index: number, emissionPoint: IPointLike, time: number): void {
-
-  }
+  clearEmitter(index: number, emissionPoint: IPointLike, time: number): void { }
 
   removeOrStopEmitters(): void {
     for (let emitter of this.list) {

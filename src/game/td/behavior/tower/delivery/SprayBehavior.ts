@@ -51,7 +51,7 @@ export default class SprayBehavior extends BaseBehavior {
   }
 
   updateEmitter(i: number, pos: IPointLike, time: number): void {
-    const target = pickFirst(this.tower.targeting.current)!
+    const target = this.pickStrategy(this.tower.targeting.current)!
     const { x, y } = this.asRelative(pos)
     const emitter = this.getAt<GameObjects.Particles.ParticleEmitter>(i)
     emitter.setPosition(x, y)
