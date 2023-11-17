@@ -61,7 +61,7 @@ export default class BeamEffect extends BaseEffect {
 
   drawLightning(g: GameObjects.Graphics, source: Point, target: Point) {
     const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
-    g.lineStyle(2, color, 1.0)
+    g.lineStyle(3, color, 1.0)
     const divisions = 7
     const deviation = 7
     const angle = PMath.Angle.BetweenPoints(source, target)
@@ -80,7 +80,7 @@ export default class BeamEffect extends BaseEffect {
 
   drawPlasma(g: GameObjects.Graphics, source: Point, target: Point) {
     const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
-    g.lineStyle(2, color, 1.0)
+    g.lineStyle(3, color, 1.0)
     const divisions = 7
     const deviation = 7
     const angle = PMath.Angle.BetweenPoints(source, target)
