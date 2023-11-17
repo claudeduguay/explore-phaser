@@ -3,7 +3,7 @@ import IBehavior from "../../core/IBehavior"
 import { rangeDeathZone, topEmitZone, bottomEmitZone, eastEmitZone, westEmitZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
-import DamageEffect from "../../enemy/DamageEffect"
+import DamageAffect from "../../enemy/DamageAffect"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { IPointLike } from "../../../../../util/geom/Point"
 import BaseBehavior from "./BaseBehavior"
@@ -62,7 +62,7 @@ export default class ArcBehaviors extends BaseBehavior {
   }
 
   // We know that if a tower has no duration it's a range effect
-  damageEffectBuilder: IDamageEffectBuilder = (target: TDEnemy) => new DamageEffect(this.tower, target)
+  damageEffectBuilder: IDamageEffectBuilder = (target: TDEnemy) => new DamageAffect(this.tower, target)
 
   initEmitter(i: number, emissionPoint: IPointLike, time: number) {
     if (this.tower.preview !== PreviewType.Drag) {

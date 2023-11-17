@@ -1,7 +1,7 @@
 import { computeHealthDamage } from "../tower/ComputeDamage";
-import BaseEffect from "./BaseEffect";
+import BaseAffect from "./BaseAffect";
 
-export default class DamageEffect extends BaseEffect {
+export default class DamageAffect extends BaseAffect {
 
   updateEffect(time: number, delta: number): void {
     this.enemy.health -= computeHealthDamage(this.tower, this.enemy, delta)

@@ -4,7 +4,7 @@ import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
-import DamageEffect from "../../enemy/DamageEffect"
+import DamageAffect from "../../enemy/DamageAffect"
 
 export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
@@ -20,7 +20,7 @@ export default class BaseTargeCloudBehavior implements IBehavior {
   }
 
   // We know that if a tower has no duration it's a range effect
-  damageEffectBuilder: IDamageEffectBuilder = (target: TDEnemy) => new DamageEffect(this.tower, target)
+  damageEffectBuilder: IDamageEffectBuilder = (target: TDEnemy) => new DamageAffect(this.tower, target)
 
   update(time: number, delta: number) {
     if (!this.cloud && this.tower.preview !== PreviewType.Drag) {

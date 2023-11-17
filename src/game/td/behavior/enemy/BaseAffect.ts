@@ -14,7 +14,7 @@ both endEffect and endCooldown are called in sequence in the same frame.
 * endCooldown triggers after cooldown time has elapsed or when out of range, right before self-destruct
 * updateEffect triggers on each frame between startEffect and endEfffect
 */
-export default abstract class BaseEffect implements IBehavior {
+export default abstract class BaseAffect implements IBehavior {
 
   isStarted?: boolean
   startTime?: number

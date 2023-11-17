@@ -1,5 +1,5 @@
 import TDTower from "../../../entity/tower/TDTower"
-import TimedSlowEffect from "../../enemy/SlowEffect"
+import TimedSlowEffect from "../../enemy/SlowAffect"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { Display, GameObjects, Scene } from "phaser"

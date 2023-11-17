@@ -2,10 +2,10 @@ import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
 import { ISingleTargetStrategy, pickFirst, pickAll, IMultiTargetStrategy } from "../../../entity/tower/Targeting"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
-import DamageEffect from "../../enemy/DamageEffect"
+import DamageAffect from "../../enemy/DamageAffect"
 import { GameObjects, Math as PMath, Scene } from "phaser"
 import { isPropDamage } from "../../../entity/model/ITowerModel"
-import ModifierEffect from "../../enemy/PropEffect"
+import ModifierEffect from "../../enemy/PropAffect"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 
 export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
@@ -19,7 +19,7 @@ export function effectFactory(tower: TDTower, target: TDEnemy) {
   if (isPropDamage(tower.model.damage)) {
     return new ModifierEffect(tower, target, tower.model.damage.name)
   } else {
-    return new DamageEffect(tower, target)
+    return new DamageAffect(tower, target)
   }
 }
 

@@ -3,7 +3,7 @@ import TDTower from "../../entity/tower/TDTower"
 import Point from "../../../../util/geom/Point"
 import { pickFirst } from "../../entity/tower/Targeting"
 import TargetEffectsMap from "../core/TargetEffectsMap"
-import InRangeDamageEffect from "../enemy/DamageEffect"
+import DamageAffect from "../enemy/DamageAffect"
 
 export interface IEmitter {
   destroy: () => void
@@ -31,11 +31,11 @@ export default abstract class BaseTargetBehavior<T extends IEmitter> implements 
       if (this.singleTarget) {
         const target = pickFirst(this.tower)
         if (target) {
-          this.targetInstanceMap.apply(target, () => (new InRangeDamageEffect(this.tower, target)))
+          this.targetInstanceMap.apply(target, () => (new DamageAffect(this.tower, target)))
         }
       } else {
         this.tower.targeting.current.forEach(target => {
-          this.targetInstanceMap.apply(target, () => (new InRangeDamageEffect(this.tower, target)))
+          this.targetInstanceMap.apply(target, () => (new DamageAffect(this.tower, target)))
         })
       }
     } else {

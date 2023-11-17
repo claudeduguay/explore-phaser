@@ -3,7 +3,6 @@ import IBehavior from "../../core/IBehavior"
 import { rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
-import DamageEffect from "../../enemy/DamageEffect"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { toDegrees } from "../../../../../util/MathUtil"
 import { IPointLike } from "../../../../../util/geom/Point"
@@ -55,9 +54,6 @@ export default class BurstBehavior extends BaseBehavior {
     })
   }
 
-  // We know that if a tower has no duration it's a range effect
-  damageEffectBuilder: IDamageEffectBuilder = (target: TDEnemy) => new DamageEffect(this.tower, target)
-
   initEmitter(i: number, emissionPoint: IPointLike, time: number) {
     if (this.tower.preview !== PreviewType.Drag) {
       const cloud = burstEmitter(this.tower)
@@ -71,10 +67,6 @@ export default class BurstBehavior extends BaseBehavior {
     const cloud = this.getAt<GameObjects.Particles.ParticleEmitter>(0)
     if (this.tower.targeting.current.length) {
       cloud.start()
-      // for (let target of this.tower.targeting.current) {
-      //   const effectBuilder = this.effect ?? this.damageEffectBuilder
-      //   this.targetInstanceMap.apply(target, () => effectBuilder(target))
-      // }
     } else { // No target
       cloud.stop()
     }

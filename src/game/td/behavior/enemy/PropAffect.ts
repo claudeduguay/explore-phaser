@@ -1,7 +1,7 @@
 import { IPropertyEffect } from "../../entity/model/EffectsProxy";
-import BaseEffect from "./BaseEffect";
+import BaseAffect from "./BaseAffect";
 
-export default class PropEffect extends BaseEffect {
+export default class PropAffect extends BaseAffect {
 
   effect?: IPropertyEffect  // Cache, so we remove the same instance
 
