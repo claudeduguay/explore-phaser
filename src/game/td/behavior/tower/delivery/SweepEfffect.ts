@@ -1,11 +1,11 @@
 import { Display, GameObjects, Scene } from "phaser"
 import { toRadians } from "../../../../../util/MathUtil"
-import BaseBehavior from "./BaseBehavior"
+import BaseEffect from "./BaseEffect"
 import { IPointLike } from "../../../../../util/geom/Point"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import TDTower from "../../../entity/tower/TDTower"
 
-export default class SweepBehavior extends BaseBehavior {
+export default class SweepEfffect extends BaseEffect {
 
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {

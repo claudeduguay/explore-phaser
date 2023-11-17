@@ -5,7 +5,7 @@ import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { IPointLike } from "../../../../../util/geom/Point"
-import BaseBehavior from "./BaseBehavior"
+import BaseEffect from "./BaseEffect"
 
 export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
@@ -33,7 +33,7 @@ export function cloudEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
     })
 }
 
-export default class CloudBehavior extends BaseBehavior {
+export default class CloudEffect extends BaseEffect {
 
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {

@@ -6,7 +6,7 @@ import TDEnemy from "../../../entity/enemy/TDEnemy"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { toDegrees } from "../../../../../util/MathUtil"
 import { IPointLike } from "../../../../../util/geom/Point"
-import BaseBehavior from "./BaseBehavior"
+import BaseEffect from "./BaseEffect"
 
 export function burstEmitter(tower: TDTower): GameObjects.Particles.ParticleEmitter {
   const range = tower.model.general.range
@@ -45,7 +45,7 @@ export function burstEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
 
 export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
-export default class BurstBehavior extends BaseBehavior {
+export default class BurstEffect extends BaseEffect {
 
   constructor(scene: Scene, public tower: TDTower, public effect?: IDamageEffectBuilder) {
     super(scene, tower, {

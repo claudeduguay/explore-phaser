@@ -37,15 +37,15 @@ import Targeting from "./Targeting"
 import { IProxyExtensions, deepCloneTowerModelAndProxy } from "../model/EffectsProxy"
 import TDPlayScene from "../../scene/TDPlayScene"
 
-import LaunchBehavior from "../../behavior/tower/delivery/LaunchBehavior"
-import BulletBehavior from "../../behavior/tower/delivery/BulletBehavior"
-import BeamBehavior from "../../behavior/tower/delivery/BeamBehavior"
-import SprayBehavior from "../../behavior/tower/delivery/SprayBehavior"
-import CloudBehavior from "../../behavior/tower/delivery/CloudBehavior"
-import BurstBehavior from "../../behavior/tower/delivery/BurstBehavior"
-import PulseBehavior from "../../behavior/tower/delivery/PulseBehavior"
-import { FallBehavior, PushBehavior, RiseBehavior, PullBehavior } from "../../behavior/tower/delivery/ArcBehaviors"
-import SweepBehavior from "../../behavior/tower/delivery/SweepBehavior"
+import LaunchBehavior from "../../behavior/tower/delivery/LaunchEfffect"
+import BulletBehavior from "../../behavior/tower/delivery/BulletEffect"
+import BeamBehavior from "../../behavior/tower/delivery/BeamEffect"
+import SprayBehavior from "../../behavior/tower/delivery/SprayEffect"
+import CloudBehavior from "../../behavior/tower/delivery/CloudEffect"
+import BurstBehavior from "../../behavior/tower/delivery/BurstEffect"
+import PulseBehavior from "../../behavior/tower/delivery/PulseEffect"
+import { FallEffect, PushEffect, RiseEffect, PullEffect } from "../../behavior/tower/delivery/ArcEfffect"
+import SweepBehavior from "../../behavior/tower/delivery/SweepEfffect"
 
 export enum PreviewType {
   Normal,
@@ -60,10 +60,10 @@ const DELIVERY_BEHAVIORS: Record<string, any> = {
   Spray: SprayBehavior,
   Cloud: CloudBehavior,
   Burst: BurstBehavior,
-  Fall: FallBehavior,
-  Rise: RiseBehavior,
-  Pull: PullBehavior,
-  Push: PushBehavior,
+  Fall: FallEffect,
+  Rise: RiseEffect,
+  Pull: PullEffect,
+  Push: PushEffect,
   Pulse: PulseBehavior,
   Sweep: SweepBehavior,
   Missile: LaunchBehavior,

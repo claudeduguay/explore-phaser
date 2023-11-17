@@ -6,7 +6,7 @@ import TDEnemy from "../../../entity/enemy/TDEnemy"
 import DamageAffect from "../../enemy/DamageAffect"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { IPointLike } from "../../../../../util/geom/Point"
-import BaseBehavior from "./BaseBehavior"
+import BaseEffect from "./BaseEffect"
 
 export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
@@ -50,7 +50,7 @@ export function arcEmitter(tower: TDTower, angle: number): GameObjects.Particles
     })
 }
 
-export default class ArcBehaviors extends BaseBehavior {
+export default class ArcEffect extends BaseEffect {
 
   cloud?: GameObjects.Particles.ParticleEmitter
 
@@ -87,25 +87,25 @@ export default class ArcBehaviors extends BaseBehavior {
   }
 }
 
-export class PushBehavior extends ArcBehaviors {
+export class PushEffect extends ArcEffect {
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, 0)
   }
 }
 
-export class FallBehavior extends ArcBehaviors {
+export class FallEffect extends ArcEffect {
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, 90)
   }
 }
 
-export class PullBehavior extends ArcBehaviors {
+export class PullEffect extends ArcEffect {
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, 180)
   }
 }
 
-export class RiseBehavior extends ArcBehaviors {
+export class RiseEffect extends ArcEffect {
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, 270)
   }

@@ -1,9 +1,9 @@
 import { GameObjects, Math as PMath, Scene } from "phaser"
-import BaseBehavior from "./BaseBehavior"
+import BaseEffect from "./BaseEffect"
 import TDTower from "../../../entity/tower/TDTower"
 import { IPointLike } from "../../../../../util/geom/Point"
 
-export default class BulletBehavior extends BaseBehavior {
+export default class BulletEffect extends BaseEffect {
 
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {

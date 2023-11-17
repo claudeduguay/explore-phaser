@@ -1,5 +1,5 @@
 import { GameObjects, Curves, Math as PMath, Scene } from "phaser"
-import BaseBehavior from "./BaseBehavior"
+import BaseEffect from "./BaseEffect"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import TDTower from "../../../entity/tower/TDTower"
@@ -9,7 +9,7 @@ function perpendicular({ x, y }: Point, angle: number, r: number, pos: boolean =
   return rotation(x, y, r, r, angle + (pos ? 0 : -Math.PI))
 }
 
-export default class BeamBehavior extends BaseBehavior {
+export default class BeamEffect extends BaseEffect {
 
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {

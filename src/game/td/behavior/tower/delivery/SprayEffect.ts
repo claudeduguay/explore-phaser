@@ -1,5 +1,5 @@
 import { Display, GameObjects, Math as PMath, Scene } from "phaser"
-import BaseBehavior from "./BaseBehavior"
+import BaseEffect from "./BaseEffect"
 import { rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
 import { IPointLike } from "../../../../../util/geom/Point"
@@ -34,7 +34,7 @@ export function sprayEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
   })
 }
 
-export default class SprayBehavior extends BaseBehavior {
+export default class SprayEffect extends BaseEffect {
 
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {

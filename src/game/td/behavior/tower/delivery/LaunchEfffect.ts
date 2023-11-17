@@ -1,10 +1,10 @@
 import { GameObjects, Math as PMath, Scene } from "phaser"
-import BaseBehavior from "./BaseBehavior"
+import BaseEffect from "./BaseEffect"
 import { IPointLike } from "../../../../../util/geom/Point"
 import TDTower from "../../../entity/tower/TDTower"
 import { DAMAGE_DATA, DELIVERY_DATA } from "../../../entity/model/ITowerData"
 
-export default class LaunchBehavior extends BaseBehavior {
+export default class LaunchEffect extends BaseEffect {
 
   fraction: number[] = []
 

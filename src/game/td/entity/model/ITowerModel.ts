@@ -559,7 +559,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     },
     organize: {
       damage: "Value",
-      delivery: "Pulse",
+      delivery: "Sweep",
     },
     general: {
       level: 3,

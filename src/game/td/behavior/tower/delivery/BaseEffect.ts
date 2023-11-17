@@ -19,12 +19,12 @@ export function affectFactory(tower: TDTower, target: TDEnemy) {
   if (isPropDamage(tower.model.damage)) {
     return new PropAffect(tower, target, tower.model.damage.name)
   } else {
-    return new DamageAffect(tower, target)
+    return new DamageAffect(tower, target, tower.model.damage.name)
   }
 }
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
-export default abstract class BaseBehavior extends GameObjects.Container {
+export default abstract class BaseEffect extends GameObjects.Container {
 
   targetInstanceMap = new TargetEffectsMap()
 

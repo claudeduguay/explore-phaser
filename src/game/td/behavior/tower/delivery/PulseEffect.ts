@@ -3,10 +3,10 @@ import TimedSlowEffect from "../../enemy/SlowAffect"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { Display, GameObjects, Scene } from "phaser"
-import BaseBehavior from "./BaseBehavior"
+import BaseEfffect from "./BaseEffect"
 import { IPointLike } from "../../../../../util/geom/Point"
 
-export default class PulseBehavior extends BaseBehavior {
+export default class PulseEfffect extends BaseEfffect {
 
   twinInstanceMap = new TargetEffectsMap() // Needed for slow effect
 
