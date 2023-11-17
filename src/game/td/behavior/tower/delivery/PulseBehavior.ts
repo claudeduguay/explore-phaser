@@ -12,7 +12,6 @@ export default class PulseBehavior extends BaseBehavior {
 
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {
-      destroyEachFrame: false,
       singleEmitter: true,
       singleTarget: false
     })
@@ -31,7 +30,7 @@ export default class PulseBehavior extends BaseBehavior {
 
   updateEmitter(i: number, emissionPoint: IPointLike, time: number) {
     if (this.tower.targeting.current.length) {
-      const emitter = this.list[0] as GameObjects.Graphics
+      const emitter = this.getAt<GameObjects.Graphics>(0)
       emitter.clear()
       const f = time % 1000 / 1000
       const r1 = this.tower.model.general.range * f

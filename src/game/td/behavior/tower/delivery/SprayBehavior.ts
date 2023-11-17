@@ -4,6 +4,7 @@ import { rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"
 import { IPointLike } from "../../../../../util/geom/Point"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
+import { pickFirst } from "../../../entity/tower/Targeting"
 // import InRangeDamageEffect from "../../enemy/InRangeDamageEffect"
 
 export function sprayEmitter(tower: TDTower): GameObjects.Particles.ParticleEmitter {
@@ -38,7 +39,6 @@ export default class SprayBehavior extends BaseBehavior {
 
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {
-      destroyEachFrame: false,
       singleEmitter: false,
       singleTarget: true
     })
@@ -51,9 +51,9 @@ export default class SprayBehavior extends BaseBehavior {
   }
 
   updateEmitter(i: number, pos: IPointLike, time: number): void {
-    const target = this.tower.targeting.current[0]
+    const target = pickFirst(this.tower.targeting.current)!
     const { x, y } = this.asRelative(pos)
-    const emitter = this.list[i] as GameObjects.Particles.ParticleEmitter
+    const emitter = this.getAt<GameObjects.Particles.ParticleEmitter>(i)
     emitter.setPosition(x, y)
     emitter.rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI
     emitter.start()

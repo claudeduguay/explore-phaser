@@ -9,7 +9,6 @@ export default class SweepBehavior extends BaseBehavior {
 
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {
-      destroyEachFrame: false,
       singleEmitter: true,
       singleTarget: false
     })
@@ -32,7 +31,7 @@ export default class SweepBehavior extends BaseBehavior {
   }
 
   updateEmitter(i: number, emissionPoint: IPointLike, time: number) {
-    const g = this.list[0] as GameObjects.Graphics
+    const g = this.getAt<GameObjects.Graphics>(0)
     g.angle = this.tower.turret.angle
   }
 }

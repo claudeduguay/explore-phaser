@@ -8,7 +8,6 @@ import { GameObjects, Math as PMath, Scene } from "phaser"
 export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
 
 export interface IBaseEffectOptions {
-  destroyEachFrame: boolean
   singleEmitter: boolean
   singleTarget: boolean
 }
@@ -21,7 +20,6 @@ export default abstract class BaseBehavior extends GameObjects.Container {
   constructor(scene: Scene,
     public tower: TDTower,
     public options: IBaseEffectOptions = {
-      destroyEachFrame: true,
       singleEmitter: false,
       singleTarget: true
     }) {
@@ -50,27 +48,24 @@ export default abstract class BaseBehavior extends GameObjects.Container {
 
   preUpdate(time: number, delta: number) {
     this.maybeRotate()
-    if (this.options.destroyEachFrame) {
-      this.removeAll()
-    }
     // If singleEmitter, the tower is the the only emissionPoint, else collect weapon points
     const emissionPoints = this.options.singleEmitter ? [this.tower] : this.tower.emissionPoints(false)
-    if (!this.list.length) {
+
+    // Call init only if the effect is empty
+    if (this.list.length === 0) {
       emissionPoints.forEach((point, i) => this.initEmitter(i, point, time))
     }
+
     // Has a target
-    if (this.tower.targeting.current.length) {
+    const current = this.tower.targeting.current
+    if (current.length) {
+      // Update individual emitters 
       emissionPoints.forEach((point, i) => this.updateEmitter(i, point, time))
-      if (this.options.singleTarget) {
-        const target = pickFirst(this.tower.targeting.current)
-        if (target) {
-          this.targetInstanceMap.apply(target, () => (new InRangeDamageEffect(this.tower, target)))
-        }
-      } else {
-        this.tower.targeting.current.forEach(target => {
-          this.targetInstanceMap.apply(target, () => (new InRangeDamageEffect(this.tower, target)))
-        })
-      }
+      // Apply enemy Damage Effect
+      const targets = this.options.singleTarget ? [pickFirst(current)!] : current
+      targets.forEach(target => {
+        this.targetInstanceMap.apply(target, () => (new InRangeDamageEffect(this.tower, target)))
+      })
     } else {
       emissionPoints.forEach((point, i) => this.clearEmitter(i, point, time))
       this.targetInstanceMap.clear()
@@ -90,18 +85,10 @@ export default abstract class BaseBehavior extends GameObjects.Container {
   }
 
   removeOrStopEmitters(): void {
-    if (this.list.length) {
-      for (let emitter of this.list) {
-        if (this.options.destroyEachFrame) {
-          emitter.destroy()
-        } else if ("stop" in emitter) {
-          (emitter as GameObjects.Particles.ParticleEmitter).stop()
-        }
+    for (let emitter of this.list) {
+      if ("stop" in emitter) {
+        (emitter as GameObjects.Particles.ParticleEmitter).stop()
       }
     }
-    if (this.options.destroyEachFrame) {
-      this.removeAll()
-    }
-
   }
 }

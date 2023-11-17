@@ -38,7 +38,6 @@ export default class CloudBehavior extends BaseBehavior {
 
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {
-      destroyEachFrame: false,
       singleEmitter: true,
       singleTarget: false
     })
@@ -57,7 +56,7 @@ export default class CloudBehavior extends BaseBehavior {
   }
 
   updateEmitter(i: number, emissionPoint: IPointLike, time: number) {
-    const cloud = this.list[0] as GameObjects.Particles.ParticleEmitter
+    const cloud = this.getAt<GameObjects.Particles.ParticleEmitter>(0)
     if (this.tower.targeting.current.length) {
       cloud.start()
       for (let target of this.tower.targeting.current) {

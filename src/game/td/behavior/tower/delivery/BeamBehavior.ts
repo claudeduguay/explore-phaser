@@ -14,19 +14,23 @@ export default class BeamBehavior extends BaseBehavior {
 
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {
-      destroyEachFrame: true,
       singleEmitter: false,
       singleTarget: true
     })
   }
 
   initEmitter(i: number, emissionPoint: IPointLike, time: number): void {
-    const emitter = this.scene.add.graphics()
-    this.add(emitter)
+    if (!this.list.length) {
+      const emitter = this.scene.add.graphics()
+      this.add(emitter)
+    }
   }
 
   updateEmitter(i: number, emissionPoint: IPointLike, time: number): void {
-    const emitter = this.list[i] as GameObjects.Graphics
+    const emitter = this.getAt<GameObjects.Graphics>(0)
+    if (i === 0) {
+      emitter.clear()
+    }
     const target = pickFirst(this.tower.targeting.current)
     if (target) {
       const source = this.asRelative(emissionPoint)

@@ -11,7 +11,6 @@ export default class LaunchBehavior extends BaseBehavior {
 
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {
-      destroyEachFrame: true,
       singleEmitter: false,
       singleTarget: true
     })
@@ -31,23 +30,25 @@ export default class LaunchBehavior extends BaseBehavior {
     }
   }
 
-  updateEmitter(i: number, { x, y }: IPointLike, time: number): void {
+  updateEmitter(i: number, emissionPoint: IPointLike, time: number): void {
     const target = pickFirst(this.tower.targeting.current)
     if (target) {
-      const emitter = this.list[i] as GameObjects.Sprite
-      this.draw(i, emitter, new Point(x, y), new Point(target.x, target.y), time)
+      const emitter = this.getAt<GameObjects.Sprite>(i)
+      this.draw(i, emitter, emissionPoint, new Point(target.x, target.y), time)
+      this.fraction[i] += 0.04
+      if (this.fraction[i] > 1) {
+        this.fraction[i] = 0
+      }
+    } else {
+      this.fraction[i] = 0
     }
   }
 
-  draw(i: number, emitter: GameObjects.Sprite, source: Point, target: Point, time: number) {
+  draw(i: number, emitter: GameObjects.Sprite, source: IPointLike, target: Point, time: number) {
     const s = this.asRelative(source)
     const t = this.asRelative(target)
     const pos = s.lerp(t, this.fraction[i])
     emitter.setPosition(pos.x, pos.y)
     emitter.rotation = PMath.Angle.BetweenPoints(target, this.tower) - Math.PI / 2
-    this.fraction[i] += 0.04
-    if (this.fraction[i] > 1) {
-      this.fraction[i] = 0
-    }
   }
 }
