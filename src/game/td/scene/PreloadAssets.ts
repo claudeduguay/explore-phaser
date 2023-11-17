@@ -37,11 +37,17 @@ export class WebFontLoader extends Loader.LoaderPlugin {
 }
 
 export default function preloadAssets(scene: Scene) {
+  const startTime = performance.now()
+  console.log("Start asset loading")
+
   registerObjectFactories()
   preloadWebFont(scene)
   preloadAudio(scene)
   preloadImages(scene)
   preloadTextures(scene)
+
+  const endTime = performance.now()
+  console.log(`All assets loaded! (${(endTime - startTime).toFixed(3)}ms)`)
 }
 
 export function registerObjectFactories() {
@@ -68,6 +74,7 @@ export function preloadWebFont(scene: Scene) {
 }
 
 export function preloadAudio(scene: Scene) {
+  scene.load.audio('frum', "assets/music/Frum.mp3")
   scene.load.audio('click', "assets/audio/click3.ogg")
   scene.load.audio('boop', "assets/audio/drop_003.ogg")
   scene.load.audio('cash', "assets/audio/dropmetalthing.ogg")

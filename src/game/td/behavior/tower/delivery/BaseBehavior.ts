@@ -5,7 +5,7 @@ import TargetEffectsMap from "../../core/TargetEffectsMap"
 import DamageAffect from "../../enemy/DamageAffect"
 import { GameObjects, Math as PMath, Scene } from "phaser"
 import { isPropDamage } from "../../../entity/model/ITowerModel"
-import ModifierEffect from "../../enemy/PropAffect"
+import PropAffect from "../../enemy/PropAffect"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 
 export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
@@ -15,9 +15,9 @@ export interface IBaseEffectOptions {
   singleTarget: boolean
 }
 
-export function effectFactory(tower: TDTower, target: TDEnemy) {
+export function affectFactory(tower: TDTower, target: TDEnemy) {
   if (isPropDamage(tower.model.damage)) {
-    return new ModifierEffect(tower, target, tower.model.damage.name)
+    return new PropAffect(tower, target, tower.model.damage.name)
   } else {
     return new DamageAffect(tower, target)
   }
@@ -79,7 +79,7 @@ export default abstract class BaseBehavior extends GameObjects.Container {
         [this.singlePickStrategy(this.tower)!] :
         this.multiPickStrategy(this.tower)
       targets.forEach(target =>
-        this.targetInstanceMap.apply(target, () => (effectFactory(this.tower, target)))
+        this.targetInstanceMap.apply(target, () => (affectFactory(this.tower, target)))
       )
     } else {
       emissionPoints.forEach((point, i) => this.clearEmitter(i, point, time))
