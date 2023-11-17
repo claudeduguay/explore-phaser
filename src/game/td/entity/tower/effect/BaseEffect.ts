@@ -6,7 +6,7 @@ import { GameObjects, Math as PMath, Scene } from "phaser"
 import { isPropDamage } from "../../../entity/model/ITowerModel"
 import PropAffect from "../../../entity/tower/affect/PropAffect"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
-import TargetEffectsMap from "../affect/AffectsMap"
+import AffectsMap from "../affect/AffectsMap"
 
 export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
 
@@ -26,7 +26,7 @@ export function affectFactory(tower: TDTower, target: TDEnemy) {
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
 export default abstract class BaseEffect extends GameObjects.Container {
 
-  targetInstanceMap = new TargetEffectsMap()
+  targetInstanceMap = new AffectsMap()
 
   constructor(scene: Scene,
     public tower: TDTower,

@@ -47,8 +47,6 @@ export function arcEmitter(tower: TDTower, angle: number): GameObjects.Particles
 
 export default class ArcEffect extends BaseEffect {
 
-  cloud?: GameObjects.Particles.ParticleEmitter
-
   constructor(scene: Scene, public tower: TDTower, public dirAngle: number) {
     super(scene, tower, {
       singleEmitter: true,
