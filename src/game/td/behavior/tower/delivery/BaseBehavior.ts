@@ -1,6 +1,6 @@
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
-import { ITargetingStrategy, pickFirst } from "../../../entity/tower/Targeting"
+import { ISingleTargetStrategy, pickFirst } from "../../../entity/tower/Targeting"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
 import InRangeDamageEffect from "../../enemy/DamageEffect"
 import { GameObjects, Math as PMath, Scene } from "phaser"
@@ -23,7 +23,7 @@ export default abstract class BaseBehavior extends GameObjects.Container {
       singleEmitter: false,
       singleTarget: true
     },
-    public pickStrategy: ITargetingStrategy = pickFirst) {
+    public pickStrategy: ISingleTargetStrategy = pickFirst) {
     super(scene)
     this.addToUpdateList()
   }

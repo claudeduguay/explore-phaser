@@ -71,9 +71,9 @@ export function onEnemyInRadius(tower: ICollidable, enemy: ICollidable) {
 // TARGETING STRATEGIES
 // ------------------------------------------------------------------
 
-export type ITargetingStrategy = (targets: TDEnemy[]) => TDEnemy | undefined
+export type ISingleTargetStrategy = (targets: TDEnemy[]) => TDEnemy | undefined
 
-function makeMaxStrategyForProp(propName: keyof IEnemyGeneral): ITargetingStrategy {
+function makeMaxStrategyForProp(propName: keyof IEnemyGeneral): ISingleTargetStrategy {
   return (targets: TDEnemy[]) => {
     let value = 0
     let best: TDEnemy | undefined
@@ -87,7 +87,7 @@ function makeMaxStrategyForProp(propName: keyof IEnemyGeneral): ITargetingStrate
   }
 }
 
-function makeMinStrategyForProp(propName: keyof IEnemyGeneral): ITargetingStrategy {
+function makeMinStrategyForProp(propName: keyof IEnemyGeneral): ISingleTargetStrategy {
   return (targets: TDEnemy[]) => {
     let value = Number.MAX_SAFE_INTEGER
     let best: TDEnemy | undefined
@@ -102,21 +102,21 @@ function makeMinStrategyForProp(propName: keyof IEnemyGeneral): ITargetingStrate
 }
 
 // Assumes non-zero targets array length has been tested before calling
-export const pickFirst: ITargetingStrategy = (targets: TDEnemy[]) => targets[0]
-export const pickLast: ITargetingStrategy = (targets: TDEnemy[]) => targets[targets.length - 1]
-export const pickRandom: ITargetingStrategy = (targets: TDEnemy[]) => randomChoice(targets)
-export const pickMaxLevel: ITargetingStrategy = makeMaxStrategyForProp("level")
-export const pickMinLevel: ITargetingStrategy = makeMinStrategyForProp("level")
-export const pickMaxHealth: ITargetingStrategy = makeMaxStrategyForProp("health")
-export const pickMinHealth: ITargetingStrategy = makeMinStrategyForProp("health")
-export const pickMaxShield: ITargetingStrategy = makeMaxStrategyForProp("shield")
-export const pickMinShield: ITargetingStrategy = makeMinStrategyForProp("shield")
-export const pickMaxSpeed: ITargetingStrategy = makeMaxStrategyForProp("speed")
-export const pickMinSpeed: ITargetingStrategy = makeMinStrategyForProp("speed")
-export const pickMaxValue: ITargetingStrategy = makeMaxStrategyForProp("value")
-export const pickMinValue: ITargetingStrategy = makeMinStrategyForProp("value")
+export const pickFirst: ISingleTargetStrategy = (targets: TDEnemy[]) => targets[0]
+export const pickLast: ISingleTargetStrategy = (targets: TDEnemy[]) => targets[targets.length - 1]
+export const pickRandom: ISingleTargetStrategy = (targets: TDEnemy[]) => randomChoice(targets)
+export const pickMaxLevel: ISingleTargetStrategy = makeMaxStrategyForProp("level")
+export const pickMinLevel: ISingleTargetStrategy = makeMinStrategyForProp("level")
+export const pickMaxHealth: ISingleTargetStrategy = makeMaxStrategyForProp("health")
+export const pickMinHealth: ISingleTargetStrategy = makeMinStrategyForProp("health")
+export const pickMaxShield: ISingleTargetStrategy = makeMaxStrategyForProp("shield")
+export const pickMinShield: ISingleTargetStrategy = makeMinStrategyForProp("shield")
+export const pickMaxSpeed: ISingleTargetStrategy = makeMaxStrategyForProp("speed")
+export const pickMinSpeed: ISingleTargetStrategy = makeMinStrategyForProp("speed")
+export const pickMaxValue: ISingleTargetStrategy = makeMaxStrategyForProp("value")
+export const pickMinValue: ISingleTargetStrategy = makeMinStrategyForProp("value")
 
-export const TARGETING_STRATEGIES: { [key: string]: ITargetingStrategy } = {
+export const SINGLE_TARGET_STRATEGIES: { [key: string]: ISingleTargetStrategy } = {
   pickFirst,
   pickLast,
   pickRandom,
@@ -131,3 +131,7 @@ export const TARGETING_STRATEGIES: { [key: string]: ITargetingStrategy } = {
   pickMaxValue,
   pickMinValue
 }
+
+export type IMultiTargetStrategy = (targets: TDEnemy[]) => TDEnemy[]
+
+export const pickAll: IMultiTargetStrategy = (targets: TDEnemy[]) => targets
