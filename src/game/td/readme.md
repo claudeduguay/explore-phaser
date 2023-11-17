@@ -12,10 +12,9 @@ Need to account for shields (disabled for now)
 
 * Need to figure out leveling
 * Keep trying to get Tower previews to be in containers
+* BUG: Stun Affect not currently working
 * BUG: Plopping tower sometimes sticks and requires a second click (long click seems to fix this, timing issue)
-* BUG: Main Peeps initially show at 0,0, causing artifacts
-* BUG: Peeps facing direction sometimes oscilates (seems more apparent when slowed)
-* BUG: Starting a tower drag with a peep underneath loses connection and stays in-place.
+* BUG: Picking up a tower sometimes happes too fast, increase required time
 * IMPROVEMENT: Towers need to ease into aim position, avoid jump turns, maybe return to zero in the same way afterward
 * IMPROVEMENT: Need to separate map level generation from createMap function, at minimum separate into discrete steps
 * FIX: Level preview alignment in Levels scene.
@@ -193,64 +192,9 @@ Breaks down:
 
 Could have traps of various kinds to lay down on the path - Spikes, Trap Doors, Spikes, Explosions, etc.
 
-### Exploration
-
-Need to develop a pivot table with various effects and styles, w/names, etc.
-
-Delivery mechanisms:
-
-* Shoot - A narrow, single-target, emission of spaced particles.
-* Beam - A narrow, single-target continous beam of particles.
-* Spray - A cone, single-target, but affects other targets within the cone.
-* Cloud - A multi-target cloud, covering the towers' range.
-* Burst - Outward burst of multiple particles, multi-target within the tower's range.
-
-Missile, Mine and Grenade are damage objects, delivered to an enemy or path position:
-
-* Missile - Targets a single peep and explodes on impact, damaging enemies within range.
-* Mine - Target a position ahead on the path and explodes when a peep enters range (or possibly center point).
-* Grenade - Target a position ahead on the path and explodes when the timeout elapses.
-
-Damage Types and Coloring:
-
-* Arrow - MAGENTA - Arrow damage
-* Bullet - SLATE GRAY - Bullet damage
-* Light - YELLOW - Buff general property (value, or tower damage)
-* Dark - ORANGE - Debuff general property (speed, defense)
-* Fire - RED - Fire damage (heat, fire, flame)
-* Water - BLUE - Water (steam, liquid, rain, snow, ice, freeze)
-* Earth - SADDLEBROWN - Eath (rocks, dirt, sand)
-* Air - WHITE - Wind effects (blow, breeze, storm)
-* Poison - GREEN - Poison damage (timed effect)
-* Electric - CYAN - Electrical damage (lightning, shock, electrocute)
-
-Buff/Debuff damage effects (applied for a limited time). These could be combined
-* Health - REDISH/GREEN - Debuffs enemy health
-* Shield - REDISH/ORANGE - Debuffs enemy shield
-* Speed - REDISH/WHITE - Debuffs enemy speed
-* Value - GREENISH - Buffs enemy value
-
-NOTE: NO REAL NEED FOR TOWER BOOSTS IF ENEMIES ARE BUFFED/DEBUFFED CLOSE BY
-
-All damage types could have Conditions such as:
-* In Range - Applied only when within tower's range.
-* Timed:
-  * Posponed - Applied after a given amount of time (good for grenade efffect).
-  * Duration - Applied for a given time duration.
-  * Cooldown - No recurrence permitted until after cooldown.
-
-
-Questions: What's the distinction between a Cloud, Gravity and Expand effects. Right now clouds have a timeout while gravity and expand are in-range effects.
-
-Question: Are Beam and Shoot similar? Beam is continuous while Shot is reduced by hit frequency (both represented as dps).
-
-Poison should probably always have a timeout effect. Maybe the distinction between in-range and timeout should be at the Damage Type-level?
-
-Launch is especially interesting as it could be a Missile (explodes on impact) or Grenade effect (delayed efffect). Also aiming ahead on the path may be interesting. Assuming a grenade is sent ahead on the path at the exit point of the range, detonation may depend on the time of exit for the targeted peep.
-
 ## Dev Notes
 
-Need to add missile and grenade options.
+Need to add missile and grenade spawns.
 
 * Missiles target a specific peep and explodes on impact.
 * Mines target a position ahead on the path and explodes when a peep enters range.
