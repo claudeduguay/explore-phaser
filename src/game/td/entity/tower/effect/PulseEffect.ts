@@ -1,14 +1,10 @@
 import TDTower from "../../../entity/tower/TDTower"
-import TimedSlowEffect from "../../../entity/tower/affect/SlowAffect"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { Display, GameObjects, Scene } from "phaser"
-import BaseEfffect, { affectFactory } from "./BaseEffect"
+import BaseEffect from "./BaseEffect"
 import { IPointLike } from "../../../../../util/geom/Point"
-import AffectsMap from "../affect/AffectsMap"
 
-export default class PulseEfffect extends BaseEfffect {
-
-  twinInstanceMap = new AffectsMap() // Needed for slow effect
+export default class PulseEfffect extends BaseEffect {
 
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {
