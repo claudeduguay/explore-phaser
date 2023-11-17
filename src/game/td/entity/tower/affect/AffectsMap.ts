@@ -1,7 +1,7 @@
-import TDEnemy from "../../entity/enemy/TDEnemy";
-import IBehavior from "./IBehavior";
+import TDEnemy from "../../enemy/TDEnemy";
+import IBehavior from "../../../behavior/core/IBehavior";
 
-export default class TargetEffectsMap extends Map<TDEnemy, IBehavior> {
+export default class AffectsMap extends Map<TDEnemy, IBehavior> {
 
   // Caches effect for a given target, if not present, by calling effectBuilder
   // Adds the effect to the target from cache

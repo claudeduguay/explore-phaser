@@ -2,7 +2,7 @@ import { GameObjects } from "phaser"
 import IBehavior from "../core/IBehavior"
 import TDTower from "../../entity/tower/TDTower"
 import SlowAffect from "../../entity/tower/affect/SlowAffect"
-import TargetEffectsMap from "../core/TargetEffectsMap"
+import TargetEffectsMap from "../../entity/tower/affect/AffectsMap"
 
 export default class TargetSlowBehavior implements IBehavior {
 

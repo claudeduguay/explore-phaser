@@ -2,7 +2,7 @@ import IBehavior from "../core/IBehavior"
 import TDTower from "../../entity/tower/TDTower"
 import Point from "../../../../util/geom/Point"
 import { pickFirst } from "../../entity/tower/Targeting"
-import TargetEffectsMap from "../core/TargetEffectsMap"
+import TargetEffectsMap from "../../entity/tower/affect/AffectsMap"
 import DamageAffect from "../../entity/tower/affect/DamageAffect"
 
 export interface IEmitter {

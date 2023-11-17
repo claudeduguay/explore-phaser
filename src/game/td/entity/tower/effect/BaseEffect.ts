@@ -6,7 +6,7 @@ import { GameObjects, Math as PMath, Scene } from "phaser"
 import { isPropDamage } from "../../../entity/model/ITowerModel"
 import PropAffect from "../../../entity/tower/affect/PropAffect"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
-import TargetEffectsMap from "../../../behavior/core/TargetEffectsMap"
+import TargetEffectsMap from "../affect/AffectsMap"
 
 export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
 

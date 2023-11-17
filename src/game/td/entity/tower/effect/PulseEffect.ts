@@ -4,7 +4,7 @@ import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { Display, GameObjects, Scene } from "phaser"
 import BaseEfffect from "./BaseEffect"
 import { IPointLike } from "../../../../../util/geom/Point"
-import TargetEffectsMap from "../../../behavior/core/TargetEffectsMap"
+import TargetEffectsMap from "../affect/AffectsMap"
 
 export default class PulseEfffect extends BaseEfffect {
 
