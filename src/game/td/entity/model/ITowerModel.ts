@@ -27,12 +27,12 @@ export interface ITowerBaseEffect {
 
 // Modifiers are proxied IPropertyEffects with optional base effect properties
 export interface ITowerModifier extends ITowerBaseEffect, IPropertyEffect {
-  type: "modifier"
+  type: "prop"
 }
 
 // Tower Damage is the common damage effect specfication, with otional base properties
 export interface ITowerDamage extends ITowerBaseEffect {
-  type: "damage"
+  type: "health" | "shield"
   dps: number | [min: number, max: number]
   name: string
 }
@@ -49,10 +49,7 @@ export interface ITowerModel<E = {}> {
   meta: ITowerMeta
   organize: ITowerOrganize
   general: ITowerGeneral & E
-  damage: {
-    shield: ITowerEffect,
-    health: ITowerEffect
-  }
+  damage: ITowerEffect
 }
 
 export default ITowerModel
@@ -66,6 +63,10 @@ export interface ITowerGroups {
 // UTILITIES
 // ------------------------------------------------------------------
 
+export function isDPS(effect: ITowerEffect): effect is ITowerDamage {
+  return ["health", "shield"].includes(effect.type)
+}
+
 // Implements IValueFormatter for tables (key is not used here)
 export function effectFormatter(key: string, effect: ITowerEffect): string {
   const timing: string[] = []
@@ -76,11 +77,11 @@ export function effectFormatter(key: string, effect: ITowerEffect): string {
     timing.push(`${(effect.cooldown / 1000).toFixed(1)}s`)
   }
   const times = timing.length > 0 ? ` (${timing.join(", ")})` : ``
-  if (effect.type === "damage") {
+  if (isDPS(effect)) {
     const dps = Array.isArray(effect.dps) ? `${effect.dps[0]}-${effect.dps[1]}` : `${effect.dps}`
     return `${dps}${times}`
   }
-  if (effect.type === "modifier") {
+  if (effect.type === "prop") {
     return `${effect.prop.toString()}${times}`
   }
   return JSON.stringify(effect)
@@ -116,10 +117,7 @@ export function modelGenerator(organize: ITowerOrganize): ITowerModel {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: damage },
-      health: { type: "damage", dps: 25, name: damage }
-    }
+    damage: { type: "health", dps: 25, name: damage }
   }
 }
 
@@ -167,10 +165,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: "Lazer" },
-      health: { type: "damage", dps: 25, name: "Lazer" }
-    }
+    damage: { type: "health", dps: 25, name: "Lazer" }
   },
   plasma: {
     key: "plasma",
@@ -191,10 +186,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: "Plasma" },
-      health: { type: "damage", dps: 25, name: "Plasma" }
-    }
+    damage: { type: "health", dps: 25, name: "Plasma" }
   },
   lightning: {
     key: "lightning",
@@ -215,10 +207,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: "Lightning" },
-      health: { type: "damage", dps: 25, name: "Lightning" }
-    }
+    damage: { type: "health", dps: 25, name: "Lightning" }
   },
 
   // SPRAY
@@ -241,10 +230,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: "Flame" },
-      health: { type: "damage", dps: 25, name: "Flame" }
-    }
+    damage: { type: "health", dps: 25, name: "Flame" }
   },
   freeze: {
     key: "freeze",
@@ -265,10 +251,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: "Freeze" },
-      health: { type: "damage", dps: 25, name: "Freeze" }
-    }
+    damage: { type: "health", dps: 25, name: "Freeze" }
   },
   force: {
     key: "force",
@@ -289,10 +272,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: "Force" },
-      health: { type: "damage", dps: 25, name: "Force" }
-    }
+    damage: { type: "health", dps: 25, name: "Force" }
   },
 
   // CLOUD
@@ -315,10 +295,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, duration: 3000, name: "Poison" },
-      health: { type: "damage", dps: 25, duration: 3000, name: "Poison" }
-    }
+    damage: { type: "health", dps: 25, duration: 3000, name: "Poison" }
   },
   fire: {
     key: "fire",
@@ -339,10 +316,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, duration: 3000, name: "Fire" },
-      health: { type: "damage", dps: 25, duration: 3000, name: "Fire" }
-    }
+    damage: { type: "health", dps: 25, duration: 3000, name: "Fire" }
   },
   smoke: {
     key: "smoke",
@@ -363,10 +337,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, duration: 3000, name: "Smoke" },
-      health: { type: "damage", dps: 25, duration: 3000, name: "Smoke" }
-    }
+    damage: { type: "health", dps: 25, duration: 3000, name: "Smoke" }
   },
   shock: {
     key: "shock",
@@ -387,10 +358,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, duration: 3000, name: "Shock" },
-      health: { type: "damage", dps: 25, duration: 3000, name: "Shock" }
-    }
+    damage: { type: "health", dps: 25, duration: 3000, name: "Shock" }
   },
   ice: {
     key: "ice",
@@ -411,10 +379,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, duration: 3000, name: "Ice" },
-      health: { type: "damage", dps: 25, duration: 3000, name: "Ice" }
-    }
+    damage: { type: "health", dps: 25, duration: 3000, name: "Ice" }
   },
 
   // VERTICAL
@@ -437,10 +402,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: "Rain" },
-      health: { type: "damage", dps: 25, name: "Rain" }
-    }
+    damage: { type: "health", dps: 25, name: "Rain" }
   },
   snow: {
     key: "snow",
@@ -461,10 +423,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: "Snow" },
-      health: { type: "damage", dps: 25, name: "Snow" }
-    }
+    damage: { type: "health", dps: 25, name: "Snow" }
   },
   stun: {
     key: "stun",
@@ -486,15 +445,12 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      shield: { type: "damage", dps: 0, duration: 1000, cooldown: 5000, name: "Stun" },
-      health: {
-        type: "modifier",
-        prop: "speed",
-        formula: (v: number) => 0,
-        duration: 1000,
-        cooldown: 5000,
-        name: "Stun"
-      },
+      type: "prop",
+      prop: "speed",
+      formula: (v: number) => 0,
+      duration: 1000,
+      cooldown: 5000,
+      name: "Stun"
     }
   },
 
@@ -518,10 +474,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: "Kinetic" },
-      health: { type: "damage", dps: 25, name: "Kinetic" }
-    }
+    damage: { type: "health", dps: 25, name: "Kinetic" }
   },
   missile: {
     key: "missile",
@@ -542,10 +495,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: "Missile" },
-      health: { type: "damage", dps: 25, name: "Missile" }
-    }
+    damage: { type: "health", dps: 25, name: "Missile" }
   },
 
   // EXPAND
@@ -568,10 +518,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: "Spike" },
-      health: { type: "damage", dps: 25, name: "Spike" }
-    }
+    damage: { type: "health", dps: 25, name: "Spike" }
   },
   rock: {
     key: "rock",
@@ -592,10 +539,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: "Rock" },
-      health: { type: "damage", dps: 25, name: "Rock" }
-    }
+    damage: { type: "health", dps: 25, name: "Rock" }
   },
 
   // AREA
@@ -618,10 +562,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       cost: 100,
       range: 100,
     },
-    damage: {
-      shield: { type: "damage", dps: 25, name: "Boost" },
-      health: { type: "damage", dps: 25, name: "Boost" }
-    }
+    damage: { type: "health", dps: 25, name: "Boost" }
   },
   slow: {
     key: "slow",
@@ -643,14 +584,11 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      shield: { type: "damage", dps: 0, name: "Slow" },
-      health: {
-        type: "modifier",
-        prop: "speed",
-        formula: v => v * 0.5,
-        duration: 2000,
-        name: "Slow"
-      }
+      type: "prop",
+      prop: "speed",
+      formula: v => v * 0.5,
+      duration: 2000,
+      name: "Slow"
     }
   }
 }

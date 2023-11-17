@@ -3,8 +3,8 @@ import TDEnemy from "../../entity/enemy/TDEnemy"
 import TDTower from "../../entity/tower/TDTower"
 
 export function computeHealthDamage(tower: TDTower, target: TDEnemy, delta: number) {
-  const damage = tower.model.damage.health
-  if (damage.type === "damage") {
+  const damage = tower.model.damage
+  if (damage.type === "health") {
     const val = Array.isArray(damage.dps) ? randomRange(damage.dps) : damage.dps
     const dps = (val * delta / 1000 * tower.scene.time.timeScale)
     const vulnerability = 1.0 - (

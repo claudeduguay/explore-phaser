@@ -26,8 +26,8 @@ export default abstract class BaseEffect implements IBehavior {
   constructor(
     public readonly tower: TDTower,
     public readonly enemy: TDEnemy,
-    public name: string = tower.model.damage.health.name) {
-    const { posponed, duration, cooldown } = tower.model.damage.health
+    public name: string = tower.model.damage.name) {
+    const { posponed, duration, cooldown } = tower.model.damage
     this.posponed = posponed || 0 // Not yet accounted for
     this.duration = duration || 0
     this.cooldown = cooldown || this.duration

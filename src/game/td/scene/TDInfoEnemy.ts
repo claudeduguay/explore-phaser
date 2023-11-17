@@ -103,7 +103,7 @@ export default class TDInfoEnemy extends TDInfoBase {
       this.effectTableObjects.forEach(o => o.destroy())
       const obj: Record<string, string> = {}
       effects.forEach((e: any) => {
-        const damage = TOWER_INDEX[e.name.toLowerCase()].damage.health
+        const damage = TOWER_INDEX[e.name.toLowerCase()].damage
         obj[e.name] = effectFormatter("", damage)
       })
       // console.log("Effects:", effects.length ? JSON.stringify(obj) : "None")
