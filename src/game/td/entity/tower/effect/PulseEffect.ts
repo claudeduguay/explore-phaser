@@ -2,7 +2,7 @@ import TDTower from "../../../entity/tower/TDTower"
 import TimedSlowEffect from "../../../entity/tower/affect/SlowAffect"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { Display, GameObjects, Scene } from "phaser"
-import BaseEfffect from "./BaseEffect"
+import BaseEfffect, { affectFactory } from "./BaseEffect"
 import { IPointLike } from "../../../../../util/geom/Point"
 import AffectsMap from "../affect/AffectsMap"
 
@@ -39,16 +39,6 @@ export default class PulseEfffect extends BaseEfffect {
       emitter.fillCircle(0, 0, r2)
       emitter.strokeCircle(0, 0, r1)
       emitter.strokeCircle(0, 0, r2)
-
-      for (let target of this.tower.targeting.current) {
-        this.targetInstanceMap.apply(target, () => new TimedSlowEffect(this.tower, target))
-        if (target.twin) { // Handle twin if present
-          // Note, event though we checked for existence of target.twin, effectBuilder 
-          // complains it may be undefined (disabled ts-check)
-          // @ts-ignore
-          this.twinInstanceMap.apply(target.twin, () => new TimedSlowEffect(this.tower, target.twin))
-        }
-      }
     } else {
       this.twinInstanceMap.clear()
     }

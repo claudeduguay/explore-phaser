@@ -27,6 +27,7 @@ export function affectFactory(tower: TDTower, target: TDEnemy) {
 export default abstract class BaseEffect extends GameObjects.Container {
 
   targetInstanceMap = new AffectsMap()
+  twinInstanceMap = new AffectsMap() // Needed for speed effects to match in preview
 
   constructor(scene: Scene,
     public tower: TDTower,
@@ -78,9 +79,12 @@ export default abstract class BaseEffect extends GameObjects.Container {
       const targets = this.options.singleTarget ?
         [this.singlePickStrategy(this.tower)!] :
         this.multiPickStrategy(this.tower)
-      targets.forEach(target =>
-        this.targetInstanceMap.apply(target, () => (affectFactory(this.tower, target)))
-      )
+      targets.forEach((target: TDEnemy) => {
+        this.targetInstanceMap.apply(target, () => affectFactory(this.tower, target))
+        if (target.twin) { // Handle twin if present to reflect speed affects in preview
+          this.twinInstanceMap.apply(target.twin, () => affectFactory(this.tower, target.twin!))
+        }
+      })
     } else {
       emissionPoints.forEach((point, i) => this.clearEmitter(i, point, time))
       this.targetInstanceMap.clear()
