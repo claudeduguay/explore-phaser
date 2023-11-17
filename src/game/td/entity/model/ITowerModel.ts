@@ -63,8 +63,12 @@ export interface ITowerGroups {
 // UTILITIES
 // ------------------------------------------------------------------
 
-export function isDPS(effect: ITowerEffect): effect is ITowerDamage {
+export function isDPSDamage(effect: ITowerEffect): effect is ITowerDamage {
   return ["health", "shield"].includes(effect.type)
+}
+
+export function isPropDamage(effect: ITowerEffect): effect is ITowerDamage {
+  return effect.type === "prop"
 }
 
 // Implements IValueFormatter for tables (key is not used here)
@@ -77,7 +81,7 @@ export function effectFormatter(key: string, effect: ITowerEffect): string {
     timing.push(`${(effect.cooldown / 1000).toFixed(1)}s`)
   }
   const times = timing.length > 0 ? ` (${timing.join(", ")})` : ``
-  if (isDPS(effect)) {
+  if (isDPSDamage(effect)) {
     const dps = Array.isArray(effect.dps) ? `${effect.dps[0]}-${effect.dps[1]}` : `${effect.dps}`
     return `${dps}${times}`
   }
