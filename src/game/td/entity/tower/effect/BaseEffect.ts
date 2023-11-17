@@ -1,12 +1,12 @@
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
 import { ISingleTargetStrategy, pickFirst, pickAll, IMultiTargetStrategy } from "../../../entity/tower/Targeting"
-import TargetEffectsMap from "../../core/TargetEffectsMap"
-import DamageAffect from "../../enemy/DamageAffect"
+import DamageAffect from "../../../entity/tower/affect/DamageAffect"
 import { GameObjects, Math as PMath, Scene } from "phaser"
 import { isPropDamage } from "../../../entity/model/ITowerModel"
-import PropAffect from "../../enemy/PropAffect"
+import PropAffect from "../../../entity/tower/affect/PropAffect"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
+import TargetEffectsMap from "../../../behavior/core/TargetEffectsMap"
 
 export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
 

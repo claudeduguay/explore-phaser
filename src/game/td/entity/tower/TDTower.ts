@@ -2,8 +2,6 @@
 import { GameObjects, Input, Scene } from "phaser"
 import TDTurret from "./TDTurret"
 import BehaviorContainer from "../../behavior/core/BehaviorContainer"
-// import TargetAimBehavior from "../../behavior/tower/targeting/TargetAimBehavior"
-// import ClearTargetsBehavior from "../../behavior/tower/targeting/TargetsClearBehavior"
 import TDRange from "./TDRange"
 import ITowerModel from "../model/ITowerModel"
 import { TOWER_INDEX } from "../model/ITowerModel"
@@ -13,39 +11,18 @@ import Point, { toSceneCoordinates } from "../../../../util/geom/Point"
 import { addLabel } from "../../../../util/TextUtil"
 import Targeting from "./Targeting"
 
-// import TargetSpinBehavior from "../../behavior/tower/targeting/TargetSpinBehavior"
-// import TargetLaserBehavior from "../../behavior/tower/TargetLazerBehavior"
-// import TargetPlasmaBehavior from "../../behavior/tower/TargetPlasmaBehavior"
-// import TargetLightningBehavior from "../../behavior/tower/TargetLightningBehavior"
-// import TargetFlameBehavior from "../../behavior/tower/spray/TargetFlameBehavior"
-// import TargetFreezeBehavior from "../../behavior/tower/spray/TargetFreezeBehavior"
-// import TargeForceBehavior from "../../behavior/tower/spray/TargeForceBehavior"
-// import TargePoisonBehavior from "../../behavior/tower/cloud/TargetPoisonBehavior"
-// import TargetFireBehavior from "../../behavior/tower/cloud/TargetFireBehavior"
-// import TargetSmokeBehavior from "../../behavior/tower/cloud/TargetSmokeBehavior"
-// import TargetShockBehavior from "../../behavior/tower/cloud/TargetShockBehavior"
-// import TargetIceBehavior from "../../behavior/tower/cloud/TargetIceBehavior"
-// import TargetRainBehavior from "../../behavior/tower/cloud/TargetRainBehavior"
-// import TargetSnowBehavior from "../../behavior/tower/cloud/TargetSnowBehavior"
-// import TargetBulletBehavior from "../../behavior/tower/TargetBulletBehavior"
-// import TargetMissileBehavior from "../../behavior/tower/TargetMissileBehavior"
-// import TargetBoostBehavior from "../../behavior/tower/TargetBoostBehavior"
-// import TargetSlowBehavior from "../../behavior/tower/TargetSlowBehavior"
-// import TargetStunBehavior from "../../behavior/tower/cloud/TargetStunBehavior"
-// import TargetSpikeBehavior from "../../behavior/tower/cloud/TargetSpikeBehavior"
-// import TargetRockBehavior from "../../behavior/tower/cloud/TargetRockBehavior"
 import { IProxyExtensions, deepCloneTowerModelAndProxy } from "../model/EffectsProxy"
 import TDPlayScene from "../../scene/TDPlayScene"
 
-import LaunchBehavior from "../../behavior/tower/delivery/LaunchEfffect"
-import BulletBehavior from "../../behavior/tower/delivery/BulletEffect"
-import BeamBehavior from "../../behavior/tower/delivery/BeamEffect"
-import SprayBehavior from "../../behavior/tower/delivery/SprayEffect"
-import CloudBehavior from "../../behavior/tower/delivery/CloudEffect"
-import BurstBehavior from "../../behavior/tower/delivery/BurstEffect"
-import PulseBehavior from "../../behavior/tower/delivery/PulseEffect"
-import { FallEffect, PushEffect, RiseEffect, PullEffect } from "../../behavior/tower/delivery/ArcEfffect"
-import SweepBehavior from "../../behavior/tower/delivery/SweepEfffect"
+import { FallEffect, PushEffect, RiseEffect, PullEffect } from "./effect/ArcEfffect"
+import LaunchEffect from "./effect/LaunchEfffect"
+import BulletEffect from "./effect/BulletEffect"
+import BeamEffect from "./effect/BeamEffect"
+import SprayEffect from "./effect/SprayEffect"
+import CloudEffect from "./effect/CloudEffect"
+import BurstEffect from "./effect/BurstEffect"
+import PulseEffect from "./effect/PulseEffect"
+import SweepEffect from "./effect/SweepEfffect"
 
 export enum PreviewType {
   Normal,
@@ -53,22 +30,22 @@ export enum PreviewType {
   Drag
 }
 
-const DELIVERY_BEHAVIORS: Record<string, any> = {
-  Arrow: LaunchBehavior,
-  Bullet: BulletBehavior,
-  Beam: BeamBehavior,
-  Spray: SprayBehavior,
-  Cloud: CloudBehavior,
-  Burst: BurstBehavior,
+const DELIVERY_EFFECTS: Record<string, any> = {
+  Arrow: LaunchEffect,
+  Bullet: BulletEffect,
+  Beam: BeamEffect,
+  Spray: SprayEffect,
+  Cloud: CloudEffect,
+  Burst: BurstEffect,
   Fall: FallEffect,
   Rise: RiseEffect,
   Pull: PullEffect,
   Push: PushEffect,
-  Pulse: PulseBehavior,
-  Sweep: SweepBehavior,
-  Missile: LaunchBehavior,
-  Mine: LaunchBehavior,
-  Grenade: LaunchBehavior,
+  Pulse: PulseEffect,
+  Sweep: SweepEffect,
+  Missile: LaunchEffect,
+  Mine: LaunchEffect,
+  Grenade: LaunchEffect,
 }
 
 // const TOWER_BEHAVIORS: Record<string, any> = {
@@ -154,7 +131,7 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     // if (model.meta.rotation === "target") {
     //   this.behavior.add(new TargetAimBehavior(this))
     // }
-    const DeliveryBehavior = DELIVERY_BEHAVIORS[model.organize.delivery] || BeamBehavior
+    const DeliveryBehavior = DELIVERY_EFFECTS[model.organize.delivery] || BeamEffect
     // const TargetBehavior = TOWER_BEHAVIORS[model.key] || DamageBehavior
     this.add(new DeliveryBehavior(scene, this))
     // this.behavior.add(new ClearTargetsBehavior(this))

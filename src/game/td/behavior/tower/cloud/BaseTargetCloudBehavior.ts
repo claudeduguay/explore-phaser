@@ -4,7 +4,7 @@ import { IEmitterConfigBuilder } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 import TargetEffectsMap from "../../core/TargetEffectsMap"
-import DamageAffect from "../../enemy/DamageAffect"
+import DamageAffect from "../../../entity/tower/affect/DamageAffect"
 
 export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 

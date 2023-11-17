@@ -1,4 +1,4 @@
-import { computeHealthDamage } from "../tower/ComputeDamage";
+import { computeHealthDamage } from "../../../behavior/tower/ComputeDamage";
 import BaseAffect from "./BaseAffect";
 
 export default class DamageAffect extends BaseAffect {

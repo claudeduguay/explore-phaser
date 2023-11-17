@@ -1,10 +1,10 @@
 import TDTower from "../../../entity/tower/TDTower"
-import TimedSlowEffect from "../../enemy/SlowAffect"
-import TargetEffectsMap from "../../core/TargetEffectsMap"
+import TimedSlowEffect from "../../../entity/tower/affect/SlowAffect"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { Display, GameObjects, Scene } from "phaser"
 import BaseEfffect from "./BaseEffect"
 import { IPointLike } from "../../../../../util/geom/Point"
+import TargetEffectsMap from "../../../behavior/core/TargetEffectsMap"
 
 export default class PulseEfffect extends BaseEfffect {
 

@@ -1,7 +1,7 @@
 import { stunEmitter } from "../../../emitter/ParticleConfig"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 import TDTower from "../../../entity/tower/TDTower"
-import TimedStopEffect from "../../enemy/StunAffect"
+import TimedStopEffect from "../../../entity/tower/affect/StunAffect"
 import BaseTargeCloudBehavior from "./BaseTargetCloudBehavior"
 
 export default class TargeStunBehavior extends BaseTargeCloudBehavior {

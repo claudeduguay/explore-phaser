@@ -1,8 +1,6 @@
 import { GameObjects, Math as PMath, Display, Scene } from "phaser"
-import IBehavior from "../../core/IBehavior"
 import { rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
-import TDEnemy from "../../../entity/enemy/TDEnemy"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { toDegrees } from "../../../../../util/MathUtil"
 import { IPointLike } from "../../../../../util/geom/Point"
@@ -43,11 +41,9 @@ export function burstEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
     })
 }
 
-export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
-
 export default class BurstEffect extends BaseEffect {
 
-  constructor(scene: Scene, public tower: TDTower, public effect?: IDamageEffectBuilder) {
+  constructor(scene: Scene, public tower: TDTower) {
     super(scene, tower, {
       singleEmitter: true,
       singleTarget: false

@@ -1,14 +1,9 @@
 import { GameObjects, Math as PMath, Display, Scene } from "phaser"
-import IBehavior from "../../core/IBehavior"
 import { rangeDeathZone, topEmitZone, bottomEmitZone, eastEmitZone, westEmitZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
-import TDEnemy from "../../../entity/enemy/TDEnemy"
-import DamageAffect from "../../enemy/DamageAffect"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { IPointLike } from "../../../../../util/geom/Point"
 import BaseEffect from "./BaseEffect"
-
-export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
 export function arcEmitter(tower: TDTower, angle: number): GameObjects.Particles.ParticleEmitter {
   const range = tower.model.general.range
@@ -60,9 +55,6 @@ export default class ArcEffect extends BaseEffect {
       singleTarget: false
     })
   }
-
-  // We know that if a tower has no duration it's a range effect
-  damageEffectBuilder: IDamageEffectBuilder = (target: TDEnemy) => new DamageAffect(this.tower, target)
 
   initEmitter(i: number, emissionPoint: IPointLike, time: number) {
     if (this.tower.preview !== PreviewType.Drag) {

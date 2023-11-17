@@ -1,13 +1,9 @@
 import { GameObjects, Math as PMath, Display, Scene } from "phaser"
-import IBehavior from "../../core/IBehavior"
 import { circleEmitZone, rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
-import TDEnemy from "../../../entity/enemy/TDEnemy"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { IPointLike } from "../../../../../util/geom/Point"
 import BaseEffect from "./BaseEffect"
-
-export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
 export function cloudEmitter(tower: TDTower): GameObjects.Particles.ParticleEmitter {
   const range = tower.model.general.range

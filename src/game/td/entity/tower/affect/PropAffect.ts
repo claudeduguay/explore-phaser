@@ -1,4 +1,4 @@
-import { IPropertyEffect } from "../../entity/model/EffectsProxy";
+import { IPropertyEffect } from "../../model/EffectsProxy";
 import BaseAffect from "./BaseAffect";
 
 export default class PropAffect extends BaseAffect {

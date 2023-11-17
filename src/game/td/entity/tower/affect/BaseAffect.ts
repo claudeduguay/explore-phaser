@@ -1,7 +1,7 @@
 import { Math as PMath } from "phaser"
-import TDEnemy from "../../entity/enemy/TDEnemy"
-import TDTower from "../../entity/tower/TDTower"
-import IBehavior from "../core/IBehavior"
+import TDEnemy from "../../enemy/TDEnemy"
+import TDTower from "../TDTower"
+import IBehavior from "../../../behavior/core/IBehavior"
 
 
 /* 
