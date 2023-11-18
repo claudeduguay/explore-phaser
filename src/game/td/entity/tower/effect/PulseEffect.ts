@@ -4,7 +4,7 @@ import { Display, GameObjects, Scene } from "phaser"
 import BaseEffect from "./BaseEffect"
 import { IPointLike } from "../../../../../util/geom/Point"
 
-export default class PulseEfffect extends BaseEffect {
+export default class PulseEffect extends BaseEffect {
 
   constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {

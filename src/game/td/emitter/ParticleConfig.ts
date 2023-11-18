@@ -332,6 +332,13 @@ export const commonExpand: IEmitterConfigBuilder =
     }
   }
 
+const particleRotation: Types.GameObjects.Particles.EmitterOpOnEmitCallback = (particle?: GameObjects.Particles.Particle, key?: string, value?: number) => {
+  if (particle) {
+    return toDegrees(Math.atan2(particle.velocityY, particle.velocityX) - Math.PI / 2)
+  }
+  return value || 0
+}
+
 export const spikeEmitter: IEmitterConfigBuilder =
   (range: number = 100, pos: IPointLike): IEmitterConfig => {
     const speed = 250
@@ -344,12 +351,8 @@ export const spikeEmitter: IEmitterConfigBuilder =
       blendMode: 'ADD',
       rotate: {
         // Align particle sprite with the velocity direction
-        onEmit: (particle: GameObjects.Particles.Particle) => {
-          return toDegrees(Math.atan2(particle.velocityY, particle.velocityX) - Math.PI / 2)
-        },
-        onUpdate: (particle: GameObjects.Particles.Particle) => {
-          return toDegrees(Math.atan2(particle.velocityY, particle.velocityX) - Math.PI / 2)
-        },
+        onEmit: particleRotation,
+        onUpdate: particleRotation,
       },
       quantity: 5 // Per cycle?
     }

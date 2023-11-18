@@ -1,4 +1,4 @@
-import { GameObjects, Math as PMath, Display, Scene } from "phaser"
+import { GameObjects, Math as PMath, Display, Scene, Types } from "phaser"
 import { rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
@@ -6,8 +6,12 @@ import { toDegrees } from "../../../../../util/MathUtil"
 import { IPointLike } from "../../../../../util/geom/Point"
 import BaseEffect from "./BaseEffect"
 
-const particleRotation = (particle: GameObjects.Particles.Particle) =>
-  toDegrees(Math.atan2(particle.velocityY, particle.velocityX) - Math.PI / 2)
+const particleRotation: Types.GameObjects.Particles.EmitterOpOnEmitCallback = (particle?: GameObjects.Particles.Particle, key?: string, value?: number) => {
+  if (particle) {
+    return toDegrees(Math.atan2(particle.velocityY, particle.velocityX) - Math.PI / 2)
+  }
+  return value || 0
+}
 
 export function burstEmitter(tower: TDTower): GameObjects.Particles.ParticleEmitter {
   const range = tower.model.general.range

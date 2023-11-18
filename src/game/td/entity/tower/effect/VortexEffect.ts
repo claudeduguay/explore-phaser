@@ -1,4 +1,4 @@
-import { GameObjects, Math as PMath, Display, Scene } from "phaser"
+import { GameObjects, Math as PMath, Display, Scene, Types } from "phaser"
 import { perimiterEmitZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../TDTower"
 import { DAMAGE_DATA } from "../../model/ITowerData"
@@ -6,8 +6,13 @@ import { toDegrees } from "../../../../../util/MathUtil"
 import { IPointLike } from "../../../../../util/geom/Point"
 import BaseEffect from "./BaseEffect"
 
-const particleVelocity = (particle: GameObjects.Particles.Particle) =>
-  toDegrees(Math.atan2(particle.y, particle.x) - Math.PI) - 20
+const particleVelocity: Types.GameObjects.Particles.EmitterOpOnEmitCallback = (particle?: GameObjects.Particles.Particle, key?: string, value?: number) => {
+  if (particle) {
+    return toDegrees(Math.atan2(particle.y, particle.x) - Math.PI) - 20
+  }
+  return value || 0
+}
+
 
 export function vortexEmitter(tower: TDTower): GameObjects.Particles.ParticleEmitter {
   const range = tower.model.general.range

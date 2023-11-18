@@ -104,13 +104,23 @@ export default abstract class BaseEffect extends GameObjects.Container {
     }
   }
 
-  preDestroy() {
-    console.log("Pre Destroy Effect")
-    this.stopAllParticleEmitters()
-    for (let emitter of this.list) {
-      if (emitter instanceof GameObjects.Particles.ParticleEmitter) {
-        emitter.destroy()
-      }
-    }
-  }
+  // remove(child: GameObjects.GameObject | GameObjects.GameObject[], destroyChild?: boolean): this {
+  //   console.log("Remove called (destroy):", destroyChild, child)
+  //   super.remove(child, false)
+  //   if (destroyChild && !Array.isArray(child)) {
+  //     if (child instanceof GameObjects.Particles.ParticleEmitter) {
+  //       child.ops = { destroy: () => { } } as any
+  //       console.log("Ops:", child.ops)
+  //       child.stop()
+  //     }
+  //     child.destroy()
+  //   }
+  //   return this
+  // }
+
+  // preDestroy() {
+  //   console.log("preDestroy called")
+  //   this.stopAllParticleEmitters()
+  //   super.preDestroy()
+  // }
 }
