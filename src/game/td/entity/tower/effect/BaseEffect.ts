@@ -87,7 +87,7 @@ export default abstract class BaseEffect extends GameObjects.Container {
       // No targets
       emissionPoints.forEach((point, i) => this.clearEmitter(i, point, time))
       this.targetInstanceMap.clear()
-      this.stopParticleEmitters()
+      this.stopAllParticleEmitters()
     }
     this.clearTargeting()
   }
@@ -98,7 +98,7 @@ export default abstract class BaseEffect extends GameObjects.Container {
 
   clearEmitter(index: number, emissionPoint: IPointLike, time: number): void { }
 
-  stopParticleEmitters(): void {
+  stopAllParticleEmitters(): void {
     for (let emitter of this.list) {
       if (emitter instanceof GameObjects.Particles.ParticleEmitter) {
         emitter.stop()
@@ -107,6 +107,12 @@ export default abstract class BaseEffect extends GameObjects.Container {
   }
 
   preDestroy() {
-    this.stopParticleEmitters()
+    console.log("Pre Destroy Effect")
+    this.stopAllParticleEmitters()
+    for (let emitter of this.list) {
+      if (emitter instanceof GameObjects.Particles.ParticleEmitter) {
+        emitter.destroy()
+      }
+    }
   }
 }

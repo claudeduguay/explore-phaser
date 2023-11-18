@@ -14,7 +14,7 @@ import Targeting from "./Targeting"
 import { IProxyExtensions, deepCloneTowerModelAndProxy } from "../model/EffectsProxy"
 import TDPlayScene from "../../scene/TDPlayScene"
 
-import { FallEffect, PushEffect, RiseEffect, PullEffect } from "./effect/ArcEfffect"
+import { FallEffect, PushEffect, RiseEffect, PullEffect } from "./effect/ArcEffect"
 import LaunchEffect from "./effect/LaunchEfffect"
 import BulletEffect from "./effect/BulletEffect"
 import BeamEffect from "./effect/BeamEffect"

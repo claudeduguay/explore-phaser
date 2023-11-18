@@ -1,7 +1,7 @@
 import { GameObjects, Math as PMath, Display, Scene } from "phaser"
 import { rangeDeathZone, topEmitZone, bottomEmitZone, eastEmitZone, westEmitZone } from "../../../emitter/ParticleConfig"
-import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
-import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
+import TDTower, { PreviewType } from "../TDTower"
+import { DAMAGE_DATA } from "../../model/ITowerData"
 import { IPointLike } from "../../../../../util/geom/Point"
 import BaseEffect from "./BaseEffect"
 
