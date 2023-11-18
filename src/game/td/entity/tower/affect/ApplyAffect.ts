@@ -42,7 +42,7 @@ export default class ApplyAffect implements IBehavior {
     return distance <= this.tower.model.general.range
   }
 
-  isTimeout(time: number, timeout?: number) {
+  isTimeout(time: number, timeout: number) {
     if (timeout && this.startTime) {
       const elapsed = time - this.startTime
       return elapsed >= timeout
@@ -55,10 +55,9 @@ export default class ApplyAffect implements IBehavior {
     if (!this.startTime) {
       this.startTime = time
     }
-    if (this.delay && !this.isTimeout(this.delay)) {
+    if (this.delay && !this.isTimeout(time, this.delay)) {
       return
     }
-    // Destroy effect if past the cooldown time
     if (this.isTimeout(time, this.delay + this.cooldown)) {
       if (this.duration === this.cooldown) {
         this.endEffect(time, delta)

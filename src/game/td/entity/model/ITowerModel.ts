@@ -590,7 +590,7 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       type: "prop",
       prop: "speed",
       formula: (v: number) => 0,
-      delay: 2000,
+      delay: 250,
       duration: 1000,
       cooldown: 3000,
       name: "Stun"
