@@ -17,6 +17,21 @@ export type IEmitterEdgeZoneConfig = Types.GameObjects.Particles.ParticleEmitter
 // EMIT AND DEATH ZONES
 // ------------------------------------------------------------------
 
+export const perimiterEmitZone =
+  (range: number, pos: IPointLike): IEmitterRandomeZoneConfig => {
+    return {
+      type: 'random',
+      source: {
+        getRandomPoint: (point: Phaser.Types.Math.Vector2Like) => {
+          const a = Math.PI * 2 * Math.random()
+          const r = range
+          point.x = Math.sin(a) * r
+          point.y = Math.cos(a) * r
+        }
+      }
+    }
+  }
+
 export const circleEmitZone =
   (range: number, pos: IPointLike): IEmitterRandomeZoneConfig => {
     return {

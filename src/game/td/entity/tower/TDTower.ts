@@ -21,6 +21,7 @@ import BeamEffect from "./effect/BeamEffect"
 import SprayEffect from "./effect/SprayEffect"
 import CloudEffect from "./effect/CloudEffect"
 import BurstEffect from "./effect/BurstEffect"
+import VortexEffect from "./effect/VortexEffect"
 import PulseEffect from "./effect/PulseEffect"
 import SweepEffect from "./effect/SweepEfffect"
 
@@ -37,6 +38,7 @@ const DELIVERY_EFFECTS: Record<string, any> = {
   Spray: SprayEffect,
   Cloud: CloudEffect,
   Burst: BurstEffect,
+  Vortex: VortexEffect,
   Fall: FallEffect,
   Rise: RiseEffect,
   Pull: PullEffect,

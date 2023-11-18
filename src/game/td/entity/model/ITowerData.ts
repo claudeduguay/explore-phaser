@@ -1,5 +1,5 @@
 
-export const TYPES_DELIVERY = ["Arrow", "Bullet", "Beam", "Spray", "Cloud", "Burst", "Fall", "Rise", "Pull", "Push", "Pulse", "Sweep", "Missile", "Mine", "Grenade"]
+export const TYPES_DELIVERY = ["Arrow", "Bullet", "Beam", "Spray", "Cloud", "Burst", "Vortex", "Fall", "Rise", "Pull", "Push", "Pulse", "Sweep", "Missile", "Mine", "Grenade"]
 export const TYPES_DAMAGE = ["Kinetic", "Light", "Dark", "Force", "Plasma", "Fire", "Water", "Ice", "Earth", "Air", "Poison", "Electric", "Health", "Shield", "Speed", "Value"]
 
 export type IDeliveryType = typeof TYPES_DELIVERY[number]
@@ -22,10 +22,6 @@ export interface IDamageData {
 }
 
 export const DAMAGE_DATA: { [key: IDamageType]: IDamageData } = {
-  // Arrow: {
-  //   color: { name: "TAN", value: 0xBB9966 },
-  //   description: "Arrow damage (low target impact)"
-  // },
   Kinetic: {
     color: { name: "SLATEGRAY", value: 0x778899 },
     sprite: { key: "kinetic", scale: 0.075 },
@@ -137,6 +133,10 @@ export const DELIVERY_DATA: { [key: IDeliveryType]: IDeliveryData } = {
   Burst: {
     sprite: { key: "burst", scale: 0.075 },
     description: "Outward burst of multiple particles, multi-target within the tower's range"
+  },
+  Vortex: {
+    sprite: { key: "vortex", scale: 0.075 },
+    description: "Inward spiral of particles, multi-target within the tower's range"
   },
   Fall: {
     sprite: { key: "rain", scale: 0.1 },

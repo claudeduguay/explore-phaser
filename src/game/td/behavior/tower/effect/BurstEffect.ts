@@ -1,13 +1,12 @@
 import { GameObjects, Math as PMath, Display, Scene } from "phaser"
+import IBehavior from "../../core/IBehavior"
 import { rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
+import TDEnemy from "../../../entity/enemy/TDEnemy"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { toDegrees } from "../../../../../util/MathUtil"
 import { IPointLike } from "../../../../../util/geom/Point"
-import BaseEffect from "./BaseEffect"
-
-const particleRotation = (particle: GameObjects.Particles.Particle) =>
-  toDegrees(Math.atan2(particle.velocityY, particle.velocityX) - Math.PI / 2)
+import BaseEffect from "../../../entity/tower/effect/BaseEffect"
 
 export function burstEmitter(tower: TDTower): GameObjects.Particles.ParticleEmitter {
   const range = tower.model.general.range
@@ -32,16 +31,23 @@ export function burstEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
       color: [color.value, brighter],
       scale: 0.15,
       rotate: {
-        onEmit: particleRotation,
-        onUpdate: particleRotation,
+        // Align particle sprite with the velocity direction
+        onEmit: (particle: GameObjects.Particles.Particle) => {
+          return toDegrees(Math.atan2(particle.velocityY, particle.velocityX) - Math.PI / 2)
+        },
+        onUpdate: (particle: GameObjects.Particles.Particle) => {
+          return toDegrees(Math.atan2(particle.velocityY, particle.velocityX) - Math.PI / 2)
+        },
       },
       quantity: 2
     })
 }
 
+export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
+
 export default class BurstEffect extends BaseEffect {
 
-  constructor(scene: Scene, public tower: TDTower) {
+  constructor(scene: Scene, public tower: TDTower, public effect?: IDamageEffectBuilder) {
     super(scene, tower, {
       singleEmitter: true,
       singleTarget: false

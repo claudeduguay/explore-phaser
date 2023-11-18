@@ -101,7 +101,7 @@ export const weaponKey = (organize: ITowerOrganize) => `${prefixKey(organize)}-w
 // GENERATOR
 // ------------------------------------------------------------------
 
-export const RADIAL: IDeliveryType[] = ["Pulse", "Burst", "Cloud", "Sweep", "Fall", "Rise", "Pull", "Push"]
+export const RADIAL: IDeliveryType[] = ["Pulse", "Burst", "Vortex", "Cloud", "Sweep", "Fall", "Rise", "Pull", "Push"]
 
 export function modelGenerator(organize: ITowerOrganize): ITowerModel {
   const { damage, delivery } = organize

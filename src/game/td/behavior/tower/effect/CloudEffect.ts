@@ -1,47 +1,41 @@
 import { GameObjects, Math as PMath, Display, Scene } from "phaser"
-import { rangeDeathZone } from "../../../emitter/ParticleConfig"
+import IBehavior from "../../core/IBehavior"
+import { circleEmitZone, rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
+import TDEnemy from "../../../entity/enemy/TDEnemy"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
-import { toDegrees } from "../../../../../util/MathUtil"
 import { IPointLike } from "../../../../../util/geom/Point"
-import BaseEffect from "./BaseEffect"
+import BaseEffect from "../../../entity/tower/effect/BaseEffect"
 
-const particleRotation = (particle: GameObjects.Particles.Particle) =>
-  toDegrees(Math.atan2(particle.velocityY, particle.velocityX) - Math.PI / 2)
+export type IDamageEffectBuilder = (enemy: TDEnemy) => IBehavior
 
-export function burstEmitter(tower: TDTower): GameObjects.Particles.ParticleEmitter {
+export function cloudEmitter(tower: TDTower): GameObjects.Particles.ParticleEmitter {
   const range = tower.model.general.range
   const { damage } = tower.model.organize
-  const { color } = DAMAGE_DATA[damage]
+  const { color, sprite } = DAMAGE_DATA[damage]
   const c = Display.Color.IntegerToColor(color.value)
-  // const darker = color.value
+  const darker = c.darken(50).color
   const brighter = c.brighten(50).color
-  const speed = 120
-  const travelPerSecond = speed / 1000
-  const lifespan = range / travelPerSecond
-  return tower.scene.add.particles(0, 0, "rain",
+  return tower.scene.add.particles(0, 0, sprite.key,
     {
       colorEase: PMath.Easing.Linear.name,
       advance: 0,
-      lifespan,
+      lifespan: 3000,
       angle: { min: 0, max: 360 },
-      speed,
+      rotate: { min: 0, max: 360 },
+      speed: 0.1,
       blendMode: 'ADD',
+      emitZone: circleEmitZone(range, tower),
       deathZone: rangeDeathZone(range, tower),
-      alpha: { start: 1, end: 0 },
-      color: [color.value, brighter],
-      scale: 0.15,
-      rotate: {
-        onEmit: particleRotation,
-        onUpdate: particleRotation,
-      },
-      quantity: 2
+      alpha: { start: 0.2, end: 0 },
+      color: [brighter, color.value, darker],
+      scale: { start: sprite.scale * 2, end: sprite.scale * 5, ease: 'sine.out' },
     })
 }
 
-export default class BurstEffect extends BaseEffect {
+export default class CloudEffect extends BaseEffect {
 
-  constructor(scene: Scene, public tower: TDTower) {
+  constructor(scene: Scene, tower: TDTower) {
     super(scene, tower, {
       singleEmitter: true,
       singleTarget: false
@@ -50,7 +44,7 @@ export default class BurstEffect extends BaseEffect {
 
   initEmitter(i: number, emissionPoint: IPointLike, time: number) {
     if (this.tower.preview !== PreviewType.Drag) {
-      const cloud = burstEmitter(this.tower)
+      const cloud = cloudEmitter(this.tower)
       cloud.stop()
       this.add(cloud)
       this.tower.sendToBack(this)
@@ -62,7 +56,7 @@ export default class BurstEffect extends BaseEffect {
     if (this.tower.targeting.current.length) {
       cloud.start()
     } else { // No target
-      cloud.stop()
+      cloud?.stop()
     }
   }
 }
