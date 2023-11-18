@@ -2,7 +2,7 @@ import { Math as PMath } from "phaser"
 import TDEnemy from "../../enemy/TDEnemy"
 import TDTower from "../TDTower"
 import IBehavior from "../../../behavior/core/IBehavior"
-import { computeHealthDamage } from "../../../behavior/tower/ComputeDamage"
+import { computeHealthDamage, computeShieldDamage } from "../../../behavior/tower/ComputeDamage"
 import { IPropertyEffect } from "../../model/EffectsProxy"
 import { isDPSDamage, isPropDamage } from "../../model/ITowerModel"
 import AffectsMap from "./AffectsMap"
@@ -103,8 +103,11 @@ export default class ApplyAffect implements IBehavior {
 
   // Update if health or sheild effect
   updateEffect(time: number, delta: number): void {
-    if (isDPSDamage(this.tower.model.damage)) {
+    if (this.tower.model.damage.type === "health") {
       this.enemy.health -= computeHealthDamage(this.tower, this.enemy, delta)
+    }
+    if (this.tower.model.damage.type === "shield") {
+      this.enemy.shield -= computeShieldDamage(this.tower, this.enemy, delta)
     }
   }
 
