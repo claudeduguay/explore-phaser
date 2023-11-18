@@ -94,15 +94,13 @@ export default class CustomFollower extends GameObjects.Container {
       }
       if (this._isFollowing) {
         let fraction = 0.002
-        if (this.currentSpeed) {
-          const pathLength = this.path.getLength()
-          const { duration, speed } = this.config
-          const f = this.currentSpeed / speed
-          // Number of pixels / count of total milliseconds = pixels/millisecond
-          const unit = (pathLength / duration)
-          const offsetFraction = unit / pathLength
-          fraction = offsetFraction * delta * f
-        }
+        const pathLength = this.path.getLength()
+        const { duration, speed } = this.config
+        const f = this.currentSpeed / speed
+        // Number of pixels / count of total milliseconds = pixels/millisecond
+        const unit = (pathLength / duration)
+        const offsetFraction = unit / pathLength
+        fraction = offsetFraction * delta * f
         this.offset += fraction
       }
     }

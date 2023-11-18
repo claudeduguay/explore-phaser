@@ -1,7 +1,7 @@
 import { GameObjects } from "phaser"
 import IBehavior from "../core/IBehavior"
 import TDTower from "../../entity/tower/TDTower"
-import SlowAffect from "../../entity/tower/affect/SlowAffect"
+import ApplyAffect from "../../entity/tower/affect/ApplyAffect"
 import TargetEffectsMap from "../../entity/tower/affect/AffectsMap"
 
 export default class TargetSlowBehavior implements IBehavior {
@@ -31,7 +31,7 @@ export default class TargetSlowBehavior implements IBehavior {
       this.g.strokeCircle(this.tower.x, this.tower.y, r2)
 
       for (let target of this.tower.targeting.current) {
-        this.targetInstanceMap.apply(target, () => new SlowAffect(this.tower, target))
+        this.targetInstanceMap.apply(target, () => new ApplyAffect(this.tower, target, this.targetInstanceMap))
         if (target.twin) { // Handle twin if present
           // Note, event though we checked for existence of target.twin, effectBuilder 
           // complains it may be undefined (disabled ts-check)

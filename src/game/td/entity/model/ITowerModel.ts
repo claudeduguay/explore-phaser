@@ -67,7 +67,7 @@ export function isDPSDamage(effect: ITowerEffect): effect is ITowerDamage {
   return ["health", "shield"].includes(effect.type)
 }
 
-export function isPropDamage(effect: ITowerEffect): effect is ITowerDamage {
+export function isPropDamage(effect: ITowerEffect): effect is ITowerModifier {
   return effect.type === "prop"
 }
 
@@ -429,34 +429,6 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
     },
     damage: { type: "health", dps: 25, name: "Snow" }
   },
-  stun: {
-    key: "stun",
-    group: "vertical",
-    name: "Stun",
-    description: "Targets multiple enemies within range with stun effect.",
-    locked: true,
-    meta: {
-      distribution: "radial",
-      rotation: 1,
-    },
-    organize: {
-      damage: "Ice",
-      delivery: "Rise",
-    },
-    general: {
-      level: 3,
-      cost: 100,
-      range: 100,
-    },
-    damage: {
-      type: "prop",
-      prop: "speed",
-      formula: (v: number) => 0,
-      duration: 1000,
-      cooldown: 5000,
-      name: "Stun"
-    }
-  },
 
   // THROW
   bullet: {
@@ -594,7 +566,36 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       duration: 2000,
       name: "Slow"
     }
-  }
+  },
+  stun: {
+    key: "stun",
+    group: "area",
+    name: "Stun",
+    description: "Targets multiple enemies within range with stun effect.",
+    locked: true,
+    meta: {
+      distribution: "radial",
+      rotation: 1,
+    },
+    organize: {
+      damage: "Ice",
+      delivery: "Pulse",
+    },
+    general: {
+      level: 3,
+      cost: 100,
+      range: 100,
+    },
+    damage: {
+      type: "prop",
+      prop: "speed",
+      formula: (v: number) => 0,
+      duration: 1000,
+      cooldown: 5000,
+      name: "Stun"
+    }
+  },
+
 }
 
 export const TOWER_LIST = Object.values(TOWER_INDEX)

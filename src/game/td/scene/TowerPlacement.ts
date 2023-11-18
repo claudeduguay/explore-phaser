@@ -36,7 +36,7 @@ export default class TowerPlacement extends GameObjects.GameObject {
   preUpdate(time: number, delta: number): void {
     const input = this.playScene.input
     if (!this.placingTower && input.mousePointer.isDown) {
-      const timeout = 2000
+      const timeout = 3000
       if (!this.timer) {
         this.timer = time
       } else {

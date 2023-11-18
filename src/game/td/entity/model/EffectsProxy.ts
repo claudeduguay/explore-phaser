@@ -2,7 +2,7 @@ import { deepClone } from "../../../../util/ObjectUtil"
 import IEnemyModel, { IEnemyGeneral } from "./IEnemyModel"
 import ITowerModel from "./ITowerModel"
 
-export const TRACE = true
+export const TRACE = false
 
 export interface IPropertyEffect<T = any> {
   name: string
@@ -39,7 +39,8 @@ export default class EffectsProxy<T extends Record<string | symbol, any>> {
           this.effects.set(effect.prop, new Set<IPropertyEffect>())
         }
         if (TRACE) {
-          console.log(`Add Effect "${effect.name}" to "${effect.prop.toString()}" property using formula: ${effect.formula}`)
+          const time = (performance.now() / 1000).toFixed(3)
+          console.log(`[${time}s] Add Effect "${effect.name}" to "${effect.prop.toString()}" property using formula: ${effect.formula}`)
         }
         this.effects.get(effect.prop)!.add(effect)
       }
@@ -47,7 +48,8 @@ export default class EffectsProxy<T extends Record<string | symbol, any>> {
     if (p === "deleteEffect") {
       return (effect: IPropertyEffect) => {
         if (TRACE) {
-          console.log(`Remove Effect "${effect.name}" to "${effect.prop.toString()}" property using formula: ${effect.formula}`)
+          const time = (performance.now() / 1000).toFixed(3)
+          console.log(`[${time}s] Remove Effect "${effect.name}" to "${effect.prop.toString()}" property using formula: ${effect.formula}`)
         }
         this.effects.get(effect.prop)?.delete(effect)
       }
@@ -55,10 +57,12 @@ export default class EffectsProxy<T extends Record<string | symbol, any>> {
     if (this.effects.has(p)) {
       let value = target[p]
       this.effects.get(p)?.forEach(effect => {
+        const newValue = effect.formula(value)
         if (TRACE) {
-          console.log(`Apply "${effect.name}" to "${effect.prop.toString()}" property using formula: ${effect.formula}`)
+          const time = (performance.now() / 1000).toFixed(3)
+          console.log(`[${time}s] Apply "${effect.name}" to "${effect.prop.toString()}" property using formula ${effect.formula}, ${value} => ${newValue}`)
         }
-        value = effect.formula(value)
+        value = newValue
       })
       return value
     }

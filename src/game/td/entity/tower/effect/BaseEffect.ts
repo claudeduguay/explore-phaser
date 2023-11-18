@@ -1,12 +1,10 @@
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
 import { ISingleTargetStrategy, pickFirst, pickAll, IMultiTargetStrategy } from "../../../entity/tower/Targeting"
-import DamageAffect from "../../../entity/tower/affect/DamageAffect"
 import { GameObjects, Math as PMath, Scene } from "phaser"
-import { isPropDamage } from "../../../entity/model/ITowerModel"
-import PropAffect from "../../../entity/tower/affect/PropAffect"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 import AffectsMap from "../affect/AffectsMap"
+import ApplyAffect from "../affect/ApplyAffect"
 
 export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
 
@@ -15,12 +13,8 @@ export interface IBaseEffectOptions {
   singleTarget: boolean
 }
 
-export function affectFactory(tower: TDTower, target: TDEnemy) {
-  if (isPropDamage(tower.model.damage)) {
-    return new PropAffect(tower, target, tower.model.damage.name)
-  } else {
-    return new DamageAffect(tower, target, tower.model.damage.name)
-  }
+export function affectFactory(tower: TDTower, target: TDEnemy, affectsMap: AffectsMap) {
+  return new ApplyAffect(tower, target, affectsMap)
 }
 
 // Base abstract class that lets us just add the addEmitter function to handle emitter creation
@@ -62,6 +56,7 @@ export default abstract class BaseEffect extends GameObjects.Container {
 
   preUpdate(time: number, delta: number) {
     this.maybeRotate()
+
     // If singleEmitter, the tower is the the only emissionPoint, else collect weapon points
     const emissionPoints = this.options.singleEmitter ? [this.tower] : this.tower.emissionPoints(false)
 
@@ -73,22 +68,26 @@ export default abstract class BaseEffect extends GameObjects.Container {
     // Has a target
     const current = this.tower.targeting.current
     if (current.length) {
+
       // Update individual emitters 
       emissionPoints.forEach((point, i) => this.updateEmitter(i, point, time))
-      // Apply enemy Damage Effect
+
       const targets = this.options.singleTarget ?
         [this.singlePickStrategy(this.tower)!] :
         this.multiPickStrategy(this.tower)
+
+      // Apply enemy Affects
       targets.forEach((target: TDEnemy) => {
-        this.targetInstanceMap.apply(target, () => affectFactory(this.tower, target))
+        this.targetInstanceMap.apply(target, () => affectFactory(this.tower, target, this.targetInstanceMap))
         if (target.twin) { // Handle twin if present to reflect speed affects in preview
-          this.twinInstanceMap.apply(target.twin, () => affectFactory(this.tower, target.twin!))
+          this.twinInstanceMap.apply(target.twin, () => affectFactory(this.tower, target.twin!, this.twinInstanceMap))
         }
       })
     } else {
+      // No targets
       emissionPoints.forEach((point, i) => this.clearEmitter(i, point, time))
       this.targetInstanceMap.clear()
-      this.removeOrStopEmitters()
+      this.stopParticleEmitters()
     }
     this.clearTargeting()
   }
@@ -99,11 +98,15 @@ export default abstract class BaseEffect extends GameObjects.Container {
 
   clearEmitter(index: number, emissionPoint: IPointLike, time: number): void { }
 
-  removeOrStopEmitters(): void {
+  stopParticleEmitters(): void {
     for (let emitter of this.list) {
-      if ("stop" in emitter) {
-        (emitter as GameObjects.Particles.ParticleEmitter).stop()
+      if (emitter instanceof GameObjects.Particles.ParticleEmitter) {
+        emitter.stop()
       }
     }
+  }
+
+  preDestroy() {
+    this.stopParticleEmitters()
   }
 }

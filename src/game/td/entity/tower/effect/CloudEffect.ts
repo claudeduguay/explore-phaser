@@ -1,6 +1,6 @@
 import { GameObjects, Math as PMath, Display, Scene } from "phaser"
 import { circleEmitZone, rangeDeathZone } from "../../../emitter/ParticleConfig"
-import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
+import TDTower from "../../../entity/tower/TDTower"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
 import { IPointLike } from "../../../../../util/geom/Point"
 import BaseEffect from "./BaseEffect"
@@ -39,12 +39,10 @@ export default class CloudEffect extends BaseEffect {
   }
 
   initEmitter(i: number, emissionPoint: IPointLike, time: number) {
-    if (this.tower.preview !== PreviewType.Drag) {
-      const cloud = cloudEmitter(this.tower)
-      cloud.stop()
-      this.add(cloud)
-      this.tower.sendToBack(this)
-    }
+    const cloud = cloudEmitter(this.tower)
+    cloud.stop()
+    this.add(cloud)
+    this.tower.sendToBack(this)
   }
 
   updateEmitter(i: number, emissionPoint: IPointLike, time: number) {
@@ -52,7 +50,7 @@ export default class CloudEffect extends BaseEffect {
     if (this.tower.targeting.current.length) {
       cloud.start()
     } else { // No target
-      cloud?.stop()
+      cloud.stop()
     }
   }
 }
