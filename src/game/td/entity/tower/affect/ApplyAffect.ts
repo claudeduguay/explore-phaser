@@ -32,7 +32,7 @@ export default class ApplyAffect implements IBehavior {
     public readonly affectsMap?: AffectsMap) {
     const { delay, duration, cooldown, name } = tower.model.damage
     this.name = name
-    this.delay = delay || 0// Not yet accounted for
+    this.delay = delay || 0
     this.duration = duration || 0
     this.cooldown = cooldown || this.duration
   }
