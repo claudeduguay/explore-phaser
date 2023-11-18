@@ -6,8 +6,6 @@ import TDEnemy from "../../../entity/enemy/TDEnemy"
 import AffectsMap from "../affect/AffectsMap"
 import ApplyAffect from "../affect/ApplyAffect"
 
-export type IEmitter = GameObjects.GameObject | GameObjects.Particles.ParticleEmitter
-
 export interface IBaseEffectOptions {
   singleEmitter: boolean
   singleTarget: boolean
