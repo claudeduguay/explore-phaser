@@ -1,22 +1,18 @@
 import { Scene, GameObjects } from "phaser"
 import Point from "../../../../util/geom/Point";
 import makeTileMap, { DEFAULT_CONFIG, IMapConfig } from "./TDTileMap";
-import { generatePath, createCurve } from "./TDPath";
+import { createCurve } from "./TDPath";
 import { makeTimeline } from "./TDTimeline";
-import { asPathModel } from "./IPathModel";
 import ObservableValue from "../../value/ObservableValue";
+import { ILevelModel } from "./ILevelModel";
 
 export default function generateMap(scene: Scene, hud: Scene,
   health: ObservableValue<number>, credits: ObservableValue<number>,
   enemyGroup: GameObjects.Group, previewGroup: GameObjects.Group,
-  mapOrigin: Point, prunePath: boolean = true) {
+  mapOrigin: Point, model: ILevelModel) {
 
   const config: IMapConfig = DEFAULT_CONFIG
-
-  const { path, maze } = generatePath(config.rows, config.cols, prunePath)
-
-  const model = prunePath ? asPathModel(path) : asPathModel(maze.grid.array)
-  const map = makeTileMap(scene, mapOrigin.x, mapOrigin.y, model, config)
+  const map = makeTileMap(scene, mapOrigin.x, mapOrigin.y, model.path, config)
   const points = map.getPathPoints()
   const curve = createCurve(points)
 

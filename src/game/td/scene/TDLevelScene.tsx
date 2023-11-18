@@ -2,7 +2,7 @@
 import TDGameScene from "./TDGameScene"
 import TDNavScene from "./TDNavScene"
 import { ILevelModel, computeHardestWave, computeLongestMap, generateLevel } from "./map/ILevelModel"
-import { DEFAULT_CONFIG, IMapConfig, TDTileMap } from "./map/TDTileMap";
+import { DEFAULT_CONFIG, TDTileMap } from "./map/TDTileMap";
 import { evaluateWaveDifficulty } from "./map/IWaveModel"
 import { sceneSize, transitionTo } from "../../../util/SceneUtil"
 import { buildSummary } from "./map/TDTimeline"
@@ -11,9 +11,8 @@ import { addLabel } from "../../../util/TextUtil"
 
 export function generateAndSortLevels(count = 20): ILevelModel[] {
   const levels: ILevelModel[] = []
-  const config: IMapConfig = DEFAULT_CONFIG
   for (let i = 0; i < count; i++) {
-    levels.push(generateLevel(config.rows, config.cols))
+    levels.push(generateLevel(DEFAULT_CONFIG))
   }
   // console.log(JSON.stringify(levels[0], null, 2))
 

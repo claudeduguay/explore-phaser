@@ -12,11 +12,12 @@ import { shuffle } from "../../../util/ArrayUtil"
 import TDEnemy from "../entity/enemy/TDEnemy"
 import { connectTowerEnemyCollisionDetection } from "../entity/tower/Targeting"
 import TDHUDScene from "./TDHUDScene"
-import { TDTileMap } from "./map/TDTileMap"
+import { DEFAULT_CONFIG, TDTileMap } from "./map/TDTileMap"
 import { generatePathAdjacentPositions } from "./map/TDPath"
 import Conversation from "../gui/game/Conversation"
 import { play } from "../../../util/SceneUtil"
 import { randomChoice } from "../../../util/Random"
+import { ILevelModel, generateLevel } from "./map/ILevelModel"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -97,7 +98,7 @@ export default class TDPlayScene extends Scene {
     this.initGroups()
     this.initInputEventHandlers()
 
-    this.createMap()
+    this.generateMap()
 
     // Detect Collisions between tower and enemy group members
     connectTowerEnemyCollisionDetection(this, this.towerGroup, this.enemyGroup)
@@ -221,7 +222,11 @@ export default class TDPlayScene extends Scene {
     }
   }
 
-  createMap() {
+  generateMap() {
+    this.setLevel(generateLevel(DEFAULT_CONFIG))
+  }
+
+  setLevel(level: ILevelModel) {
     if (this.timeline) {
       this.timeline.stop()
       this.timeline.destroy()
@@ -232,7 +237,7 @@ export default class TDPlayScene extends Scene {
       this.credits.value = 200
     }
     const { map, points, timeline } = generateMap(this, this.hud,
-      this.health, this.credits, this.enemyGroup, this.previewGroup, this.mapOrigin)
+      this.health, this.credits, this.enemyGroup, this.previewGroup, this.mapOrigin, level)
     this.map = map
     this.timeline = timeline
     const showSpriteSheet = false

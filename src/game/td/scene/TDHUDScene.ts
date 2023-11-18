@@ -29,7 +29,7 @@ export default class TDHUDScene extends Scene {
     })
     playScene.events.on(Scenes.Events.TRANSITION_WAKE, () => {
       this.scene.restart()
-      this.playScene.createMap()
+      this.playScene.generateMap()
     })
   }
 
@@ -75,7 +75,7 @@ export default class TDHUDScene extends Scene {
     this.buttonBar.access.tree.onClick = onToggleTreePreview
     this.buttonBar.access.gui.onClick = onToggleGUIPreview
     this.buttonBar.access.style.onClick = onToggleStylePreview
-    this.buttonBar.access.replay.onClick = () => this.playScene.createMap()
+    this.buttonBar.access.replay.onClick = () => this.playScene.generateMap()
 
     this.add.existing(this.buttonBar)
 

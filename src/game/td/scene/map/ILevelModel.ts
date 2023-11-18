@@ -1,14 +1,15 @@
 import IPathModel, { asPathModel } from "./IPathModel"
 import IWaveModel, { generateWaves, evaluateWaveDifficulty } from "./IWaveModel"
 import { generatePath } from "./TDPath"
+import { DEFAULT_CONFIG, IMapConfig } from "./TDTileMap"
 
 export interface ILevelModel {
   path: IPathModel
   waves: IWaveModel
 }
 
-export function generateLevel(rows: number, cols: number): ILevelModel {
-  const { path } = generatePath(rows, cols)
+export function generateLevel(config: IMapConfig = DEFAULT_CONFIG): ILevelModel {
+  const { path } = generatePath(config.rows, config.cols)
   const waves = generateWaves()
   return { path: asPathModel(path), waves }
 }
