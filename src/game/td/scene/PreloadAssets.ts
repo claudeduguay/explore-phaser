@@ -110,6 +110,7 @@ export function preloadImages(scene: Scene) {
   scene.load.image('water', 'assets/particles/flame_02.png')
   scene.load.image('earth', 'assets/particles/dirt_02.png')
   scene.load.image('burst', 'assets/particles/star_09.png')
+  scene.load.image('vortex', 'assets/particles/magic_02.png')
   scene.load.image('beam', 'assets/particles/trace_06.png')
   scene.load.image('cloud', 'assets/particles/circle_05.png')
   scene.load.image('area', 'assets/particles/star_09.png')
