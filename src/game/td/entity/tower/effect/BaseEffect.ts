@@ -104,19 +104,17 @@ export default abstract class BaseEffect extends GameObjects.Container {
     }
   }
 
-  // remove(child: GameObjects.GameObject | GameObjects.GameObject[], destroyChild?: boolean): this {
-  //   console.log("Remove called (destroy):", destroyChild, child)
-  //   super.remove(child, false)
-  //   if (destroyChild && !Array.isArray(child)) {
-  //     if (child instanceof GameObjects.Particles.ParticleEmitter) {
-  //       child.ops = { destroy: () => { } } as any
-  //       console.log("Ops:", child.ops)
-  //       child.stop()
-  //     }
-  //     child.destroy()
-  //   }
-  //   return this
-  // }
+  remove(child: GameObjects.GameObject | GameObjects.GameObject[], destroyChild?: boolean): this {
+    console.log("Remove called (destroy):", destroyChild, child)
+    if (!Array.isArray(child)) {
+      if (child instanceof GameObjects.Particles.ParticleEmitter) {
+        child.killAll()
+        child.destroy()
+        destroyChild = false
+      }
+    }
+    return super.remove(child, destroyChild)
+  }
 
   // preDestroy() {
   //   console.log("preDestroy called")
