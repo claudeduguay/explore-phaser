@@ -135,7 +135,7 @@ export const DELIVERY_DATA: { [key: IDeliveryType]: IDeliveryData } = {
     description: "Outward burst of multiple particles, multi-target within the tower's range"
   },
   Vortex: {
-    sprite: { key: "vortex", scale: 0.05 },
+    sprite: { key: "vortex", scale: 0.06 },
     description: "Inward spiral of particles, multi-target within the tower's range"
   },
   Fall: {
