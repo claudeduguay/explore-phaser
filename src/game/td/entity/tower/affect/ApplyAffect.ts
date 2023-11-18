@@ -3,8 +3,6 @@ import TDEnemy from "../../enemy/TDEnemy"
 import TDTower from "../TDTower"
 import IBehavior from "../../../behavior/core/IBehavior"
 import { computeHealthDamage, computeShieldDamage } from "../../../behavior/tower/ComputeDamage"
-import { IPropertyEffect } from "../../model/EffectsProxy"
-import { isDPSDamage, isPropDamage } from "../../model/ITowerModel"
 import AffectsMap from "./AffectsMap"
 
 
@@ -19,8 +17,6 @@ both endEffect and endCooldown are called in sequence in the same frame.
 * updateEffect triggers on each frame between startEffect and endEfffect
 */
 export default class ApplyAffect implements IBehavior {
-
-  propertyEffect?: IPropertyEffect  // Cache, so we remove the same instance
 
   isStarted?: boolean
   startTime?: number
@@ -85,19 +81,15 @@ export default class ApplyAffect implements IBehavior {
 
   // Start if property effect
   startEffect(time: number, delta: number): void {
-    if (isPropDamage(this.tower.model.damage)) {
-      // const { name, prop, formula } = this.tower.model.damage
-      // this.propertyEffect = { name, prop, formula }
+    if (this.tower.model.damage.type === "prop") {
       this.enemy.model.general.addEffect(this.tower.model.damage)
     }
   }
 
   // End if property effect
   endEffect(time: number, delta: number): void {
-    // if (this.propertyEffect && isPropDamage(this.tower.model.damage)) {
-    if (isPropDamage(this.tower.model.damage)) {
+    if (this.tower.model.damage.type === "prop") {
       this.enemy.model.general.deleteEffect(this.tower.model.damage)
-      // this.propertyEffect = undefined
     }
   }
 
