@@ -8,14 +8,20 @@ import { ITowerAffectTime } from "../../model/ITowerModel"
 
 
 /* 
-Generalized Effect-handler Base (abstract) class.
+Apply either damage or property modification affects based on timing, if specified.
 Lifecycle is based on the existence of absence of duration, cooldown values
-If cooldown is missing, assigned the same value as duration so, in thsi case, 
-both endEffect and endCooldown are called in sequence in the same frame.
-* startEffect is immediate and triggered only once
+If cooldown is missing, assign the same value as duration so that both 
+endEffect and endCooldown are called, in sequence, in the same frame.
+If no timing information is provided, we use an in-range test to apply 
+the affct only when the target is within the tower's range.
+
+Lifecycle calls are:
+
+* startEffect is immediate and triggered only once, after delay, if provided
+* updateEffect triggers on each frame between startEffect and endEffect
 * endEffect triggers when we are either outside the timeout or range
 * endCooldown triggers after cooldown time has elapsed or when out of range, right before self-destruct
-* updateEffect triggers on each frame between startEffect and endEfffect
+
 */
 export default class ApplyAffect implements IBehavior {
 
