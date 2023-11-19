@@ -40,11 +40,13 @@ export default class TowerPlacement extends GameObjects.GameObject {
       if (!this.timer) {
         this.timer = time
       } else {
+        // Pick up the tower to move it if pointer down after timeout
         if (time > this.timer + timeout) {
           this.timer = undefined
           const selected = this.playScene.towerGroup.selected.value
           if (selected) {
             this.placingTower = selected
+            this.playScene.map.clearTowerMarkAt(this.placingTower)
             this.startDrag()
           }
         }
