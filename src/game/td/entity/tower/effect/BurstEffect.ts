@@ -1,4 +1,4 @@
-import { GameObjects, Math as PMath, Display, Scene, Types } from "phaser"
+import { GameObjects, Math as PMath, Display, Types } from "phaser"
 import { rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"

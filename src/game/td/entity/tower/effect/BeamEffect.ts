@@ -1,4 +1,4 @@
-import { GameObjects, Curves, Math as PMath, Scene } from "phaser"
+import { GameObjects, Curves, Math as PMath } from "phaser"
 import BaseEffect from "./BaseEffect"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"

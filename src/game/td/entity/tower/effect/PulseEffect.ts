@@ -1,6 +1,6 @@
 import TDTower from "../../../entity/tower/TDTower"
 import { DAMAGE_DATA } from "../../../entity/model/ITowerData"
-import { Display, GameObjects, Scene } from "phaser"
+import { Display, GameObjects } from "phaser"
 import BaseEffect from "./BaseEffect"
 import { IPointLike } from "../../../../../util/geom/Point"
 

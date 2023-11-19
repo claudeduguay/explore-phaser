@@ -1,4 +1,4 @@
-import { Display, GameObjects, Math as PMath, Scene } from "phaser"
+import { Display, GameObjects, Math as PMath } from "phaser"
 import BaseEffect from "./BaseEffect"
 import { rangeDeathZone } from "../../../emitter/ParticleConfig"
 import TDTower from "../../../entity/tower/TDTower"

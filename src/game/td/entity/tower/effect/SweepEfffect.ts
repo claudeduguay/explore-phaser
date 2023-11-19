@@ -1,4 +1,4 @@
-import { Display, GameObjects, Scene } from "phaser"
+import { Display, GameObjects } from "phaser"
 import { toRadians } from "../../../../../util/MathUtil"
 import BaseEffect from "./BaseEffect"
 import { IPointLike } from "../../../../../util/geom/Point"

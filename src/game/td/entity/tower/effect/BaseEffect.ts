@@ -1,7 +1,7 @@
 import TDTower, { PreviewType } from "../../../entity/tower/TDTower"
 import Point, { IPointLike } from "../../../../../util/geom/Point"
 import { ISingleTargetStrategy, pickFirst, pickAll, IMultiTargetStrategy } from "../../../entity/tower/Targeting"
-import { GameObjects, Math as PMath, Scene } from "phaser"
+import { GameObjects, Math as PMath } from "phaser"
 import TDEnemy from "../../../entity/enemy/TDEnemy"
 import AffectsMap from "../affect/AffectsMap"
 import ApplyAffect from "../affect/ApplyAffect"

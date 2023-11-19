@@ -1,4 +1,4 @@
-import { GameObjects, Math as PMath, Scene } from "phaser"
+import { GameObjects, Math as PMath } from "phaser"
 import BaseEffect from "./BaseEffect"
 import { IPointLike } from "../../../../../util/geom/Point"
 import TDTower from "../../../entity/tower/TDTower"
