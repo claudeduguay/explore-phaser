@@ -226,7 +226,7 @@ export default class TDPlayScene extends Scene {
     this.setLevel(generateLevel(DEFAULT_CONFIG))
   }
 
-  setLevel(level: ILevelModel) {
+  setLevel(level: ILevelModel, addSemiRandomTowers = true) {
     if (this.timeline) {
       this.timeline.stop()
       this.timeline.destroy()
@@ -249,7 +249,7 @@ export default class TDPlayScene extends Scene {
       g.fillRect(x - margin, 590 - margin, 16 * 64 + margin * 2, 64 + margin * 2)
       this.add.sprite(x, 590, "path_tiles").setOrigin(0, 0)
     }
-    const addSemiRandomTowers = true
+
     if (addSemiRandomTowers) {
       this.generateSemiRandomTowers(points)
     }
