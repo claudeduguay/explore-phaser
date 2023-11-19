@@ -583,7 +583,8 @@ export const TOWER_INDEX: Record<string, ITowerModel> = {
       range: 100,
     },
     damage: {
-      affect: { type: "health", dps: 25, name: "Boost" }
+      timing: { duration: 2000 },
+      affect: { type: "prop", prop: "value", formula: v => v * 2, name: "Boost" }
     }
   },
   slow: {

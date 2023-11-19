@@ -15,12 +15,16 @@ export default class LaunchEffect extends BaseEffect {
     })
   }
 
+  launchSprite(x: number, y: number, key: string) {
+    return this.scene.add.sprite(x, y, key)
+  }
+
   initEmitter(i: number, { x, y }: IPointLike, time: number): void {
     const target = this.singlePickStrategy(this.tower)
     if (target) {
       const key = DELIVERY_DATA[this.tower.model.organize.delivery].sprite.key
       const color = DAMAGE_DATA[this.tower.model.organize.damage].color.value
-      const emitter = this.scene.add.sprite(x, y, key)
+      const emitter = this.launchSprite(x, y, key)
       if (this.fraction.length < i + 1) {
         this.fraction.push(0)
       }
