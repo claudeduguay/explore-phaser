@@ -6,7 +6,7 @@ by Claude Duguay
 
 These projects need to be explored:
 
-* [Remotion](https://www.remotion.dev/) - Capture video from React
+* [Remotion](https://www.remotion.dev/) - Capture MP4 video's from React
 * [Enable3D](https://enable3d.io/) - Add THREE.js support to Phaser
 * [BlueprintJS](https://blueprintjs.com/) - Palantir's React UI framework
 
