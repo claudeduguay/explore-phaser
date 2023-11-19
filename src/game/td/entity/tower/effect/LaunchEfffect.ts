@@ -8,8 +8,8 @@ export default class LaunchEffect extends BaseEffect {
 
   fraction: number[] = []
 
-  constructor(scene: Scene, tower: TDTower) {
-    super(scene, tower, {
+  constructor(tower: TDTower) {
+    super(tower, {
       singleEmitter: false,
       singleTarget: true
     })

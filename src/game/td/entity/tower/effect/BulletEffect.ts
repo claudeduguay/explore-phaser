@@ -5,8 +5,8 @@ import { IPointLike } from "../../../../../util/geom/Point"
 
 export default class BulletEffect extends BaseEffect {
 
-  constructor(scene: Scene, tower: TDTower) {
-    super(scene, tower, {
+  constructor(tower: TDTower) {
+    super(tower, {
       singleEmitter: false,
       singleTarget: true
     })

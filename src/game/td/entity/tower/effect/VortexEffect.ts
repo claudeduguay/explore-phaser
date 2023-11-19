@@ -45,8 +45,8 @@ export function vortexEmitter(tower: TDTower): GameObjects.Particles.ParticleEmi
 
 export default class VortexEffect extends BaseEffect {
 
-  constructor(scene: Scene, public tower: TDTower) {
-    super(scene, tower, {
+  constructor(tower: TDTower) {
+    super(tower, {
       singleEmitter: true,
       singleTarget: false
     })

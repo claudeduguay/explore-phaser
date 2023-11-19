@@ -36,8 +36,8 @@ export function sprayEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
 
 export default class SprayEffect extends BaseEffect {
 
-  constructor(scene: Scene, tower: TDTower) {
-    super(scene, tower, {
+  constructor(tower: TDTower) {
+    super(tower, {
       singleEmitter: false,
       singleTarget: true
     })

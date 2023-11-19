@@ -31,8 +31,8 @@ export function cloudEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
 
 export default class CloudEffect extends BaseEffect {
 
-  constructor(scene: Scene, tower: TDTower) {
-    super(scene, tower, {
+  constructor(tower: TDTower) {
+    super(tower, {
       singleEmitter: true,
       singleTarget: false
     })

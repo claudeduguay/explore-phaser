@@ -47,8 +47,8 @@ export function arcEmitter(tower: TDTower, angle: number): GameObjects.Particles
 
 export default class ArcEffect extends BaseEffect {
 
-  constructor(scene: Scene, public tower: TDTower, public dirAngle: number) {
-    super(scene, tower, {
+  constructor(tower: TDTower, public dirAngle: number) {
+    super(tower, {
       singleEmitter: true,
       singleTarget: false
     })
@@ -78,25 +78,25 @@ export default class ArcEffect extends BaseEffect {
 }
 
 export class PushEffect extends ArcEffect {
-  constructor(scene: Scene, tower: TDTower) {
-    super(scene, tower, 0)
+  constructor(tower: TDTower) {
+    super(tower, 0)
   }
 }
 
 export class FallEffect extends ArcEffect {
-  constructor(scene: Scene, tower: TDTower) {
-    super(scene, tower, 90)
+  constructor(tower: TDTower) {
+    super(tower, 90)
   }
 }
 
 export class PullEffect extends ArcEffect {
-  constructor(scene: Scene, tower: TDTower) {
-    super(scene, tower, 180)
+  constructor(tower: TDTower) {
+    super(tower, 180)
   }
 }
 
 export class RiseEffect extends ArcEffect {
-  constructor(scene: Scene, tower: TDTower) {
-    super(scene, tower, 270)
+  constructor(tower: TDTower) {
+    super(tower, 270)
   }
 }

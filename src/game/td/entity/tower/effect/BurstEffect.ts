@@ -45,8 +45,8 @@ export function burstEmitter(tower: TDTower): GameObjects.Particles.ParticleEmit
 
 export default class BurstEffect extends BaseEffect {
 
-  constructor(scene: Scene, public tower: TDTower) {
-    super(scene, tower, {
+  constructor(public tower: TDTower) {
+    super(tower, {
       singleEmitter: true,
       singleTarget: false
     })

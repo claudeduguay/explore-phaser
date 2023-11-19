@@ -7,8 +7,8 @@ import TDTower from "../../../entity/tower/TDTower"
 
 export default class SweepEfffect extends BaseEffect {
 
-  constructor(scene: Scene, tower: TDTower) {
-    super(scene, tower, {
+  constructor(tower: TDTower) {
+    super(tower, {
       singleEmitter: true,
       singleTarget: false
     })

@@ -130,13 +130,8 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
 
     this.setSize(range * 2, range * 2) // Sets bounding box
 
-    // if (model.meta.rotation === "target") {
-    //   this.behavior.add(new TargetAimBehavior(this))
-    // }
     const DeliveryBehavior = DELIVERY_EFFECTS[model.organize.delivery] || BeamEffect
-    // const TargetBehavior = TOWER_BEHAVIORS[model.key] || DamageBehavior
-    this.add(new DeliveryBehavior(scene, this))
-    // this.behavior.add(new ClearTargetsBehavior(this))
+    this.add(new DeliveryBehavior(this))
   }
 
   preDestroy() {

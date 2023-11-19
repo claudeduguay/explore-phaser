@@ -6,8 +6,8 @@ import { IPointLike } from "../../../../../util/geom/Point"
 
 export default class PulseEffect extends BaseEffect {
 
-  constructor(scene: Scene, tower: TDTower) {
-    super(scene, tower, {
+  constructor(tower: TDTower) {
+    super(tower, {
       singleEmitter: true,
       singleTarget: false
     })

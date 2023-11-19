@@ -21,15 +21,14 @@ export default abstract class BaseEffect extends GameObjects.Container {
   targetInstanceMap = new AffectsMap()
   twinInstanceMap = new AffectsMap() // Needed for speed effects to match in preview
 
-  constructor(scene: Scene,
-    public tower: TDTower,
+  constructor(public tower: TDTower,
     public options: IBaseEffectOptions = {
       singleEmitter: false,
       singleTarget: true
     },
     public singlePickStrategy: ISingleTargetStrategy = pickFirst,
     public multiPickStrategy: IMultiTargetStrategy = pickAll) {
-    super(scene)
+    super(tower.scene)
     this.addToUpdateList()
   }
 
