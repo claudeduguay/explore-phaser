@@ -8,7 +8,7 @@ export default class BehaviorContainer extends GameObjects.Container {
 
   constructor(public scene: Scene, x?: number, y?: number) {
     super(scene, x, y)
-    scene.sys.updateList.add(this)
+    this.addToUpdateList()
   }
 
   preUpdate(time: number, delta: number): void {

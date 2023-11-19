@@ -1,7 +1,6 @@
 
 import { GameObjects, Input, Scene } from "phaser"
 import TDTurret from "./TDTurret"
-import BehaviorContainer from "../../behavior/core/BehaviorContainer"
 import TDRange from "./TDRange"
 import ITowerModel from "../model/ITowerModel"
 import { TOWER_INDEX } from "../model/ITowerModel"
@@ -50,32 +49,8 @@ const DELIVERY_EFFECTS: Record<string, any> = {
   Grenade: LaunchEffect,
 }
 
-// const TOWER_BEHAVIORS: Record<string, any> = {
-//   lazer: TargetLaserBehavior,
-//   plasma: TargetPlasmaBehavior,
-//   lightning: TargetLightningBehavior,
-//   flame: TargetFlameBehavior,
-//   freeze: TargetFreezeBehavior,
-//   force: TargeForceBehavior,
-//   poison: TargePoisonBehavior,
-//   fire: TargetFireBehavior,
-//   smoke: TargetSmokeBehavior,
-//   shock: TargetShockBehavior,
-//   ice: TargetIceBehavior,
-//   rain: TargetRainBehavior,
-//   snow: TargetSnowBehavior,
-//   stun: TargetStunBehavior,
-//   spike: TargetSpikeBehavior,
-//   rock: TargetRockBehavior,
-//   bullet: TargetBulletBehavior,
-//   missile: TargetMissileBehavior,
-//   boost: TargetBoostBehavior,
-//   slow: TargetSlowBehavior,
-// }
 
-
-
-export default class TDTower extends BehaviorContainer implements ISelectable {
+export default class TDTower extends GameObjects.Container implements ISelectable {
 
   // effect: GameObjects.Container
   platform: GameObjects.Sprite
@@ -110,9 +85,6 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     }
 
     this.turret = new TDTurret(scene, 0, 0, model)
-    // if (model.meta.rotation !== "target") {
-    //   this.behavior.add(new TargetSpinBehavior(this, model.meta.rotation))
-    // }
     this.add(this.turret)
 
     // >>> To be used to apply visual efffects relative to this GameObject <<<
@@ -130,8 +102,8 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
 
     this.setSize(range * 2, range * 2) // Sets bounding box
 
-    const DeliveryBehavior = DELIVERY_EFFECTS[model.organize.delivery] || BeamEffect
-    this.add(new DeliveryBehavior(this))
+    const TowerEffect = DELIVERY_EFFECTS[model.organize.delivery] || BeamEffect
+    this.add(new TowerEffect(this))
   }
 
   addSelectHandler(select: (selection?: TDTower) => void) {
@@ -180,6 +152,10 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
 
   emissionPoints(relative = false) {
     return this.turret.weapon.map((p, i) => this.emissionPoint(i, relative))
+  }
+
+  // Seems to be required to avoid an error
+  preUpdate(time: number, delta: number) {
   }
 
 }
