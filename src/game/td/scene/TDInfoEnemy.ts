@@ -25,6 +25,7 @@ export default class TDInfoEnemy extends TDInfoBase {
   protected preDestroy(): void {
     this.group.selected.removeListener(CHANGED_EVENT, this.setEnemy)
     this.group.infoVisible.removeListener(CHANGED_EVENT, this.setVisibility)
+    super.preDestroy()
   }
 
   setVisibility = (visible: boolean) => {

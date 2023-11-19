@@ -28,6 +28,7 @@ export default class TDInfoTower extends TDInfoBase {
   protected preDestroy(): void {
     this.group.selected.removeListener(CHANGED_EVENT, this.setTower)
     this.group.infoVisible.removeListener(CHANGED_EVENT, this.setVisibility)
+    super.preDestroy()
   }
 
   setVisibility = (visible: boolean) => {

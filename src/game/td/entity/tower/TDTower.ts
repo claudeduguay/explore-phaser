@@ -134,10 +134,6 @@ export default class TDTower extends BehaviorContainer implements ISelectable {
     this.add(new DeliveryBehavior(this))
   }
 
-  preDestroy() {
-    this.behavior.clear()
-  }
-
   addSelectHandler(select: (selection?: TDTower) => void) {
     this.platform.on(Input.Events.GAMEOBJECT_POINTER_DOWN, (pointer: any, x: number, y: number, e: Event) => {
       if (pointer.rightButtonDown()) {
