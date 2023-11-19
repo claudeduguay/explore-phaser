@@ -1,6 +1,6 @@
-import { randomRange } from "../../../../util/Random"
-import TDEnemy from "../../entity/enemy/TDEnemy"
-import TDTower from "../../entity/tower/TDTower"
+import { randomRange } from "../../../../../util/Random"
+import TDEnemy from "../../enemy/TDEnemy"
+import TDTower from "../TDTower"
 
 export function computeHealthDamage(tower: TDTower, target: TDEnemy, delta: number) {
   const damage = tower.model.damage
