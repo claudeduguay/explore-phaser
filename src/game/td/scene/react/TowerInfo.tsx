@@ -7,7 +7,7 @@ import ObservableValue, { useObservableValue } from "../../value/ObservableValue
 import { entitle } from "../../../../util/TextUtil"
 import { IUpgrade } from "./PropsTable"
 import { Scene } from "phaser"
-import { ITowerDamage } from "../../entity/model/ITowerModel"
+import { ITowerEffect, effectFormatter } from "../../entity/model/ITowerModel"
 
 export interface ITowerInfoProps {
   scene: Scene
@@ -32,11 +32,7 @@ export default function TowerInfo({ scene, tower: towerObservable, onClose }: IT
     cost: { text: "-10%", cost: 100 },
     range: { text: "+10%", cost: 50 },
   }
-  const damageFormatter = (damage: ITowerDamage) => {
-    const dps = damage.dps.toString()
-    const duration = damage.duration !== undefined ? `${damage.duration}ms` : "in-range"
-    return `${dps} (${duration})`
-  }
+  const damageFormatter = (damage: ITowerEffect) => effectFormatter("key", damage)
   return <div className="position-reattive text-white bg-overlay border-gold glow -p-3"
     style={style} data-bs-theme="dark" onMouseDown={onMouseDown}>
     <CloseButton onClick={onClose} />

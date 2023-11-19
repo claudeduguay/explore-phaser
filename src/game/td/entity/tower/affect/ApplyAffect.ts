@@ -4,6 +4,7 @@ import TDTower from "../TDTower"
 import IBehavior from "../../../behavior/core/IBehavior"
 import { computeHealthDamage, computeShieldDamage } from "../../../behavior/tower/ComputeDamage"
 import AffectsMap from "./AffectsMap"
+import { ITowerAffectTime } from "../../model/ITowerModel"
 
 
 /* 
@@ -21,20 +22,24 @@ export default class ApplyAffect implements IBehavior {
   isStarted?: boolean
   startTime?: number
 
+  timing: ITowerAffectTime
   name!: string
-  delay!: number
-  duration!: number
-  cooldown!: number
 
   constructor(
     public readonly tower: TDTower,
     public readonly enemy: TDEnemy,
     public readonly affectsMap?: AffectsMap) {
-    const { delay, duration, cooldown, name } = tower.model.damage
-    this.name = name
-    this.delay = delay || 0
-    this.duration = duration || 0
-    this.cooldown = cooldown || this.duration
+    this.timing = tower.model.damage.timing || {}
+    if (!this.timing.delay) {
+      this.timing.delay = 0
+    }
+    if (!this.timing.duration) {
+      this.timing.duration = 0
+    }
+    if (!this.timing.cooldown) {
+      this.timing.cooldown = this.timing.duration
+    }
+    this.name = tower.model.damage.affect.name
   }
 
   isInRange() {
@@ -55,11 +60,12 @@ export default class ApplyAffect implements IBehavior {
     if (!this.startTime) {
       this.startTime = time
     }
-    if (this.delay && !this.isTimeout(time, this.delay)) {
+    const { delay, duration, cooldown } = this.timing
+    if (delay && !this.isTimeout(time, delay)) {
       return
     }
-    if (this.isTimeout(time, this.delay + this.cooldown)) {
-      if (this.duration === this.cooldown) {
+    if (this.isTimeout(time, delay! + cooldown!)) {
+      if (duration === cooldown) {
         this.endEffect(time, delta)
       }
       this.endCooldown(time, delta)
@@ -69,7 +75,7 @@ export default class ApplyAffect implements IBehavior {
         this.startEffect(time, delta)
         this.isStarted = true
       } else {
-        if (this.isTimeout(time, this.delay + this.duration)) {
+        if (this.isTimeout(time, delay! + duration!)) {
           this.endEffect(time, delta)
         } else {
           this.updateEffect(time, delta)
@@ -80,24 +86,24 @@ export default class ApplyAffect implements IBehavior {
 
   // Start if property effect
   startEffect(time: number, delta: number): void {
-    if (this.tower.model.damage.type === "prop") {
-      this.enemy.model.general.addEffect(this.tower.model.damage)
+    if (this.tower.model.damage.affect.type === "prop") {
+      this.enemy.model.general.addEffect(this.tower.model.damage.affect)
     }
   }
 
   // End if property effect
   endEffect(time: number, delta: number): void {
-    if (this.tower.model.damage.type === "prop") {
-      this.enemy.model.general.deleteEffect(this.tower.model.damage)
+    if (this.tower.model.damage.affect.type === "prop") {
+      this.enemy.model.general.deleteEffect(this.tower.model.damage.affect)
     }
   }
 
   // Update if health or sheild effect
   updateEffect(time: number, delta: number): void {
-    if (this.tower.model.damage.type === "health") {
+    if (this.tower.model.damage.affect.type === "health") {
       this.enemy.health -= computeHealthDamage(this.tower, this.enemy, delta)
     }
-    if (this.tower.model.damage.type === "shield") {
+    if (this.tower.model.damage.affect.type === "shield") {
       this.enemy.shield -= computeShieldDamage(this.tower, this.enemy, delta)
     }
   }

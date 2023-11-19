@@ -86,6 +86,7 @@ export default class TDInfoTower extends TDInfoBase {
     const buttonFormatter = (key: string, value: number) => `${upgrade[key].text} ($${upgrade[key].cost})`
     this.addTable(270, "General", model.general, valueFormatter, buttonFormatter)
 
-    this.addTable(430, "Damage (dps per level)", model.damage, effectFormatter)
+    const damage = { damage: effectFormatter("", model.damage) }
+    this.addTable(430, "Damage (dps per level)", damage)
   }
 }
