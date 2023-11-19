@@ -2,6 +2,15 @@
 
 by Claude Duguay
 
+### Unrelated but need to capture
+
+These projects need to be explored:
+
+* [Remotion](https://www.remotion.dev/) - Capture video from React
+* [Enable3D](https://enable3d.io/) - Add THREE.js support to Phaser
+* [BlueprintJS](https://blueprintjs.com/) - Palantir's React UI framework
+
+
 ## Notes
 
 Each tower and enemy stats need to be refined.
