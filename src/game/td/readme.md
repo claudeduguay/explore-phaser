@@ -12,11 +12,10 @@ Need to account for shields (disabled for now)
 
 * Need to figure out leveling
 * Keep trying to get Tower previews to be in containers
-* BUG: Stun Affect not currently working
 * BUG: Plopping tower sometimes sticks and requires a second click (long click seems to fix this, timing issue)
-* BUG: Picking up a tower sometimes happes too fast, increase required time
 * IMPROVEMENT: Towers need to ease into aim position, avoid jump turns, maybe return to zero in the same way afterward
 * IMPROVEMENT: Need to separate map level generation from createMap function, at minimum separate into discrete steps
+* IMPROVEMENT: Consider adding snow, water, sand to landscape tiles and use perlin to generate
 * FIX: Level preview alignment in Levels scene.
 
 ### Effect/Afliction Design Notes
