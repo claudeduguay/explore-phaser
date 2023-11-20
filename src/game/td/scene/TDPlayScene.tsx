@@ -133,7 +133,9 @@ export default class TDPlayScene extends Scene {
     this.hud.add.existing(omenu)
     const imenu = radial(this.hud, cx, cy, 260, TYPES_DAMAGE)
     this.hud.add.existing(imenu)
-    this.hud.add.existing(this.hud.add.circle(cx, cy, 230, 0x999999, 0.5))
+    const choices = this.hud.add.container(cx, cy)
+    choices.add(this.hud.add.circle(0, 0, 230, 0x999999, 0.5))
+    this.hud.add.existing(choices)
 
     const towers = GENERATED_LIST.filter(t => t.organize.delivery === TYPES_DELIVERY[0])
     // const towers = GENERATED_LIST.filter(t => t.organize.damage === TYPES_DAMAGE[0])
@@ -142,7 +144,7 @@ export default class TDPlayScene extends Scene {
         const i = ix + iy * 4
         const x = ix * 80 - 125
         const y = iy * 80 - 125
-        imenu.add(this.hud.add.tower(x, y, towers[i]))
+        choices.add(this.hud.add.tower(x, y, towers[i]))
       }
     }
 
