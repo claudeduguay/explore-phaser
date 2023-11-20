@@ -177,11 +177,13 @@ export default class StylePreview extends Scene {
       const key = prefixKey(this.organize)
       const model = GENERATED_INDEX[key]
 
-      this.tower = this.add.tower(550, 500, model)
+      const scale = 1
+      const x = 550
+      const y = 500
+      this.tower = this.add.tower(x, y, model)
       this.tower.preview = PreviewType.Preview
-      // this.tower.scale = 1.5
-      // this.tower.showLabel.visible = true
-      this.tower.targeting.current = [new TDEnemy(this, 550, 500 - model.general.range, ENEMY_LIST[0])]
+      this.tower.scale = scale
+      this.tower.targeting.current = [new TDEnemy(this, x, y - model.general.range, ENEMY_LIST[0])]
     }
 
     this.damageText = this.add.paragraph(550, 660, 750, ``)
