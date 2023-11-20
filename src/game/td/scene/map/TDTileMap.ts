@@ -86,6 +86,8 @@ export class TDTileMap extends GameObjects.Container {
     this.add(markLayer)
   }
 
+  // Could be better to have this be a completely separate tilemap with a 
+  // different resolution (ie: more detail/cells)
   generateLandscape() {
     const { width, height } = this.map
     const grid = generateGrid(width, height)
