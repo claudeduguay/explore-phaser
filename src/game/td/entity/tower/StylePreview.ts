@@ -207,19 +207,6 @@ export default class StylePreview extends Scene {
 
     generate()
 
-
-    // TOWER_LIST.forEach((model, i) => {
-    //   const row = Math.floor(i / 6)
-    //   const col = i % 6
-    //   const x = this.x + hBox / 2 + hBox * col
-    //   const y = this.y + 110 + vBox * row
-    //   const tower = new TDTower(this, x, y, model)
-    //   tower.preview = PreviewType.Preview
-    //   tower.showLabel.visible = true
-    //   this.add.existing(tower)
-    //   // addLabel(this, x, y + 40, model.name.split(" ")[0], "center")
-    //   tower.targeting.current = [new TDEnemy(this, x, y - 100, ENEMY_LIST[0])]
-    // })
   }
 
 }
