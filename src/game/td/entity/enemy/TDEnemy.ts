@@ -2,7 +2,7 @@ import { Scene, GameObjects, Curves, Input } from "phaser";
 import IEnemyModel from "../model/IEnemyModel";
 import HealthBar from "./HealthBar";
 import { ISelectable } from "../../scene/SelectableGroup";
-import BehaviorList from "../../behavior/core/BehaviorList";
+import BehaviorList from "../../behavior/BehaviorList";
 import { toSceneCoordinates } from "../../../../util/geom/Point";
 import CustomFollower from "./CustomFollower";
 import Direction from "../../../../util/geom/Direction";

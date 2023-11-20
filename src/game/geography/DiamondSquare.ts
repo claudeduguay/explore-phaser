@@ -5,7 +5,7 @@ import Point from "../../util/geom/Point"
 import { IRGB, setRGB } from "./ImageUtil"
 import IRenderFunction from "../../util/IRenderFunction"
 import { renderCanvas } from "../td/assets/TextureFactory"
-import { getBiome } from "./Altitude"
+import { getBiome } from "./Biome"
 
 // Adapted from:
 // https://github.com/klaytonkowalski/example-diamond-square/blob/main/example/go.script

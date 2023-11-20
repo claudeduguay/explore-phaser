@@ -1,7 +1,7 @@
 import { Math as PMath } from "phaser"
 import TDEnemy from "../../enemy/TDEnemy"
 import TDTower from "../TDTower"
-import IBehavior from "../../../behavior/core/IBehavior"
+import IBehavior from "../../../behavior/IBehavior"
 import { computeHealthDamage, computeShieldDamage } from "./ComputeDamage"
 import AffectsMap from "./AffectsMap"
 import { ITowerAffectTime } from "../../model/ITowerModel"

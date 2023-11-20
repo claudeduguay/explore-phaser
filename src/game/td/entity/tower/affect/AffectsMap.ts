@@ -1,5 +1,5 @@
 import TDEnemy from "../../enemy/TDEnemy";
-import IBehavior from "../../../behavior/core/IBehavior";
+import IBehavior from "../../../behavior/IBehavior";
 
 export default class AffectsMap extends Map<TDEnemy, IBehavior> {
 
