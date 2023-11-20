@@ -115,7 +115,7 @@ export class TDTileMap extends GameObjects.Container {
     // this.landLayer.fill(-1)
     // this.landLayer.forEachTile(
     //   // This is non-deterministic and so would change each time we call setModel?
-    //   (tile, i) => tile.index = lerpInt(16, 32, Math.random()))
+    //   (tile, i) => tile.index = lerpInt(16, 20, Math.random()))
 
     this.pathLayer.fill(-1)
     path.forEach(cell => {
