@@ -9,6 +9,7 @@ These projects need to be explored:
 * [Remotion](https://www.remotion.dev/) - Capture MP4 video's from React
 * [Enable3D](https://enable3d.io/) - Add THREE.js support to Phaser
 * [BlueprintJS](https://blueprintjs.com/) - Palantir's React UI framework
+* [Immer](https://immerjs.github.io/immer/) - Elegant (proxy-based) immutable library
 
 
 ## Notes
