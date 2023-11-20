@@ -56,4 +56,3 @@ export function generateGrid(w: number, h: number, frequencies = [1, 2, 4, 8, 16
   }
   return grid
 }
-

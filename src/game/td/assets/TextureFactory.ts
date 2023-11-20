@@ -70,8 +70,20 @@ export function makeLandscapeTile(scene: Scene, key: string, config: ITextureCon
     for (let i = 0; i < 4; i++) {
       renderImage(g, renderGrass, 64 * i, 0, 64, 64, 1.0)
     }
+    const renderSand: IRenderFunction = landscapeRendererFunctionFactory(0, { type: "sand" })
+    for (let i = 4; i < 8; i++) {
+      renderImage(g, renderSand, 64 * i, 0, 64, 64, 1.0)
+    }
+    const renderWater: IRenderFunction = landscapeRendererFunctionFactory(0, { type: "water" })
+    for (let i = 8; i < 12; i++) {
+      renderImage(g, renderWater, 64 * i, 0, 64, 64, 1.0)
+    }
+    const renderSnow: IRenderFunction = landscapeRendererFunctionFactory(0, { type: "snow" })
+    for (let i = 12; i < 16; i++) {
+      renderImage(g, renderSnow, 64 * i, 0, 64, 64, 1.0)
+    }
   }
-  renderCanvas(scene, key, config.size.x * 4, config.size.y, render)
+  renderCanvas(scene, key, config.size.x * 16, config.size.y, render)
 }
 
 export function makePathTiles(scene: Scene, key: string, w: number, h: number, insetRatio = 0.25) {

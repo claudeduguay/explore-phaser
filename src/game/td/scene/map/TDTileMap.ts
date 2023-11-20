@@ -2,6 +2,7 @@ import { GameObjects, Scene, Tilemaps } from "phaser"
 import Point, { IPointLike } from "../../../../util/geom/Point";
 import IPathModel from "./IPathModel";
 import { lerpInt } from "../../../../util/MathUtil";
+import { generateGrid } from "../../../geography/Perlin";
 
 export interface IMapConfig {
   cellSize: Point
@@ -85,12 +86,37 @@ export class TDTileMap extends GameObjects.Container {
     this.add(markLayer)
   }
 
+  generateLandscape() {
+    const { width, height } = this.map
+    const grid = generateGrid(width, height)
+    for (let y = 0; y < grid.rows; y++) {
+      for (let x = 0; x < grid.cols; x++) {
+        const v = grid.get_at(x, y)
+        if (v < 0.25) {
+          const bits = lerpInt(16 + 8, 16 + 12, Math.random())
+          this.landLayer.putTileAt(bits, x, y)
+        } else if (v < 0.5) {
+          const bits = lerpInt(16 + 0, 16 + 4, Math.random())
+          this.landLayer.putTileAt(bits, x, y)
+        } else if (v < 0.75) {
+          const bits = lerpInt(16 + 4, 16 + 8, Math.random())
+          this.landLayer.putTileAt(bits, x, y)
+        } else {
+          const bits = lerpInt(16 + 12, 16 + 16, Math.random())
+          this.landLayer.putTileAt(bits, x, y)
+        }
+      }
+    }
+  }
+
   setModel(path: IPathModel) {
     this.path = path
-    this.landLayer.fill(-1)
-    this.landLayer.forEachTile(
-      // This is non-deterministic and so would change each time we call setModel?
-      (tile, i) => tile.index = lerpInt(16, 20, Math.random()))
+    this.generateLandscape()
+    // this.landLayer.fill(-1)
+    // this.landLayer.forEachTile(
+    //   // This is non-deterministic and so would change each time we call setModel?
+    //   (tile, i) => tile.index = lerpInt(16, 32, Math.random()))
+
     this.pathLayer.fill(-1)
     path.forEach(cell => {
       this.pathLayer.putTileAt(cell.bits, cell.pos.x + 1, cell.pos.y + 1)
