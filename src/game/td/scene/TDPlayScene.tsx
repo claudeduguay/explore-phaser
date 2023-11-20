@@ -5,7 +5,7 @@ import TDGameScene from "./TDGameScene"
 import generateMap from "./map/TDLevel"
 import Point from "../../../util/geom/Point"
 import SelectableGroup from "./SelectableGroup"
-import { TOWER_LIST } from "../entity/model/ITowerModel"
+import { GENERATED_LIST, TOWER_LIST } from "../entity/model/ITowerModel"
 import registerTowerTextures from "../assets/TowerTextures"
 import ObservableValue from "../value/ObservableValue"
 import { shuffle } from "../../../util/ArrayUtil"
@@ -15,9 +15,11 @@ import TDHUDScene from "./TDHUDScene"
 import { DEFAULT_CONFIG, TDTileMap } from "./map/TDTileMap"
 import { generatePathAdjacentPositions } from "./map/TDPath"
 import Conversation from "../gui/game/Conversation"
-import { play } from "../../../util/SceneUtil"
+import { play, sceneSize } from "../../../util/SceneUtil"
 import { randomChoice } from "../../../util/Random"
 import { ILevelModel, generateLevel } from "./map/ILevelModel"
+import { radial } from "../gui/Radial"
+import { TYPES_DAMAGE, TYPES_DELIVERY } from "../entity/model/ITowerData"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -123,6 +125,26 @@ export default class TDPlayScene extends Scene {
     const conversation = new Conversation(this, 200, 570, 700, 200)
     conversation.y = 750 - conversation.getBounds().height
     // this.hud.add.existing(conversation)
+
+    const { w, h } = sceneSize(this)
+    const cx = w / 2
+    const cy = h / 2 + 15
+    const omenu = radial(this.hud, cx, cy, 330, TYPES_DELIVERY)
+    this.hud.add.existing(omenu)
+    const imenu = radial(this.hud, cx, cy, 260, TYPES_DAMAGE)
+    this.hud.add.existing(imenu)
+    this.hud.add.existing(this.hud.add.circle(cx, cy, 230, 0x999999, 0.5))
+
+    const towers = GENERATED_LIST.filter(t => t.organize.delivery === TYPES_DELIVERY[0])
+    // const towers = GENERATED_LIST.filter(t => t.organize.damage === TYPES_DAMAGE[0])
+    for (let iy = 0; iy < 4; iy++) {
+      for (let ix = 0; ix < 4; ix++) {
+        const i = ix + iy * 4
+        const x = ix * 80 - 125
+        const y = iy * 80 - 125
+        imenu.add(this.hud.add.tower(x, y, towers[i]))
+      }
+    }
 
   }
 
