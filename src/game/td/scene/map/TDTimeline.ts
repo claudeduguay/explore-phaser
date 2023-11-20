@@ -5,36 +5,34 @@ import TDPlayScene from "../TDPlayScene"
 import { defaultWaveModel, IWaveGroup } from "./IWaveModel"
 import ObservableValue from "../../value/ObservableValue"
 import { play } from "../../../../util/SceneUtil"
+import Rectangle from "../../../../util/Rectangle"
+
+export const PATH_SHAPE = new Rectangle(230, 6, 480, 34)
 
 // Create a graphics background and a line-based curve for the preview path
 export function makeTimelinePreviewGraphics(scene: Scene, prefixFraction: number = 0.15, suffixFraction: number = 0.15) {
-  const top = 6
-  const left = 230
-  const height = 34
-  const width = 480
-  const insetStart = left + width * prefixFraction
+
+  const { x, y, width, height } = PATH_SHAPE
+  const insetStart = x + width * prefixFraction
   const insetWidth = width * (1.0 - (prefixFraction + suffixFraction))
 
   // Note: Could be converted into a generated texture
   const g = scene.add.graphics()
   g.fillStyle(0x994444, 1.0)
-  g.fillRoundedRect(left, top, width, height, 10)
+  g.fillRoundedRect(x, y, width, height, 10)
   g.fillStyle(0x44AA44, 1.0)
-  g.fillRect(insetStart, top, insetWidth, height)
+  g.fillRect(insetStart, y, insetWidth, height)
 
   return g
 }
 
 export function makeTimelinePreviewPath() {
-  const top = 6
-  const left = 230
-  const height = 34
-  const width = 500
+  const { x, y, width, height } = PATH_SHAPE
 
   // Generate path curve
   const path = new Curves.Path()
-  path.moveTo(left, top + height / 2 - 4)
-  path.lineTo(left + width, top + height / 2 - 4)
+  path.moveTo(x, y + height / 2 - 4)
+  path.lineTo(x + width, y + height / 2 - 4)
   return path
 }
 
