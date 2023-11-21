@@ -129,9 +129,9 @@ export default class TDPlayScene extends Scene {
     const { w, h } = sceneSize(this)
     const cx = w / 2
     const cy = h / 2 + 15
-    const omenu = radial(this.hud, cx, cy, 330, TYPES_DELIVERY)
+    const omenu = radial(this.hud, cx, cy, 330, 330, TYPES_DELIVERY)
     this.hud.add.existing(omenu)
-    const imenu = radial(this.hud, cx, cy, 260, TYPES_DAMAGE)
+    const imenu = radial(this.hud, cx, cy, 260, 260, TYPES_DAMAGE)
     this.hud.add.existing(imenu)
     const choices = this.hud.add.container(cx, cy)
     choices.add(this.hud.add.circle(0, 0, 230, 0x999999, 0.5))
