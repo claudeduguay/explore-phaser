@@ -47,10 +47,17 @@ export class RadialMenu extends GameObjects.Container {
         new Point(b, v),
         new Point(-b, v)
       ]
+      // const hitPoints: Point[] = [
+      //   new Point(pos.x - t, pos.y - v),
+      //   new Point(pos.x + t, pos.y - v),
+      //   new Point(pos.x + b, pos.y + v),
+      //   new Point(pos.x - b, pos.y + v)
+      // ]
       const back = scene.add.polygon(pos.x, pos.y, points, 0x666666, 0.75).setOrigin(0)
-      const hitArea = new Geom.Polygon(points)
+      // const hitArea = new Geom.Polygon(hitPoints)
+      // back.setInteractive({ hitArea })
       // const back = scene.add.rectangle(pos.x, pos.y, 100, 30, 0x666666, 0.75)
-      back.setInteractive({ hitArea })
+      back.setInteractive()
       back.rotation = a + Math.PI / 2
 
       const text = scene.add.text(pos.x, pos.y, item).setOrigin(0.5)
@@ -67,11 +74,22 @@ export class RadialMenu extends GameObjects.Container {
         back.setFillStyle(0x666666, 0.75)
         text.setColor("white")
       }
+      const onClick = () => {
+        const a = text.rotation - Math.PI / 2
+        const rotation = -Math.PI / 2 - a
+        const duration = 500 // 1000 / Math.abs(rotation - this.rotation)
+        scene.add.tween({
+          targets: this,
+          rotation,
+          duration
+        })
+      }
 
-      back.addListener(Input.Events.GAMEOBJECT_POINTER_OVER, onHighlight)
-      back.addListener(Input.Events.GAMEOBJECT_POINTER_OUT, onNormal)
+      // back.addListener(Input.Events.GAMEOBJECT_POINTER_OVER, onHighlight)
+      // back.addListener(Input.Events.GAMEOBJECT_POINTER_OUT, onNormal)
       text.addListener(Input.Events.GAMEOBJECT_POINTER_OVER, onHighlight)
       text.addListener(Input.Events.GAMEOBJECT_POINTER_OUT, onNormal)
+      text.addListener(Input.Events.GAMEOBJECT_POINTER_UP, onClick)
       this.add(back)
 
       this.bringToTop(text)

@@ -25,7 +25,7 @@ export default function Explore({ w = 1100, h = 800, scene }: IExploreProps) {
         default: 'arcade',
         arcade: {
           gravity: { y: 0 }, // No gravity here :v so change it.
-          // TO YOU TO ACTUALLY SEE THE ZONE, UNCOMMENT THIS.
+          // TO ACTUALLY SEE THE ZONE, UNCOMMENT THIS.
           debug: false,
           /*
           debug: true,
