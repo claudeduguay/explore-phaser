@@ -76,12 +76,11 @@ export class RadialMenu extends GameObjects.Container {
       }
       const onClick = () => {
         const a = text.rotation - Math.PI / 2
-        const rotation = -Math.PI / 2 - a
-        const duration = 500 // 1000 / Math.abs(rotation - this.rotation)
+        const rotation = -Math.PI / 2 - PMath.Angle.Normalize(a)
         scene.add.tween({
           targets: this,
           rotation,
-          duration
+          duration: 500
         })
       }
 
