@@ -129,24 +129,24 @@ export default class TDPlayScene extends Scene {
     const { w, h } = sceneSize(this)
     const cx = w / 2
     const cy = h / 2 + 15
-    const omenu = radial(this.hud, cx, cy, 330, 330, TYPES_DELIVERY)
-    this.hud.add.existing(omenu)
-    const imenu = radial(this.hud, cx, cy, 260, 260, TYPES_DAMAGE)
-    this.hud.add.existing(imenu)
     const choices = this.hud.add.container(cx, cy)
-    choices.add(this.hud.add.circle(0, 0, 230, 0x999999, 0.5))
+    choices.add(this.hud.add.circle(0, 0, 360, 0x333333, 0.25))
     this.hud.add.existing(choices)
+    const deliveryMenu = radial(this.hud, cx, cy, 330, 330, TYPES_DELIVERY)
+    this.hud.add.existing(deliveryMenu)
+    const damageMenu = radial(this.hud, cx, cy, 280, 280, TYPES_DAMAGE)
+    this.hud.add.existing(damageMenu)
 
-    const towers = GENERATED_LIST.filter(t => t.organize.delivery === TYPES_DELIVERY[0])
-    // const towers = GENERATED_LIST.filter(t => t.organize.damage === TYPES_DAMAGE[0])
-    for (let iy = 0; iy < 4; iy++) {
-      for (let ix = 0; ix < 4; ix++) {
-        const i = ix + iy * 4
-        const x = ix * 80 - 125
-        const y = iy * 80 - 125
-        choices.add(this.hud.add.tower(x, y, towers[i]))
-      }
-    }
+    // const towers = GENERATED_LIST.filter(t => t.organize.delivery === TYPES_DELIVERY[0])
+    // // const towers = GENERATED_LIST.filter(t => t.organize.damage === TYPES_DAMAGE[0])
+    // for (let iy = 0; iy < 4; iy++) {
+    //   for (let ix = 0; ix < 4; ix++) {
+    //     const i = ix + iy * 4
+    //     const x = ix * 80 - 125
+    //     const y = iy * 80 - 125
+    //     choices.add(this.hud.add.tower(x, y, towers[i]))
+    //   }
+    // }
 
   }
 

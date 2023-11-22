@@ -1,52 +1,81 @@
-import { Display, Scene } from "phaser";
+import { GameObjects, Input, Scene, Types, Math as PMath, Geom } from "phaser";
 import Point from "../../../util/geom/Point";
 
+export type IPointerListener<T> = (pointer: Input.Pointer, x: number, y: number, event: Types.Input.EventData) => void
+export type IPointerHandler<T> = (context: T, pointer: Input.Pointer, x: number, y: number, event: Types.Input.EventData) => void
+
+export function addPointerHandler<T = any>(
+  obj: GameObjects.GameObject, event: string, context: T, handler: IPointerHandler<T>) {
+  obj.addListener(event, (pointer: Input.Pointer, x: number, y: number, event: Types.Input.EventData) => {
+    handler(context, pointer, x, y, event)
+  })
+}
+
 export function pointOnEllipse(a: number, rx: number, ry: number, cx: number = 0, cy: number = 0) {
+  a = PMath.Angle.Normalize(a)
   return new Point(cx + Math.cos(a) * rx, cy + Math.sin(a) * ry)
 }
 
 export function radial(scene: Scene, cx: number, cy: number, rx: number, ry: number, items: string[]) {
+  return new RadialMenu(scene, cx, cy, rx, ry, items)
+}
 
-  const container = scene.add.container(cx, cy)
-  items.forEach((item, i) => {
-    const a = (i / items.length) * Math.PI * 2
-    const pos = pointOnEllipse(a, rx, ry)
-    const entry = scene.add.container(0, 0)
+export class RadialMenu extends GameObjects.Container {
 
-    const g = scene.add.graphics()
+  constructor(scene: Scene, cx: number, cy: number, rx: number, ry: number, items: string[]) {
+    super(scene, cx, cy)
+    const span = 15
     const av = (1 / items.length) * Math.PI
-    const ev = rx / items.length
-    // const points: Point[] = []
-    // points.push(pointOnEllipse(- av, rx + 20, ry + 20))
-    // points.push(pointOnEllipse(+ av, rx + 20, ry + 20))
-    // points.push(pointOnEllipse(+ av, rx - 10, ry - 10))
-    // points.push(pointOnEllipse(- av, rx - 10, ry - 10))
-    const m = scene.add.graphics()
-    m.fillStyle(0x000000, 1.0)
-    m.fillRect(- 70, ry - 15, 140, 30)
-    m.rotation = a + Math.PI / 2
-    const mask = m.createGeometryMask()
-    // entry.add(m)
+    let tl = pointOnEllipse(Math.PI / 2 - av, rx + span, ry + span)
+    let tr = pointOnEllipse(Math.PI / 2 + av, rx + span, ry + span)
+    let bl = pointOnEllipse(Math.PI / 2 - av, rx - span, ry - span)
+    let br = pointOnEllipse(Math.PI / 2 + av, rx - span, ry - span)
+    const t = Math.abs(tl.x - tr.x) / 2
+    const b = Math.abs(bl.x - br.x) / 2
+    const v = Math.abs(tl.y - bl.y) / 2
+    console.log("Top:", tl, tr)
+    console.log("Bot:", bl, br)
+    console.log("T.B.V:", t, b, v)
+    items.forEach((item, i) => {
+      const a = (i / items.length) * Math.PI * 2
+      const pos = pointOnEllipse(a, rx, ry)
+      // if (i > 1) return
 
-    g.slice(0, 0, rx + 20, -av, av)
-    g.fillStyle(0x666666, 0.5)
-    g.fill()
-    // g.setMask(mask)
-    // g.fillPoints(points, true)
-    // g.generateTexture()
-    g.rotation = a + Math.PI / 2
+      const points: Point[] = [
+        new Point(-t, -v),
+        new Point(t, -v),
+        new Point(b, v),
+        new Point(-b, v)
+      ]
+      const back = scene.add.polygon(pos.x, pos.y, points, 0x666666, 0.75).setOrigin(0)
+      const hitArea = new Geom.Polygon(points)
+      // const back = scene.add.rectangle(pos.x, pos.y, 100, 30, 0x666666, 0.75)
+      back.setInteractive({ hitArea })
+      back.rotation = a + Math.PI / 2
 
-    entry.add(g)
+      const text = scene.add.text(pos.x, pos.y, item).setOrigin(0.5)
+      text.setInteractive()
+      text.rotation = a + Math.PI / 2
+      text.setColor("white")
+      this.add(text)
 
-    const text = scene.add.text(pos.x, pos.y, item).setOrigin(0.5)
-    text.rotation = a + Math.PI / 2
-    entry.add(text)
+      const onHighlight = () => {
+        back.setFillStyle(0x6666FF, 0.75)
+        text.setColor("orange")
+      }
+      const onNormal = () => {
+        back.setFillStyle(0x666666, 0.75)
+        text.setColor("white")
+      }
 
-    container.add(entry)
-  })
-  // const backgroundCircle = scene.add.circle(0, 0, radius + 35, 0x666666, 0.5)
-  // container.add(backgroundCircle)
-  // container.sendToBack(backgroundCircle)
+      back.addListener(Input.Events.GAMEOBJECT_POINTER_OVER, onHighlight)
+      back.addListener(Input.Events.GAMEOBJECT_POINTER_OUT, onNormal)
+      text.addListener(Input.Events.GAMEOBJECT_POINTER_OVER, onHighlight)
+      text.addListener(Input.Events.GAMEOBJECT_POINTER_OUT, onNormal)
+      this.add(back)
 
-  return container
+      this.bringToTop(text)
+      this.rotation = -Math.PI / 2
+    })
+  }
 }
