@@ -5,7 +5,7 @@ import TDGameScene from "./TDGameScene"
 import generateMap from "./map/TDLevel"
 import Point from "../../../util/geom/Point"
 import SelectableGroup from "./SelectableGroup"
-import ITowerModel, { GENERATED_LIST, TOWER_LIST } from "../entity/model/ITowerModel"
+import { TOWER_LIST } from "../entity/model/ITowerModel"
 import registerTowerTextures from "../assets/TowerTextures"
 import ObservableValue from "../value/ObservableValue"
 import { shuffle } from "../../../util/ArrayUtil"
@@ -18,9 +18,7 @@ import Conversation from "../gui/game/Conversation"
 import { play, sceneSize } from "../../../util/SceneUtil"
 import { randomChoice } from "../../../util/Random"
 import { ILevelModel, generateLevel } from "./map/ILevelModel"
-import { radial } from "../gui/Radial"
-import { TYPES_DAMAGE, TYPES_DELIVERY } from "../entity/model/ITowerData"
-import { lerp } from "../../../util/MathUtil"
+import TowerMenu from "../gui/game/TowerMenu"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -131,66 +129,8 @@ export default class TDPlayScene extends Scene {
     const cx = w / 2
     const cy = h / 2 + 15
 
-    const observableDelivery = new ObservableValue<string | undefined>(undefined)
-    const deliveryMenu = radial(this.hud, cx, cy, 320, 320, TYPES_DELIVERY, observableDelivery)
-    this.hud.add.existing(deliveryMenu)
-
-    const observableDamage = new ObservableValue<string | undefined>(undefined)
-    const damageMenu = radial(this.hud, cx, cy, 285, 285, TYPES_DAMAGE, observableDamage)
-    this.hud.add.existing(damageMenu)
-
-    const choices = this.hud.add.container(cx, cy)
-    this.hud.add.existing(choices)
-
-    const onUpdateTowerView = () => {
-      choices.removeAll(true)
-      const towers = GENERATED_LIST.filter((t: ITowerModel) => {
-        if (observableDelivery.value && observableDamage.value) {
-          return t.organize.delivery === observableDelivery.value &&
-            t.organize.damage === observableDamage.value
-        }
-        if (observableDelivery.value) {
-          return t.organize.delivery === observableDelivery.value
-        }
-        if (observableDamage.value) {
-          return t.organize.damage === observableDamage.value
-        }
-        return true
-      })
-      if (towers.length === 1) {
-        choices.add(this.hud.add.tower(0, 0, towers[0]))
-        return
-      }
-      for (let iy = 0; iy < 4; iy++) {
-        for (let ix = 0; ix < 4; ix++) {
-          const i = ix + iy * 4
-          const x = ix * 100 - 150
-          const y = iy * 100 - 150
-          const xx = 0 // lerp(-w, w, Math.random())
-          const yy = 0 // lerp(-h, h, Math.random())
-          const tower = this.hud.add.tower(xx, yy, towers[i])
-          tower.alpha = 0
-          this.hud.add.tween({
-            targets: tower,
-            duration: 500,
-            alpha: 1,
-            x,
-            y,
-          })
-          choices.add(tower)
-        }
-      }
-    }
-
-    observableDelivery.addListener("changed", () => {
-      observableDamage.value = undefined
-      onUpdateTowerView()
-    })
-    observableDamage.addListener("changed", () => {
-      observableDelivery.value = undefined
-      onUpdateTowerView()
-    })
-
+    const towerMenu = new TowerMenu(this.hud, cx, cy)
+    this.hud.add.existing(towerMenu)
   }
 
   deleteTower(tower: TDTower) {

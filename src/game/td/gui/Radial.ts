@@ -1,4 +1,4 @@
-import { GameObjects, Input, Scene, Types, Math as PMath, Geom } from "phaser";
+import { GameObjects, Input, Scene, Types, Math as PMath } from "phaser";
 import Point from "../../../util/geom/Point";
 import ObservableValue from "../value/ObservableValue";
 
@@ -12,25 +12,25 @@ export function addPointerHandler<T = any>(
   })
 }
 
-export function pointOnEllipse(a: number, rx: number, ry: number, cx: number = 0, cy: number = 0) {
+export function pointOnCircle(a: number, r: number, cx: number = 0, cy: number = 0) {
   a = PMath.Angle.Normalize(a)
-  return new Point(cx + Math.cos(a) * rx, cy + Math.sin(a) * ry)
+  return new Point(cx + Math.cos(a) * r, cy + Math.sin(a) * r)
 }
 
-export function radial(scene: Scene, cx: number, cy: number, rx: number, ry: number, items: string[], observable: ObservableValue<string | undefined>) {
-  return new RadialMenu(scene, cx, cy, rx, ry, items, observable)
+export function radial(scene: Scene, cx: number, cy: number, r: number, items: string[], observable: ObservableValue<string | undefined>) {
+  return new RadialMenu(scene, cx, cy, r, items, observable)
 }
 
 export class RadialMenu extends GameObjects.Container {
 
-  constructor(scene: Scene, cx: number, cy: number, rx: number, ry: number, items: string[], observable: ObservableValue<string | undefined>) {
+  constructor(scene: Scene, cx: number, cy: number, r: number, items: string[], observable: ObservableValue<string | undefined>) {
     super(scene, cx, cy)
     const span = 15
     const av = (1 / items.length) * Math.PI
-    let tl = pointOnEllipse(Math.PI / 2 - av, rx + span, ry + span)
-    let tr = pointOnEllipse(Math.PI / 2 + av, rx + span, ry + span)
-    let bl = pointOnEllipse(Math.PI / 2 - av, rx - span, ry - span)
-    let br = pointOnEllipse(Math.PI / 2 + av, rx - span, ry - span)
+    let tl = pointOnCircle(Math.PI / 2 - av, r + span)
+    let tr = pointOnCircle(Math.PI / 2 + av, r + span)
+    let bl = pointOnCircle(Math.PI / 2 - av, r - span)
+    let br = pointOnCircle(Math.PI / 2 + av, r - span)
     const t = Math.abs(tl.x - tr.x) / 2
     const b = Math.abs(bl.x - br.x) / 2
     const v = Math.abs(tl.y - bl.y) / 2
@@ -39,7 +39,7 @@ export class RadialMenu extends GameObjects.Container {
     console.log("T.B.V:", t, b, v)
     items.forEach((item, i) => {
       const a = (i / items.length) * Math.PI * 2
-      const pos = pointOnEllipse(a, rx, ry)
+      const pos = pointOnCircle(a, r)
       // if (i > 1) return
 
       // const points: Point[] = [
