@@ -1,8 +1,9 @@
-import { Curves, GameObjects, Scene } from "phaser"
+import { GameObjects, Scene } from "phaser"
 import ObservableValue from "../../value/ObservableValue"
-import { radial } from "../Radial"
+import { pointOnCircle, radial } from "../Radial"
 import { TYPES_DAMAGE, TYPES_DELIVERY } from "../../entity/model/ITowerData"
-import ITowerModel, { GENERATED_LIST } from "../../entity/model/ITowerModel"
+import { GENERATED_LIST } from "../../entity/model/ITowerModel"
+import TDTower from "../../entity/tower/TDTower"
 
 export default class TowerMenu extends GameObjects.Container {
   constructor(scene: Scene, cx: number, cy: number) {
@@ -18,38 +19,24 @@ export default class TowerMenu extends GameObjects.Container {
     const choices = scene.add.container(0, 0)
     this.add(choices)
 
-    const perimiter = new Curves.Path()
-    perimiter.moveTo(-cx, -cy)
-    perimiter.lineTo(cx, -cy)
-    perimiter.lineTo(cx, cy)
-    perimiter.lineTo(-cx, cy)
-
     const onUpdateTowerView = () => {
       choices.list.forEach((tower, i) => {
-        // const f = i / (choices.list.length - 1)
-        const pos = perimiter.getPoint(Math.random())
-        scene.add.tween({
-          targets: tower,
-          duration: 1000,
-          alpha: 0,
-          x: pos.x,
-          y: pos.y,
-          onComplete: () => choices.remove(tower, true),
-        })
+        if (tower instanceof TDTower) {
+          const a = Math.atan2(tower.y, tower.x)
+          const pos = pointOnCircle(a, cx)
+          scene.add.tween({
+            targets: tower,
+            duration: 500,
+            alpha: 0,
+            x: pos.x,
+            y: pos.y,
+            onComplete: () => choices.remove(tower, true),
+          })
+        }
       })
-      // choices.removeAll(true)
-      const towers = GENERATED_LIST.filter((t: ITowerModel) => {
-        if (observableDelivery.value && observableDamage.value) {
-          return t.organize.delivery === observableDelivery.value &&
-            t.organize.damage === observableDamage.value
-        }
-        if (observableDelivery.value) {
-          return t.organize.delivery === observableDelivery.value
-        }
-        if (observableDamage.value) {
-          return t.organize.damage === observableDamage.value
-        }
-        return true
+      const towers = GENERATED_LIST.filter(({ organize: { delivery, damage } }) => {
+        return observableDelivery.value ? delivery === observableDelivery.value : true &&
+          observableDamage.value ? damage === observableDamage.value : true
       })
       if (towers.length === 1) {
         choices.add(scene.add.tower(0, 0, towers[0]))
@@ -67,7 +54,6 @@ export default class TowerMenu extends GameObjects.Container {
           scene.add.tween({
             targets: tower,
             duration: 500,
-            delay: 500,
             alpha: 1,
             x,
             y,

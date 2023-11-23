@@ -2,7 +2,7 @@ import { GameObjects, Input, Scene, Types, Math as PMath } from "phaser";
 import Point from "../../../util/geom/Point";
 import ObservableValue from "../value/ObservableValue";
 
-export type IPointerListener<T> = (pointer: Input.Pointer, x: number, y: number, event: Types.Input.EventData) => void
+export type IPointerListener = (pointer: Input.Pointer, x: number, y: number, event: Types.Input.EventData) => void
 export type IPointerHandler<T> = (context: T, pointer: Input.Pointer, x: number, y: number, event: Types.Input.EventData) => void
 
 export function addPointerHandler<T = any>(
@@ -76,6 +76,10 @@ export class RadialMenu extends GameObjects.Container {
         text.setColor("white")
       }
       const onClick = () => {
+        // if (observable.value === item) {
+        //   observable.value = undefined
+        //   return
+        // } else {
         observable.value = item
         const a = text.rotation - Math.PI / 2
         const rotation = -Math.PI / 2 - PMath.Angle.Normalize(a)
@@ -84,6 +88,7 @@ export class RadialMenu extends GameObjects.Container {
           rotation,
           duration: 500
         })
+        // }
       }
 
       back.addListener(Input.Events.GAMEOBJECT_POINTER_OVER, onHighlight)
