@@ -132,11 +132,11 @@ export default class TDPlayScene extends Scene {
     const cy = h / 2 + 15
 
     const observableDelivery = new ObservableValue<string | undefined>(undefined)
-    const deliveryMenu = radial(this.hud, cx, cy, 330, 330, TYPES_DELIVERY, observableDelivery)
+    const deliveryMenu = radial(this.hud, cx, cy, 320, 320, TYPES_DELIVERY, observableDelivery)
     this.hud.add.existing(deliveryMenu)
 
     const observableDamage = new ObservableValue<string | undefined>(undefined)
-    const damageMenu = radial(this.hud, cx, cy, 295, 295, TYPES_DAMAGE, observableDamage)
+    const damageMenu = radial(this.hud, cx, cy, 285, 285, TYPES_DAMAGE, observableDamage)
     this.hud.add.existing(damageMenu)
 
     const choices = this.hud.add.container(cx, cy)
