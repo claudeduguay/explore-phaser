@@ -136,7 +136,7 @@ export default class TDPlayScene extends Scene {
     this.hud.add.existing(deliveryMenu)
 
     const observableDamage = new ObservableValue<string | undefined>(undefined)
-    const damageMenu = radial(this.hud, cx, cy, 280, 280, TYPES_DAMAGE, observableDamage)
+    const damageMenu = radial(this.hud, cx, cy, 295, 295, TYPES_DAMAGE, observableDamage)
     this.hud.add.existing(damageMenu)
 
     const choices = this.hud.add.container(cx, cy)
@@ -164,10 +164,10 @@ export default class TDPlayScene extends Scene {
       for (let iy = 0; iy < 4; iy++) {
         for (let ix = 0; ix < 4; ix++) {
           const i = ix + iy * 4
-          const x = ix * 80 - 125
-          const y = iy * 80 - 125
-          const xx = lerp(-w, w, Math.random())
-          const yy = lerp(-h, h, Math.random())
+          const x = ix * 100 - 150
+          const y = iy * 100 - 150
+          const xx = 0 // lerp(-w, w, Math.random())
+          const yy = 0 // lerp(-h, h, Math.random())
           const tower = this.hud.add.tower(xx, yy, towers[i])
           tower.alpha = 0
           this.hud.add.tween({
