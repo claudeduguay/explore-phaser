@@ -47,9 +47,7 @@ export default class TowerMenu extends GameObjects.Container {
           const i = ix + iy * 4
           const x = ix * 100 - 150
           const y = iy * 100 - 150
-          const xx = 0 // lerp(-w, w, Math.random())
-          const yy = 0 // lerp(-h, h, Math.random())
-          const tower = scene.add.tower(xx, yy, towers[i])
+          const tower = scene.add.tower(0, 0, towers[i])
           tower.alpha = 0
           scene.add.tween({
             targets: tower,
