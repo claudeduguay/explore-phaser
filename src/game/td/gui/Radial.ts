@@ -1,5 +1,6 @@
 import { GameObjects, Input, Scene, Types, Math as PMath, Geom } from "phaser";
 import Point from "../../../util/geom/Point";
+import ObservableValue from "../value/ObservableValue";
 
 export type IPointerListener<T> = (pointer: Input.Pointer, x: number, y: number, event: Types.Input.EventData) => void
 export type IPointerHandler<T> = (context: T, pointer: Input.Pointer, x: number, y: number, event: Types.Input.EventData) => void
@@ -16,13 +17,13 @@ export function pointOnEllipse(a: number, rx: number, ry: number, cx: number = 0
   return new Point(cx + Math.cos(a) * rx, cy + Math.sin(a) * ry)
 }
 
-export function radial(scene: Scene, cx: number, cy: number, rx: number, ry: number, items: string[]) {
-  return new RadialMenu(scene, cx, cy, rx, ry, items)
+export function radial(scene: Scene, cx: number, cy: number, rx: number, ry: number, items: string[], observable: ObservableValue<string | undefined>) {
+  return new RadialMenu(scene, cx, cy, rx, ry, items, observable)
 }
 
 export class RadialMenu extends GameObjects.Container {
 
-  constructor(scene: Scene, cx: number, cy: number, rx: number, ry: number, items: string[]) {
+  constructor(scene: Scene, cx: number, cy: number, rx: number, ry: number, items: string[], observable: ObservableValue<string | undefined>) {
     super(scene, cx, cy)
     const span = 15
     const av = (1 / items.length) * Math.PI
@@ -41,22 +42,22 @@ export class RadialMenu extends GameObjects.Container {
       const pos = pointOnEllipse(a, rx, ry)
       // if (i > 1) return
 
-      const points: Point[] = [
-        new Point(-t, -v),
-        new Point(t, -v),
-        new Point(b, v),
-        new Point(-b, v)
-      ]
+      // const points: Point[] = [
+      //   new Point(-t, -v),
+      //   new Point(t, -v),
+      //   new Point(b, v),
+      //   new Point(-b, v)
+      // ]
       // const hitPoints: Point[] = [
       //   new Point(pos.x - t, pos.y - v),
       //   new Point(pos.x + t, pos.y - v),
       //   new Point(pos.x + b, pos.y + v),
       //   new Point(pos.x - b, pos.y + v)
       // ]
-      const back = scene.add.polygon(pos.x, pos.y, points, 0x666666, 0.75).setOrigin(0)
+      // const back = scene.add.polygon(pos.x, pos.y, points, 0x666666, 0.75)
       // const hitArea = new Geom.Polygon(hitPoints)
       // back.setInteractive({ hitArea })
-      // const back = scene.add.rectangle(pos.x, pos.y, 100, 30, 0x666666, 0.75)
+      const back = scene.add.rectangle(pos.x, pos.y, t * 2, span * 2, 0x666666, 0.75)
       back.setInteractive()
       back.rotation = a + Math.PI / 2
 
@@ -75,6 +76,7 @@ export class RadialMenu extends GameObjects.Container {
         text.setColor("white")
       }
       const onClick = () => {
+        observable.value = item
         const a = text.rotation - Math.PI / 2
         const rotation = -Math.PI / 2 - PMath.Angle.Normalize(a)
         scene.add.tween({
@@ -84,8 +86,9 @@ export class RadialMenu extends GameObjects.Container {
         })
       }
 
-      // back.addListener(Input.Events.GAMEOBJECT_POINTER_OVER, onHighlight)
-      // back.addListener(Input.Events.GAMEOBJECT_POINTER_OUT, onNormal)
+      back.addListener(Input.Events.GAMEOBJECT_POINTER_OVER, onHighlight)
+      back.addListener(Input.Events.GAMEOBJECT_POINTER_OUT, onNormal)
+      back.addListener(Input.Events.GAMEOBJECT_POINTER_UP, onClick)
       text.addListener(Input.Events.GAMEOBJECT_POINTER_OVER, onHighlight)
       text.addListener(Input.Events.GAMEOBJECT_POINTER_OUT, onNormal)
       text.addListener(Input.Events.GAMEOBJECT_POINTER_UP, onClick)

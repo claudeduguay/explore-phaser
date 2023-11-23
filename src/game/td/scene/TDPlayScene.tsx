@@ -5,7 +5,7 @@ import TDGameScene from "./TDGameScene"
 import generateMap from "./map/TDLevel"
 import Point from "../../../util/geom/Point"
 import SelectableGroup from "./SelectableGroup"
-import { GENERATED_LIST, TOWER_LIST } from "../entity/model/ITowerModel"
+import ITowerModel, { GENERATED_LIST, TOWER_LIST } from "../entity/model/ITowerModel"
 import registerTowerTextures from "../assets/TowerTextures"
 import ObservableValue from "../value/ObservableValue"
 import { shuffle } from "../../../util/ArrayUtil"
@@ -20,6 +20,7 @@ import { randomChoice } from "../../../util/Random"
 import { ILevelModel, generateLevel } from "./map/ILevelModel"
 import { radial } from "../gui/Radial"
 import { TYPES_DAMAGE, TYPES_DELIVERY } from "../entity/model/ITowerData"
+import { lerp } from "../../../util/MathUtil"
 // import { ButtonTreeExample } from "../tree/ButtonTree"
 
 export interface IActiveValues {
@@ -129,24 +130,66 @@ export default class TDPlayScene extends Scene {
     const { w, h } = sceneSize(this)
     const cx = w / 2
     const cy = h / 2 + 15
-    const choices = this.hud.add.container(cx, cy)
-    choices.add(this.hud.add.circle(0, 0, 360, 0x333333, 0.25))
-    this.hud.add.existing(choices)
-    const deliveryMenu = radial(this.hud, cx, cy, 330, 330, TYPES_DELIVERY)
+
+    const observableDelivery = new ObservableValue<string | undefined>(undefined)
+    const deliveryMenu = radial(this.hud, cx, cy, 330, 330, TYPES_DELIVERY, observableDelivery)
     this.hud.add.existing(deliveryMenu)
-    const damageMenu = radial(this.hud, cx, cy, 280, 280, TYPES_DAMAGE)
+
+    const observableDamage = new ObservableValue<string | undefined>(undefined)
+    const damageMenu = radial(this.hud, cx, cy, 280, 280, TYPES_DAMAGE, observableDamage)
     this.hud.add.existing(damageMenu)
 
-    // const towers = GENERATED_LIST.filter(t => t.organize.delivery === TYPES_DELIVERY[0])
-    // // const towers = GENERATED_LIST.filter(t => t.organize.damage === TYPES_DAMAGE[0])
-    // for (let iy = 0; iy < 4; iy++) {
-    //   for (let ix = 0; ix < 4; ix++) {
-    //     const i = ix + iy * 4
-    //     const x = ix * 80 - 125
-    //     const y = iy * 80 - 125
-    //     choices.add(this.hud.add.tower(x, y, towers[i]))
-    //   }
-    // }
+    const choices = this.hud.add.container(cx, cy)
+    this.hud.add.existing(choices)
+
+    const onUpdateTowerView = () => {
+      choices.removeAll(true)
+      const towers = GENERATED_LIST.filter((t: ITowerModel) => {
+        if (observableDelivery.value && observableDamage.value) {
+          return t.organize.delivery === observableDelivery.value &&
+            t.organize.damage === observableDamage.value
+        }
+        if (observableDelivery.value) {
+          return t.organize.delivery === observableDelivery.value
+        }
+        if (observableDamage.value) {
+          return t.organize.damage === observableDamage.value
+        }
+        return true
+      })
+      if (towers.length === 1) {
+        choices.add(this.hud.add.tower(0, 0, towers[0]))
+        return
+      }
+      for (let iy = 0; iy < 4; iy++) {
+        for (let ix = 0; ix < 4; ix++) {
+          const i = ix + iy * 4
+          const x = ix * 80 - 125
+          const y = iy * 80 - 125
+          const xx = lerp(-w, w, Math.random())
+          const yy = lerp(-h, h, Math.random())
+          const tower = this.hud.add.tower(xx, yy, towers[i])
+          tower.alpha = 0
+          this.hud.add.tween({
+            targets: tower,
+            duration: 500,
+            alpha: 1,
+            x,
+            y,
+          })
+          choices.add(tower)
+        }
+      }
+    }
+
+    observableDelivery.addListener("changed", () => {
+      observableDamage.value = undefined
+      onUpdateTowerView()
+    })
+    observableDamage.addListener("changed", () => {
+      observableDelivery.value = undefined
+      onUpdateTowerView()
+    })
 
   }
 
