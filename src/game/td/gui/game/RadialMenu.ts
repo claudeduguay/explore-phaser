@@ -1,6 +1,6 @@
 import { GameObjects, Input, Scene, Types, Math as PMath } from "phaser";
-import Point from "../../../util/geom/Point";
-import ObservableValue from "../value/ObservableValue";
+import Point from "../../../../util/geom/Point";
+import ObservableValue from "../../value/ObservableValue";
 
 export type IPointerListener = (pointer: Input.Pointer, x: number, y: number, event: Types.Input.EventData) => void
 export type IPointerHandler<T> = (context: T, pointer: Input.Pointer, x: number, y: number, event: Types.Input.EventData) => void
@@ -29,14 +29,11 @@ export class RadialMenu extends GameObjects.Container {
     const av = (1 / items.length) * Math.PI
     let tl = pointOnCircle(Math.PI / 2 - av, r + span)
     let tr = pointOnCircle(Math.PI / 2 + av, r + span)
-    let bl = pointOnCircle(Math.PI / 2 - av, r - span)
-    let br = pointOnCircle(Math.PI / 2 + av, r - span)
+    // let bl = pointOnCircle(Math.PI / 2 - av, r - span)
+    // let br = pointOnCircle(Math.PI / 2 + av, r - span)
     const t = Math.abs(tl.x - tr.x) / 2
-    const b = Math.abs(bl.x - br.x) / 2
-    const v = Math.abs(tl.y - bl.y) / 2
-    console.log("Top:", tl, tr)
-    console.log("Bot:", bl, br)
-    console.log("T.B.V:", t, b, v)
+    // const b = Math.abs(bl.x - br.x) / 2
+    // const v = Math.abs(tl.y - bl.y) / 2
     items.forEach((item, i) => {
       const a = (i / items.length) * Math.PI * 2
       const pos = pointOnCircle(a, r)

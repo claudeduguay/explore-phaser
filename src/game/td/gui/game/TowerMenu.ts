@@ -1,6 +1,6 @@
 import { GameObjects, Scene } from "phaser"
 import ObservableValue from "../../value/ObservableValue"
-import { pointOnCircle, radial } from "../Radial"
+import { pointOnCircle, radial } from "./RadialMenu"
 import { TYPES_DAMAGE, TYPES_DELIVERY } from "../../entity/model/ITowerData"
 import { GENERATED_LIST } from "../../entity/model/ITowerModel"
 import TDTower from "../../entity/tower/TDTower"
